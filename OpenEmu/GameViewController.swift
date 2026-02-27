@@ -49,6 +49,10 @@ final class GameViewController: NSViewController {
     private(set) var gameView: OEGameLayerView!
     private var notificationView: OEGameLayerNotificationView!
     
+    // Save Sync status badge
+    private var syncStatusOverlay: OESyncStatusOverlayView!
+    private var syncStatusToken: NSObjectProtocol?
+    
     var controlsWindow: GameControlsBar!
     weak var document: OEGameDocument!
     weak var integralScalingDelegate: GameIntegralScalingDelegate?
@@ -94,6 +98,21 @@ final class GameViewController: NSViewController {
             notificationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10)
         ])
         
+        // Save Sync Status Badge
+        syncStatusOverlay = OESyncStatusOverlayView(frame: .zero)
+        syncStatusOverlay.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(syncStatusOverlay)
+        
+        NSLayoutConstraint.activate([
+            syncStatusOverlay.topAnchor.constraint(equalTo: notificationView.bottomAnchor, constant: 10),
+            syncStatusOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60)
+        ])
+        
+        syncStatusToken = NotificationCenter.default.addObserver(forName: .OESaveSyncStatusDidChange, object: nil, queue: .main) { [weak self] notification in
+            guard let self = self, let obj = notification.object as? OESaveSyncManager else { return }
+            self.syncStatusOverlay.show(status: obj.syncStatus, message: obj.syncStatusMessage)
+        }
+        
         token = NotificationCenter.default.addObserver(forName: NSView.frameDidChangeNotification, object: gameView, queue: .main) { [weak self] _ in
             guard let self = self else { return }
             
@@ -105,6 +124,11 @@ final class GameViewController: NSViewController {
         if let token = token {
             NotificationCenter.default.removeObserver(token)
             self.token = nil
+        }
+        
+        if let syncToken = syncStatusToken {
+            NotificationCenter.default.removeObserver(syncToken)
+            self.syncStatusToken = nil
         }
 
         shaderWindowController.close()

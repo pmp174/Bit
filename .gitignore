@@ -28,3 +28,4 @@ DerivedData/
 build_*.log
 *.tar.gz
 Releases/
+OpenEmu/OEGoogleDriveSecrets.swift

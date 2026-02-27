@@ -597,7 +597,11 @@ final class OEGameDocument: NSDocument {
         
         checkGlitches()
         
-        gameCoreManager?.loadROM(completionHandler: {
+        // MARK: Save Sync — Pre-launch cloud check
+        // Before loading the ROM, check whether a newer cloud save exists.
+        // This runs asynchronously; emulation proceeds after the check completes.
+        performPreLaunchSyncCheckIfNeeded {
+            self.gameCoreManager?.loadROM(completionHandler: {
             NSLog("[OEGameDocument] ROM loaded by manager, setting up emulation")
             self.gameCoreManager?.setupEmulation() { screenSize, aspectSize in
                 NSLog("[OEGameDocument] Emulation setup COMPLETE, screenSize: %@, aspectSize: %@", NSStringFromOEIntSize(screenSize), NSStringFromOEIntSize(aspectSize))
@@ -650,6 +654,7 @@ final class OEGameDocument: NSDocument {
             // TODO: the setup completion handler shouldn't be the place where non-setup-related errors are handled!
             handler(false, error)
         })
+        } // end performPreLaunchSyncCheckIfNeeded
     }
     
     private func setUpGameCoreManager(using core: OECorePlugin, completionHandler: @escaping () -> Void) {
@@ -2004,5 +2009,76 @@ extension OEGameDocument: OESystemBindingsObserver {
         }
         coreDidTerminateSuddenly = true
         stopEmulation(self)
+    }
+}
+
+// MARK: - Save Sync Integration
+
+extension OEGameDocument {
+    
+    /// Calls `OESaveSyncManager` to check for a newer cloud save before launching the ROM.
+    /// - If not signed in, or no newer cloud save exists, calls `completion` immediately.
+    /// - If a newer cloud save is found, prompts the user and optionally downloads before calling `completion`.
+    func performPreLaunchSyncCheckIfNeeded(completion: @escaping () -> Void) {
+        let syncManager = OESaveSyncManager.shared
+        guard syncManager.isSignedIn else {
+            // Not configured — skip silently and launch normally.
+            completion()
+            return
+        }
+        
+        guard let systemId = rom?.game?.system?.systemIdentifier,
+              let gameName = rom?.game?.displayName else {
+            completion()
+            return
+        }
+        
+        syncManager.checkForNewerCloudSave(
+            systemIdentifier: systemId,
+            gameName: gameName
+        ) { shouldSync, cloudDate in
+            guard shouldSync else {
+                // No newer cloud save — launch immediately.
+                completion()
+                return
+            }
+            
+            // Newer save found — ask the user.
+            let dateStr: String
+            if let cloudDate = cloudDate {
+                let fmt = DateFormatter()
+                fmt.dateStyle = .medium
+                fmt.timeStyle = .short
+                dateStr = fmt.string(from: cloudDate)
+            } else {
+                dateStr = "unknown date"
+            }
+            
+            let alert = OEAlert()
+            alert.messageText = NSLocalizedString("Newer Cloud Save Available", comment: "Save Sync alert title")
+            alert.informativeText = String(
+                format: NSLocalizedString(
+                    "A newer save for '%@' is available in the cloud (from %@). Download it before playing?",
+                    comment: "Save Sync alert body: game name, date"
+                ),
+                gameName, dateStr
+            )
+            alert.defaultButtonTitle  = NSLocalizedString("Download & Play", comment: "Save Sync: download and play")
+            alert.alternateButtonTitle = NSLocalizedString("Play Without Syncing", comment: "Save Sync: skip sync")
+            
+            if alert.runModal() == .alertFirstButtonReturn {
+                // User chose to download.
+                syncManager.downloadCloudSave(
+                    systemIdentifier: systemId,
+                    gameName: gameName
+                ) { _, _ in
+                    // Proceed with launch regardless of download outcome.
+                    completion()
+                }
+            } else {
+                // User chose to skip sync.
+                completion()
+            }
+        }
     }
 }

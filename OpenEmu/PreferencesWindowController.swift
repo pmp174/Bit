@@ -164,7 +164,8 @@ final class PreferencesTabViewController: NSTabViewController {
             PrefGameplayController(),
             PrefControlsController(),
             PrefCoresController(),
-            PrefBiosController()
+            PrefBiosController(),
+            PrefCloudSyncController()
         ]
         
         // Check if the debug pane should be included.
