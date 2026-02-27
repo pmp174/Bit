@@ -1,12 +1,18 @@
-
-"Archived Game" = "Joc arxivat";
-
-"OpenEmu Core Plugin" = "OpenEmu Core Plugin";
-
-"OpenEmu Save State" = "Partida desada de l'OpenEmu";
-
-"OpenEmu System Plugin" = "Connector del sistema";
-
-"OpenEmu Shader" = "OpenEmu Shader";
-
-"%@ Game" = "Joc %@";  // Used in OESystemPluginPostInstall to dynamically generate localized file type names
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%@ Game</key>
+	<string>Joc %@</string>
+	<key>Archived Game</key>
+	<string>Joc arxivat</string>
+	<key>OpenEmu Core Plugin</key>
+	<string>OpenEmu Core Plugin</string>
+	<key>OpenEmu Save State</key>
+	<string>Partida desada de l'OpenEmu</string>
+	<key>OpenEmu Shader</key>
+	<string>OpenEmu Shader</string>
+	<key>OpenEmu System Plugin</key>
+	<string>Connector del sistema</string>
+</dict>
+</plist>

@@ -24,6 +24,7 @@
 
 import Cocoa
 import Security
+import Network
 import os.log
 
 private let log = OSLog(subsystem: "org.openemu.OpenEmu", category: "SaveSync")
@@ -98,6 +99,10 @@ final class OESaveSyncManager: NSObject {
     
     private var eventStream: FSEventStreamRef?
     private var monitoredURLs: [URL] = []
+    
+    // MARK: - OAuth Listener
+    
+    private var oauthListener: NWListener?
     
     // MARK: - Background Sync
     
@@ -505,10 +510,78 @@ final class OESaveSyncManager: NSObject {
     
     /// Starts the Google OAuth2 flow by opening the system browser.
     @objc func signIn() {
+        startOAuthListener { [weak self] code, redirectURI in
+            guard let self = self, let code = code, let redirectURI = redirectURI else { return }
+            
+            Task {
+                do {
+                    try await self.exchangeCodeForTokens(code: code, redirectURI: redirectURI)
+                    self.setStatus(.idle, message: "Signed in to Google Drive.")
+                    os_log(.info, log: log, "OAuth sign-in successful.")
+                } catch {
+                    self.setStatus(.failed, message: "Sign-in failed: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func startOAuthListener(completion: @escaping (String?, String?) -> Void) {
+        do {
+            let listener = try NWListener(using: .tcp, on: .any)
+            self.oauthListener = listener
+            
+            listener.newConnectionHandler = { connection in
+                connection.start(queue: .main)
+                self.receiveOAuthRequest(on: connection) { code in
+                    let response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 43\r\n\r\nSign-in successful! You can close this tab."
+                    connection.send(content: response.data(using: .utf8), completion: .contentProcessed({ _ in
+                        connection.cancel()
+                        listener.cancel()
+                        
+                        if let port = listener.port {
+                            completion(code, "http://127.0.0.1:\(port.rawValue)")
+                        } else {
+                            completion(code, OEGoogleDriveConfig.redirectURI)
+                        }
+                    }))
+                }
+            }
+            
+            listener.stateUpdateHandler = { state in
+                if case .ready = state, let port = listener.port {
+                    let redirectURI = "http://127.0.0.1:\(port.rawValue)"
+                    self.openAuthPage(with: redirectURI)
+                }
+            }
+            
+            listener.start(queue: .main)
+        } catch {
+            os_log(.error, log: log, "Failed to start OAuth listener: %{public}@", error.localizedDescription)
+            completion(nil, nil)
+        }
+    }
+    
+    private func receiveOAuthRequest(on connection: NWConnection, completion: @escaping (String?) -> Void) {
+        connection.receive(minimumIncompleteLength: 1, maximumLength: 4096) { data, _, isComplete, error in
+            guard let data = data, let request = String(data: data, encoding: .utf8) else {
+                completion(nil)
+                return
+            }
+            
+            if let range = request.range(of: "code=([^&\\s]+)", options: .regularExpression) {
+                let code = String(request[range].dropFirst(5))
+                completion(code)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
+    private func openAuthPage(with redirectURI: String) {
         var components = URLComponents(string: OEGoogleDriveConfig.authorizationEndpoint)!
         components.queryItems = [
             URLQueryItem(name: "client_id",     value: OEGoogleDriveConfig.clientID),
-            URLQueryItem(name: "redirect_uri",  value: OEGoogleDriveConfig.redirectURI),
+            URLQueryItem(name: "redirect_uri",  value: redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope",         value: OEGoogleDriveConfig.scopes.joined(separator: " ")),
             URLQueryItem(name: "access_type",   value: "offline"),
@@ -517,7 +590,9 @@ final class OESaveSyncManager: NSObject {
         guard let url = components.url else { return }
         
         setStatus(.connecting, message: "Opening sign-in page…")
-        NSWorkspace.shared.open(url)
+        DispatchQueue.main.async {
+            NSWorkspace.shared.open(url)
+        }
     }
     
     /// Signs the user out and clears all stored credentials.
@@ -540,7 +615,7 @@ final class OESaveSyncManager: NSObject {
         
         Task {
             do {
-                try await exchangeCodeForTokens(code: code)
+                try await exchangeCodeForTokens(code: code, redirectURI: OEGoogleDriveConfig.redirectURI)
                 setStatus(.idle, message: "Signed in to Google Drive.")
                 os_log(.info, log: log, "OAuth sign-in successful.")
             } catch {
@@ -551,7 +626,7 @@ final class OESaveSyncManager: NSObject {
     
     // MARK: - Token Exchange
     
-    private func exchangeCodeForTokens(code: String) async throws {
+    private func exchangeCodeForTokens(code: String, redirectURI: String) async throws {
         var request = URLRequest(url: URL(string: OEGoogleDriveConfig.tokenEndpoint)!)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -560,7 +635,7 @@ final class OESaveSyncManager: NSObject {
             "code":          code,
             "client_id":     OEGoogleDriveConfig.clientID,
             "client_secret": OEGoogleDriveConfig.clientSecret,
-            "redirect_uri":  OEGoogleDriveConfig.redirectURI,
+            "redirect_uri":  redirectURI,
             "grant_type":    "authorization_code",
         ]
         request.httpBody = urlEncode(body).data(using: .utf8)
@@ -619,10 +694,19 @@ final class OESaveSyncManager: NSObject {
     
     // MARK: - Google Drive API
     
-    private struct DriveFile {
-        var id: String?
-        var name: String?
-        var modifiedTime: Date?
+    public struct DriveFile {
+        public var id: String?
+        public var name: String?
+        public var modifiedTime: Date?
+    }
+    
+    
+    /// Returns a list of all files currently stored in the Google Drive appDataFolder.
+    public func fetchCloudFileList() async throws -> [DriveFile] {
+        try await ensureValidAccessToken()
+        let files = try await listFiles(inFolder: OEGoogleDriveConfig.appDataFolderName)
+        os_log(.info, log: log, "Fetched %d files from appDataFolder", files.count)
+        return files
     }
     
     private func listFiles(inFolder folder: String, namePrefix: String? = nil) async throws -> [DriveFile] {

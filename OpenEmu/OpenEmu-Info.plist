@@ -191,5 +191,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSInputMonitoringUsageDescription</key>
+	<string>OpenEmu requires input monitoring to capture keyboard and controller events while games are running.</string>
 </dict>
 </plist>

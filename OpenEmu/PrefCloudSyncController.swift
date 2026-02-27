@@ -40,10 +40,23 @@ final class PrefCloudSyncController: NSViewController {
     private let lastSyncedLabel   = NSTextField(labelWithString: "")
     private let syncNowButton     = NSButton()
     private let syncInfoLabel     = NSTextField(wrappingLabelWithString: "")
+    private let loadingIndicator  = NSProgressIndicator()
+    
+    private let scrollView        = NSScrollView()
+    private let tableView         = NSTableView()
+    
+    private var cloudFiles: [OESaveSyncManager.DriveFile] = []
     
     private lazy var dateFormatter: DateFormatter = {
         let df = DateFormatter()
         df.dateStyle = .medium
+        df.timeStyle = .short
+        return df
+    }()
+    
+    private lazy var tableDateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateStyle = .short
         df.timeStyle = .short
         return df
     }()
@@ -55,12 +68,13 @@ final class PrefCloudSyncController: NSViewController {
     // MARK: - Lifecycle
     
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 468, height: 340))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 468, height: 480))
         buildUI()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
         updateStatus()
         
         syncStatusToken = NotificationCenter.default.addObserver(
@@ -76,6 +90,36 @@ final class PrefCloudSyncController: NSViewController {
         if let token = syncStatusToken {
             NotificationCenter.default.removeObserver(token)
         }
+    }
+    
+    // MARK: - TableView Setup
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.headerView = NSTableHeaderView()
+        tableView.rowHeight = 20
+        tableView.gridStyleMask = .solidHorizontalGridLineMask
+        tableView.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
+        
+        let sysCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("System"))
+        sysCol.headerCell.stringValue = "System"
+        sysCol.width = 60
+        tableView.addTableColumn(sysCol)
+        
+        let fileCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("Filename"))
+        fileCol.headerCell.stringValue = "Filename"
+        fileCol.width = 200
+        tableView.addTableColumn(fileCol)
+        
+        let dateCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("Modified"))
+        dateCol.headerCell.stringValue = "Modified"
+        dateCol.width = 120
+        tableView.addTableColumn(dateCol)
+        
+        scrollView.documentView = tableView
+        scrollView.hasVerticalScroller = true
+        scrollView.borderType = .bezelBorder
     }
     
     // MARK: - Build UI
@@ -125,11 +169,21 @@ final class PrefCloudSyncController: NSViewController {
         signOutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(signOutButton)
         
-        // ── Last Synced Label ────────────────────────────────────────
-        lastSyncedLabel.font = .systemFont(ofSize: 11)
-        lastSyncedLabel.textColor = .secondaryLabelColor
-        lastSyncedLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lastSyncedLabel)
+        // ── Divider ──────────────────────────────────────────────────
+        divider.boxType = .separator
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(divider)
+        
+        // ── Loading Indicator ────────────────────────────────────────
+        loadingIndicator.style = .spinning
+        loadingIndicator.controlSize = .small
+        loadingIndicator.isDisplayedWhenStopped = false
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicator)
+        
+        // ── ScrollView / TableView ───────────────────────────────────
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
         
         // ── Sync Now Button ──────────────────────────────────────────
         syncNowButton.title = "Sync Now"
@@ -141,13 +195,14 @@ final class PrefCloudSyncController: NSViewController {
         syncNowButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(syncNowButton)
         
-        // ── Divider ──────────────────────────────────────────────────
-        divider.boxType = .separator
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(divider)
+        // ── Last Synced Label ────────────────────────────────────────
+        lastSyncedLabel.font = .systemFont(ofSize: 11)
+        lastSyncedLabel.textColor = .secondaryLabelColor
+        lastSyncedLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(lastSyncedLabel)
         
         // ── Sync Info ────────────────────────────────────────────────
-        syncInfoLabel.stringValue = "Saves are stored in a hidden App Data folder in your Google Drive that only OpenEmu can access. No other files in your Drive are visible to OpenEmu."
+        syncInfoLabel.stringValue = "Saves are stored in a hidden App Data folder in your Google Drive."
         syncInfoLabel.font = .systemFont(ofSize: 11)
         syncInfoLabel.textColor = .tertiaryLabelColor
         syncInfoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -177,27 +232,37 @@ final class PrefCloudSyncController: NSViewController {
             signInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
             signInButton.widthAnchor.constraint(equalToConstant: 180),
             
-            // Sign Out button — right-aligned next to Sign In
+            // Sign Out button
             signOutButton.centerYAnchor.constraint(equalTo: signInButton.centerYAnchor),
             signOutButton.leadingAnchor.constraint(equalTo: signInButton.trailingAnchor, constant: 12),
             
             // Divider
-            divider.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 28),
+            divider.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            // Privacy note
-            syncInfoLabel.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 14),
-            syncInfoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            syncInfoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
+            // Loading Indicator
+            loadingIndicator.centerYAnchor.constraint(equalTo: statusDot.centerYAnchor),
+            loadingIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
             
-            // Last Synced
-            lastSyncedLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
-            lastSyncedLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            // ScrollView (Cloud Files List)
+            scrollView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 16),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
+            scrollView.heightAnchor.constraint(equalToConstant: 180),
             
             // Sync Now
-            syncNowButton.centerYAnchor.constraint(equalTo: lastSyncedLabel.centerYAnchor),
-            syncNowButton.leadingAnchor.constraint(equalTo: lastSyncedLabel.trailingAnchor, constant: 8),
+            syncNowButton.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 12),
+            syncNowButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            
+            // Last Synced
+            lastSyncedLabel.centerYAnchor.constraint(equalTo: syncNowButton.centerYAnchor),
+            lastSyncedLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            
+            // Privacy Note
+            syncInfoLabel.topAnchor.constraint(equalTo: syncNowButton.bottomAnchor, constant: 12),
+            syncInfoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            syncInfoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
         ])
     }
     
@@ -210,24 +275,49 @@ final class PrefCloudSyncController: NSViewController {
             statusDot.textColor    = NSColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1)  // green
             statusLabel.stringValue = "Connected"
             statusLabel.textColor   = NSColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1)
+            fetchCloudFiles()
         } else {
             statusDot.textColor    = NSColor(red: 0.87, green: 0.20, blue: 0.18, alpha: 1) // red
             statusLabel.stringValue = "Not Connected"
             statusLabel.textColor   = NSColor(red: 0.87, green: 0.20, blue: 0.18, alpha: 1)
+            cloudFiles = []
+            tableView.reloadData()
         }
         
         signInButton.isHidden  = isSignedIn
         signOutButton.isHidden = !isSignedIn
         
+        scrollView.isHidden    = !isSignedIn
         syncNowButton.isHidden = !isSignedIn
+        lastSyncedLabel.isHidden = !isSignedIn
+        
         if isSignedIn {
             if let date = OESaveSyncManager.shared.lastSyncDate {
                 lastSyncedLabel.stringValue = "Last synced: \(dateFormatter.string(from: date))"
             } else {
                 lastSyncedLabel.stringValue = "Not synced yet"
             }
-        } else {
-            lastSyncedLabel.stringValue = ""
+        }
+    }
+    
+    private func fetchCloudFiles() {
+        guard OESaveSyncManager.shared.isSignedIn else { return }
+        
+        loadingIndicator.startAnimation(nil)
+        
+        Task {
+            do {
+                let files = try await OESaveSyncManager.shared.fetchCloudFileList()
+                await MainActor.run {
+                    self.cloudFiles = files.sorted { ($0.modifiedTime ?? .distantPast) > ($1.modifiedTime ?? .distantPast) }
+                    self.tableView.reloadData()
+                    self.loadingIndicator.stopAnimation(nil)
+                }
+            } catch {
+                await MainActor.run {
+                    self.loadingIndicator.stopAnimation(nil)
+                }
+            }
         }
     }
     
@@ -252,6 +342,62 @@ final class PrefCloudSyncController: NSViewController {
     
     @objc private func syncNow() {
         OESaveSyncManager.shared.performFullSyncCheck()
+        fetchCloudFiles()
+    }
+}
+
+// MARK: - TableView Data Source & Delegate
+
+extension PrefCloudSyncController: NSTableViewDataSource, NSTableViewDelegate {
+    
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return cloudFiles.count
+    }
+    
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let identifier = NSUserInterfaceItemIdentifier("CloudFileCell")
+        var view = tableView.makeView(withIdentifier: identifier, owner: self) as? NSTextField
+        
+        if view == nil {
+            view = NSTextField(labelWithString: "")
+            view?.identifier = identifier
+            view?.font = .systemFont(ofSize: 11)
+        }
+        
+        let file = cloudFiles[row]
+        let name = file.name ?? "Unknown"
+        
+        switch tableColumn?.identifier.rawValue {
+        case "System":
+            // Attempt to extract system from path: "openemu.system.gba/Game.sav"
+            let parts = name.components(separatedBy: CharacterSet(charactersIn: "/\\"))
+            if let firstPart = parts.first {
+                let sys = String(firstPart).replacingOccurrences(of: "openemu.system.", with: "").uppercased()
+                view?.stringValue = sys
+            } else {
+                view?.stringValue = "???"
+            }
+            
+        case "Filename":
+            let parts = name.components(separatedBy: CharacterSet(charactersIn: "/\\"))
+            if let lastPart = parts.last {
+                view?.stringValue = String(lastPart)
+            } else {
+                view?.stringValue = name
+            }
+            
+        case "Modified":
+            if let date = file.modifiedTime {
+                view?.stringValue = tableDateFormatter.string(from: date)
+            } else {
+                view?.stringValue = "-"
+            }
+            
+        default:
+            break
+        }
+        
+        return view
     }
 }
 
@@ -269,5 +415,5 @@ extension PrefCloudSyncController: PreferencePane {
     
     var panelTitle: String { "Cloud Sync" }
     
-    var viewSize: NSSize { NSSize(width: 468, height: 340) }
+    var viewSize: NSSize { NSSize(width: 468, height: 480) }
 }

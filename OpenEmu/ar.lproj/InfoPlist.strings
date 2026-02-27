@@ -1,58 +1,18 @@
-/*
- Arabic translation info:
-    
-    Description:
-        It is the Arabic translation of the OpenEmu InfoPlist.strings file.
- 
-    Since:
-        version 2.3.3 ,
-        Thursday : (July 20, 2023, GREGORIAN or Muharram 2, 1445 Hijri).
- 
-    First translator:
-        Name: Ahmed Essam Ahmed,
-        Email: ahmed4communication@gmail.com,
-        GitHub: https://github.com/Ahmed-Essam-Programming,
-        Discord: the_username_is_ahmed
- 
-    second translator:
-        Name:
-        email:
-        GitHub:
-        Discord:
-    
-    Third translator:
-         Name:
-         email:
-         GitHub:
-         Discord:
-     
-    Fourth translator:
-         Name:
-         email:
-         GitHub:
-         Discord:
-     
-    .
-    .
-    .
-    .
- 
- */
-
-/*
- NOTE: press ⌘ + F and search for:
- -"TODO" to see untranslated strings
- -"FUZZY" to see translations that need more work
- -"UNTESTED" these translations that the translator did not see when he used OpenEmu to test the translation to see how the text will look on the UI
-*/
-"Archived Game" = "لعبة مؤرشفة";
-
-"OpenEmu Core Plugin" = "إضافة نواة OpenEmu";
-
-"OpenEmu Save State" = "حالة حفظ OpenEmu";
-
-"OpenEmu System Plugin" = " إضافة نظام OpenEmu";
-
-"OpenEmu Shader" = "مرشِح فيديو OpenEmu";
-
-"%@ Game" = "%@ لعبة";  // Used in OESystemPluginPostInstall to dynamically generate localized file type names
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%@ Game</key>
+	<string>%@ لعبة</string>
+	<key>Archived Game</key>
+	<string>لعبة مؤرشفة</string>
+	<key>OpenEmu Core Plugin</key>
+	<string>إضافة نواة OpenEmu</string>
+	<key>OpenEmu Save State</key>
+	<string>حالة حفظ OpenEmu</string>
+	<key>OpenEmu Shader</key>
+	<string>مرشِح فيديو OpenEmu</string>
+	<key>OpenEmu System Plugin</key>
+	<string> إضافة نظام OpenEmu</string>
+</dict>
+</plist>

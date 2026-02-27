@@ -1,325 +1,272 @@
-/*
- Arabic translation info:
-    
-    Description:
-        It is the Arabic translation of the OpenEmu ControlLabels.strings file.
- 
-    Since:
-        version 2.3.3 ,
-        Thursday : (July 20, 2023, GREGORIAN or Muharram 2, 1445 Hijri).
- 
-    First translator:
-        Name: Ahmed Essam Ahmed,
-        Email: ahmed4communication@gmail.com,
-        GitHub: https://github.com/Ahmed-Essam-Programming,
-        Discord: the_username_is_ahmed
- 
-    second translator:
-        Name:
-        email:
-        GitHub:
-        Discord:
-    
-    Third translator:
-         Name:
-         email:
-         GitHub:
-         Discord:
-     
-    Fourth translator:
-         Name:
-         email:
-         GitHub:
-         Discord:
-     
-    .
-    .
-    .
-    .
- 
- */
-
-/*
- NOTE: press ⌘ + F and search for:
- -"TODO" to see untranslated strings
- -"FUZZY" to see translations that need more work
- -"UNTESTED" these translations that the translator did not see when he used OpenEmu to test the translation to see how the text will look on the UI
-*/
-
-/* Section Title */
-
-"Gameplay Buttons" = "أزرار اللعب";
-
-"Special Keys" = "أزرار خاصة";
-
-
-/* Group Labels */
-
-"-" = "-";
-
-"3D Control Pad" = "3D Control Pad";//TODO
-
-"Analog" = "عصا التحكم";
-
-"C-Pad" = "أسهم الـC";
-
-"C-Stick" = "C-عصا";
-
-"D-Pad" = "الأسهم";
-
-"Keypad" = "لوحة الأرقام";
-
-"Left Analog" = "عصا التحكم اليسرى";
-
-"Left D-Pad" = "الأسهم اليسرى";
-
-"Right Analog" = "عصا التحكم اليمنى";
-
-"Right D-Pad" = "الأسهم اليمنى";
-
-"Switches" = "المفاتيح";
-
-
-/* Button Labels */
-
-"#" = "#";
-
-"*" = "*";
-
-"0" = "0";
-
-"1" = "1";
-
-"2" = "2";
-
-"2/6 Mode" = "2/6 وضع";
-
-"3" = "3";
-
-"4" = "4";
-
-"5" = "5";
-
-"6" = "6";
-
-"7" = "7";
-
-"8" = "8";
-
-"9" = "9";
-
-"A" = "A";
-
-"Action" = "زر الإجراء";
-
-"Analog Mode" = "زر الـAnalog";
-
-"B" = "B";
-
-"Bottom Left Action" = "زر الإجراء الأيسر";
-
-"Bottom Right Action" = "زر الإجراء الأيمن";
-
-"Button 1" = "الزر ١";
-
-"Button 1/Start" = "الزر ١/start";
-
-"Button 2" = "الزر ٢";
-
-"Button 3" = "الزر ٣";
-
-"Button 4" = "الزر ٤";
-
-"Button 5" = "الزر ٥";
-
-"Button 6" = "الزر ٦";
-
-"C" = "C";
-
-"Change Disk Side" = "تغيير جهة القرص";
-
-"Clear" = "مسح";
-
-"Configure" = "تهيئة";
-
-"Console Pause" = "ايقاف مؤقت لجهاز اللعب";
-
-"Console Reset" = "إعادة تعيين لجهاز اللعب";
-
-"Down" = "أسفل";
-
-"Enter" = "إدخال";
-
-"Fire" = "اطلاق";
-
-"Fire 1" = "اطلاق ١";
-
-"Fire 2" = "اطلاق ٢";
-
-"Insert Coin" = "ادخال عملة";
-
-"Jump" = "قفز";
-
-"L" = "L";
-
-"L Diff" = "L Diff";//TODO
-
-"L Diff A" = "L Diff A";//TODO
-
-"L Diff B" = "L Diff B";//TODO
-
-"L1" = "L1";
-
-"L2" = "L2";
-
-"L3" = "L3";
-
-"Left" = "يسار";
-
-"Left Action" = "الإجراء الأيسر";
-
-"Left Trigger" = "الزناد الأيسر";
-
-"Lid" = "Lid";
-
-"Menu" = "قائمة";
-
-"Mic" = "Mic";
-
-"Mode" = "الوضع";
-
-"Mode Switch" = "مفتاح تبديل الوضع";
-
-"Option" = "الخيار";
-
-"Option 1" =  "الخيار ١";
-
-"Option 2" = "الخيار ٢";
-
-"P" = "P";
-
-"Player Start" = "بدأ اللاهب";
-
-"Power" = "زر التشغيل";
-
-"R" = "R";
-
-"R Diff" = "R Diff";//TODO
-
-"R Diff A" = "R Diff A";//TODO
-
-"R Diff B" = "R Diff B";//TODO
-
-"R1" = "R1";
-
-"R2" = "R2";
-
-"R3" = "R3";
-
-"Right" = "يمين";
-
-"Right Action" = "الإجراء الأيمن";
-
-"Right Trigger" = "الزناد الأيمن";
-
-"Run" = "زر Run";
-
-"Select" = "زر Select";
-
-"Service" = "Service";//TODO
-
-"Shake" = "Shake";//TODO
-
-"Sound" = "صوت";
-
-"Start" = "زر Start";
-
-"Swap Joysticks" = "تبديل عصا التحم";
-
-"TV Black & White" = "تلفاز ابيض و أسود";
-
-"TV Color" = "تلفاز ملون";
-
-"Top Action" = "زر الإجراء العلوي";
-
-"Trigger L" = "الزناد L";
-
-"Trigger R" = "الزناد R";
-
-"Up" = "فوق";
-
-"X" = "X";
-
-"X1 Up" = "X1 فوق";
-
-"X2 Right" = "X2 يمين";
-
-"X3 Down" = "X3 أسفل";
-
-"X4 Left" = "X4 يسار";
-
-"Y" = "Y";
-
-"Y1 Up" = "Y1 فوق";
-
-"Y2 Right" = "Y2 يمين";
-
-"Y3 Down" = "Y3 أسفل";
-
-"Y4 Left" = "Y4 يسار";
-
-"Z" = "Z";
-
-"▢" = "▢";
-
-"△" = "△";
-
-"◯" = "◯";
-
-"✕" = "✕";
-
-
-/* Special Keys */
-
-"Display Mode" = "وضع العرض";
-
-"Fast Forward" = "تقديم سريع";
-
-"Fullscreen" = "ملء الشاشة";
-
-"Last Display Mode" = "آخر وضع للعرض";
-
-"Load" = "تحميل";
-
-"Mute" = "كتم";
-
-"Next Display Mode" = "وضع العرض التالي";
-
-"Pause/Resume" = "ايقاف موقت/استئناف";
-
-"Quick Load" = "تحميل سريع";
-
-"Quick Save" = "حفظ سريع";
-
-"Rapid Fire Clear" = "Rapid Fire Clear";//TODO
-
-"Rapid Fire Reset" = "Rapid Fire Reset";//TODO
-
-"Rapid Fire Toggle" = "Rapid Fire Toggle";//TODO
-
-"Reset" = "إعادة تعيين";
-
-"Rewind" = "ترجيع";
-
-"Save" = "حفظ";
-
-"Screenshot" = "لقطة شاشة";
-
-"Step Backward" = "ارجع خطوة للوراء";
-
-"Step Forward" = "تقدم خطوة للأمام";
-
-"Volume Down" = "خفض الصوت";
-
-"Volume Up" = "رفع الصوت";
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>#</key>
+	<string>#</string>
+	<key>*</key>
+	<string>*</string>
+	<key>-</key>
+	<string>-</string>
+	<key>0</key>
+	<string>0</string>
+	<key>1</key>
+	<string>1</string>
+	<key>2</key>
+	<string>2</string>
+	<key>2/6 Mode</key>
+	<string>2/6 وضع</string>
+	<key>3</key>
+	<string>3</string>
+	<key>3D Control Pad</key>
+	<string>3D Control Pad</string>
+	<key>4</key>
+	<string>4</string>
+	<key>5</key>
+	<string>5</string>
+	<key>6</key>
+	<string>6</string>
+	<key>7</key>
+	<string>7</string>
+	<key>8</key>
+	<string>8</string>
+	<key>9</key>
+	<string>9</string>
+	<key>A</key>
+	<string>A</string>
+	<key>Action</key>
+	<string>زر الإجراء</string>
+	<key>Analog</key>
+	<string>عصا التحكم</string>
+	<key>Analog Mode</key>
+	<string>زر الـAnalog</string>
+	<key>B</key>
+	<string>B</string>
+	<key>Bottom Left Action</key>
+	<string>زر الإجراء الأيسر</string>
+	<key>Bottom Right Action</key>
+	<string>زر الإجراء الأيمن</string>
+	<key>Button 1</key>
+	<string>الزر ١</string>
+	<key>Button 1/Start</key>
+	<string>الزر ١/start</string>
+	<key>Button 2</key>
+	<string>الزر ٢</string>
+	<key>Button 3</key>
+	<string>الزر ٣</string>
+	<key>Button 4</key>
+	<string>الزر ٤</string>
+	<key>Button 5</key>
+	<string>الزر ٥</string>
+	<key>Button 6</key>
+	<string>الزر ٦</string>
+	<key>C</key>
+	<string>C</string>
+	<key>C-Pad</key>
+	<string>أسهم الـC</string>
+	<key>C-Stick</key>
+	<string>C-عصا</string>
+	<key>Change Disk Side</key>
+	<string>تغيير جهة القرص</string>
+	<key>Clear</key>
+	<string>مسح</string>
+	<key>Configure</key>
+	<string>تهيئة</string>
+	<key>Console Pause</key>
+	<string>ايقاف مؤقت لجهاز اللعب</string>
+	<key>Console Reset</key>
+	<string>إعادة تعيين لجهاز اللعب</string>
+	<key>D-Pad</key>
+	<string>الأسهم</string>
+	<key>Display Mode</key>
+	<string>وضع العرض</string>
+	<key>Down</key>
+	<string>أسفل</string>
+	<key>Enter</key>
+	<string>إدخال</string>
+	<key>Fast Forward</key>
+	<string>تقديم سريع</string>
+	<key>Fire</key>
+	<string>اطلاق</string>
+	<key>Fire 1</key>
+	<string>اطلاق ١</string>
+	<key>Fire 2</key>
+	<string>اطلاق ٢</string>
+	<key>Fullscreen</key>
+	<string>ملء الشاشة</string>
+	<key>Gameplay Buttons</key>
+	<string>أزرار اللعب</string>
+	<key>Insert Coin</key>
+	<string>ادخال عملة</string>
+	<key>Jump</key>
+	<string>قفز</string>
+	<key>Keypad</key>
+	<string>لوحة الأرقام</string>
+	<key>L</key>
+	<string>L</string>
+	<key>L Diff</key>
+	<string>L Diff</string>
+	<key>L Diff A</key>
+	<string>L Diff A</string>
+	<key>L Diff B</key>
+	<string>L Diff B</string>
+	<key>L1</key>
+	<string>L1</string>
+	<key>L2</key>
+	<string>L2</string>
+	<key>L3</key>
+	<string>L3</string>
+	<key>Last Display Mode</key>
+	<string>آخر وضع للعرض</string>
+	<key>Left</key>
+	<string>يسار</string>
+	<key>Left Action</key>
+	<string>الإجراء الأيسر</string>
+	<key>Left Analog</key>
+	<string>عصا التحكم اليسرى</string>
+	<key>Left D-Pad</key>
+	<string>الأسهم اليسرى</string>
+	<key>Left Trigger</key>
+	<string>الزناد الأيسر</string>
+	<key>Lid</key>
+	<string>Lid</string>
+	<key>Load</key>
+	<string>تحميل</string>
+	<key>Menu</key>
+	<string>قائمة</string>
+	<key>Mic</key>
+	<string>Mic</string>
+	<key>Mode</key>
+	<string>الوضع</string>
+	<key>Mode Switch</key>
+	<string>مفتاح تبديل الوضع</string>
+	<key>Mute</key>
+	<string>كتم</string>
+	<key>Next Display Mode</key>
+	<string>وضع العرض التالي</string>
+	<key>Option</key>
+	<string>الخيار</string>
+	<key>Option 1</key>
+	<string>الخيار ١</string>
+	<key>Option 2</key>
+	<string>الخيار ٢</string>
+	<key>P</key>
+	<string>P</string>
+	<key>Pause/Resume</key>
+	<string>ايقاف موقت/استئناف</string>
+	<key>Player Start</key>
+	<string>بدأ اللاهب</string>
+	<key>Power</key>
+	<string>زر التشغيل</string>
+	<key>Quick Load</key>
+	<string>تحميل سريع</string>
+	<key>Quick Save</key>
+	<string>حفظ سريع</string>
+	<key>R</key>
+	<string>R</string>
+	<key>R Diff</key>
+	<string>R Diff</string>
+	<key>R Diff A</key>
+	<string>R Diff A</string>
+	<key>R Diff B</key>
+	<string>R Diff B</string>
+	<key>R1</key>
+	<string>R1</string>
+	<key>R2</key>
+	<string>R2</string>
+	<key>R3</key>
+	<string>R3</string>
+	<key>Rapid Fire Clear</key>
+	<string>Rapid Fire Clear</string>
+	<key>Rapid Fire Reset</key>
+	<string>Rapid Fire Reset</string>
+	<key>Rapid Fire Toggle</key>
+	<string>Rapid Fire Toggle</string>
+	<key>Reset</key>
+	<string>إعادة تعيين</string>
+	<key>Rewind</key>
+	<string>ترجيع</string>
+	<key>Right</key>
+	<string>يمين</string>
+	<key>Right Action</key>
+	<string>الإجراء الأيمن</string>
+	<key>Right Analog</key>
+	<string>عصا التحكم اليمنى</string>
+	<key>Right D-Pad</key>
+	<string>الأسهم اليمنى</string>
+	<key>Right Trigger</key>
+	<string>الزناد الأيمن</string>
+	<key>Run</key>
+	<string>زر Run</string>
+	<key>Save</key>
+	<string>حفظ</string>
+	<key>Screenshot</key>
+	<string>لقطة شاشة</string>
+	<key>Select</key>
+	<string>زر Select</string>
+	<key>Service</key>
+	<string>Service</string>
+	<key>Shake</key>
+	<string>Shake</string>
+	<key>Sound</key>
+	<string>صوت</string>
+	<key>Special Keys</key>
+	<string>أزرار خاصة</string>
+	<key>Start</key>
+	<string>زر Start</string>
+	<key>Step Backward</key>
+	<string>ارجع خطوة للوراء</string>
+	<key>Step Forward</key>
+	<string>تقدم خطوة للأمام</string>
+	<key>Swap Joysticks</key>
+	<string>تبديل عصا التحم</string>
+	<key>Switches</key>
+	<string>المفاتيح</string>
+	<key>TV Black &amp; White</key>
+	<string>تلفاز ابيض و أسود</string>
+	<key>TV Color</key>
+	<string>تلفاز ملون</string>
+	<key>Top Action</key>
+	<string>زر الإجراء العلوي</string>
+	<key>Trigger L</key>
+	<string>الزناد L</string>
+	<key>Trigger R</key>
+	<string>الزناد R</string>
+	<key>Up</key>
+	<string>فوق</string>
+	<key>Volume Down</key>
+	<string>خفض الصوت</string>
+	<key>Volume Up</key>
+	<string>رفع الصوت</string>
+	<key>X</key>
+	<string>X</string>
+	<key>X1 Up</key>
+	<string>X1 فوق</string>
+	<key>X2 Right</key>
+	<string>X2 يمين</string>
+	<key>X3 Down</key>
+	<string>X3 أسفل</string>
+	<key>X4 Left</key>
+	<string>X4 يسار</string>
+	<key>Y</key>
+	<string>Y</string>
+	<key>Y1 Up</key>
+	<string>Y1 فوق</string>
+	<key>Y2 Right</key>
+	<string>Y2 يمين</string>
+	<key>Y3 Down</key>
+	<string>Y3 أسفل</string>
+	<key>Y4 Left</key>
+	<string>Y4 يسار</string>
+	<key>Z</key>
+	<string>Z</string>
+	<key>▢</key>
+	<string>▢</string>
+	<key>△</key>
+	<string>△</string>
+	<key>◯</key>
+	<string>◯</string>
+	<key>✕</key>
+	<string>✕</string>
+</dict>
+</plist>

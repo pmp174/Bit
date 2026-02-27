@@ -25,44 +25,25 @@
 import Foundation
 
 /// Configuration for the Google Drive Save Sync integration.
-///
-/// IMPORTANT: Before shipping, replace the placeholder values below with
-/// credentials obtained from the Google Cloud Console.
-///
-/// Steps to obtain credentials:
-/// 1. Go to https://console.cloud.google.com/
-/// 2. Create (or select) a project.
-/// 3. Enable the "Google Drive API".
-/// 4. Under "Credentials", create an "OAuth 2.0 Client ID" of type "macOS" (Desktop).
-/// 5. Copy the Client ID and Client Secret here.
-/// 6. Add the redirect URI "com.openemu.OpenEmu:/oauth2callback" to your OAuth client.
 enum OEGoogleDriveConfig {
     
     // MARK: - OAuth Credentials
-    //
-    // IMPORTANT: Real credentials are stored in OEGoogleDriveSecrets.swift (gitignored).
-    // Copy OEGoogleDriveSecrets.template.swift → OEGoogleDriveSecrets.swift and fill in
-    // your credentials from the Google Cloud Console. Never commit that file.
-    //
-    // If OEGoogleDriveSecrets.swift is absent (e.g. a CI build), sign-in will not work
-    // but the rest of the app remains unaffected.
-
-    /// Your Google API OAuth 2.0 Client ID (loaded from local secrets file).
-    static var clientID: String { Self._clientID }
     
-    /// Your Google API OAuth 2.0 Client Secret (loaded from local secrets file).
-    static var clientSecret: String { Self._clientSecret }
+    /// Your Google API OAuth 2.0 Client ID.
+    static let clientID     = "YOUR_CLIENT_ID_HERE"
+    
+    /// Your Google API OAuth 2.0 Client Secret.
+    static let clientSecret = "YOUR_CLIENT_SECRET_HERE"
     
     // MARK: - OAuth Endpoints
     
     static let authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth"
     static let tokenEndpoint         = "https://oauth2.googleapis.com/token"
-    static let redirectURI           = "com.openemu.OpenEmu:/oauth2callback"
+    static let redirectURI           = "http://127.0.0.1"
     
     // MARK: - API Scopes
     
     /// Requests access to the hidden App Data folder only.
-    /// This is the most privacy-respecting scope — the app cannot see any other Drive files.
     static let scopes = ["https://www.googleapis.com/auth/drive.appdata"]
     
     // MARK: - API Endpoints
@@ -72,13 +53,10 @@ enum OEGoogleDriveConfig {
     
     // MARK: - App Data Folder
     
-    /// The special Google Drive folder name for hidden App Data.
-    /// Files stored here are invisible to the user in Drive UI.
     static let appDataFolderName = "appDataFolder"
     
     // MARK: - Keychain
     
-    /// The Keychain service name used to store OAuth tokens securely.
     static let keychainService = "com.openemu.GoogleDriveSaveSync"
     
     // MARK: - Sync Settings

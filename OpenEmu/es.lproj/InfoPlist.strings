@@ -1,12 +1,18 @@
-
-"Archived Game" = "Archived Game";  //TODO
-
-"OpenEmu Core Plugin" = "Complemento de núcleo de OpenEmu";
-
-"OpenEmu Save State" = "Estado guardado de OpenEmu";
-
-"OpenEmu System Plugin" = "Complemento de sistema de OpenEmu";
-
-"OpenEmu Shader" = "OpenEmu Shader";  //TODO
-
-"%@ Game" = "Juego %@";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%@ Game</key>
+	<string>Juego %@</string>
+	<key>Archived Game</key>
+	<string>Archived Game</string>
+	<key>OpenEmu Core Plugin</key>
+	<string>Complemento de núcleo de OpenEmu</string>
+	<key>OpenEmu Save State</key>
+	<string>Estado guardado de OpenEmu</string>
+	<key>OpenEmu Shader</key>
+	<string>OpenEmu Shader</string>
+	<key>OpenEmu System Plugin</key>
+	<string>Complemento de sistema de OpenEmu</string>
+</dict>
+</plist>

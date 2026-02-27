@@ -1,124 +1,131 @@
-
-"General" = "General";
-
-"Debug Mode" = "Debug Mode";
-
-"Setup Assistant has finished" = "Setup Assistant has finished";
-
-"Region:" = "Region:";
-
-"Run games using:" = "Run games using:";
-
-"Library Window" = "Library Window";
-
-"Reset main window size" = "Reset main window size";
-
-"Show game titles instead of rom names" = "Show game titles instead of rom names";
-
-"Manually choose system on import" = "Manually choose system on import";
-
-"Show autosave states in save state category" = "Show autosave states in save state category";
-
-"Show quicksave states in save state category" = "Show quicksave states in save state category";
-
-"Toggle game scanner view" = "Toggle game scanner view";
-
-"HUD Bar / Gameplay" = "HUD Bar / Gameplay";
-
-"Show notifications during gameplay" = "Show notifications during gameplay";
-
-"Use quicksave slots" = "Use quicksave slots";
-
-"Show quicksave in menu" = "Show quicksave in menu";
-
-"Show autosave in menu" = "Show autosave in menu";
-
-"Show audio output device in menu" = "Show audio output device in menu";
-
-"Take screenshots in native size" = "Take screenshots in native size";
-
-"Disable aspect ratio correction in screenshots" = "Disable aspect ratio correction in screenshots";
-
-"Game View Background color:" = "Game View Background color:";
-
-"Controls Setup" = "Controls Setup";
-
-"Select first field after setting the last" = "Select first field after setting the last";
-
-"Draw button mask above image" = "Draw button mask above image";
-
-"Log HID Events" = "Log HID Events";
-
-"Log Keyboard Events" = "Log Keyboard Events";
-
-"Show all special keys" = "Show all special keys";
-
-"Set default save states directory" = "Set default save states directory";
-
-"Cleanup autosave state" = "Cleanup autosave state";
-
-"Cleanup Save States" = "Cleanup Save States";
-
-"OpenVGDB" = "OpenVGDB";
-
-"Update OpenVGDB" = "Update OpenVGDB";
-
-"Database Actions" = "Database Actions";
-
-"Delete artwork that can be downloaded" = "Delete artwork that can be downloaded";
-
-"Download missing artwork…" = "Download missing artwork…";
-
-"Remove untracked artwork files" = "Remove untracked artwork files";
-
-"Cleanup rom hashes" = "Cleanup rom hashes";
-
-"Remove duplicated roms" = "Remove duplicated roms";
-
-"Cancel cover sync for all games" = "Cancel cover sync for all games";
-
-"Perform Sanity Check on Database" = "Perform Sanity Check on Database";
-
-"While performing this operation OpenEmu will be unresponsive." = "While performing this operation OpenEmu will be unresponsive.";
-
-"Delete useless image objects" = "Delete useless image objects";
-
-"Sync games without artwork" = "Sync games without artwork";
-
-"Threshold for analog controls bound to buttons:" = "Threshold for analog controls\nbound to buttons:";
-
-"Range: %@ to %@" = "Range: %@ to %@";  // Range indicator tooltip for numeric text boxes in the Debug Preferences
-
-"Default Value: %@" = "Default Value: %@";  // Default value tooltip format in the Debug Preferences
-
-"Checked" = "Checked";  // Default value tooltip for checkboxes: checked default
-
-"Unchecked" = "Unchecked";  // Default value tooltip for checkboxes: unchecked default
-
-"Shaders" = "Shaders";
-
-"Clear shader cache" = "Clear shader cache";
-
-"Reveal user shader folder" = "Reveal user shader folder";
-
-"Appearance:" = "Appearance:";
-
-"Auto (region)" = "Auto";
-
-"North America" = "North America";
-
-"Japan" = "Japan";
-
-"Europe" = "Europe";
-
-"Other" = "Other";
-
-"XPC" = "XPC";
-
-"Background Thread" = "Background Thread";
-
-"System" = "System";
-
-"Dark (default)" = "Dark (default)";
-
-"Light" = "Light";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Appearance:</key>
+	<string>Appearance:</string>
+	<key>Auto (region)</key>
+	<string>Auto</string>
+	<key>Background Thread</key>
+	<string>Background Thread</string>
+	<key>Cancel cover sync for all games</key>
+	<string>Cancel cover sync for all games</string>
+	<key>Checked</key>
+	<string>Checked</string>
+	<key>Cleanup Save States</key>
+	<string>Cleanup Save States</string>
+	<key>Cleanup autosave state</key>
+	<string>Cleanup autosave state</string>
+	<key>Cleanup rom hashes</key>
+	<string>Cleanup rom hashes</string>
+	<key>Clear shader cache</key>
+	<string>Clear shader cache</string>
+	<key>Controls Setup</key>
+	<string>Controls Setup</string>
+	<key>Dark (default)</key>
+	<string>Dark (default)</string>
+	<key>Database Actions</key>
+	<string>Database Actions</string>
+	<key>Debug Mode</key>
+	<string>Debug Mode</string>
+	<key>Default Value: %@</key>
+	<string>Default Value: %@</string>
+	<key>Delete artwork that can be downloaded</key>
+	<string>Delete artwork that can be downloaded</string>
+	<key>Delete useless image objects</key>
+	<string>Delete useless image objects</string>
+	<key>Disable aspect ratio correction in screenshots</key>
+	<string>Disable aspect ratio correction in screenshots</string>
+	<key>Download missing artwork…</key>
+	<string>Download missing artwork…</string>
+	<key>Draw button mask above image</key>
+	<string>Draw button mask above image</string>
+	<key>Europe</key>
+	<string>Europe</string>
+	<key>Game View Background color:</key>
+	<string>Game View Background color:</string>
+	<key>General</key>
+	<string>General</string>
+	<key>HUD Bar / Gameplay</key>
+	<string>HUD Bar / Gameplay</string>
+	<key>Japan</key>
+	<string>Japan</string>
+	<key>Library Window</key>
+	<string>Library Window</string>
+	<key>Light</key>
+	<string>Light</string>
+	<key>Log HID Events</key>
+	<string>Log HID Events</string>
+	<key>Log Keyboard Events</key>
+	<string>Log Keyboard Events</string>
+	<key>Manually choose system on import</key>
+	<string>Manually choose system on import</string>
+	<key>North America</key>
+	<string>North America</string>
+	<key>OpenVGDB</key>
+	<string>OpenVGDB</string>
+	<key>Other</key>
+	<string>Other</string>
+	<key>Perform Sanity Check on Database</key>
+	<string>Perform Sanity Check on Database</string>
+	<key>Range: %@ to %@</key>
+	<string>Range: %@ to %@</string>
+	<key>Region:</key>
+	<string>Region:</string>
+	<key>Remove duplicated roms</key>
+	<string>Remove duplicated roms</string>
+	<key>Remove untracked artwork files</key>
+	<string>Remove untracked artwork files</string>
+	<key>Reset main window size</key>
+	<string>Reset main window size</string>
+	<key>Reveal user shader folder</key>
+	<string>Reveal user shader folder</string>
+	<key>Run games using:</key>
+	<string>Run games using:</string>
+	<key>Select first field after setting the last</key>
+	<string>Select first field after setting the last</string>
+	<key>Set default save states directory</key>
+	<string>Set default save states directory</string>
+	<key>Setup Assistant has finished</key>
+	<string>Setup Assistant has finished</string>
+	<key>Shaders</key>
+	<string>Shaders</string>
+	<key>Show all special keys</key>
+	<string>Show all special keys</string>
+	<key>Show audio output device in menu</key>
+	<string>Show audio output device in menu</string>
+	<key>Show autosave in menu</key>
+	<string>Show autosave in menu</string>
+	<key>Show autosave states in save state category</key>
+	<string>Show autosave states in save state category</string>
+	<key>Show game titles instead of rom names</key>
+	<string>Show game titles instead of rom names</string>
+	<key>Show notifications during gameplay</key>
+	<string>Show notifications during gameplay</string>
+	<key>Show quicksave in menu</key>
+	<string>Show quicksave in menu</string>
+	<key>Show quicksave states in save state category</key>
+	<string>Show quicksave states in save state category</string>
+	<key>Sync games without artwork</key>
+	<string>Sync games without artwork</string>
+	<key>System</key>
+	<string>System</string>
+	<key>Take screenshots in native size</key>
+	<string>Take screenshots in native size</string>
+	<key>Threshold for analog controls bound to buttons:</key>
+	<string>Threshold for analog controls
+bound to buttons:</string>
+	<key>Toggle game scanner view</key>
+	<string>Toggle game scanner view</string>
+	<key>Unchecked</key>
+	<string>Unchecked</string>
+	<key>Update OpenVGDB</key>
+	<string>Update OpenVGDB</string>
+	<key>Use quicksave slots</key>
+	<string>Use quicksave slots</string>
+	<key>While performing this operation OpenEmu will be unresponsive.</key>
+	<string>While performing this operation OpenEmu will be unresponsive.</string>
+	<key>XPC</key>
+	<string>XPC</string>
+</dict>
+</plist>

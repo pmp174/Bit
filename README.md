@@ -11,6 +11,7 @@ This version of OpenEmu has been specifically patched to run natively on Apple S
 ### Key Modifications:
 - **Full ARM64 Suite:** Successfully ported and verified all **25 emulation cores** (Nestopia, BSNES, Mupen64Plus, Snes9x, DeSmuME, Genesis Plus GX, etc.) for native Apple Silicon compatibility.
 - **Modern Build Standards:** Updated all projects to `MACOSX_DEPLOYMENT_TARGET = 11.0` and resolved hundreds of narrowing conversion and linkage errors.
+- **Cross-Platform Cloud Sync:** Implemented Google Drive synchronization for save states and save games, allowing seamless progression across devices.
 - **C64 Support:** Integrated Commodore 64 system support directly into the app bundle.
 - **Permission Fixes:** Resolved the persistent "Input Monitoring" permission loop that affects many users on modern macOS versions.
 - **Flattened Architecture:** Converted all submodules into regular directories to create a standalone, portable repository.

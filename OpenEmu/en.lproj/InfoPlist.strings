@@ -1,12 +1,18 @@
-
-"Archived Game" = "Archived Game";
-
-"OpenEmu Core Plugin" = "OpenEmu Core Plugin";
-
-"OpenEmu Save State" = "OpenEmu Save State";
-
-"OpenEmu System Plugin" = "OpenEmu System Plugin";
-
-"OpenEmu Shader" = "OpenEmu Shader";
-
-"%@ Game" = "%@ Game";  // Used in OESystemPluginPostInstall to dynamically generate localized file type names
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%@ Game</key>
+	<string>%@ Game</string>
+	<key>Archived Game</key>
+	<string>Archived Game</string>
+	<key>OpenEmu Core Plugin</key>
+	<string>OpenEmu Core Plugin</string>
+	<key>OpenEmu Save State</key>
+	<string>OpenEmu Save State</string>
+	<key>OpenEmu Shader</key>
+	<string>OpenEmu Shader</string>
+	<key>OpenEmu System Plugin</key>
+	<string>OpenEmu System Plugin</string>
+</dict>
+</plist>
