@@ -1487,7 +1487,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/$PROJECT_NAME.oecoreplugin\"{,.dSYM}\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/\"\n";
+			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/Bit/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/$PROJECT_NAME.oecoreplugin\"{,.dSYM}\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/\"\n";
 		};
 		8230C7D010AFCB0600412F24 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1618,7 +1618,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				OTHER_CFLAGS = (
 					"-fPIC",
 					"-DNDEBUG",
@@ -1648,7 +1648,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				OTHER_CFLAGS = (
 					"-fPIC",
 					"-DNDEBUG",
@@ -1733,7 +1733,7 @@
 		822C1940101EA4B00034119F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = "Build & Install";
 				SKIP_INSTALL = YES;
 			};
@@ -1742,7 +1742,7 @@
 		822C1941101EA4B00034119F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = "Build & Install";
 				SKIP_INSTALL = YES;
 			};
@@ -1751,7 +1751,7 @@
 		8230C7D210AFCB0600412F24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = Distribution;
 				SKIP_INSTALL = YES;
 			};
@@ -1760,7 +1760,7 @@
 		8230C7D310AFCB0600412F24 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = Distribution;
 				SKIP_INSTALL = YES;
 			};

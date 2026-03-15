@@ -36,14 +36,14 @@ extension URL {
     static var oeApplicationSupportDirectory: URL {
 #if swift(>=5.7)
         if #available(macOS 13.0, *) {
-            return URL.applicationSupportDirectory.appending(path: "OpenEmu", directoryHint: .isDirectory)
+            return URL.applicationSupportDirectory.appending(path: "Bit", directoryHint: .isDirectory)
         } else {
             return FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-                .appendingPathComponent("OpenEmu", isDirectory: true)
+                .appendingPathComponent("Bit", isDirectory: true)
         }
 #else
         return FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-                .appendingPathComponent("OpenEmu", isDirectory: true)
+                .appendingPathComponent("Bit", isDirectory: true)
 #endif
     }
 }

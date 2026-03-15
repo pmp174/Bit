@@ -177,7 +177,7 @@ public class OESystemPlugin: OEPlugin {
         let bundleURL = bundle.bundleURL
         let fm = FileManager.default
         let systemsDirectory = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-            .appendingPathComponent("OpenEmu", isDirectory: true)
+            .appendingPathComponent("Bit", isDirectory: true)
             .appendingPathComponent(Self.pluginFolder, isDirectory: true)
         if bundleURL.isSubpath(of: systemsDirectory) {
             return true

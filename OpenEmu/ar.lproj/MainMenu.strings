@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>About Bit</key>
+	<string>عن Bit</string>
 	<key>About OpenEmu</key>
 	<string>عن OpenEmu</string>
 	<key>Always Hide HUD</key>
@@ -52,6 +54,8 @@
 	<string>إحضار المعلومات</string>
 	<key>Help</key>
 	<string>مساعدة</string>
+	<key>Hide Bit</key>
+	<string>إخفاء Bit</string>
 	<key>Hide OpenEmu</key>
 	<string>إخفاء OpenEmu</string>
 	<key>Hide Others</key>
@@ -90,6 +94,8 @@
 	<string>التفضيلات…</string>
 	<key>Print…</key>
 	<string>طباعة…</string>
+	<key>Quit Bit</key>
+	<string>الخروج من Bit</string>
 	<key>Quit OpenEmu</key>
 	<string>الخروج من OpenEmu</string>
 	<key>Redo</key>

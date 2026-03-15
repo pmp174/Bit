@@ -80,7 +80,7 @@ class CollectionViewItem: NSCollectionViewItem {
             guard let layer = view.layer else { return }
             
             let sel = CALayer()
-            sel.borderColor = NSColor.selectedContentBackgroundColor.cgColor
+            sel.borderColor = OEAppearance.accentColor.cgColor
             sel.borderWidth = 4
             sel.cornerRadius = 3
             

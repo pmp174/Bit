@@ -1931,7 +1931,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/$PROJECT_NAME.oecoreplugin\"\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/\"\n";
+			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/Bit/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/$PROJECT_NAME.oecoreplugin\"\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2284,7 +2284,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = Nestopia;
 				SKIP_INSTALL = YES;
@@ -2306,7 +2306,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = Nestopia;
 				SKIP_INSTALL = YES;
@@ -2369,7 +2369,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = Distribution;
 				SKIP_INSTALL = YES;
 			};
@@ -2379,7 +2379,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = Distribution;
 				SKIP_INSTALL = YES;
 			};
@@ -2390,7 +2390,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = "Build & Install";
 				SKIP_INSTALL = YES;
 			};
@@ -2401,7 +2401,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = "Build & Install";
 				SKIP_INSTALL = YES;
 			};

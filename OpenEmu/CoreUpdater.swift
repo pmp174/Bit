@@ -51,7 +51,7 @@ final class CoreUpdater: NSObject {
     // Backup directory
     private var coresDirectory: URL {
         let paths = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
-        let appSupportDir = URL(fileURLWithPath: paths.first!).appendingPathComponent("OpenEmu")
+        let appSupportDir = URL(fileURLWithPath: paths.first!).appendingPathComponent("Bit")
         return appSupportDir.appendingPathComponent("Cores")
     }
     
@@ -280,7 +280,7 @@ final class CoreUpdater: NSObject {
             }
             
             let coreName = download.name
-            let message = String(format: NSLocalizedString("OpenEmu uses 'Cores' to emulate games. You need the %@ Core to play %@", comment: ""), coreName, game.displayName)
+            let message = String(format: NSLocalizedString("Bit uses 'Cores' to emulate games. You need the %@ Core to play %@", comment: ""), coreName, game.displayName)
             installCore(with: download, message: message, completionHandler: handler)
         }
         else {

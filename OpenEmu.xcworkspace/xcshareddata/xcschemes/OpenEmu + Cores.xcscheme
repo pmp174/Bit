@@ -168,38 +168,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3D2091111183B8E900BEAA42"
-               BuildableName = "Build &amp; Install Mupen64Plus"
-               BlueprintName = "Build &amp; Install Mupen64Plus"
-               ReferencedContainer = "container:Mupen64Plus/Mupen64Plus.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "82D815AB0F1D882B00EF8CF5"
                BuildableName = "Build &amp; Install O2EM"
                BlueprintName = "Build &amp; Install O2EM"
                ReferencedContainer = "container:O2EM/O2EM.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8CBB42FF178C399D00FA270D"
-               BuildableName = "Build &amp; Install PPSSPP"
-               BlueprintName = "Build &amp; Install PPSSPP"
-               ReferencedContainer = "container:PPSSPP/PPSSPP.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -252,20 +224,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "82B9195310150EA2007BD6DB"
-               BuildableName = "Build &amp; Install BSNES"
-               BlueprintName = "Build &amp; Install BSNES"
-               ReferencedContainer = "container:BSNES/BSNES.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "82D815AB0F1D882B00EF8CF5"
                BuildableName = "Build &amp; Install JollyCV"
                BlueprintName = "Build &amp; Install JollyCV"
@@ -280,22 +238,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "82D815AB0F1D882B00EF8CF5"
-               BuildableName = "Build &amp; Install VirtualC64"
-               BlueprintName = "Build &amp; Install VirtualC64"
-               ReferencedContainer = "container:VirtualC64-Core/VirtualC64.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-               BuildableName = "OpenEmu.app"
+               BuildableName = "Bit.app"
                BlueprintName = "OpenEmu"
                ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
             </BuildableReference>
@@ -311,7 +255,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-            BuildableName = "OpenEmu.app"
+            BuildableName = "Bit.app"
             BlueprintName = "OpenEmu"
             ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
          </BuildableReference>
@@ -344,7 +288,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-            BuildableName = "OpenEmu.app"
+            BuildableName = "Bit.app"
             BlueprintName = "OpenEmu"
             ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
          </BuildableReference>
@@ -361,7 +305,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-            BuildableName = "OpenEmu.app"
+            BuildableName = "Bit.app"
             BlueprintName = "OpenEmu"
             ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
          </BuildableReference>

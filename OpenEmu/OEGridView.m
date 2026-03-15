@@ -29,7 +29,7 @@
 #import "OEGridGameCell.h"
 #import "OECoverGridDataSourceItem.h"
 
-#import "OpenEmuARM64-Swift.h"
+#import "Bit-Swift.h"
 
 #pragma mark - ImageKit Private Headers
 #import "IKImageBrowserView.h"
@@ -708,7 +708,7 @@ NSString *const OEImageBrowserGroupSubtitleKey = @"OEImageBrowserGroupSubtitleKe
     if([self dropOperation] != IKImageBrowserDropBefore) return;
 
     NSUInteger scaleFactor = [renderer scaleFactor];
-    NSColor *dragColor = [[NSColor controlAccentColor] colorUsingColorSpace:self.window.colorSpace];
+    NSColor *dragColor = [OEAppearanceHelper.accentColor colorUsingColorSpace:self.window.colorSpace];
     [renderer setColorRed:dragColor.redComponent Green:dragColor.greenComponent Blue:dragColor.blueComponent Alpha:dragColor.alphaComponent];
     
     NSRect dragRect = NSIntegralRect([[self enclosingScrollView] documentVisibleRect]);

@@ -183,10 +183,10 @@ final class SetupAssistant: NSViewController {
         }
         
         let alert = OEAlert()
-        alert.messageText = NSLocalizedString("OpenEmu could not download required data from the internet", comment: "Setup Assistant")
+        alert.messageText = NSLocalizedString("Bit could not download required data from the internet", comment: "Setup Assistant")
         alert.informativeText = String(format: NSLocalizedString("An error occurred while preparing the setup assistant. (%@) Make sure you are connected to the internet and try again.", comment: "Setup Assistant"), error!.localizedDescription)
         alert.defaultButtonTitle = NSLocalizedString("Retry", comment: "")
-        alert.alternateButtonTitle = NSLocalizedString("Quit OpenEmu", comment: "")
+        alert.alternateButtonTitle = NSLocalizedString("Quit Bit", comment: "")
         alert.beginSheetModal(for: view.window!) { result in
             if result == .alertSecondButtonReturn {
                 NSApp.terminate(nil)

@@ -2,9 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>About Bit</key>
+	<string>About Bit</string>
+	<key>Hide Bit</key>
+	<string>Hide Bit</string>
 	<key>Minimize</key>
 	<string>Minimise</string>
 	<key>Organize Library…</key>
 	<string>Organise Library…</string>
+	<key>Quit Bit</key>
+	<string>Quit Bit</string>
 </dict>
 </plist>

@@ -160,12 +160,12 @@ final class PreferencesTabViewController: NSTabViewController {
         
         // The collection of preference panes to add.
         var preferencePanes: [PreferencePane] = [
+            PrefGeneralController(),
             PrefLibraryController(),
             PrefGameplayController(),
             PrefControlsController(),
             PrefCoresController(),
             PrefBiosController(),
-            PrefCloudSyncController()
         ]
         
         // Check if the debug pane should be included.

@@ -2366,7 +2366,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/$PROJECT_NAME.oecoreplugin\"{,.dSYM}\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/\"\n";
+			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/Bit/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/$PROJECT_NAME.oecoreplugin\"{,.dSYM}\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2458,7 +2458,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/bsnes\"";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				MARKETING_VERSION = 115;
 				OTHER_CFLAGS = (
 					"-DGB_INTERNAL",
@@ -2485,7 +2485,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/bsnes\"";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				MARKETING_VERSION = 115;
 				OTHER_CFLAGS = (
 					"-DGB_INTERNAL",
@@ -2598,7 +2598,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = Distribution;
 				SKIP_INSTALL = YES;
 			};
@@ -2609,7 +2609,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = Distribution;
 				SKIP_INSTALL = YES;
 			};
@@ -2620,7 +2620,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = "Build & Install";
 				SKIP_INSTALL = YES;
 			};
@@ -2631,7 +2631,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/OpenEmu/Cores\"";
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				PRODUCT_NAME = "Build & Install";
 				SKIP_INSTALL = YES;
 			};

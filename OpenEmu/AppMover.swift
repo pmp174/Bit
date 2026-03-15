@@ -74,7 +74,7 @@ public enum AppMover {
         
         let alert = NSAlert()
         alert.messageText = NSLocalizedString("MOVE_ALERT_TITLE", value: "Move to Applications folder", comment: "")
-        alert.informativeText = NSLocalizedString("MOVE_ALERT_INFO_TEXT", value: "OpenEmu must move to your Applications folder in order to work properly.", comment: "")
+        alert.informativeText = NSLocalizedString("MOVE_ALERT_INFO_TEXT", value: "Bit must move to your Applications folder in order to work properly.", comment: "")
         if needAuth {
             alert.informativeText.append(" " + NSLocalizedString("MOVE_ALERT_NEEDS_AUTH", value: "You need to authenticate with an administrator name and password to complete this step.", comment: ""))
         }

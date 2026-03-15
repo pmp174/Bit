@@ -65,9 +65,9 @@ class CollectionView: NSCollectionView {
     private var isKey: Bool = false
     private var selectionColor: NSColor {
         if isKey {
-            return .selectedContentBackgroundColor
+            return OEAppearance.accentColor
         }
-        return .unemphasizedSelectedContentBackgroundColor
+        return OEAppearance.accentColor.withAlphaComponent(0.4)
     }
     
     @objc func resignKeyWindow() {

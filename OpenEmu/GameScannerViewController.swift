@@ -657,7 +657,7 @@ extension GameScannerViewController: ROMImporterDelegate {
         
         // Add instructions to fix permission errors
         if itemsDiscDescriptorNoPermissionReadFile != nil {
-            itemsDiscDescriptorNoPermissionReadFile! += "\n\n"+NSLocalizedString("Choose Apple menu  > System Preferences, click Security & Privacy then select the Privacy tab. Remove the existing Files and Folders permission for OpenEmu, if exists, and instead grant Full Disk Access.", comment: "")
+            itemsDiscDescriptorNoPermissionReadFile! += "\n\n"+NSLocalizedString("Choose Apple menu  > System Preferences, click Security & Privacy then select the Privacy tab. Remove the existing Files and Folders permission for Bit, if exists, and instead grant Full Disk Access.", comment: "")
         }
 
         // Concatenate messages

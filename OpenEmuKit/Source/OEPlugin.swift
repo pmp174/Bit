@@ -213,7 +213,7 @@ public class OEPlugin: NSObject {
             #else
             appSupportDir = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
             #endif
-            let pluginsDir = appSupportDir.appendingPathComponent("OpenEmu", isDirectory: true)
+            let pluginsDir = appSupportDir.appendingPathComponent("Bit", isDirectory: true)
                                           .appendingPathComponent(Self.pluginFolder, isDirectory: true)
             let pluginURLs = try? fm.contentsOfDirectory(at: pluginsDir, includingPropertiesForKeys: [])
             for bundleURL in pluginURLs ?? [] where bundleURL.pathExtension == Self.pluginExtension {

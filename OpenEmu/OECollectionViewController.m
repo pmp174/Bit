@@ -34,7 +34,7 @@
 
 #import "OEGridGameCell.h"
 
-#import "OpenEmuARM64-Swift.h"
+#import "Bit-Swift.h"
 
 #pragma mark - Public variables
 

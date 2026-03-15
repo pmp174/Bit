@@ -48,7 +48,7 @@ extension OEAlert {
         
         let alert = OEAlert()
         alert.messageText = NSLocalizedString("Are you sure you want to quit the application?", comment: "")
-        alert.informativeText = NSLocalizedString("OpenEmu will save and quit all games that are currently running.", comment: "")
+        alert.informativeText = NSLocalizedString("Bit will save and quit all games that are currently running.", comment: "")
         alert.defaultButtonTitle = NSLocalizedString("Quit", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
         
@@ -91,7 +91,7 @@ extension OEAlert {
     final class func deleteSaveState(name: String) -> OEAlert {
         
         let alert = OEAlert()
-        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete the save state called '%@' from your OpenEmu library?", comment: ""), name)
+        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete the save state called '%@' from your Bit library?", comment: ""), name)
         alert.defaultButtonTitle = NSLocalizedString("Delete Save State", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
         alert.showSuppressionButton(forUDKey: OEDeleteSaveStateAlertSuppressionKey)
@@ -103,7 +103,7 @@ extension OEAlert {
     final class func deleteSaveStates(count: Int) -> OEAlert {
         
         let alert = OEAlert()
-        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete %ld save states from your OpenEmu library?", comment: ""), count)
+        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete %ld save states from your Bit library?", comment: ""), count)
         alert.defaultButtonTitle = NSLocalizedString("Delete Save States", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
         alert.showSuppressionButton(forUDKey: OEDeleteSaveStateAlertSuppressionKey)
@@ -115,7 +115,7 @@ extension OEAlert {
     final class func deleteScreenshot(name: String) -> OEAlert {
         
         let alert = OEAlert()
-        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete the screenshot called '%@' from your OpenEmu library?", comment: ""), name)
+        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete the screenshot called '%@' from your Bit library?", comment: ""), name)
         alert.defaultButtonTitle = NSLocalizedString("Delete Screenshot", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
         alert.showSuppressionButton(forUDKey: OEDeleteScreenshotAlertSuppressionKey)
@@ -138,7 +138,7 @@ extension OEAlert {
     final class func deleteScreenshots(count: Int) -> OEAlert {
         
         let alert = OEAlert()
-        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete %ld screenshots from your OpenEmu library?", comment: ""), count)
+        alert.messageText = .localizedStringWithFormat(NSLocalizedString("Are you sure you want to delete %ld screenshots from your Bit library?", comment: ""), count)
         alert.defaultButtonTitle = NSLocalizedString("Delete Screenshots", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
         alert.showSuppressionButton(forUDKey: OEDeleteScreenshotAlertSuppressionKey)
@@ -162,7 +162,7 @@ extension OEAlert {
     final class func removeGamesFromLibrary(multipleGames: Bool) -> OEAlert {
         
         let alert = OEAlert()
-        alert.messageText = multipleGames ? NSLocalizedString("Are you sure you want to delete the selected games from your OpenEmu library?", comment: "") : NSLocalizedString("Are you sure you want to delete the selected game from your OpenEmu library?", comment: "")
+        alert.messageText = multipleGames ? NSLocalizedString("Are you sure you want to delete the selected games from your Bit library?", comment: "") : NSLocalizedString("Are you sure you want to delete the selected game from your Bit library?", comment: "")
         alert.defaultButtonTitle = multipleGames ? NSLocalizedString("Delete Games", comment: "") : NSLocalizedString("Delete Game", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
         alert.showSuppressionButton(forUDKey: OERemoveGameFromLibraryAlertSuppressionKey)

@@ -202,7 +202,7 @@ extension OELibraryDatabase {
     
     func downloadMissingArtwork() {
         let alert = OEAlert()
-        alert.messageText = NSLocalizedString("While performing this operation OpenEmu will be unresponsive.", tableName: "Debug", comment: "")
+        alert.messageText = NSLocalizedString("While performing this operation Bit will be unresponsive.", tableName: "Debug", comment: "")
         alert.defaultButtonTitle = NSLocalizedString("Continue", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
         if alert.runModal() != .alertFirstButtonReturn {

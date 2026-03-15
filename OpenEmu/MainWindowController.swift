@@ -161,6 +161,8 @@ final class MainWindowController: NSWindowController {
         }
     }
     
+    private var windowTintOverlay: NSView?
+    
     private func setUpWindow() {
         window?.delegate = self
         NSLog("DEBUG: Liquid Glass Setup - Window Transparency Enabled")
@@ -182,7 +184,34 @@ final class MainWindowController: NSWindowController {
             contentView.addSubview(visualEffectView, positioned: .below, relativeTo: nil)
         }
         
+        updateWindowTint()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(windowTintColorDidChange), name: .OETintColorDidChange, object: nil)
+        
         assert(window?.identifier == .mainWindow, "Main library window identifier does not match between nib and code")
+    }
+    
+    @objc private func windowTintColorDidChange() {
+        updateWindowTint()
+    }
+    
+    private func updateWindowTint() {
+        if let color = OEAppearance.tintColor.color {
+            // Apply tint overlay to the placeholder (content area) rather than window background
+            // to prevent the tint from bleeding into the toolbar text when the window is inactive.
+            if windowTintOverlay == nil {
+                let overlay = NSView()
+                overlay.wantsLayer = true
+                overlay.autoresizingMask = [.width, .height]
+                placeholderView.addSubview(overlay, positioned: .below, relativeTo: nil)
+                overlay.frame = placeholderView.bounds
+                windowTintOverlay = overlay
+            }
+            windowTintOverlay?.layer?.backgroundColor = color.withAlphaComponent(0.15).cgColor
+            windowTintOverlay?.isHidden = false
+        } else {
+            windowTintOverlay?.isHidden = true
+        }
     }
     
     private func setUpCurrentContentController() {

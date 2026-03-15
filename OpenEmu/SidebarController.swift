@@ -104,17 +104,45 @@ final class SidebarController: NSViewController {
             },
         ]
         
-        // Liquid Glass Aesthetics
+        // Standard macOS sidebar appearance
         view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.clear.cgColor
-        sidebarView.backgroundColor = .clear
-        sidebarView.enclosingScrollView?.drawsBackground = false
         
-        // Retro Gradient Tint (Cyber Blue)
-        let gradientView = SidebarGradientView(frame: view.bounds)
-        gradientView.autoresizingMask = [.width, .height]
-        // Insert at index 0 to be behind the outline view but visible if outline view is clear
-        view.addSubview(gradientView, positioned: .below, relativeTo: nil)
+        // Apply tint overlay if the user has selected a colored tint
+        updateTintOverlay()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(tintColorDidChange), name: .OETintColorDidChange, object: nil)
+    }
+    
+    private var tintOverlayView: SidebarTintOverlayView?
+    
+    @objc private func tintColorDidChange() {
+        updateTintOverlay()
+        // Refresh row views so selection highlight picks up the new tint
+        sidebarView.enumerateAvailableRowViews { rowView, _ in
+            if let tinted = rowView as? TintedRowView {
+                tinted.tintColor = OEAppearance.tintColor.color
+            }
+        }
+    }
+    
+    private func updateTintOverlay() {
+        let tint = OEAppearance.tintColor
+        if let color = tint.color {
+            if tintOverlayView == nil {
+                let overlay = SidebarTintOverlayView(frame: view.bounds)
+                overlay.autoresizingMask = [.width, .height]
+                view.addSubview(overlay, positioned: .below, relativeTo: nil)
+                tintOverlayView = overlay
+            }
+            tintOverlayView?.tintColor = color
+            tintOverlayView?.isHidden = false
+            sidebarView.backgroundColor = .clear
+            sidebarView.enclosingScrollView?.drawsBackground = false
+        } else {
+            tintOverlayView?.isHidden = true
+            sidebarView.backgroundColor = .clear
+            sidebarView.enclosingScrollView?.drawsBackground = false
+        }
     }
     
     deinit {
@@ -355,6 +383,19 @@ extension SidebarController: NSOutlineViewDelegate {
             lastSidebarSelection = id
         }
         NotificationCenter.default.post(name: .OESidebarSelectionDidChange, object: self, userInfo: nil)
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
+        let rowView = TintedRowView()
+        rowView.tintColor = OEAppearance.tintColor.color
+        return rowView
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, tintConfigurationForItem item: Any) -> NSTintConfiguration? {
+        if let color = OEAppearance.tintColor.color {
+            return NSTintConfiguration(fixedColor: color)
+        }
+        return .default
     }
     
     func outlineView(_ outlineView: NSOutlineView, shouldCollapseItem item: Any) -> Bool {
@@ -690,25 +731,42 @@ extension Key {
     static let lastSidebarSelection: Key = "lastSidebarSelection"
 }
 
-final class SidebarGradientView: NSView {
+extension NSNotification.Name {
+    static let OETintColorDidChange = NSNotification.Name("OETintColorDidChange")
+}
+
+final class SidebarTintOverlayView: NSView {
+    
+    var tintColor: NSColor = .clear {
+        didSet {
+            layer?.backgroundColor = tintColor.withAlphaComponent(0.55).cgColor
+        }
+    }
+    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         wantsLayer = true
+        layer?.backgroundColor = NSColor.clear.cgColor
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+final class TintedRowView: NSTableRowView {
     
-    override func makeBackingLayer() -> CALayer {
-        let layer = CAGradientLayer()
-        // Cyber Blue Palette: Blue -> Purple
-        layer.colors = [
-            NSColor.systemBlue.withAlphaComponent(0.20).cgColor,
-            NSColor.systemPurple.withAlphaComponent(0.20).cgColor
-        ]
-        layer.startPoint = CGPoint(x: 0, y: 0)
-        layer.endPoint = CGPoint(x: 0, y: 1) // Top to Bottom
-        return layer
+    var tintColor: NSColor? {
+        didSet { needsDisplay = true }
+    }
+    
+    override func drawSelection(in dirtyRect: NSRect) {
+        guard let color = tintColor else {
+            super.drawSelection(in: dirtyRect)
+            return
+        }
+        color.withAlphaComponent(0.3).setFill()
+        let path = NSBezierPath(roundedRect: bounds.insetBy(dx: 4, dy: 1), xRadius: 6, yRadius: 6)
+        path.fill()
     }
 }

@@ -29,7 +29,7 @@
 
 #import "OECoverGridDataSourceItem.h"
 
-#import "OpenEmuARM64-Swift.h"
+#import "Bit-Swift.h"
 
 static const CGFloat OEGridCellTitleHeight                      = 16.0;        // Height of the title view
 static const CGFloat OEGridCellImageTitleSpacing                = 17.0;        // Space between the image and the title
@@ -295,8 +295,8 @@ static NSDictionary *disabledActions = nil;
             selectionLayer.actions = disabledActions;
             selectionLayer.frame = selectionFrame;
             
-            NSColor *selectionColor = NSColor.selectedContentBackgroundColor;
-            NSColor *inactiveSelectionColor = NSColor.unemphasizedSelectedContentBackgroundColor;
+            NSColor *selectionColor = OEAppearanceHelper.accentColor;
+            NSColor *inactiveSelectionColor = [selectionColor colorWithAlphaComponent:0.4];
             
             selectionLayer.borderWidth = 4.0;
             selectionLayer.borderColor = _lastWindowActive ? selectionColor.CGColor : inactiveSelectionColor.CGColor;

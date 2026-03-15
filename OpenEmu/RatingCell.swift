@@ -29,7 +29,7 @@ final class RatingCell: NSCell {
     
     override func draw(withFrame cellFrame: NSRect, in controlView: NSView) {
         
-        let color: NSColor = isHighlighted ? .white : .controlAccentColor
+        let color: NSColor = isHighlighted ? .white : OEAppearance.accentColor
         let image = NSImage(named: "list_rating")?.withTintColor(color)
         let rating = objectValue as? Int ?? 0
         

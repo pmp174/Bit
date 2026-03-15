@@ -146,7 +146,7 @@ class AppDelegate: NSObject {
             OEForcePopoutGameWindowKey: true,
             OEPopoutGameWindowIntegerScalingOnlyKey: true,
             OEGameLayerNotificationView.OEShowNotificationsKey : true,
-            OEAppearance.Application.key: OEAppearance.Application.dark.rawValue,
+            OEAppearance.Application.key: OEAppearance.Application.system.rawValue,
             OEAppearance.HUDBar.key: OEAppearance.HUDBar.vibrant.rawValue,
             OEAppearance.ControlsPrefs.key: OEAppearance.ControlsPrefs.wood.rawValue,
             OEGameCoreManagerModePreferenceKey: NSStringFromClass(OEXPCGameCoreManager.self),
@@ -234,7 +234,7 @@ class AppDelegate: NSObject {
                         
                     } catch {
                         
-                        DLog("Your library can't be opened with this version of OpenEmu.")
+                        DLog("Your library can't be opened with this version of Bit.")
                         DLog("\(error)")
                         
                         DispatchQueue.main.async {
@@ -242,7 +242,7 @@ class AppDelegate: NSObject {
                             if (error as NSError).code == 0 { // Foundation._GenericObjCError.nilError
                                 let alert = NSAlert()
                                 alert.alertStyle = .critical
-                                alert.messageText = NSLocalizedString("Your library can’t be opened with this version of OpenEmu.", comment: "")
+                                alert.messageText = NSLocalizedString("Your library can’t be opened with this version of Bit.", comment: "")
                                 alert.runModal()
                             } else {
                                 NSAlert(error: error).runModal()
@@ -266,8 +266,8 @@ class AppDelegate: NSObject {
         
         // Set up alert with "Quit", "Select", and "Create".
         let alert = OEAlert()
-        alert.messageText = NSLocalizedString("Choose OpenEmu Library", comment: "")
-        alert.informativeText = NSLocalizedString("OpenEmu needs a library to continue. You may choose an existing OpenEmu library or create a new one", comment: "")
+        alert.messageText = NSLocalizedString("Choose Bit Library", comment: "")
+        alert.informativeText = NSLocalizedString("Bit needs a library to continue. You may choose an existing Bit library or create a new one", comment: "")
         alert.defaultButtonTitle = NSLocalizedString("Choose Library…", comment: "")
         alert.alternateButtonTitle = NSLocalizedString("Create Library…", comment: "")
         alert.otherButtonTitle = NSLocalizedString("Quit", comment: "")
@@ -305,7 +305,7 @@ class AppDelegate: NSObject {
             
             let savePanel = NSSavePanel()
             
-            savePanel.nameFieldStringValue = "OpenEmu Library"
+            savePanel.nameFieldStringValue = "Bit Library"
             
             if savePanel.runModal() == .OK {
                 
@@ -558,7 +558,7 @@ class AppDelegate: NSObject {
     func didRepairBindings(_ notif: NSNotification!) {
         let alert = OEAlert()
         alert.messageText = NSLocalizedString("An issue was detected with one of your controllers.", comment:"Headline for bindings repaired alert")
-        alert.informativeText = NSLocalizedString("The button profile for one of your controllers does not match the profile detected the last time it was connected to OpenEmu. Some of the controls associated to the affected controller were reset.\n\nYou can go to the Controls preferences to check which associations were affected.", comment:"Message for bindings repaired alert")
+        alert.informativeText = NSLocalizedString("The button profile for one of your controllers does not match the profile detected the last time it was connected to Bit. Some of the controls associated to the affected controller were reset.\n\nYou can go to the Controls preferences to check which associations were affected.", comment:"Message for bindings repaired alert")
         alert.defaultButtonTitle = NSLocalizedString("OK", comment:"")
         alert.runModal()
     }
@@ -792,9 +792,9 @@ extension AppDelegate: NSMenuDelegate {
         let metalDevices = MTLCopyAllDevices()
         if metalDevices.count == 0 {
             let metalAlert = NSAlert()
-            metalAlert.messageText = NSLocalizedString("Your Mac is too old for this version of OpenEmu", comment: "Message for the alert which appears when no Metal-enabled GPUs are detected")
-            metalAlert.informativeText = NSLocalizedString("Since version 2.1, OpenEmu requires a GPU which supports Metal. Metal is available on all Macs that support macOS 10.14 or later.\n\nAs OpenEmu does not work with your current hardware/software configuration, it will now close.", comment: "Informative text for the alert which appears when no Metal-enabled GPUs are detected")
-            metalAlert.addButton(withTitle: NSLocalizedString("Quit OpenEmu", comment: "Button title for the alert which appears when no Metal-enabled GPUs are detected"))
+            metalAlert.messageText = NSLocalizedString("Your Mac is too old for this version of Bit", comment: "Message for the alert which appears when no Metal-enabled GPUs are detected")
+            metalAlert.informativeText = NSLocalizedString("Since version 2.1, Bit requires a GPU which supports Metal. Metal is available on all Macs that support macOS 10.14 or later.\n\nAs Bit does not work with your current hardware/software configuration, it will now close.", comment: "Informative text for the alert which appears when no Metal-enabled GPUs are detected")
+            metalAlert.addButton(withTitle: NSLocalizedString("Quit Bit", comment: "Button title for the alert which appears when no Metal-enabled GPUs are detected"))
             metalAlert.runModal()
             NSApp.terminate(nil)
         }

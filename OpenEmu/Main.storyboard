@@ -54,7 +54,7 @@
                                 <connections>
                                     <binding destination="Slx-nK-pNK" name="displayPatternValue1" keyPath="appVersion" id="NHd-G1-uJw">
                                         <dictionary key="options">
-                                            <string key="NSDisplayPattern">OpenEmu v%{value1}@</string>
+                                            <string key="NSDisplayPattern">Bit v%{value1}@</string>
                                         </dictionary>
                                     </binding>
                                 </connections>
@@ -157,10 +157,10 @@
                 <application id="INy-Cz-wMr" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="jZB-nW-7Ql">
                         <items>
-                            <menuItem title="OpenEmu" id="975">
-                                <menu key="submenu" title="OpenEmu" systemMenu="apple" id="1013">
+                            <menuItem title="Bit" id="975">
+                                <menu key="submenu" title="Bit" systemMenu="apple" id="1013">
                                     <items>
-                                        <menuItem title="About OpenEmu" id="1017">
+                                        <menuItem title="About Bit" id="1017">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="localizeTitle" value="YES"/>
@@ -210,7 +210,7 @@
                                         <menuItem isSeparatorItem="YES" id="1021">
                                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                         </menuItem>
-                                        <menuItem title="Hide OpenEmu" keyEquivalent="h" id="1018">
+                                        <menuItem title="Hide Bit" keyEquivalent="h" id="1018">
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="localizeTitle" value="YES"/>
                                             </userDefinedRuntimeAttributes>
@@ -238,7 +238,7 @@
                                         <menuItem isSeparatorItem="YES" id="1025">
                                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                         </menuItem>
-                                        <menuItem title="Quit OpenEmu" keyEquivalent="q" id="1020">
+                                        <menuItem title="Quit Bit" keyEquivalent="q" id="1020">
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="localizeTitle" value="YES"/>
                                             </userDefinedRuntimeAttributes>
@@ -831,7 +831,7 @@ DQ
                                         <menuItem isSeparatorItem="YES" id="1030">
                                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                         </menuItem>
-                                        <menuItem title="OpenEmu" tag="501" keyEquivalent="1" id="1029">
+                                        <menuItem title="Bit" tag="501" keyEquivalent="1" id="1029">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
                                                 <action selector="showOpenEmuWindow:" target="-1" id="1158"/>
@@ -889,7 +889,7 @@ DQ
                                                 <action selector="showOEReleaseNotes:" target="-1" id="ZcG-EE-YQ0"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="OpenEmu Web Site" id="ahk-gp-EN3">
+                                        <menuItem title="Bit Web Site" id="ahk-gp-EN3">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="localizeTitle" value="YES"/>

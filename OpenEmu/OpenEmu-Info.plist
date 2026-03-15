@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleIconFile</key>
-	<string>OpenEmu</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -36,7 +34,7 @@
 				<string>savestate</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>OpenEmuARM64 Save State</string>
+			<string>Bit Save State</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
@@ -60,7 +58,7 @@
 			<key>CFBundleTypeIconSystemGenerated</key>
 			<integer>0</integer>
 			<key>CFBundleTypeName</key>
-			<string>OpenEmuARM64 Core Plugin</string>
+			<string>Bit Core Plugin</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
@@ -80,7 +78,7 @@
 			<key>CFBundleTypeIconSystemGenerated</key>
 			<integer>0</integer>
 			<key>CFBundleTypeName</key>
-			<string>OpenEmuARM64 System Plugin</string>
+			<string>Bit System Plugin</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
@@ -100,7 +98,7 @@
 			<key>CFBundleTypeIconSystemGenerated</key>
 			<integer>0</integer>
 			<key>CFBundleTypeName</key>
-			<string>OpenEmuARM64 Shader</string>
+			<string>Bit Shader</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
@@ -111,22 +109,33 @@
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIconFile</key>
+	<string>Bit App Icon</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>Bit</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.openemu.OpenEmu</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.openemu.OpenEmu</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.games</string>
-	<key>NSPrefersDisplaySafeAreaCompatibilityMode</key>
-	<false/>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSAccentColorName</key>
@@ -138,8 +147,12 @@
 	</dict>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2009–2023 OpenEmu Team. All rights reserved.</string>
+	<key>NSInputMonitoringUsageDescription</key>
+	<string>Bit requires input monitoring to capture keyboard and controller events while games are running.</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSPrefersDisplaySafeAreaCompatibilityMode</key>
+	<false/>
 	<key>NSPrincipalClass</key>
 	<string>OEApplication</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
@@ -147,7 +160,7 @@
 	<key>OEBuildVersion</key>
 	<string></string>
 	<key>OEBundlePath</key>
-	<string>~/Library/Application Support/OpenEmuARM64/Cores/</string>
+	<string>~/Library/Application Support/Bit/Cores/</string>
 	<key>OECoreListURL</key>
 	<string>https://raw.githubusercontent.com/bazley82/OpenEmuARM64/master/oecores.xml</string>
 	<key>OELongBuildVersion</key>
@@ -168,7 +181,7 @@
 				<string>com.apple.package</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>OpenEmuARM64 Save State</string>
+			<string>Bit Save State</string>
 			<key>UTTypeIdentifier</key>
 			<string>org.openemu.savestate</string>
 			<key>UTTypeTagSpecification</key>
@@ -180,18 +193,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.openemu.OpenEmu</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.openemu.OpenEmu</string>
-			</array>
-		</dict>
-	</array>
-	<key>NSInputMonitoringUsageDescription</key>
-	<string>OpenEmuARM64 requires input monitoring to capture keyboard and controller events while games are running.</string>
 </dict>
 </plist>

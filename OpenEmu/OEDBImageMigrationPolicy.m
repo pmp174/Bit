@@ -25,7 +25,7 @@
  */
 
 #import "OEDBImageMigrationPolicy.h"
-#import "OpenEmuARM64-Swift.h"
+#import "Bit-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

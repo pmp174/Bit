@@ -48,8 +48,8 @@ final class PrefDebugController: NSViewController {
             Option(label: "Background Thread", value: OEThreadGameCoreManager.className()),
         ]),
         Popover(key: OEAppearance.Application.key, label: "Appearance:", action: #selector(changeAppAppearance(_:)), options: [
-            Option(label: "System", value: OEAppearance.Application.system.rawValue),
-            Option(label: "Dark (default)", value: OEAppearance.Application.dark.rawValue),
+            Option(label: "System (default)", value: OEAppearance.Application.system.rawValue),
+            Option(label: "Dark", value: OEAppearance.Application.dark.rawValue),
             Option(label: "Light", value: OEAppearance.Application.light.rawValue),
         ]),
         

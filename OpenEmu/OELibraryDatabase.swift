@@ -45,7 +45,7 @@ final class OELibraryDatabase: NSObject {
         var errorDescription: String? {
             switch self {
             case .folderNotFound:
-                return NSLocalizedString("The OpenEmu Library could not be found.", comment: "")
+                return NSLocalizedString("The Bit Library could not be found.", comment: "")
             }
         }
     }

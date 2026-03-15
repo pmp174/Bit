@@ -26,7 +26,7 @@
 
 #import "OEFileManager.h"
 
-#import "OpenEmuARM64-Swift.h"
+#import "Bit-Swift.h"
 
 @implementation OELibraryDatabaseObjC
 

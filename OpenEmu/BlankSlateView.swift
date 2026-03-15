@@ -220,11 +220,11 @@ class BlankSlateView: NSView {
         
         if #available(macOS 11.0, *) {
             effectiveAppearance.performAsCurrentDrawingAppearance {
-                dragIndicationLayer.borderColor = NSColor.controlAccentColor.cgColor
+                dragIndicationLayer.borderColor = OEAppearance.accentColor.cgColor
             }
         } else {
             NSAppearance.current = effectiveAppearance
-            dragIndicationLayer.borderColor = NSColor.controlAccentColor.cgColor
+            dragIndicationLayer.borderColor = OEAppearance.accentColor.cgColor
         }
         dragIndicationLayer.borderWidth = 2
         dragIndicationLayer.cornerRadius = 8
@@ -247,11 +247,11 @@ class BlankSlateView: NSView {
     override func viewDidChangeEffectiveAppearance() {
         if #available(macOS 11.0, *) {
             effectiveAppearance.performAsCurrentDrawingAppearance {
-                dragIndicationLayer.borderColor = NSColor.controlAccentColor.cgColor
+                dragIndicationLayer.borderColor = OEAppearance.accentColor.cgColor
             }
         } else {
             NSAppearance.current = effectiveAppearance
-            dragIndicationLayer.borderColor = NSColor.controlAccentColor.cgColor
+            dragIndicationLayer.borderColor = OEAppearance.accentColor.cgColor
         }
     }
     
@@ -295,7 +295,7 @@ class BlankSlateView: NSView {
             boxText = NSLocalizedString("Drag & Drop Save States Here", comment: "Blank Slate DnD Save States Here")
             
             headline = NSLocalizedString("Save States", comment: "")
-            informationalText = NSLocalizedString("With OpenEmu you can save your progress at any time using save states. We will even make auto saves for you, when you leave a game. Come back here to get an overview of all your saves.", comment: "")
+            informationalText = NSLocalizedString("With Bit you can save your progress at any time using save states. We will even make auto saves for you, when you leave a game. Come back here to get an overview of all your saves.", comment: "")
         }
         else if representedObject is OEDBScreenshotsMedia {
             
@@ -348,7 +348,7 @@ class BlankSlateView: NSView {
         if plugin.supportsDiscsWithDescriptorFile {
             text = .localizedStringWithFormat(NSLocalizedString("%@ games will appear here. Check out %@ on how to add disc-based games.", comment: ""), plugin.systemName, NSLocalizedString("this guide", comment: ""))
         } else {
-            text = .localizedStringWithFormat(NSLocalizedString("%@ games you add to OpenEmu will appear in this Console Library", comment: ""), plugin.systemName)
+            text = .localizedStringWithFormat(NSLocalizedString("%@ games you add to Bit will appear in this Console Library", comment: ""), plugin.systemName)
         }
         
         textView.drawsBackground = false

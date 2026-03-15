@@ -171,7 +171,7 @@ final class HomebrewCoverView: NSView {
             let path = NSBezierPath(ovalIn: rect)
             if i == currentImageIndex {
                 NSColor.clear.setFill()
-                NSColor.controlAccentColor.setStroke()
+                OEAppearance.accentColor.setStroke()
             } else {
                 NSColor.disabledControlTextColor.setFill()
                 NSColor.clear.setStroke()

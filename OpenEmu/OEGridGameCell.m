@@ -12,7 +12,7 @@
 
 #import "IKImageBrowserCell.h"
 
-#import "OpenEmuARM64-Swift.h"
+#import "Bit-Swift.h"
 
 static const CGFloat OEGridCellTitleHeight                      = 16.0; // Height of the title view
 static const CGFloat OEGridCellImageTitleSpacing                = 17.0; // Space between the image and the title
@@ -348,8 +348,8 @@ static NSDictionary *disabledActions = nil;
             selectionLayer.actions = disabledActions;
             selectionLayer.frame = selectionFrame;
             
-            NSColor *selectionColor = NSColor.selectedContentBackgroundColor;
-            NSColor *inactiveSelectionColor = NSColor.unemphasizedSelectedContentBackgroundColor;
+            NSColor *selectionColor = OEAppearanceHelper.accentColor;
+            NSColor *inactiveSelectionColor = [selectionColor colorWithAlphaComponent:0.4];
             
             selectionLayer.borderWidth = 4.0;
             selectionLayer.borderColor = _lastWindowActive ? selectionColor.CGColor : inactiveSelectionColor.CGColor;
@@ -478,7 +478,7 @@ static NSDictionary *disabledActions = nil;
 {
     NSAppearance.currentAppearance = self.imageBrowserView.effectiveAppearance;
     const NSUInteger OECoverGridViewCellRatingViewNumberOfRatings = 6;
-    const NSImage *ratingImage = [[NSImage imageNamed:@"grid_rating"] imageWithTintColor:NSColor.controlAccentColor];
+    const NSImage *ratingImage = [[NSImage imageNamed:@"grid_rating"] imageWithTintColor:OEAppearanceHelper.accentColor];
     const NSSize  ratingImageSize = [ratingImage size];
     const CGFloat ratingStarHeight      = ratingImageSize.height / OECoverGridViewCellRatingViewNumberOfRatings;
     const NSRect  ratingImageSourceRect = NSMakeRect(0.0, ratingImageSize.height - ratingStarHeight * (rating + 1.0), ratingImageSize.width, ratingStarHeight);

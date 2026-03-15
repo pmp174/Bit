@@ -36,7 +36,7 @@ final class ControlsKeyButton: NSButton {
         if isWood {
             image = state == .on ? NSImage(named: "wood_textfield_focus") : NSImage(named: "wood_textfield")
         } else {
-            image = state == .on ? NSImage(named: "controls_textfield_focus")?.withTintColor(.controlAccentColor) : NSImage(named: "controls_textfield")
+            image = state == .on ? NSImage(named: "controls_textfield_focus")?.withTintColor(OEAppearance.accentColor) : NSImage(named: "controls_textfield")
         }
         image?.draw(in: bounds)
         

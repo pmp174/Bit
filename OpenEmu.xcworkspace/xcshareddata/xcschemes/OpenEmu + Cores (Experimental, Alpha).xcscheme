@@ -15,7 +15,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-                     BuildableName = "OpenEmu.app"
+                     BuildableName = "Bit.app"
                      BlueprintName = "OpenEmu"
                      ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
                   </BuildableReference>
@@ -61,7 +61,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-               BuildableName = "OpenEmu.app"
+               BuildableName = "Bit.app"
                BlueprintName = "OpenEmu"
                ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
             </BuildableReference>
@@ -447,7 +447,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-                     BuildableName = "OpenEmu.app"
+                     BuildableName = "Bit.app"
                      BlueprintName = "OpenEmu"
                      ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
                   </BuildableReference>
@@ -459,7 +459,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-            BuildableName = "OpenEmu.app"
+            BuildableName = "Bit.app"
             BlueprintName = "OpenEmu"
             ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
          </BuildableReference>
@@ -497,7 +497,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-                     BuildableName = "OpenEmu.app"
+                     BuildableName = "Bit.app"
                      BlueprintName = "OpenEmu"
                      ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
                   </BuildableReference>
@@ -510,7 +510,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-            BuildableName = "OpenEmu.app"
+            BuildableName = "Bit.app"
             BlueprintName = "OpenEmu"
             ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
          </BuildableReference>
@@ -532,7 +532,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-                     BuildableName = "OpenEmu.app"
+                     BuildableName = "Bit.app"
                      BlueprintName = "OpenEmu"
                      ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
                   </BuildableReference>
@@ -545,7 +545,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-            BuildableName = "OpenEmu.app"
+            BuildableName = "Bit.app"
             BlueprintName = "OpenEmu"
             ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
          </BuildableReference>
@@ -567,7 +567,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "8D15AC270486D014006FF6A4"
-                     BuildableName = "OpenEmu.app"
+                     BuildableName = "Bit.app"
                      BlueprintName = "OpenEmu"
                      ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
                   </BuildableReference>

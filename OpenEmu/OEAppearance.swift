@@ -22,6 +22,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import Cocoa
+
 enum OEAppearance {
     
     enum Application: Int {
@@ -39,8 +41,46 @@ enum OEAppearance {
         static var key = "OEControlsPrefsAppearance"
     }
     
+    /// The user-selected tint color name. When set, the sidebar and library use this tint overlay.
+    /// When nil or "none", the app uses standard dark/light mode with no tint.
+    enum TintColor: String, CaseIterable {
+        case none = "none"
+        case blue = "blue"
+        case purple = "purple"
+        case red = "red"
+        case orange = "orange"
+        case yellow = "yellow"
+        case green = "green"
+        
+        static var key = "OETintColor"
+        
+        var displayName: String {
+            switch self {
+            case .none:   return "None"
+            case .blue:   return "Blue"
+            case .purple: return "Purple"
+            case .red:    return "Red"
+            case .orange: return "Orange"
+            case .yellow: return "Yellow"
+            case .green:  return "Green"
+            }
+        }
+        
+        var color: NSColor? {
+            switch self {
+            case .none:   return nil
+            case .blue:   return NSColor(calibratedRed: 0x00/255.0, green: 0x9E/255.0, blue: 0xDC/255.0, alpha: 1.0)
+            case .purple: return NSColor(calibratedRed: 0xEA/255.0, green: 0x4C/255.0, blue: 0x89/255.0, alpha: 1.0)
+            case .red:    return NSColor(calibratedRed: 0xC5/255.0, green: 0x51/255.0, blue: 0x52/255.0, alpha: 1.0)
+            case .orange: return NSColor(calibratedRed: 0xE1/255.0, green: 0x94/255.0, blue: 0x33/255.0, alpha: 1.0)
+            case .yellow: return NSColor(calibratedRed: 0xF2/255.0, green: 0xBE/255.0, blue: 0x2E/255.0, alpha: 1.0)
+            case .green:  return NSColor(calibratedRed: 0x4E/255.0, green: 0x8A/255.0, blue: 0x2E/255.0, alpha: 1.0)
+            }
+        }
+    }
+    
     static var application: Application {
-        Application(rawValue: UserDefaults.standard.integer(forKey: Application.key)) ?? .dark
+        Application(rawValue: UserDefaults.standard.integer(forKey: Application.key)) ?? .system
     }
     
     static var hudBar: HUDBar {
@@ -49,5 +89,27 @@ enum OEAppearance {
     
     static var controlsPrefs: ControlsPrefs {
         ControlsPrefs(rawValue: UserDefaults.standard.integer(forKey: ControlsPrefs.key)) ?? .vibrant
+    }
+    
+    static var tintColor: TintColor {
+        guard let raw = UserDefaults.standard.string(forKey: TintColor.key) else { return .none }
+        return TintColor(rawValue: raw) ?? .none
+    }
+    
+    /// Returns the user's selected tint color, or the system accent color as fallback.
+    /// Use this for selection highlights, checkboxes, and other accent UI.
+    static var accentColor: NSColor {
+        tintColor.color ?? .controlAccentColor
+    }
+}
+
+// MARK: - ObjC Bridge
+
+/// Provides access to OEAppearance tint colors from Objective-C code.
+@objc final class OEAppearanceHelper: NSObject {
+    
+    /// Returns the user's selected tint color for selection highlights, or the system accent color.
+    @objc static var accentColor: NSColor {
+        OEAppearance.accentColor
     }
 }

@@ -30,25 +30,46 @@ final class AboutViewController: NSViewController {
     @IBOutlet weak var gitHubLink: TextButton!
     
     override func viewDidLoad() {
-        
+
         let color = NSColor(from: "#526ba0")
         let hoverColor = NSColor(from: "#9c2a32")
-        
+
         let shadow = NSShadow()
         shadow.shadowColor = .black
         shadow.shadowOffset = NSMakeSize(0, -1)
-        
+
         websiteLink.font = .boldSystemFont(ofSize: 12)
         websiteLink.textShadow = shadow
         websiteLink.textColor = color
         websiteLink.textColorHover = hoverColor
-        
+
         shadow.shadowColor = .black.withAlphaComponent(0.4)
-        
+
         gitHubLink.font = .boldSystemFont(ofSize: 11)
         gitHubLink.textShadow = shadow
         gitHubLink.textColor = color
         gitHubLink.textColorHover = hoverColor
+
+        // Add app icon above the version text
+        let iconSize: CGFloat = 128
+        let iconView = NSImageView(frame: NSRect(
+            x: (view.bounds.width - iconSize) / 2,
+            y: 210,
+            width: iconSize,
+            height: iconSize
+        ))
+        iconView.image = NSApp.applicationIconImage
+        iconView.imageScaling = .scaleProportionallyUpOrDown
+        iconView.autoresizingMask = [.minXMargin, .maxXMargin, .minYMargin]
+        iconView.wantsLayer = true
+        iconView.shadow = {
+            let s = NSShadow()
+            s.shadowColor = .black.withAlphaComponent(0.5)
+            s.shadowOffset = NSSize(width: 0, height: -2)
+            s.shadowBlurRadius = 8
+            return s
+        }()
+        view.addSubview(iconView)
     }
     
     @objc dynamic var appVersion: String {
@@ -60,7 +81,7 @@ final class AboutViewController: NSViewController {
     }
     
     @objc dynamic lazy var specialThanks: NSAttributedString = {
-        let msg = NSLocalizedString("Special thanks to everyone that made\nOpenEmu possible. To find out more\nabout our contributors, emulator cores,\ndocumentation, licenses and to issue\nbugs please visit us on our GitHub.", comment: "Special thanks message (about window).")
+        let msg = NSLocalizedString("Special thanks to everyone that made\nBit possible. To find out more\nabout our contributors, emulator cores,\ndocumentation, licenses and to issue\nbugs please visit us on our GitHub.", comment: "Special thanks message (about window).")
         let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
         paragraphStyle.alignment = .center
         paragraphStyle.lineHeightMultiple = 1.225

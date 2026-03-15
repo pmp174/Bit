@@ -28,7 +28,7 @@
 
 #import "OEAlert.h"
 
-#import "OpenEmuARM64-Swift.h"
+#import "Bit-Swift.h"
 
 NSNotificationName const OEGameCollectionViewControllerDidSetSelectionIndexesNotification = @"OEGameCollectionViewControllerDidSetSelectionIndexesNotification";
 
@@ -515,7 +515,7 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
         if([games count] == 0) return;
 
         OEAlert *alert = [[OEAlert alloc] init];
-        alert.messageText = NSLocalizedString(@"Consolidating will copy all of the selected games into the OpenEmu Library folder.", @"");
+        alert.messageText = NSLocalizedString(@"Consolidating will copy all of the selected games into the Bit Library folder.", @"");
         alert.informativeText = NSLocalizedString(@"This cannot be undone.", @"");
         alert.defaultButtonTitle = NSLocalizedString(@"Consolidate", @"");
         alert.alternateButtonTitle = NSLocalizedString(@"Cancel", @"");
@@ -918,7 +918,7 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
         BOOL isSelected = [self.listView.selectedRowIndexes containsIndex:rowIndex];
         BOOL isListIndicatorMissing = [imageName isEqualToString:@"list_indicator_missing"];
         NSImage *image = [NSImage imageNamed:imageName];
-        NSColor *tintColor = isListIndicatorMissing ? NSColor.systemOrangeColor : NSColor.controlAccentColor;
+        NSColor *tintColor = isListIndicatorMissing ? NSColor.systemOrangeColor : OEAppearanceHelper.accentColor;
         result = isSelected ? image : [image imageWithTintColor:tintColor];
     }
     else if([item respondsToSelector:NSSelectorFromString(columnId)]) result = [item valueForKey:columnId];

@@ -76,9 +76,9 @@ final class OEGameDocument: NSDocument {
             if case .fileDoesNotExist = self {
                 return NSLocalizedString("The file you selected doesn't exist", comment: "Inexistent file error reason.")
             } else if case .noCore = self {
-                return NSLocalizedString("OpenEmu could not find a Core to launch the game", comment: "No Core error reason.")
+                return NSLocalizedString("Bit could not find a Core to launch the game", comment: "No Core error reason.")
             } else if case .noSystemPlugin = self {
-                return NSLocalizedString("OpenEmu could not find a system plugin to launch the game", comment: "No system plugin error reason.")
+                return NSLocalizedString("Bit could not find a system plugin to launch the game", comment: "No system plugin error reason.")
             } else {
                 return nil
             }
@@ -575,17 +575,6 @@ final class OEGameDocument: NSDocument {
     // MARK: - Setup
     
     func setUpGame(completionHandler handler: @escaping (_ success: Bool, _ error: Error?) -> Void) {
-        NSLog("[OEGameDocument] setUpGame() called")
-        do {
-            // TODO: Remove after further testing.
-            NSLog("[OEGameDocument] Pre-loading core bundle: %@", corePlugin.bundle.bundleURL.path)
-            try corePlugin.bundle.loadAndReturnError()
-            NSLog("[OEGameDocument] Core bundle loaded successfully")
-        } catch {
-            NSLog("[OEGameDocument] Core bundle load FAILED: %@", error.localizedDescription)
-            handler(false, error)
-            return
-        }
         guard
             emulationStatus == .notSetup,
             checkRequiredFiles(),

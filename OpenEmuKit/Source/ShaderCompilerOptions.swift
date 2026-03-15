@@ -33,7 +33,7 @@ public extension ShaderCompilerOptions {
             let url = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         else { return options }
         
-        options.cacheDir = url.appendingPathComponent("OpenEmu", isDirectory: true).appendingPathComponent("Shaders", isDirectory: true)
+        options.cacheDir = url.appendingPathComponent("Bit", isDirectory: true).appendingPathComponent("Shaders", isDirectory: true)
         
         return options
     }
