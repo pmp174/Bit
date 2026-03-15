@@ -1,4 +1,8 @@
-# OpenEmuARM64 (Native Apple Silicon Port)
+# Bit (An Openmenu ARM64 port for apple silicon based on work made by bazley82)
+
+
+
+
 
 
 
@@ -6,7 +10,7 @@
 > **Transparency Disclaimer:** This repository is an experimental port of OpenEmu, created and maintained entirely through **AI-assisted coding** (using "Vibe Coding" techniques). The project was initiated by a user with no formal coding experience to test the capabilities of advanced AI agents (specifically Antigravity) in porting complex legacy software to run natively on Apple Silicon. This is based on work made in the original openemu repository, work made by bazley82, and work made by pystIC. 
 
 ## About this Port
-This version of OpenEmu has been specifically patched to run natively on Apple Silicon (M1/M2/M3) and includes several build fixes for modern macOS/Xcode environments.
+This version of OpenEmu has been specifically patched to run natively on Apple Silicon and includes several build fixes for modern macOS/Xcode environments.
 
 ### Key Modifications:
 - **Full ARM64 Suite:** Successfully ported and verified all **25 emulation cores** (Nestopia, BSNES, Mupen64Plus, Snes9x, DeSmuME, Genesis Plus GX, etc.) for native Apple Silicon compatibility.
@@ -51,7 +55,8 @@ Currently, OpenEmu can load the following game engines as plugins:
 * Pokémon Mini ([PokeMini](https://github.com/pokerazor/pokemini)) - **[FIXED FOR ARM64]**
 * WonderSwan ([Mednafen](https://mednafen.github.io)) - **[FIXED FOR ARM64]**
 * **Commodore 64 (VICE)** - **[FIXED FOR ARM64]**
-
+Known Issues#
+Some of these cores are unavailable due to compile issues. Will be ironing that out soon. 
 
 ## Minimum Requirements
 - macOS Mojave 10.14.4 (for general use)
