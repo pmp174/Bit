@@ -3,9 +3,9 @@
 ![Bit Screenshot](https://github.com/pmp174/Bit/blob/3039d1725e041a0ea313b1fcc4dcf9c12268099c/Bit%20SnapShots/DarkLightMode.png)
 
 
-#She Comes In Colors
+# She Comes In Colors
 
-![Bit Colors]([https://github.com/pmp174/Bit/blob/3039d1725e041a0ea313b1fcc4dcf9c12268099c/Bit%20SnapShots/DarkLightMode.png](https://github.com/pmp174/Bit/blob/44a994098f8fde66afd829bde2721b459a994ec2/Bit%20SnapShots/Colors.png)
+![Bit Colors](https://github.com/pmp174/Bit/blob/44a994098f8fde66afd829bde2721b459a994ec2/Bit%20SnapShots/Colors.png)
 
 
 
