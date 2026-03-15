@@ -1,5 +1,16 @@
 # Bit (An Openmenu ARM64 port for apple silicon based on work made by bazley82)
 
+## About this Port
+This version of OpenEmu has been specifically patched to run natively on Apple Silicon and includes several build fixes for modern macOS/Xcode environments.
+
+### Key Modifications:
+- **Full ARM64 Suite:** Successfully ported and verified all **25 emulation cores** (Nestopia, BSNES, Mupen64Plus, Snes9x, DeSmuME, Genesis Plus GX, etc.) for native Apple Silicon compatibility.
+- **Modern Build Standards:** Updated all projects to `MACOSX_DEPLOYMENT_TARGET = 11.0` and resolved hundreds of narrowing conversion and linkage errors.
+- **Cross-Platform Cloud Sync:** Implemented Google Drive synchronization for save states and save games, allowing seamless progression across devices.
+- **C64 Support:** Integrated Commodore 64 system support directly into the app bundle.
+- **Permission Fixes:** Resolved the persistent "Input Monitoring" permission loop that affects many users on modern macOS versions.
+- **Flattened Architecture:** Converted all submodules into regular directories to create a standalone, portable repository.
+- **Custom Design:** Features a new, high-resolution "Liquid Glass" application icon, optimized for macOS Tahoe.
 ![Bit App Icon](https://github.com/pmp174/Bit/blob/c475638fbdcec72a7c1d94afdb9e6cbab9054cec/Bit%20SnapShots/Bit%20App%20Icon-iOS-Default-512x512%401x.png)
 
 # Dark & Light Modes
@@ -15,18 +26,6 @@
 
 > [!IMPORTANT]
 > **Transparency Disclaimer:** This repository is an experimental port of OpenEmu, created and maintained entirely through **AI-assisted coding** (using "Vibe Coding" techniques). The project was initiated by a user with no formal coding experience to test the capabilities of advanced AI agents (specifically Antigravity) in porting complex legacy software to run natively on Apple Silicon. This is based on work made in the original openemu repository, work made by bazley82, and work made by pystIC. 
-
-## About this Port
-This version of OpenEmu has been specifically patched to run natively on Apple Silicon and includes several build fixes for modern macOS/Xcode environments.
-
-### Key Modifications:
-- **Full ARM64 Suite:** Successfully ported and verified all **25 emulation cores** (Nestopia, BSNES, Mupen64Plus, Snes9x, DeSmuME, Genesis Plus GX, etc.) for native Apple Silicon compatibility.
-- **Modern Build Standards:** Updated all projects to `MACOSX_DEPLOYMENT_TARGET = 11.0` and resolved hundreds of narrowing conversion and linkage errors.
-- **Cross-Platform Cloud Sync:** Implemented Google Drive synchronization for save states and save games, allowing seamless progression across devices.
-- **C64 Support:** Integrated Commodore 64 system support directly into the app bundle.
-- **Permission Fixes:** Resolved the persistent "Input Monitoring" permission loop that affects many users on modern macOS versions.
-- **Flattened Architecture:** Converted all submodules into regular directories to create a standalone, portable repository.
-- **Custom Design:** Features a new, high-resolution "Liquid Glass" application icon, optimized for macOS Big Sur and Monterey/Ventura/Sonoma aesthetics.
 
 ## Quick Start
 You can download the pre-compiled native app from the **[Releases](https://github.com/bazley82/OpenEmuARM64/releases)** section.
