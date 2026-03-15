@@ -1,5 +1,7 @@
 # Bit (An Openmenu ARM64 port for apple silicon based on work made by bazley82)
 
+![Bit App Icon](https://github.com/pmp174/Bit/blob/c475638fbdcec72a7c1d94afdb9e6cbab9054cec/Bit%20SnapShots/Bit%20App%20Icon-iOS-Default-512x512%401x.png)
+
 ![Bit Screenshot](https://github.com/pmp174/Bit/blob/3039d1725e041a0ea313b1fcc4dcf9c12268099c/Bit%20SnapShots/DarkLightMode.png)
 
 
