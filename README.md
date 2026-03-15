@@ -58,7 +58,8 @@ Currently, OpenEmu can load the following game engines as plugins:
 * Pokémon Mini ([PokeMini](https://github.com/pokerazor/pokemini)) - **[FIXED FOR ARM64]**
 * WonderSwan ([Mednafen](https://mednafen.github.io)) - **[FIXED FOR ARM64]**
 * **Commodore 64 (VICE)** - **[FIXED FOR ARM64]**
-Known Issues#
+
+## Known Issues
 Some of these cores are unavailable due to compile issues. Will be ironing that out soon. 
 
 ## Minimum Requirements
