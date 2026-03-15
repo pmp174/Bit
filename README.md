@@ -1,9 +1,9 @@
 # OpenEmuARM64 (Native Apple Silicon Port)
 
-![OpenEmu Screenshot](http://openemu.org/img/intro-md.png)
+
 
 > [!IMPORTANT]
-> **Transparency Disclaimer:** This repository is an experimental port of OpenEmu, created and maintained entirely through **AI-assisted coding** (using "Vibe Coding" techniques). The project was initiated by a user with no formal coding experience to test the capabilities of advanced AI agents (specifically Antigravity) in porting complex legacy software to run natively on Apple Silicon.
+> **Transparency Disclaimer:** This repository is an experimental port of OpenEmu, created and maintained entirely through **AI-assisted coding** (using "Vibe Coding" techniques). The project was initiated by a user with no formal coding experience to test the capabilities of advanced AI agents (specifically Antigravity) in porting complex legacy software to run natively on Apple Silicon. This is based on work made in the original openemu repository, work made by bazley82, and work made by pystIC. 
 
 ## About this Port
 This version of OpenEmu has been specifically patched to run natively on Apple Silicon (M1/M2/M3) and includes several build fixes for modern macOS/Xcode environments.
@@ -52,9 +52,14 @@ Currently, OpenEmu can load the following game engines as plugins:
 * WonderSwan ([Mednafen](https://mednafen.github.io)) - **[FIXED FOR ARM64]**
 * **Commodore 64 (VICE)** - **[FIXED FOR ARM64]**
 
-## Development
-This port was developed collaboratively by **bazley82** and **Antigravity (AI Assistant)**.
 
 ## Minimum Requirements
 - macOS Mojave 10.14.4 (for general use)
-- Apple Silicon (M1/M2/M3) highly recommended for native performance.
+- Apple Silicon highly recommended for native performance.
+
+## Icon Asset Credits
+Original Space Invader vector was made by
+Author: Austin Andrews Creazilla
+Source: github.com/Templarian/MaterialDesign
+Icon set: material design pack
+Licence: Apache License 2.0. Free for editorial, educational, commercial, and/or personal projects. Attribution is required in case of redistribution. More info.
