@@ -11,7 +11,7 @@ This version of OpenEmu has been specifically patched to run natively on Apple S
 - **Permission Fixes:** Resolved the persistent "Input Monitoring" permission loop that affects many users on modern macOS versions.
 - **Flattened Architecture:** Converted all submodules into regular directories to create a standalone, portable repository.
 - **Custom Design:** Features a new, high-resolution "Liquid Glass" application icon, optimized for macOS Tahoe.
-![Bit App Icon](https://github.com/pmp174/Bit/blob/c475638fbdcec72a7c1d94afdb9e6cbab9054cec/Bit%20SnapShots/Bit%20App%20Icon-iOS-Default-512x512%401x.png)
+![Bit App Icon](https://github.com/pmp174/Bit/blob/f5b22ee213a71f376752432778dbdf528d74de27/Bit%20SnapShots/Bit%20App%20Icon-iOS-Default-256x256%401x.png)
 
 # Dark & Light Modes
 
