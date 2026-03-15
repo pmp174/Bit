@@ -14,12 +14,12 @@ This version of OpenEmu has been specifically patched to run natively on Apple S
   
 ![Bit App Icon](https://github.com/pmp174/Bit/blob/f5b22ee213a71f376752432778dbdf528d74de27/Bit%20SnapShots/Bit%20App%20Icon-iOS-Default-256x256%401x.png)
 
-# Dark & Light Modes
+- Dark & Light Modes
 
 ![Bit Screenshot](https://github.com/pmp174/Bit/blob/3039d1725e041a0ea313b1fcc4dcf9c12268099c/Bit%20SnapShots/DarkLightMode.png)
 
 
-# She Comes In Colors
+- She Comes In Colors
 
 ![Bit Colors](https://github.com/pmp174/Bit/blob/44a994098f8fde66afd829bde2721b459a994ec2/Bit%20SnapShots/Colors.png)
 
