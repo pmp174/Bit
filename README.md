@@ -1,6 +1,7 @@
 # Bit (An Openmenu ARM64 port for apple silicon based on work made by bazley82)
 
-
+![Bit Screenshot](https://github.com/pmp174/Bit/Bit SnapShots
+/Dark:Light Mode.png)
 
 
 
