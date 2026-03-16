@@ -68,7 +68,7 @@ Some of these cores are unavailable due to compile issues. Will be ironing that 
 
 ## Minimum Requirements
 - macOS 26
-- Apple Silicon highly recommended for native performance.
+- Apple Silicon
 
 ## Icon Asset Credits
 Original Space Invader vector was made by
