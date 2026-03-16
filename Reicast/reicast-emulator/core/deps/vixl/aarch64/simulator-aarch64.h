@@ -32,7 +32,7 @@
 #include "../globals-vixl.h"
 #include "../utils-vixl.h"
 
-#include "cpu-features.h"
+#include "../cpu-features.h"
 #include "abi-aarch64.h"
 #include "cpu-features-auditor-aarch64.h"
 #include "disasm-aarch64.h"

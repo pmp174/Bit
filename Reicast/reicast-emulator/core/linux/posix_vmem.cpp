@@ -27,7 +27,12 @@
 	#undef PAGE_MASK
 	#define PAGE_MASK (PAGE_SIZE-1)
 #else
+	// Apple Silicon uses 16KB pages; query at runtime instead of hardcoding 4096
+	#if HOST_OS == OS_DARWIN && HOST_CPU == CPU_ARM64
+	#define PAGE_SIZE sysconf(_SC_PAGESIZE)
+	#else
 	#define PAGE_SIZE 4096
+	#endif
 	#define PAGE_MASK (PAGE_SIZE-1)
 #endif
 

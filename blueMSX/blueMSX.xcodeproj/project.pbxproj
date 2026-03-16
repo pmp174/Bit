@@ -2220,6 +2220,7 @@
 					"-DNO_FRAMEBUFFER",
 					"-DPIXEL_WIDTH=32",
 					"-DVIDEO_COLOR_TYPE_RGB888",
+					"-Wno-incompatible-function-pointer-types",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2244,6 +2245,7 @@
 					"-DNO_FRAMEBUFFER",
 					"-DPIXEL_WIDTH=32",
 					"-DVIDEO_COLOR_TYPE_RGB888",
+					"-Wno-incompatible-function-pointer-types",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";

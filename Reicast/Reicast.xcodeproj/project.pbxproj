@@ -180,6 +180,34 @@
 		08169CDF1BD9EFEE00BD740D /* gles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08169BEC1BD9EFED00BD740D /* gles.cpp */; };
 		08169CE01BD9EFEE00BD740D /* gltex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08169BEE1BD9EFED00BD740D /* gltex.cpp */; };
 		08169CE31BD9EFEE00BD740D /* TexCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08169BF41BD9EFED00BD740D /* TexCache.cpp */; };
+		63D945382F680F16005D5D4F /* rec_arm64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63D945362F680F16005D5D4F /* rec_arm64.cpp */; };
+		63D945532F68124D005D5D4F /* abi-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D945392F6811B1005D5D4F /* abi-aarch64.h */; };
+		63D945542F68124D005D5D4F /* assembler-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D9453A2F6811B1005D5D4F /* assembler-aarch64.h */; };
+		63D945552F68124D005D5D4F /* assembler-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9453B2F6811B1005D5D4F /* assembler-aarch64.cc */; };
+		63D945562F68124D005D5D4F /* constants-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D9453C2F6811B1005D5D4F /* constants-aarch64.h */; };
+		63D945572F68124D005D5D4F /* cpu-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D9453D2F6811B1005D5D4F /* cpu-aarch64.h */; };
+		63D945582F68124D005D5D4F /* cpu-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9453E2F6811B1005D5D4F /* cpu-aarch64.cc */; };
+		63D945592F68124D005D5D4F /* cpu-features-auditor-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D9453F2F6811B1005D5D4F /* cpu-features-auditor-aarch64.h */; };
+		63D9455A2F68124D005D5D4F /* cpu-features-auditor-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D945402F6811B1005D5D4F /* cpu-features-auditor-aarch64.cc */; };
+		63D9455B2F68124D005D5D4F /* decoder-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D945412F6811B1005D5D4F /* decoder-aarch64.h */; };
+		63D9455C2F68124D005D5D4F /* decoder-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D945422F6811B1005D5D4F /* decoder-aarch64.cc */; };
+		63D9455D2F68124D005D5D4F /* disasm-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D945432F6811B1005D5D4F /* disasm-aarch64.h */; };
+		63D9455E2F68124D005D5D4F /* disasm-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D945442F6811B1005D5D4F /* disasm-aarch64.cc */; };
+		63D9455F2F68124D005D5D4F /* instructions-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D945452F6811B1005D5D4F /* instructions-aarch64.h */; };
+		63D945602F68124D005D5D4F /* instructions-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D945462F6811B1005D5D4F /* instructions-aarch64.cc */; };
+		63D945612F68124D005D5D4F /* instrument-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D945472F6811B1005D5D4F /* instrument-aarch64.h */; };
+		63D945622F68124D005D5D4F /* instrument-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D945482F6811B1005D5D4F /* instrument-aarch64.cc */; };
+		63D945632F68124D005D5D4F /* logic-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D945492F6811B1005D5D4F /* logic-aarch64.cc */; };
+		63D945642F68124D005D5D4F /* macro-assembler-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D9454A2F6811B1005D5D4F /* macro-assembler-aarch64.h */; };
+		63D945652F68124D005D5D4F /* macro-assembler-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9454B2F6811B1005D5D4F /* macro-assembler-aarch64.cc */; };
+		63D945662F68124D005D5D4F /* operands-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D9454C2F6811B1005D5D4F /* operands-aarch64.h */; };
+		63D945672F68124D005D5D4F /* operands-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9454D2F6811B1005D5D4F /* operands-aarch64.cc */; };
+		63D945682F68124D005D5D4F /* pointer-auth-aarch64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9454E2F6811B1005D5D4F /* pointer-auth-aarch64.cc */; };
+		63D9456B2F68124D005D5D4F /* simulator-constants-aarch64.h in Sources */ = {isa = PBXBuildFile; fileRef = 63D945512F6811B1005D5D4F /* simulator-constants-aarch64.h */; };
+		63D945702F68137B005D5D4F /* cpu-features.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9456C2F68137B005D5D4F /* cpu-features.cc */; };
+		63D945712F68137B005D5D4F /* compiler-intrinsics-vixl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9456D2F68137B005D5D4F /* compiler-intrinsics-vixl.cc */; };
+		63D945722F68137B005D5D4F /* code-buffer-vixl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9456E2F68137B005D5D4F /* code-buffer-vixl.cc */; };
+		63D945732F68137B005D5D4F /* utils-vixl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 63D9456F2F68137B005D5D4F /* utils-vixl.cc */; };
 		8C74454E1786DB1E0008BE6A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAFC18C1785C48600647A96 /* OpenGL.framework */; };
 		8CAFC1231785B6C400647A96 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAFC1221785B6C400647A96 /* OpenEmuBase.framework */; };
 		8CAFC1261785B6F700647A96 /* ReicastGameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8CAFC1251785B6F700647A96 /* ReicastGameCore.mm */; };
@@ -223,7 +251,6 @@
 		EE0815102191393D007FD1AB /* pico_tcp.c in Sources */ = {isa = PBXBuildFile; fileRef = EE0814DB2191393D007FD1AB /* pico_tcp.c */; };
 		EE0815122191393D007FD1AB /* pico_fragments.c in Sources */ = {isa = PBXBuildFile; fileRef = EE0814E12191393D007FD1AB /* pico_fragments.c */; };
 		EE08151621913968007FD1AB /* dsp_interp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE08151521913968007FD1AB /* dsp_interp.cpp */; };
-		EE08151E21913C7E007FD1AB /* rec_x64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE08151D21913C7D007FD1AB /* rec_x64.cpp */; };
 		EE08152021913D1D007FD1AB /* audiobackend_openemu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 08169A231BD9EF1B00BD740D /* audiobackend_openemu.mm */; };
 		EE0815232191C8E0007FD1AB /* audiobackend_coreaudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE0815222191C8E0007FD1AB /* audiobackend_coreaudio.cpp */; };
 		EE0815272191CA58007FD1AB /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE0815262191CA58007FD1AB /* AudioUnit.framework */; };
@@ -655,6 +682,37 @@
 		08169BFB1BD9EFED00BD740D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		08E24C2C1BA2437900EEA1A5 /* OEDCSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OEDCSystemResponderClient.h; path = ../OpenEmu/SystemPlugins/Dreamcast/OEDCSystemResponderClient.h; sourceTree = "<group>"; };
 		08E24C2D1BA2489000EEA1A5 /* Reicast-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Reicast-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		63D945352F680F16005D5D4F /* arm64_regalloc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = arm64_regalloc.h; sourceTree = "<group>"; };
+		63D945362F680F16005D5D4F /* rec_arm64.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = rec_arm64.cpp; sourceTree = "<group>"; };
+		63D945392F6811B1005D5D4F /* abi-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "abi-aarch64.h"; sourceTree = "<group>"; };
+		63D9453A2F6811B1005D5D4F /* assembler-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "assembler-aarch64.h"; sourceTree = "<group>"; };
+		63D9453B2F6811B1005D5D4F /* assembler-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "assembler-aarch64.cc"; sourceTree = "<group>"; };
+		63D9453C2F6811B1005D5D4F /* constants-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "constants-aarch64.h"; sourceTree = "<group>"; };
+		63D9453D2F6811B1005D5D4F /* cpu-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cpu-aarch64.h"; sourceTree = "<group>"; };
+		63D9453E2F6811B1005D5D4F /* cpu-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "cpu-aarch64.cc"; sourceTree = "<group>"; };
+		63D9453F2F6811B1005D5D4F /* cpu-features-auditor-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cpu-features-auditor-aarch64.h"; sourceTree = "<group>"; };
+		63D945402F6811B1005D5D4F /* cpu-features-auditor-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "cpu-features-auditor-aarch64.cc"; sourceTree = "<group>"; };
+		63D945412F6811B1005D5D4F /* decoder-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "decoder-aarch64.h"; sourceTree = "<group>"; };
+		63D945422F6811B1005D5D4F /* decoder-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "decoder-aarch64.cc"; sourceTree = "<group>"; };
+		63D945432F6811B1005D5D4F /* disasm-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "disasm-aarch64.h"; sourceTree = "<group>"; };
+		63D945442F6811B1005D5D4F /* disasm-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "disasm-aarch64.cc"; sourceTree = "<group>"; };
+		63D945452F6811B1005D5D4F /* instructions-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "instructions-aarch64.h"; sourceTree = "<group>"; };
+		63D945462F6811B1005D5D4F /* instructions-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "instructions-aarch64.cc"; sourceTree = "<group>"; };
+		63D945472F6811B1005D5D4F /* instrument-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "instrument-aarch64.h"; sourceTree = "<group>"; };
+		63D945482F6811B1005D5D4F /* instrument-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "instrument-aarch64.cc"; sourceTree = "<group>"; };
+		63D945492F6811B1005D5D4F /* logic-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "logic-aarch64.cc"; sourceTree = "<group>"; };
+		63D9454A2F6811B1005D5D4F /* macro-assembler-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "macro-assembler-aarch64.h"; sourceTree = "<group>"; };
+		63D9454B2F6811B1005D5D4F /* macro-assembler-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "macro-assembler-aarch64.cc"; sourceTree = "<group>"; };
+		63D9454C2F6811B1005D5D4F /* operands-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "operands-aarch64.h"; sourceTree = "<group>"; };
+		63D9454D2F6811B1005D5D4F /* operands-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "operands-aarch64.cc"; sourceTree = "<group>"; };
+		63D9454E2F6811B1005D5D4F /* pointer-auth-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "pointer-auth-aarch64.cc"; sourceTree = "<group>"; };
+		63D9454F2F6811B1005D5D4F /* simulator-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "simulator-aarch64.h"; sourceTree = "<group>"; };
+		63D945502F6811B1005D5D4F /* simulator-aarch64.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "simulator-aarch64.cc"; sourceTree = "<group>"; };
+		63D945512F6811B1005D5D4F /* simulator-constants-aarch64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "simulator-constants-aarch64.h"; sourceTree = "<group>"; };
+		63D9456C2F68137B005D5D4F /* cpu-features.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "cpu-features.cc"; path = "reicast-emulator/core/deps/vixl/cpu-features.cc"; sourceTree = "<group>"; };
+		63D9456D2F68137B005D5D4F /* compiler-intrinsics-vixl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "compiler-intrinsics-vixl.cc"; path = "reicast-emulator/core/deps/vixl/compiler-intrinsics-vixl.cc"; sourceTree = "<group>"; };
+		63D9456E2F68137B005D5D4F /* code-buffer-vixl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "code-buffer-vixl.cc"; path = "reicast-emulator/core/deps/vixl/code-buffer-vixl.cc"; sourceTree = "<group>"; };
+		63D9456F2F68137B005D5D4F /* utils-vixl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "utils-vixl.cc"; path = "reicast-emulator/core/deps/vixl/utils-vixl.cc"; sourceTree = "<group>"; };
 		8CAFA7B41785AF4200647A96 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		8CAFA7B71785AF4200647A96 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		8CAFA7B81785AF4200647A96 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -968,6 +1026,7 @@
 		08169A251BD9EFED00BD740D /* core */ = {
 			isa = PBXGroup;
 			children = (
+				63D945372F680F16005D5D4F /* rec-ARM64 */,
 				EE81B9E7223ABCD8009C2D4E /* input */,
 				EE51F4B7220A3A0F00BCC098 /* archive */,
 				EE10AF1B21923B17002814A4 /* serialize.cpp */,
@@ -1670,9 +1729,56 @@
 			path = gles;
 			sourceTree = "<group>";
 		};
+		63D945372F680F16005D5D4F /* rec-ARM64 */ = {
+			isa = PBXGroup;
+			children = (
+				63D945352F680F16005D5D4F /* arm64_regalloc.h */,
+				63D945362F680F16005D5D4F /* rec_arm64.cpp */,
+			);
+			path = "rec-ARM64";
+			sourceTree = "<group>";
+		};
+		63D945522F6811B1005D5D4F /* aarch64 */ = {
+			isa = PBXGroup;
+			children = (
+				63D945392F6811B1005D5D4F /* abi-aarch64.h */,
+				63D9453A2F6811B1005D5D4F /* assembler-aarch64.h */,
+				63D9453B2F6811B1005D5D4F /* assembler-aarch64.cc */,
+				63D9453C2F6811B1005D5D4F /* constants-aarch64.h */,
+				63D9453D2F6811B1005D5D4F /* cpu-aarch64.h */,
+				63D9453E2F6811B1005D5D4F /* cpu-aarch64.cc */,
+				63D9453F2F6811B1005D5D4F /* cpu-features-auditor-aarch64.h */,
+				63D945402F6811B1005D5D4F /* cpu-features-auditor-aarch64.cc */,
+				63D945412F6811B1005D5D4F /* decoder-aarch64.h */,
+				63D945422F6811B1005D5D4F /* decoder-aarch64.cc */,
+				63D945432F6811B1005D5D4F /* disasm-aarch64.h */,
+				63D945442F6811B1005D5D4F /* disasm-aarch64.cc */,
+				63D945452F6811B1005D5D4F /* instructions-aarch64.h */,
+				63D945462F6811B1005D5D4F /* instructions-aarch64.cc */,
+				63D945472F6811B1005D5D4F /* instrument-aarch64.h */,
+				63D945482F6811B1005D5D4F /* instrument-aarch64.cc */,
+				63D945492F6811B1005D5D4F /* logic-aarch64.cc */,
+				63D9454A2F6811B1005D5D4F /* macro-assembler-aarch64.h */,
+				63D9454B2F6811B1005D5D4F /* macro-assembler-aarch64.cc */,
+				63D9454C2F6811B1005D5D4F /* operands-aarch64.h */,
+				63D9454D2F6811B1005D5D4F /* operands-aarch64.cc */,
+				63D9454E2F6811B1005D5D4F /* pointer-auth-aarch64.cc */,
+				63D9454F2F6811B1005D5D4F /* simulator-aarch64.h */,
+				63D945502F6811B1005D5D4F /* simulator-aarch64.cc */,
+				63D945512F6811B1005D5D4F /* simulator-constants-aarch64.h */,
+			);
+			name = aarch64;
+			path = "reicast-emulator/core/deps/vixl/aarch64";
+			sourceTree = "<group>";
+		};
 		8CAFA78E1785AA9900647A96 = {
 			isa = PBXGroup;
 			children = (
+				63D9456E2F68137B005D5D4F /* code-buffer-vixl.cc */,
+				63D9456D2F68137B005D5D4F /* compiler-intrinsics-vixl.cc */,
+				63D9456C2F68137B005D5D4F /* cpu-features.cc */,
+				63D9456F2F68137B005D5D4F /* utils-vixl.cc */,
+				63D945522F6811B1005D5D4F /* aarch64 */,
 				EE08144921913448007FD1AB /* Compatibility */,
 				8CAFC10A1785B60F00647A96 /* Classes */,
 				8CAFC1181785B63900647A96 /* Supporting Files */,
@@ -2262,6 +2368,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63D945702F68137B005D5D4F /* cpu-features.cc in Sources */,
+				63D945712F68137B005D5D4F /* compiler-intrinsics-vixl.cc in Sources */,
+				63D945722F68137B005D5D4F /* code-buffer-vixl.cc in Sources */,
+				63D945732F68137B005D5D4F /* utils-vixl.cc in Sources */,
+				63D945532F68124D005D5D4F /* abi-aarch64.h in Sources */,
+				63D945542F68124D005D5D4F /* assembler-aarch64.h in Sources */,
+				63D945552F68124D005D5D4F /* assembler-aarch64.cc in Sources */,
+				63D945562F68124D005D5D4F /* constants-aarch64.h in Sources */,
+				63D945572F68124D005D5D4F /* cpu-aarch64.h in Sources */,
+				63D945582F68124D005D5D4F /* cpu-aarch64.cc in Sources */,
+				63D945592F68124D005D5D4F /* cpu-features-auditor-aarch64.h in Sources */,
+				63D9455A2F68124D005D5D4F /* cpu-features-auditor-aarch64.cc in Sources */,
+				63D9455B2F68124D005D5D4F /* decoder-aarch64.h in Sources */,
+				63D9455C2F68124D005D5D4F /* decoder-aarch64.cc in Sources */,
+				63D9455D2F68124D005D5D4F /* disasm-aarch64.h in Sources */,
+				63D9455E2F68124D005D5D4F /* disasm-aarch64.cc in Sources */,
+				63D9455F2F68124D005D5D4F /* instructions-aarch64.h in Sources */,
+				63D945602F68124D005D5D4F /* instructions-aarch64.cc in Sources */,
+				63D945612F68124D005D5D4F /* instrument-aarch64.h in Sources */,
+				63D945622F68124D005D5D4F /* instrument-aarch64.cc in Sources */,
+				63D945632F68124D005D5D4F /* logic-aarch64.cc in Sources */,
+				63D945642F68124D005D5D4F /* macro-assembler-aarch64.h in Sources */,
+				63D945652F68124D005D5D4F /* macro-assembler-aarch64.cc in Sources */,
+				63D945662F68124D005D5D4F /* operands-aarch64.h in Sources */,
+				63D945672F68124D005D5D4F /* operands-aarch64.cc in Sources */,
+				63D945682F68124D005D5D4F /* pointer-auth-aarch64.cc in Sources */,
+				63D9456B2F68124D005D5D4F /* simulator-constants-aarch64.h in Sources */,
 				08169C3B1BD9EFED00BD740D /* zip_delete.c in Sources */,
 				EE08150E2191393D007FD1AB /* pico_dns_common.c in Sources */,
 				08169C931BD9EFEE00BD740D /* maple_if.cpp in Sources */,
@@ -2305,6 +2438,7 @@
 				EE0815042191393D007FD1AB /* pico_socket_tcp.c in Sources */,
 				08169CA31BD9EFEE00BD740D /* shil.cpp in Sources */,
 				08169CB91BD9EFEE00BD740D /* chd.cpp in Sources */,
+				63D945382F680F16005D5D4F /* rec_arm64.cpp in Sources */,
 				EE10AF0D21923A19002814A4 /* LzmaEnc.c in Sources */,
 				08169CD31BD9EFEE00BD740D /* rec_cpp.cpp in Sources */,
 				EE0814662191390D007FD1AB /* picoppp.cpp in Sources */,
@@ -2402,7 +2536,6 @@
 				EE51F4CA220A3E3B00BCC098 /* infback.c in Sources */,
 				08169C6C1BD9EFEE00BD740D /* zip_unchange_data.c in Sources */,
 				08169C6B1BD9EFEE00BD740D /* zip_unchange_archive.c in Sources */,
-				EE08151E21913C7E007FD1AB /* rec_x64.cpp in Sources */,
 				08169CB11BD9EFEE00BD740D /* sh4_core_regs.cpp in Sources */,
 				08169CCD1BD9EFEE00BD740D /* audiostream.cpp in Sources */,
 				08169C991BD9EFEE00BD740D /* pvr_regs.cpp in Sources */,
@@ -2554,6 +2687,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2583,7 +2717,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2610,6 +2743,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2638,7 +2772,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -2664,6 +2797,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2692,6 +2826,7 @@
 					CHD5_FLAC,
 					"FLAC__HAS_OGG=0",
 					"PACKAGE_VERSION=\\\"1.3.2\\\"",
+					FEAT_NO_RWX_PAGES,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2725,6 +2860,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2753,6 +2889,7 @@
 					CHD5_FLAC,
 					"FLAC__HAS_OGG=0",
 					"PACKAGE_VERSION=\\\"1.3.2\\\"",
+					FEAT_NO_RWX_PAGES,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

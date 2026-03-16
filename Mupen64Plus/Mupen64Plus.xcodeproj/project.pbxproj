@@ -56,7 +56,6 @@
 		3E82BC4D1F507B940081AF7B /* RSP_LoadMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E82BC431F507B940081AF7B /* RSP_LoadMatrix.cpp */; };
 		3E82BC561F507C380081AF7B /* ColorBufferReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E82BC551F507C380081AF7B /* ColorBufferReader.cpp */; };
 		551FEDF525B6232500B9030D /* new_dynarec.c in Sources */ = {isa = PBXBuildFile; fileRef = 8784175025994FEF002ED39D /* new_dynarec.c */; };
-		551FEEB025B64D9000B9030D /* linkage.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 551FEEAF25B64D9000B9030D /* linkage.o */; };
 		8723F7001F74A36E003E572A /* CRC_OPT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8723F6FF1F74A36E003E572A /* CRC_OPT.cpp */; };
 		8723F7341F74A4D7003E572A /* F3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8723F7061F74A49E003E572A /* F3D.cpp */; };
 		8723F7351F74A4D7003E572A /* F3DAM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8723F7081F74A49E003E572A /* F3DAM.cpp */; };
@@ -167,6 +166,7 @@
 		878416E425994FAD002ED39D /* clock_ctime_plus_delta.c in Sources */ = {isa = PBXBuildFile; fileRef = 878416B325994F1B002ED39D /* clock_ctime_plus_delta.c */; };
 		878416EE25994FBA002ED39D /* dummy_video_capture.c in Sources */ = {isa = PBXBuildFile; fileRef = 878416C325994F1B002ED39D /* dummy_video_capture.c */; };
 		878416F825994FC7002ED39D /* file_storage.c in Sources */ = {isa = PBXBuildFile; fileRef = 878416C425994F1B002ED39D /* file_storage.c */; };
+		8784175F25994FEF002ED39E /* linkage_arm64.S in Sources */ = {isa = PBXBuildFile; fileRef = 8784175E25994FEF002ED39D /* linkage_arm64.S */; };
 		8784179325995103002ED39D /* af_rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8784177E25994FEF002ED39D /* af_rtc.c */; };
 		8784179D25995108002ED39D /* cart_rom.c in Sources */ = {isa = PBXBuildFile; fileRef = 8784177D25994FEF002ED39D /* cart_rom.c */; };
 		878417A72599510D002ED39D /* cart.c in Sources */ = {isa = PBXBuildFile; fileRef = 8784177B25994FEF002ED39D /* cart.c */; };
@@ -296,7 +296,6 @@
 		EE2BBC41225AD5050007BF6F /* GraphicBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE2BBC38225AD5040007BF6F /* GraphicBuffer.cpp */; };
 		EE2BBC46225AD5380007BF6F /* iob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE2BBC45225AD5370007BF6F /* iob.cpp */; };
 		EE2BBC48225AD6520007BF6F /* MemoryStatus_mupenplus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE2BBC47225AD6510007BF6F /* MemoryStatus_mupenplus.cpp */; };
-                8784175F25994FEF002ED39D /* linkage_arm64.S in Sources */ = {isa = PBXBuildFile; fileRef = 8784175E25994FEF002ED39D /* linkage_arm64.S */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3225,7 +3224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-                                8784175F25994FEF002ED39D /* linkage_arm64.S in Sources */,
+				8784175F25994FEF002ED39E /* linkage_arm64.S in Sources */,
 				8784165025993CA3002ED39D /* callbacks.c in Sources */,
 				8784164F25993CA3002ED39D /* common.c in Sources */,
 				8784164D25993CA3002ED39D /* config.c in Sources */,
@@ -3489,6 +3488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = arm64;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -3526,6 +3526,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = arm64;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;

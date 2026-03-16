@@ -29,7 +29,7 @@
 
 #include <iostream>
 
-#include "cpu-features.h"
+#include "../cpu-features.h"
 #include "decoder-aarch64.h"
 
 namespace vixl {

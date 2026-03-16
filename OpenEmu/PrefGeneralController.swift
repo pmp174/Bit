@@ -200,7 +200,7 @@ final class PrefGeneralController: NSViewController {
         tintContainer.addArrangedSubview(noneButton)
         tintButtons.append(noneButton)
         
-        let tintCases: [OEAppearance.TintColor] = [.blue, .purple, .red, .orange, .yellow, .green]
+        let tintCases: [OEAppearance.TintColor] = [.blue, .purple, .red, .orange, .yellow, .green, .indigo, .darkBlue]
         for (index, tint) in tintCases.enumerated() {
             let button = makeCircleButton(color: tint.color, tag: index + 1)
             button.toolTip = tint.displayName
@@ -418,8 +418,8 @@ final class PrefGeneralController: NSViewController {
     
     private func updateTintSelection() {
         let current = OEAppearance.tintColor
-        let allTints: [OEAppearance.TintColor] = [.none, .blue, .purple, .red, .orange, .yellow, .green]
-        
+        let allTints: [OEAppearance.TintColor] = [.none, .blue, .purple, .red, .orange, .yellow, .green, .indigo, .darkBlue]
+
         for (index, tint) in allTints.enumerated() {
             guard index < tintButtons.count else { break }
             tintButtons[index].state = (tint == current) ? .on : .off
@@ -440,7 +440,7 @@ final class PrefGeneralController: NSViewController {
     }
     
     @objc private func changeTintColor(_ sender: NSButton) {
-        let allTints: [OEAppearance.TintColor] = [.none, .blue, .purple, .red, .orange, .yellow, .green]
+        let allTints: [OEAppearance.TintColor] = [.none, .blue, .purple, .red, .orange, .yellow, .green, .indigo, .darkBlue]
         let index = sender.tag
         guard index < allTints.count else { return }
         

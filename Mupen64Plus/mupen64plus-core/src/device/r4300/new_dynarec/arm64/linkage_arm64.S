@@ -1,3 +1,4 @@
+#ifdef __aarch64__
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *   Mupen64plus - linkage_arm64.S                                         *
  *   Copyright (C) 2009-2018 Gillou68310                                   *
@@ -18,7 +19,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifdef LEADING_UNDERSCORE
+#if defined(__APPLE__)
+/* On macOS ARM64, ';' is a comment character in the Clang integrated assembler */
+/* so we use '%%' as the statement separator within C preprocessor macros.     */
+
+#define GLOBAL_FUNCTION(name)  .globl _##name %% .p2align 2 %% _##name
+#define LOCAL_FUNCTION(name)   .p2align 2 %% _##name
+#define GLOBAL_VARIABLE(name, size_) .global _##name
+#define EXTERN_SYMBOL(name) _##name
+
+#elif defined(LEADING_UNDERSCORE)
 
 #define GLOBAL_FUNCTION(name)  \
 	.globl _##name;            \
@@ -367,12 +377,22 @@ GLOBAL_FUNCTION(jump_eret):
     b      .E8
     
 GLOBAL_FUNCTION(new_dyna_start):
+#if defined(__APPLE__)
+    adrp   x16, EXTERN_SYMBOL(g_dev)@GOTPAGE
+    ldr    x16, [x16, EXTERN_SYMBOL(g_dev)@GOTPAGEOFF]
+#else
     adrp   x16, EXTERN_SYMBOL(g_dev)
     add    x16, x16, :lo12:EXTERN_SYMBOL(g_dev)
+#endif
     movl   x1, (device_r4300_new_dynarec_hot_state_dynarec_local + saved_context)
     add    x16, x16, x1
+#if defined(__APPLE__)
+    adrp   x1, EXTERN_SYMBOL(base_addr_rx)@GOTPAGE
+    ldr    x1, [x1, EXTERN_SYMBOL(base_addr_rx)@GOTPAGEOFF]
+#else
     adrp   x1, EXTERN_SYMBOL(base_addr_rx)
     add    x1, x1, :lo12:EXTERN_SYMBOL(base_addr_rx)
+#endif
     mov    w0, #0xa4000000
     stp    x19,x20,[x16,#0]
     stp    x21,x22,[x16,#16]
@@ -394,3 +414,4 @@ GLOBAL_FUNCTION(breakpoint):
     ret
 
 END_SECTION
+#endif /* __aarch64__ */

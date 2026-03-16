@@ -82,43 +82,43 @@ static __attribute((used)) void end_slice()
 
 __asm__
 (
-		".hidden ngen_LinkBlock_cond_Branch_stub	\n\t"
-		".globl ngen_LinkBlock_cond_Branch_stub		\n\t"
-	"ngen_LinkBlock_cond_Branch_stub:		\n\t"
+		".private_extern _ngen_LinkBlock_cond_Branch_stub	\n\t"
+		".globl _ngen_LinkBlock_cond_Branch_stub		\n\t"
+	"_ngen_LinkBlock_cond_Branch_stub:		\n\t"
 		"mov w1, #1							\n\t"
-		"b ngen_LinkBlock_Shared_stub		\n"
+		"b _ngen_LinkBlock_Shared_stub		\n"
 
-		".hidden ngen_LinkBlock_cond_Next_stub	\n\t"
-		".globl ngen_LinkBlock_cond_Next_stub	\n\t"
-	"ngen_LinkBlock_cond_Next_stub:			\n\t"
+		".private_extern _ngen_LinkBlock_cond_Next_stub	\n\t"
+		".globl _ngen_LinkBlock_cond_Next_stub	\n\t"
+	"_ngen_LinkBlock_cond_Next_stub:			\n\t"
 		"mov w1, #0							\n\t"
-		"b ngen_LinkBlock_Shared_stub		\n"
+		"b _ngen_LinkBlock_Shared_stub		\n"
 
-		".hidden ngen_LinkBlock_Generic_stub	\n\t"
-		".globl ngen_LinkBlock_Generic_stub	\n\t"
-	"ngen_LinkBlock_Generic_stub:			\n\t"
+		".private_extern _ngen_LinkBlock_Generic_stub	\n\t"
+		".globl _ngen_LinkBlock_Generic_stub	\n\t"
+	"_ngen_LinkBlock_Generic_stub:			\n\t"
 		"mov w1, w29						\n\t"	// djump/pc -> in case we need it ..
-		//"b ngen_LinkBlock_Shared_stub		\n"
+		//"b _ngen_LinkBlock_Shared_stub		\n"
 
-		".hidden ngen_LinkBlock_Shared_stub	\n\t"
-		".globl ngen_LinkBlock_Shared_stub	\n\t"
-	"ngen_LinkBlock_Shared_stub:			\n\t"
+		".private_extern _ngen_LinkBlock_Shared_stub	\n\t"
+		".globl _ngen_LinkBlock_Shared_stub	\n\t"
+	"_ngen_LinkBlock_Shared_stub:			\n\t"
 		"mov x0, lr							\n\t"
 		"sub x0, x0, #4						\n\t"	// go before the call
-		"bl rdv_LinkBlock					\n\t"   // returns an RX addr
+		"bl _rdv_LinkBlock					\n\t"   // returns an RX addr
 		"br x0								\n"
 
-		".hidden ngen_FailedToFindBlock_	\n\t"
-		".globl ngen_FailedToFindBlock_		\n\t"
-	"ngen_FailedToFindBlock_:				\n\t"
+		".private_extern _ngen_FailedToFindBlock_	\n\t"
+		".globl _ngen_FailedToFindBlock_		\n\t"
+	"_ngen_FailedToFindBlock_:				\n\t"
 		"mov w0, w29						\n\t"
-		"bl rdv_FailedToFindBlock			\n\t"
+		"bl _rdv_FailedToFindBlock			\n\t"
 		"br x0								\n"
 
-		".hidden ngen_blockcheckfail		\n\t"
-		".globl ngen_blockcheckfail			\n\t"
-	"ngen_blockcheckfail:					\n\t"
-		"bl rdv_BlockCheckFail				\n\t"
+		".private_extern _ngen_blockcheckfail		\n\t"
+		".globl _ngen_blockcheckfail			\n\t"
+	"_ngen_blockcheckfail:					\n\t"
+		"bl _rdv_BlockCheckFail				\n\t"
 		"br x0								\n"
 );
 
@@ -144,28 +144,28 @@ void ngen_mainloop(void* v_cntx)
 		"mov w27, %[_SH4_TIMESLICE]	\n\t"
 		// w29 is next_pc
 		"ldr w29, [x28, %[pc]]		\n\t"
-		"b no_update				\n"
+		"b _no_update				\n"
 
-		".hidden intc_sched			\n\t"
-		".globl intc_sched			\n\t"
-	"intc_sched:					\n\t"
+		".private_extern _intc_sched			\n\t"
+		".globl _intc_sched			\n\t"
+	"_intc_sched:					\n\t"
 		"add w27, w27, %[_SH4_TIMESLICE]	\n\t"
-		"mov x29, lr				\n\r"	// Trashing pc here but it will be reset at the end of the block or in DoInterrupts
-		"bl UpdateSystem			\n\t"
+		"mov x29, lr				\n\t"	// Trashing pc here but it will be reset at the end of the block or in DoInterrupts
+		"bl _UpdateSystem			\n\t"
 		"mov lr, x29				\n\t"
-		"cbnz w0, .do_interrupts	\n\t"
+		"cbnz w0, Ldo_interrupts	\n\t"
 		"ret						\n"
 
-	".do_interrupts:				\n\t"
+	"Ldo_interrupts:				\n\t"
 		"mov x0, x29				\n\t"
-		"bl rdv_DoInterrupts		\n\t"	// Updates next_pc based on host pc
+		"bl _rdv_DoInterrupts		\n\t"	// Updates next_pc based on host pc
 		"mov w29, w0				\n"
 
-		".hidden no_update			\n\t"
-		".globl no_update			\n\t"
-	"no_update:						\n\t"	// next_pc _MUST_ be on w29
+		".private_extern _no_update			\n\t"
+		".globl _no_update			\n\t"
+	"_no_update:					\n\t"	// next_pc _MUST_ be on w29
 		"ldr w0, [x28, %[CpuRunning]] \n\t"
-		"cbz w0, .end_mainloop		\n\t"
+		"cbz w0, Lend_mainloop		\n\t"
 
 		"movz x2, %[RCB_SIZE], lsl #16	\n\t"
 		"sub x2, x28, x2			\n\t"
@@ -180,7 +180,7 @@ void ngen_mainloop(void* v_cntx)
 		"ldr x0, [x2, x1, lsl #3]	\n\t"
 		"br x0						\n"
 
-	".end_mainloop:					\n\t"
+	"Lend_mainloop:					\n\t"
 		"ldp x29, x30, [sp, #144]	\n\t"
 		"ldp s12, s13, [sp, #128]	\n\t"
 		"ldp s10, s11, [sp, #112]	\n\t"

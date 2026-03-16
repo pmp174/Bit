@@ -51,30 +51,36 @@ enum OEAppearance {
         case orange = "orange"
         case yellow = "yellow"
         case green = "green"
-        
+        case indigo = "indigo"
+        case darkBlue = "darkBlue"
+
         static var key = "OETintColor"
-        
+
         var displayName: String {
             switch self {
-            case .none:   return "None"
-            case .blue:   return "Blue"
-            case .purple: return "Purple"
-            case .red:    return "Red"
-            case .orange: return "Orange"
-            case .yellow: return "Yellow"
-            case .green:  return "Green"
+            case .none:     return "None"
+            case .blue:     return "Blue"
+            case .purple:   return "Purple"
+            case .red:      return "Red"
+            case .orange:   return "Orange"
+            case .yellow:   return "Yellow"
+            case .green:    return "Green"
+            case .indigo:   return "Indigo"
+            case .darkBlue: return "Dark Blue"
             }
         }
-        
+
         var color: NSColor? {
             switch self {
-            case .none:   return nil
-            case .blue:   return NSColor(calibratedRed: 0x00/255.0, green: 0x9E/255.0, blue: 0xDC/255.0, alpha: 1.0)
-            case .purple: return NSColor(calibratedRed: 0xEA/255.0, green: 0x4C/255.0, blue: 0x89/255.0, alpha: 1.0)
-            case .red:    return NSColor(calibratedRed: 0xC5/255.0, green: 0x51/255.0, blue: 0x52/255.0, alpha: 1.0)
-            case .orange: return NSColor(calibratedRed: 0xE1/255.0, green: 0x94/255.0, blue: 0x33/255.0, alpha: 1.0)
-            case .yellow: return NSColor(calibratedRed: 0xF2/255.0, green: 0xBE/255.0, blue: 0x2E/255.0, alpha: 1.0)
-            case .green:  return NSColor(calibratedRed: 0x4E/255.0, green: 0x8A/255.0, blue: 0x2E/255.0, alpha: 1.0)
+            case .none:     return nil
+            case .blue:     return NSColor(calibratedRed: 0x00/255.0, green: 0x9E/255.0, blue: 0xDC/255.0, alpha: 1.0)
+            case .purple:   return NSColor(calibratedRed: 0xEA/255.0, green: 0x4C/255.0, blue: 0x89/255.0, alpha: 1.0)
+            case .red:      return NSColor(calibratedRed: 0xC5/255.0, green: 0x51/255.0, blue: 0x52/255.0, alpha: 1.0)
+            case .orange:   return NSColor(calibratedRed: 0xE1/255.0, green: 0x94/255.0, blue: 0x33/255.0, alpha: 1.0)
+            case .yellow:   return NSColor(calibratedRed: 0xF2/255.0, green: 0xBE/255.0, blue: 0x2E/255.0, alpha: 1.0)
+            case .green:    return NSColor(calibratedRed: 0x4E/255.0, green: 0x8A/255.0, blue: 0x2E/255.0, alpha: 1.0)
+            case .indigo:   return NSColor(calibratedRed: 0x43/255.0, green: 0x2E/255.0, blue: 0x6E/255.0, alpha: 1.0)
+            case .darkBlue: return NSColor(calibratedRed: 0x15/255.0, green: 0x19/255.0, blue: 0x46/255.0, alpha: 1.0)
             }
         }
     }

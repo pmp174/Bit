@@ -228,9 +228,10 @@ int romMapperSvi328RsIdeCreate(int hdId)
     rm->deviceHandle = deviceManagerRegister(ROM_SVI328RSIDE, &callbacks, rm);
     rm->debugHandle = debugDeviceRegister(DBGTYPE_PORT, langDbgDevIdeSviRs(), &dbgCallbacks, rm);
 
-    rm->i8255 = i8255Create( (I8255Read)NULL,    (I8255Write)NULL,    (I8255Write)writeA,
-                             (I8255Read)readB,   (I8255Write)writeB,   (I8255Read)readCLo,
-                             (I8255Write)writeCLo, (I8255Read)readCHi, (I8255Write)writeCHi,
+    rm->i8255 = i8255Create( NULL,            NULL,              (I8255Write)writeA,
+                             NULL,            (I8255Read)readB,  (I8255Write)writeB,
+                             NULL,            (I8255Read)readCLo,(I8255Write)writeCLo,
+                             NULL,            (I8255Read)readCHi,(I8255Write)writeCHi,
                              rm);
 
     ioPortRegister(0x14, (IoPortRead)i8255Read, (IoPortWrite)i8255Write, rm->i8255); // PPI Port A

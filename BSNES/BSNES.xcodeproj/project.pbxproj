@@ -60,10 +60,7 @@
 		0167A55A23B985A800F0B36E /* gb.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A44923B9843600F0B36E /* gb.c */; };
 		0167A55B23B985A800F0B36E /* joypad.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A44B23B9843600F0B36E /* joypad.c */; };
 		0167A55D23B985A800F0B36E /* random.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45023B9843600F0B36E /* random.c */; };
-		0167A55E23B985A800F0B36E /* symbol_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45123B9843600F0B36E /* symbol_hash.c */; };
 		0167A55F23B985A800F0B36E /* sgb.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45223B9843600F0B36E /* sgb.c */; };
-		0167A56023B985A800F0B36E /* printer.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45423B9843600F0B36E /* printer.c */; };
-		0167A56123B985A800F0B36E /* sm83_cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45523B9843600F0B36E /* sm83_cpu.c */; };
 		0167A56223B985A800F0B36E /* mbc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45623B9843600F0B36E /* mbc.c */; };
 		0167A56323B985A800F0B36E /* save_state.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45823B9843600F0B36E /* save_state.c */; };
 		0167A56523B985A800F0B36E /* rewind.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45D23B9843600F0B36E /* rewind.c */; };
@@ -72,17 +69,13 @@
 		0167A56D23B985E600F0B36E /* lzma.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0167A4E423B9843600F0B36E /* lzma.cpp */; };
 		0167A59523B985F000F0B36E /* emulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0167A4D323B9843600F0B36E /* emulator.cpp */; };
 		0167A59C23B9861000F0B36E /* libco.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A53B23B9843700F0B36E /* libco.c */; };
+		632C6DD92F684D320083E29D /* rumble.c in Sources */ = {isa = PBXBuildFile; fileRef = BB00000323B9843600F0B36E /* rumble.c */; };
+		632C6DDA2F684D400083E29D /* sm83_cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45523B9843600F0B36E /* sm83_cpu.c */; };
 		82B9198810150FA9007BD6DB /* bsnes.icns in Resources */ = {isa = PBXBuildFile; fileRef = 82B9198710150FA9007BD6DB /* bsnes.icns */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		94D9257314CA9879008F697D /* BSNESGameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 826FE0F41014D8930023A8E9 /* BSNESGameCore.mm */; };
 		C6D120EC1711307900E868A8 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120EB1711307900E868A8 /* OpenEmuBase.framework */; };
-                CC00000123B985A800F0B36E /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A44C23B9843600F0B36E /* debugger.c */; };
-                CC00000223B985A800F0B36E /* sm83_disassembler.c in Sources */ = {isa = PBXBuildFile; fileRef = 0167A45B23B9843600F0B36E /* sm83_disassembler.c */; };
-                CC00000323B985A800F0B36E /* cheat_search.c in Sources */ = {isa = PBXBuildFile; fileRef = BB00000123B9843600F0B36E /* cheat_search.c */; };
-                CC00000423B985A800F0B36E /* cheats.c in Sources */ = {isa = PBXBuildFile; fileRef = BB00000223B9843600F0B36E /* cheats.c */; };
-                CC00000523B985A800F0B36E /* rumble.c in Sources */ = {isa = PBXBuildFile; fileRef = BB00000323B9843600F0B36E /* rumble.c */; };
-                CC00000623B985A800F0B36E /* workboy.c in Sources */ = {isa = PBXBuildFile; fileRef = BB00000423B9843600F0B36E /* workboy.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -755,13 +748,13 @@
 		82B9198710150FA9007BD6DB /* bsnes.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = bsnes.icns; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* BSNES.oecoreplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BSNES.oecoreplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB00000123B9843600F0B36E /* cheat_search.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cheat_search.c; sourceTree = "<group>"; };
+		BB00000223B9843600F0B36E /* cheats.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cheats.c; sourceTree = "<group>"; };
+		BB00000323B9843600F0B36E /* rumble.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rumble.c; sourceTree = "<group>"; };
+		BB00000423B9843600F0B36E /* workboy.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = workboy.c; sourceTree = "<group>"; };
 		C6480FFB1364B2E10094FA33 /* OESNESSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OESNESSystemResponderClient.h; path = ../OpenEmu/SystemPlugins/SuperNES/OESNESSystemResponderClient.h; sourceTree = "<group>"; };
 		C6D120EB1711307900E868A8 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEmuBase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-                BB00000123B9843600F0B36E /* cheat_search.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cheat_search.c; sourceTree = "<group>"; };
-                BB00000223B9843600F0B36E /* cheats.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cheats.c; sourceTree = "<group>"; };
-                BB00000323B9843600F0B36E /* rumble.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rumble.c; sourceTree = "<group>"; };
-                BB00000423B9843600F0B36E /* workboy.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = workboy.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2006,10 +1999,10 @@
 		0167A43F23B9843600F0B36E /* Core */ = {
 			isa = PBXGroup;
 			children = (
-                                BB00000123B9843600F0B36E /* cheat_search.c */,
-                                BB00000223B9843600F0B36E /* cheats.c */,
-                                BB00000323B9843600F0B36E /* rumble.c */,
-                                BB00000423B9843600F0B36E /* workboy.c */,
+				BB00000123B9843600F0B36E /* cheat_search.c */,
+				BB00000223B9843600F0B36E /* cheats.c */,
+				BB00000323B9843600F0B36E /* rumble.c */,
+				BB00000423B9843600F0B36E /* workboy.c */,
 				0167A44023B9843600F0B36E /* sm83_cpu.h */,
 				0167A44123B9843600F0B36E /* sgb_animation_logo.inc */,
 				0167A44223B9843600F0B36E /* printer.h */,
@@ -2375,12 +2368,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-                                CC00000123B985A800F0B36E /* debugger.c in Sources */,
-                                CC00000223B985A800F0B36E /* sm83_disassembler.c in Sources */,
-                                CC00000323B985A800F0B36E /* cheat_search.c in Sources */,
-                                CC00000423B985A800F0B36E /* cheats.c in Sources */,
-                                CC00000523B985A800F0B36E /* rumble.c in Sources */,
-                                CC00000623B985A800F0B36E /* workboy.c in Sources */,
+				632C6DDA2F684D400083E29D /* sm83_cpu.c in Sources */,
+				632C6DD92F684D320083E29D /* rumble.c in Sources */,
 				0167A56223B985A800F0B36E /* mbc.c in Sources */,
 				0167A56D23B985E600F0B36E /* lzma.cpp in Sources */,
 				0167A54A23B984DA00F0B36E /* dsp.cpp in Sources */,
@@ -2388,15 +2377,12 @@
 				0167A54B23B984E000F0B36E /* ppu.cpp in Sources */,
 				0167A54923B984D400F0B36E /* smp.cpp in Sources */,
 				94D9257314CA9879008F697D /* BSNESGameCore.mm in Sources */,
-				0167A56023B985A800F0B36E /* printer.c in Sources */,
 				0167A55323B9856C00F0B36E /* wdc65816.cpp in Sources */,
 				0167A55F23B985A800F0B36E /* sgb.c in Sources */,
 				0167A54623B984BA00F0B36E /* cartridge.cpp in Sources */,
 				0167A54723B984C300F0B36E /* memory.cpp in Sources */,
 				0167A55623B9857C00F0B36E /* spc700.cpp in Sources */,
-				0167A55E23B985A800F0B36E /* symbol_hash.c in Sources */,
 				0167A56623B985A800F0B36E /* timing.c in Sources */,
-				0167A56123B985A800F0B36E /* sm83_cpu.c in Sources */,
 				0167A59523B985F000F0B36E /* emulator.cpp in Sources */,
 				0167A55D23B985A800F0B36E /* random.c in Sources */,
 				0167A55823B985A800F0B36E /* memory.c in Sources */,
@@ -2461,8 +2447,18 @@
 				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				MARKETING_VERSION = 115;
 				OTHER_CFLAGS = (
+					"-DGB_DISABLE_DEBUGGER",
+					"-DGB_DISABLE_CHEATS",
+					"-DGB_VERSION=\"0.16.6\"",
+					"-Wno-multichar",
 					"-DGB_INTERNAL",
-					// "-DDISABLE_DEBUGGER",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DGB_DISABLE_DEBUGGER",
+					"-DGB_DISABLE_CHEATS",
+					"-DGB_VERSION=\"0.16.6\"",
+					"-Wno-multichar",
+					"-DGB_INTERNAL",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = BSNES;
@@ -2488,8 +2484,18 @@
 				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
 				MARKETING_VERSION = 115;
 				OTHER_CFLAGS = (
+					"-DGB_DISABLE_DEBUGGER",
+					"-DGB_DISABLE_CHEATS",
+					"-DGB_VERSION=\"0.16.6\"",
+					"-Wno-multichar",
 					"-DGB_INTERNAL",
-					// "-DDISABLE_DEBUGGER",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DGB_DISABLE_DEBUGGER",
+					"-DGB_DISABLE_CHEATS",
+					"-DGB_VERSION=\"0.16.6\"",
+					"-Wno-multichar",
+					"-DGB_INTERNAL",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = BSNES;

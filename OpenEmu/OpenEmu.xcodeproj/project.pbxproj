@@ -294,6 +294,12 @@
 		5AC349311D89E4EB0089B26F /* NSDocumentController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC349301D89E4EB0089B26F /* NSDocumentController+Additions.swift */; };
 		5AC349331D89EB7B0089B26F /* GameIntegralScalingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC349321D89EB7B0089B26F /* GameIntegralScalingDelegate.swift */; };
 		5AFD06BD2058893B00DFE765 /* GameScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFD06BC2058893B00DFE765 /* GameScannerViewController.swift */; };
+		632C6DDB2F6851CE0083E29D /* 3DO.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 943F99B31707DF3700270E89 /* 3DO.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		632C6DDC2F6851D80083E29D /* Dreamcast.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87DF04FE1BCE2D100060E2C2 /* Dreamcast.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		632C6DDD2F6851E20083E29D /* Jaguar.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 943C80121708A62E00D8D93E /* Jaguar.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		632C6DDE2F6851E80083E29D /* MSX.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = FEB6625B187B791800D14713 /* MSX.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		632C6DDF2F6851F00083E29D /* Pokemon mini.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 081A46261B95744A00565444 /* Pokemon mini.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		632C6DE02F6851F80083E29D /* Supervision.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 837964E11A6149C000A8DE5C /* Supervision.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6355D36F2F664AA00024B088 /* PrefAppearanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6355D36E2F664AA00024B088 /* PrefAppearanceController.swift */; };
 		6355D3712F66546B0024B088 /* PrefGeneralController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6355D3702F66546B0024B088 /* PrefGeneralController.swift */; };
 		6355D3732F66B9A40024B088 /* Bit App Icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 6355D3722F66B9A40024B088 /* Bit App Icon.icon */; };
@@ -1191,6 +1197,12 @@
 			dstPath = Systems;
 			dstSubfolderSpec = 13;
 			files = (
+				632C6DE02F6851F80083E29D /* Supervision.oesystemplugin in Copy System Plugins to App Plugins */,
+				632C6DDF2F6851F00083E29D /* Pokemon mini.oesystemplugin in Copy System Plugins to App Plugins */,
+				632C6DDE2F6851E80083E29D /* MSX.oesystemplugin in Copy System Plugins to App Plugins */,
+				632C6DDD2F6851E20083E29D /* Jaguar.oesystemplugin in Copy System Plugins to App Plugins */,
+				632C6DDC2F6851D80083E29D /* Dreamcast.oesystemplugin in Copy System Plugins to App Plugins */,
+				632C6DDB2F6851CE0083E29D /* 3DO.oesystemplugin in Copy System Plugins to App Plugins */,
 				87F077B423B68D02001FFC9B /* GameCube.oesystemplugin in Copy System Plugins to App Plugins */,
 				873A36421FE233E00004D81D /* Saturn.oesystemplugin in Copy System Plugins to App Plugins */,
 				87BD9E331C2A679B006722DF /* WonderSwan.oesystemplugin in Copy System Plugins to App Plugins */,

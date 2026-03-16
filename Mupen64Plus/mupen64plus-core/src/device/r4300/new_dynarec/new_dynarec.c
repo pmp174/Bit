@@ -190,15 +190,16 @@ struct ll_entry
   u_int length;
 };
 
-/* linkage */
-void verify_code(void);
-void cc_interrupt(void);
-void do_interrupt(void);
-void fp_exception(void);
-void fp_exception_ds(void);
-void jump_syscall(void);
-void jump_eret(void);
-void breakpoint(void);
+/* linkage (defined in assembly -- need default visibility to be found across LTO boundary) */
+#define ASM_VISIBLE __attribute__((visibility("default")))
+ASM_VISIBLE void verify_code(void);
+ASM_VISIBLE void cc_interrupt(void);
+ASM_VISIBLE void do_interrupt(void);
+ASM_VISIBLE void fp_exception(void);
+ASM_VISIBLE void fp_exception_ds(void);
+ASM_VISIBLE void jump_syscall(void);
+ASM_VISIBLE void jump_eret(void);
+ASM_VISIBLE void breakpoint(void);
 
 /* interpreted opcode */
 static void ldl_merge(void);

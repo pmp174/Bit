@@ -91,7 +91,7 @@ extern unsigned int using_tlb;
 
 void invalidate_cached_code_new_dynarec(struct r4300_core* r4300, uint32_t address, size_t size);
 void new_dynarec_init(void);
-void new_dyna_start(void);
+__attribute__((visibility("default"))) void new_dyna_start(void);
 void new_dynarec_cleanup(void);
 
 #endif /* M64P_DEVICE_R4300_NEW_DYNAREC_H */

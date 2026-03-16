@@ -168,6 +168,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3D2091111183B8E900BEAA42"
+               BuildableName = "Build &amp; Install Mupen64Plus"
+               BlueprintName = "Build &amp; Install Mupen64Plus"
+               ReferencedContainer = "container:Mupen64Plus/Mupen64Plus.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "82D815AB0F1D882B00EF8CF5"
                BuildableName = "Build &amp; Install O2EM"
                BlueprintName = "Build &amp; Install O2EM"
@@ -238,10 +252,122 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ABB3C6461501BC6D00E0C22E"
+               BuildableName = "DeSmuME.oecoreplugin"
+               BlueprintName = "DeSmuME (OpenEmu Plug-in)"
+               ReferencedContainer = "container:DeSmuME/src/cocoa/DeSmuME (Latest).xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "82B9195310150EA2007BD6DB"
+               BuildableName = "Build &amp; Install 4DO"
+               BlueprintName = "Build &amp; Install 4DO"
+               ReferencedContainer = "container:4DO/4DO.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "081A45EE1B95639F00565444"
+               BuildableName = "Build and Install PokeMini"
+               BlueprintName = "Build and Install PokeMini"
+               ReferencedContainer = "container:PokeMini/PokeMini.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "837965451A616BFD00A8DE5C"
+               BuildableName = "Build &amp; Install Potator"
+               BlueprintName = "Build &amp; Install Potator"
+               ReferencedContainer = "container:Potator-Core/Potator.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "980BE29617098BCF00511340"
+               BuildableName = "Build &amp; Install VirtualJaguar"
+               BlueprintName = "Build &amp; Install VirtualJaguar"
+               ReferencedContainer = "container:VirtualJaguar/VirtualJaguar.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FED62A59187BE23C00A88500"
+               BuildableName = "Build &amp; Install blueMSX"
+               BlueprintName = "Build &amp; Install blueMSX"
+               ReferencedContainer = "container:blueMSX/blueMSX.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "8D15AC270486D014006FF6A4"
                BuildableName = "Bit.app"
                BlueprintName = "OpenEmu"
                ReferencedContainer = "container:OpenEmu/OpenEmu.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8CBB42FF178C399D00FA270D"
+               BuildableName = "Build &amp; Install Reicast"
+               BlueprintName = "Build &amp; Install Reicast"
+               ReferencedContainer = "container:Reicast/Reicast.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "82B9195310150EA2007BD6DB"
+               BuildableName = "Build &amp; Install BSNES"
+               BlueprintName = "Build &amp; Install BSNES"
+               ReferencedContainer = "container:BSNES/BSNES.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
