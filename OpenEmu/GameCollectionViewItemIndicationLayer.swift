@@ -26,7 +26,7 @@ import Cocoa
 import QuartzCore
 
 @objc enum OEGridViewCellIndicationType: Int {
-    case none, fileMissing, processing, dropOn
+    case none, fileMissing, processing, dropOn, cloudOnly, pinned
 }
 
 @objc(OEGridViewCellIndicationLayer)
@@ -41,6 +41,8 @@ final class GameCollectionViewItemIndicationLayer: CALayer {
     private static let indicationShadowColorRef = CGColor(red: 0.341, green: 0.0, blue: 0.012, alpha: 0.6)
     private static let missingFileBackgroundColorRef = CGColor(red: 0.992, green: 0.0, blue: 0.0, alpha: 0.4)
     private static let processingItemBackgroundColorRef = CGColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.7)
+    private static let cloudBadgeBackgroundColorRef = CGColor(red: 0.2, green: 0.5, blue: 0.9, alpha: 0.85)
+    private static let pinBadgeBackgroundColorRef = CGColor(red: 0.3, green: 0.7, blue: 0.3, alpha: 0.85)
     
     private static let rotationAnimation: CAKeyframeAnimation = {
         let stepCount = 12
@@ -77,6 +79,28 @@ final class GameCollectionViewItemIndicationLayer: CALayer {
             else if type == .dropOn {
                 sublayers?.forEach { $0.removeFromSuperlayer() }
                 backgroundColor = Self.dropOnBackgroundColorRef
+            }
+            else if type == .cloudOnly || type == .pinned {
+                sublayers?.forEach { $0.removeFromSuperlayer() }
+                backgroundColor = nil
+                
+                let badge = CALayer()
+                badge.actions = ["position" : NSNull()]
+                badge.cornerRadius = 8
+                badge.backgroundColor = type == .cloudOnly ? Self.cloudBadgeBackgroundColorRef : Self.pinBadgeBackgroundColorRef
+                
+                let symbolName = type == .cloudOnly ? "cloud" : "pin.fill"
+                if let img = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) {
+                    let config = NSImage.SymbolConfiguration(pointSize: 10, weight: .medium)
+                    let tinted = img.withSymbolConfiguration(config)
+                    let badgeImage = CALayer()
+                    badgeImage.contents = tinted
+                    badgeImage.contentsGravity = .resizeAspect
+                    badge.addSublayer(badgeImage)
+                }
+                
+                addSublayer(badge)
+                setNeedsLayout()
             }
             else {
                 var sublayer: CALayer! = sublayers?.last
@@ -143,6 +167,18 @@ final class GameCollectionViewItemIndicationLayer: CALayer {
                                height: spinnerImageSize.height).integral
             frame.size.height = frame.size.width
             sublayer.frame = frame
+        }
+        else if type == .cloudOnly || type == .pinned {
+            let badgeSize: CGFloat = 20
+            let padding: CGFloat = 4
+            let badgeFrame = CGRect(
+                x: bounds.maxX - badgeSize - padding,
+                y: bounds.minY + padding,
+                width: badgeSize,
+                height: badgeSize
+            ).integral
+            sublayer.frame = badgeFrame
+            sublayer.sublayers?.first?.frame = sublayer.bounds.insetBy(dx: 3, dy: 3)
         }
         else {
             sublayer.frame = bounds

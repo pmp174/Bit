@@ -45,11 +45,15 @@ final class OEDBRom: OEDBItem {
     // MARK: - CoreDataProperties
     
     @NSManaged var archiveFileIndex: NSNumber?
+    @NSManaged var cloudIdentifier: String?
     // @NSManaged var crc32: String?
     // @NSManaged var favorite: NSNumber?
     @NSManaged var fileName: String?
     @NSManaged var fileSize: NSNumber?
     @NSManaged var header: String?
+    @NSManaged var isDownloaded: NSNumber?
+    @NSManaged var isPinned: NSNumber?
+    @NSManaged var lastEvictionCheck: Date?
     @NSManaged var lastPlayed: Date?
     @NSManaged var location: String?
     @NSManaged var md5: String?
@@ -248,12 +252,61 @@ final class OEDBRom: OEDBItem {
     /// Sets rom’s `lastPlayed` to now.
     func markAsPlayedNow() {
         lastPlayed = Date()
+        // Reset eviction check so recently played games aren't evicted
+        lastEvictionCheck = nil
     }
     
     // MARK: -
     
     var filesAvailable: Bool {
         return (try? url?.checkResourceIsReachable()) ?? false
+    }
+    
+    // MARK: - Cloud Storage
+    
+    /// Whether the ROM file is currently downloaded locally.
+    @objc var isLocallyAvailable: Bool {
+        return isDownloaded?.boolValue ?? true
+    }
+    
+    /// Whether the user has pinned this ROM to keep it downloaded.
+    @objc var isLocallyPinned: Bool {
+        get { return isPinned?.boolValue ?? false }
+        set {
+            isPinned = NSNumber(value: newValue)
+            save()
+        }
+    }
+    
+    /// Mark this ROM as downloaded or cloud-only.
+    @objc func setDownloaded(_ downloaded: Bool) {
+        isDownloaded = NSNumber(value: downloaded)
+        if downloaded {
+            lastEvictionCheck = Date()
+        }
+        save()
+    }
+    
+    /// Ensure the ROM file is available locally, downloading from cloud if needed.
+    func ensureLocallyAvailable() async throws {
+        guard !isLocallyAvailable, let location = location else { return }
+        
+        guard let romFolderURL = libraryDatabase.romsFolderURL,
+              let localURL = URL(string: location, relativeTo: romFolderURL) else { return }
+        
+        try await OECloudStorageManager.shared.downloadROM(
+            relativePath: location,
+            toLocalURL: localURL
+        )
+        
+        setDownloaded(true)
+    }
+    
+    /// ObjC-callable wrapper that triggers an async cloud download on a background thread.
+    @objc func downloadFromCloudInBackground() {
+        Task {
+            try? await ensureLocallyAvailable()
+        }
     }
     
     func delete(moveToTrash: Bool, keepSaveStates: Bool) {
@@ -303,6 +356,13 @@ final class OEDBRom: OEDBItem {
                let statesFolderURL = saveStates.first?.url.deletingLastPathComponent(),
                let file = try? OEFile(url: statesFolderURL) {
                 NSWorkspace.shared.recycle(file.allFileURLs)
+            }
+        }
+        
+        // Delete from cloud storage if synced
+        if OECloudStorageManager.shared.isCloudEnabled, let location = location {
+            Task.detached(priority: .utility) {
+                try? await OECloudStorageManager.shared.deleteROM(relativePath: location)
             }
         }
         

@@ -832,9 +832,6 @@ extension AppDelegate: NSMenuDelegate {
         // Set up HID support.
         setUpHIDSupport()
         
-        // Start Save Sync Manager
-        OESaveSyncManager.shared.startMonitoring()
-        
         // Replace quicksave/quickload items with menus if required.
         updateControlsMenu()
         
@@ -846,6 +843,15 @@ extension AppDelegate: NSMenuDelegate {
         }
         
         CoreUpdater.shared.checkForNewCores()   // TODO: check error from completion handler
+        
+        // Authenticate cloud storage provider if configured
+        if OECloudStorageManager.shared.isCloudEnabled {
+            Task {
+                try? await OECloudStorageManager.shared.authenticate()
+            }
+            OEEvictionScheduler.shared.start()
+            OEFileMonitor.shared.start()
+        }
         
         let userDefaultsController = NSUserDefaultsController.shared
         bind(.logHIDEvents, to: userDefaultsController, withKeyPath: "values.logsHIDEvents", options: nil)
@@ -899,8 +905,7 @@ extension AppDelegate: NSMenuDelegate {
     // FIXME: Handle ´PluginDocument´s
     func application(_ application: NSApplication, open urls: [URL]) {
         for url in urls {
-            if url.scheme == "com.openemu.openemu" && url.host == "oauth2callback" {
-                OESaveSyncManager.shared.handleOAuthRedirect(url: url)
+            if OECloudStorageManager.shared.handleOAuthRedirect(url: url) {
                 return
             }
         }

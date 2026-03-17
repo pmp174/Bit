@@ -24,380 +24,613 @@
 
 import Cocoa
 
-/// Preferences pane that lets users connect/disconnect their Google Drive account
-/// for the Save Sync feature and see the current connection status.
 final class PrefCloudSyncController: NSViewController {
     
     // MARK: - UI Elements
     
-    private let headerLabel       = NSTextField(labelWithString: "")
-    private let descLabel         = NSTextField(wrappingLabelWithString: "")
-    private let signInButton      = NSButton()
-    private let signOutButton     = NSButton()
-    private let statusDot         = NSTextField(labelWithString: "●")
-    private let statusLabel       = NSTextField(labelWithString: "")
-    private let divider           = NSBox()
-    private let lastSyncedLabel   = NSTextField(labelWithString: "")
-    private let syncNowButton     = NSButton()
-    private let syncInfoLabel     = NSTextField(wrappingLabelWithString: "")
-    private let loadingIndicator  = NSProgressIndicator()
+    private var providerPopup: NSPopUpButton!
+    private var savesOnlyRadio: NSButton!
+    private var fullLibraryRadio: NSButton!
+    private var providerSettingsBox: NSBox!
+    private var statusLabel: NSTextField!
+    private var statusIndicator: NSTextField!
+    private var evictionDaysStepper: NSStepper!
+    private var evictionDaysLabel: NSTextField!
+    private var recentPlayDaysStepper: NSStepper!
+    private var recentPlayDaysLabel: NSTextField!
+    private var syncNowButton: NSButton!
     
-    private let scrollView        = NSScrollView()
-    private let tableView         = NSTableView()
+    // WebDAV-specific
+    private var webDAVURLField: NSTextField!
+    private var webDAVUserField: NSTextField!
+    private var webDAVPassField: NSSecureTextField!
+    private var webDAVSaveButton: NSButton!
     
-    private var cloudFiles: [OESaveSyncManager.DriveFile] = []
+    // OAuth-specific
+    private var signInButton: NSButton!
+    private var signOutButton: NSButton!
     
-    private lazy var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateStyle = .medium
-        df.timeStyle = .short
-        return df
-    }()
+    private var providerSettingsContainer: NSStackView!
     
-    private lazy var tableDateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateStyle = .short
-        df.timeStyle = .short
-        return df
-    }()
+    private let manager = OECloudStorageManager.shared
     
-    // MARK: - Notification Token
+    // MARK: - UserDefaults Keys
     
-    private var syncStatusToken: NSObjectProtocol?
+    private static let evictionDaysKey = "OECloudEvictionDays"
+    private static let recentPlayDaysKey = "OECloudRecentPlayDays"
     
     // MARK: - Lifecycle
     
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 468, height: 480))
-        buildUI()
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 468, height: 560))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
-        updateStatus()
         
-        syncStatusToken = NotificationCenter.default.addObserver(
-            forName: .OESaveSyncStatusDidChange,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.updateStatus()
+        let container = NSStackView()
+        container.orientation = .vertical
+        container.alignment = .leading
+        container.spacing = 0
+        container.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(container)
+        
+        NSLayoutConstraint.activate([
+            container.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            container.widthAnchor.constraint(equalToConstant: 420),
+        ])
+        
+        // ── PROVIDER SECTION ──────────────────────────────────────
+        let providerHeader = makeSectionHeader("Storage Provider")
+        container.addArrangedSubview(providerHeader)
+        container.setCustomSpacing(12, after: providerHeader)
+        
+        let providerGrid = buildProviderSection()
+        container.addArrangedSubview(providerGrid)
+        container.setCustomSpacing(20, after: providerGrid)
+        
+        // ── SYNC SCOPE SECTION ────────────────────────────────────
+        let scopeHeader = makeSectionHeader("What to Sync")
+        container.addArrangedSubview(scopeHeader)
+        container.setCustomSpacing(12, after: scopeHeader)
+        
+        let scopeStack = buildSyncScopeSection()
+        container.addArrangedSubview(scopeStack)
+        container.setCustomSpacing(20, after: scopeStack)
+        
+        // ── PROVIDER SETTINGS ─────────────────────────────────────
+        providerSettingsContainer = NSStackView()
+        providerSettingsContainer.orientation = .vertical
+        providerSettingsContainer.alignment = .leading
+        providerSettingsContainer.spacing = 8
+        providerSettingsContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        providerSettingsBox = NSBox()
+        providerSettingsBox.title = "Provider Settings"
+        providerSettingsBox.translatesAutoresizingMaskIntoConstraints = false
+        providerSettingsBox.contentView?.addSubview(providerSettingsContainer)
+
+        if let contentView = providerSettingsBox.contentView {
+            NSLayoutConstraint.activate([
+                providerSettingsContainer.topAnchor.constraint(equalTo: contentView.topAnchor),
+                providerSettingsContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                providerSettingsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                providerSettingsContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            ])
         }
+
+        container.addArrangedSubview(providerSettingsBox)
+        NSLayoutConstraint.activate([
+            providerSettingsBox.widthAnchor.constraint(equalTo: container.widthAnchor),
+        ])
+        container.setCustomSpacing(20, after: providerSettingsBox)
+        
+        // ── STATUS SECTION ────────────────────────────────────────
+        let statusHeader = makeSectionHeader("Status")
+        container.addArrangedSubview(statusHeader)
+        container.setCustomSpacing(8, after: statusHeader)
+        
+        let statusRow = NSStackView()
+        statusRow.orientation = .horizontal
+        statusRow.spacing = 8
+        
+        statusIndicator = NSTextField(labelWithString: "●")
+        statusIndicator.font = .systemFont(ofSize: 12)
+        statusIndicator.textColor = .systemGray
+        statusRow.addArrangedSubview(statusIndicator)
+        
+        statusLabel = NSTextField(labelWithString: "Not connected")
+        statusLabel.font = .systemFont(ofSize: 12)
+        statusRow.addArrangedSubview(statusLabel)
+        
+        container.addArrangedSubview(statusRow)
+        container.setCustomSpacing(20, after: statusRow)
+        
+        // ── EVICTION SECTION ──────────────────────────────────────
+        let evictionHeader = makeSectionHeader("Eviction")
+        container.addArrangedSubview(evictionHeader)
+        container.setCustomSpacing(12, after: evictionHeader)
+        
+        let evictionGrid = buildEvictionSection()
+        container.addArrangedSubview(evictionGrid)
+        container.setCustomSpacing(20, after: evictionGrid)
+        
+        // ── SYNC NOW BUTTON ───────────────────────────────────────
+        syncNowButton = NSButton(title: "Sync Now", target: self, action: #selector(syncNow(_:)))
+        container.addArrangedSubview(syncNowButton)
+        
+        // Update UI based on current state
+        updateProviderSettings()
+        updateStatus()
+        updateSyncScopeSelection()
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(statusDidChange(_:)),
+            name: OECloudStorageManager.statusDidChangeNotification, object: nil)
     }
     
     deinit {
-        if let token = syncStatusToken {
-            NotificationCenter.default.removeObserver(token)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Section Header
+    
+    private func makeSectionHeader(_ title: String) -> NSTextField {
+        let label = NSTextField(labelWithString: title)
+        label.font = .boldSystemFont(ofSize: 13)
+        return label
+    }
+    
+    // MARK: - Provider Section
+    
+    private func buildProviderSection() -> NSView {
+        let gridView = NSGridView(numberOfColumns: 2, rows: 0)
+        gridView.column(at: 0).xPlacement = .trailing
+        gridView.rowAlignment = .firstBaseline
+        gridView.columnSpacing = 8
+        gridView.rowSpacing = 12
+        
+        let providerLabel = NSTextField(labelWithString: NSLocalizedString("Provider:", comment: ""))
+        providerLabel.alignment = .right
+        
+        providerPopup = NSPopUpButton()
+        providerPopup.addItems(withTitles: [
+            NSLocalizedString("Local (No Cloud)", comment: ""),
+            NSLocalizedString("iCloud Drive", comment: ""),
+            NSLocalizedString("Google Drive", comment: ""),
+            NSLocalizedString("Dropbox", comment: ""),
+            NSLocalizedString("WebDAV / NAS", comment: ""),
+        ])
+        providerPopup.target = self
+        providerPopup.action = #selector(providerChanged(_:))
+        
+        // Select current provider
+        switch manager.libraryProviderType {
+        case .local:       providerPopup.selectItem(at: 0)
+        case .iCloud:      providerPopup.selectItem(at: 1)
+        case .googleDrive: providerPopup.selectItem(at: 2)
+        case .dropbox:     providerPopup.selectItem(at: 3)
+        case .webDAV:      providerPopup.selectItem(at: 4)
+        }
+        
+        gridView.addRow(with: [providerLabel, providerPopup])
+        
+        return gridView
+    }
+    
+    // MARK: - Sync Scope Section
+    
+    private func buildSyncScopeSection() -> NSView {
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 6
+        
+        savesOnlyRadio = NSButton(radioButtonWithTitle: NSLocalizedString("Saves only (battery saves + save states)", comment: ""),
+                                   target: self, action: #selector(syncScopeChanged(_:)))
+        savesOnlyRadio.tag = 0
+        
+        fullLibraryRadio = NSButton(radioButtonWithTitle: NSLocalizedString("Entire library (ROMs + saves + screenshots)", comment: ""),
+                                     target: self, action: #selector(syncScopeChanged(_:)))
+        fullLibraryRadio.tag = 1
+        
+        stack.addArrangedSubview(savesOnlyRadio)
+        stack.addArrangedSubview(fullLibraryRadio)
+        
+        return stack
+    }
+    
+    private func updateSyncScopeSelection() {
+        let scope = manager.syncScope
+        if scope == .all {
+            fullLibraryRadio.state = .on
+            savesOnlyRadio.state = .off
+        } else {
+            savesOnlyRadio.state = .on
+            fullLibraryRadio.state = .off
         }
     }
     
-    // MARK: - TableView Setup
+    // MARK: - Eviction Section
     
-    private func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.headerView = NSTableHeaderView()
-        tableView.rowHeight = 20
-        tableView.gridStyleMask = .solidHorizontalGridLineMask
-        tableView.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
+    private func buildEvictionSection() -> NSView {
+        let gridView = NSGridView(numberOfColumns: 2, rows: 0)
+        gridView.column(at: 0).xPlacement = .trailing
+        gridView.rowAlignment = .firstBaseline
+        gridView.columnSpacing = 8
+        gridView.rowSpacing = 12
         
-        let sysCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("System"))
-        sysCol.headerCell.stringValue = "System"
-        sysCol.width = 60
-        tableView.addTableColumn(sysCol)
+        let defaults = UserDefaults.standard
         
-        let fileCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("Filename"))
-        fileCol.headerCell.stringValue = "Filename"
-        fileCol.width = 200
-        tableView.addTableColumn(fileCol)
+        // Eviction days
+        let evictionLabel = NSTextField(labelWithString: NSLocalizedString("Auto-remove unused games after:", comment: ""))
+        evictionLabel.alignment = .right
         
-        let dateCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("Modified"))
-        dateCol.headerCell.stringValue = "Modified"
-        dateCol.width = 120
-        tableView.addTableColumn(dateCol)
+        let evictionRow = NSStackView()
+        evictionRow.orientation = .horizontal
+        evictionRow.spacing = 4
         
-        scrollView.documentView = tableView
-        scrollView.hasVerticalScroller = true
-        scrollView.borderType = .bezelBorder
+        let currentEvictionDays = defaults.integer(forKey: Self.evictionDaysKey)
+        let evictionDays = currentEvictionDays > 0 ? currentEvictionDays : 30
+        
+        evictionDaysLabel = NSTextField(labelWithString: "\(evictionDays) days")
+        evictionDaysLabel.font = .systemFont(ofSize: 12)
+        
+        evictionDaysStepper = NSStepper()
+        evictionDaysStepper.minValue = 7
+        evictionDaysStepper.maxValue = 365
+        evictionDaysStepper.increment = 7
+        evictionDaysStepper.integerValue = evictionDays
+        evictionDaysStepper.target = self
+        evictionDaysStepper.action = #selector(evictionDaysChanged(_:))
+        
+        evictionRow.addArrangedSubview(evictionDaysLabel)
+        evictionRow.addArrangedSubview(evictionDaysStepper)
+        
+        gridView.addRow(with: [evictionLabel, evictionRow])
+        
+        // Recent play protection
+        let recentLabel = NSTextField(labelWithString: NSLocalizedString("Keep recently played games:", comment: ""))
+        recentLabel.alignment = .right
+        
+        let recentRow = NSStackView()
+        recentRow.orientation = .horizontal
+        recentRow.spacing = 4
+        
+        let currentRecentDays = defaults.integer(forKey: Self.recentPlayDaysKey)
+        let recentDays = currentRecentDays > 0 ? currentRecentDays : 7
+        
+        recentPlayDaysLabel = NSTextField(labelWithString: "\(recentDays) days")
+        recentPlayDaysLabel.font = .systemFont(ofSize: 12)
+        
+        recentPlayDaysStepper = NSStepper()
+        recentPlayDaysStepper.minValue = 1
+        recentPlayDaysStepper.maxValue = 90
+        recentPlayDaysStepper.increment = 1
+        recentPlayDaysStepper.integerValue = recentDays
+        recentPlayDaysStepper.target = self
+        recentPlayDaysStepper.action = #selector(recentPlayDaysChanged(_:))
+        
+        recentRow.addArrangedSubview(recentPlayDaysLabel)
+        recentRow.addArrangedSubview(recentPlayDaysStepper)
+        
+        gridView.addRow(with: [recentLabel, recentRow])
+        
+        return gridView
     }
     
-    // MARK: - Build UI
+    // MARK: - Provider Settings
     
-    private func buildUI() {
-        // ── Header ──────────────────────────────────────────────────
-        headerLabel.stringValue = "Google Drive Cloud Sync"
-        headerLabel.font = .boldSystemFont(ofSize: 15)
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(headerLabel)
+    private func updateProviderSettings() {
+        // Remove all existing subviews
+        providerSettingsContainer.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        // ── Description ─────────────────────────────────────────────
-        descLabel.stringValue = "Sign in with Google to automatically back up your battery saves and save states. When launching a game, OpenEmu will check whether a newer save is available in the cloud and offer to download it."
-        descLabel.font = .systemFont(ofSize: 12)
-        descLabel.textColor = .secondaryLabelColor
-        descLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(descLabel)
+        let type = selectedProviderType()
         
-        // ── Status Row ───────────────────────────────────────────────
-        statusDot.font = .systemFont(ofSize: 14)
-        statusDot.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(statusDot)
+        switch type {
+        case .local:
+            let label = NSTextField(labelWithString: NSLocalizedString("Games are stored locally only. No cloud sync.", comment: ""))
+            label.font = .systemFont(ofSize: 11)
+            label.textColor = .secondaryLabelColor
+            providerSettingsContainer.addArrangedSubview(label)
+            
+        case .iCloud:
+            let label = NSTextField(labelWithString: NSLocalizedString("Uses your iCloud Drive storage. Ensure iCloud is enabled in System Settings.", comment: ""))
+            label.font = .systemFont(ofSize: 11)
+            label.textColor = .secondaryLabelColor
+            label.preferredMaxLayoutWidth = 380
+            providerSettingsContainer.addArrangedSubview(label)
+            
+            signInButton = NSButton(title: "Enable iCloud Sync", target: self, action: #selector(signIn(_:)))
+            providerSettingsContainer.addArrangedSubview(signInButton)
+            
+        case .googleDrive:
+            buildOAuthSettings(providerName: "Google Drive")
+            
+        case .dropbox:
+            buildOAuthSettings(providerName: "Dropbox")
+            
+        case .webDAV:
+            buildWebDAVSettings()
+        }
+    }
+    
+    private func buildOAuthSettings(providerName: String) {
+        let provider = manager.provider(for: selectedProviderType())
+        let isAuth = provider?.isAuthenticated ?? false
         
-        statusLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(statusLabel)
+        if isAuth {
+            let label = NSTextField(labelWithString: String(format: NSLocalizedString("Connected to %@.", comment: ""), providerName))
+            label.font = .systemFont(ofSize: 11)
+            label.textColor = .systemGreen
+            providerSettingsContainer.addArrangedSubview(label)
+            
+            signOutButton = NSButton(title: NSLocalizedString("Sign Out", comment: ""), target: self, action: #selector(signOut(_:)))
+            providerSettingsContainer.addArrangedSubview(signOutButton)
+        } else {
+            signInButton = NSButton(title: String(format: NSLocalizedString("Sign in to %@", comment: ""), providerName),
+                                     target: self, action: #selector(signIn(_:)))
+            providerSettingsContainer.addArrangedSubview(signInButton)
+        }
+    }
+    
+    private func buildWebDAVSettings() {
+        let defaults = UserDefaults.standard
         
-        // ── Sign In Button ───────────────────────────────────────────
-        signInButton.title = "Sign In with Google"
-        signInButton.bezelStyle = .rounded
-        signInButton.controlSize = .large
-        signInButton.font = .systemFont(ofSize: 13, weight: .semibold)
-        signInButton.target = self
-        signInButton.action = #selector(signIn)
-        signInButton.translatesAutoresizingMaskIntoConstraints = false
-        // Use the Google brand colour as much as AppKit allows.
-        signInButton.contentTintColor = NSColor(red: 0.259, green: 0.522, blue: 0.957, alpha: 1)
-        view.addSubview(signInButton)
+        let grid = NSGridView(numberOfColumns: 2, rows: 0)
+        grid.column(at: 0).xPlacement = .trailing
+        grid.rowAlignment = .firstBaseline
+        grid.columnSpacing = 8
+        grid.rowSpacing = 8
         
-        // ── Sign Out Button ──────────────────────────────────────────
-        signOutButton.title = "Sign Out"
-        signOutButton.bezelStyle = .rounded
-        signOutButton.controlSize = .regular
-        signOutButton.font = .systemFont(ofSize: 12)
-        signOutButton.target = self
-        signOutButton.action = #selector(signOut)
-        signOutButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(signOutButton)
+        let urlLabel = NSTextField(labelWithString: NSLocalizedString("Server URL:", comment: ""))
+        urlLabel.alignment = .right
         
-        // ── Divider ──────────────────────────────────────────────────
-        divider.boxType = .separator
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(divider)
-        
-        // ── Loading Indicator ────────────────────────────────────────
-        loadingIndicator.style = .spinning
-        loadingIndicator.controlSize = .small
-        loadingIndicator.isDisplayedWhenStopped = false
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loadingIndicator)
-        
-        // ── ScrollView / TableView ───────────────────────────────────
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollView)
-        
-        // ── Sync Now Button ──────────────────────────────────────────
-        syncNowButton.title = "Sync Now"
-        syncNowButton.bezelStyle = .rounded
-        syncNowButton.controlSize = .small
-        syncNowButton.font = .systemFont(ofSize: 11)
-        syncNowButton.target = self
-        syncNowButton.action = #selector(syncNow)
-        syncNowButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(syncNowButton)
-        
-        // ── Last Synced Label ────────────────────────────────────────
-        lastSyncedLabel.font = .systemFont(ofSize: 11)
-        lastSyncedLabel.textColor = .secondaryLabelColor
-        lastSyncedLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lastSyncedLabel)
-        
-        // ── Sync Info ────────────────────────────────────────────────
-        syncInfoLabel.stringValue = "Saves are stored in a hidden App Data folder in your Google Drive."
-        syncInfoLabel.font = .systemFont(ofSize: 11)
-        syncInfoLabel.textColor = .tertiaryLabelColor
-        syncInfoLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(syncInfoLabel)
-        
-        // ── Layout ───────────────────────────────────────────────────
+        webDAVURLField = NSTextField()
+        webDAVURLField.placeholderString = "https://nas.local:8080"
+        webDAVURLField.stringValue = defaults.string(forKey: "OEWebDAVServerURL") ?? ""
+        webDAVURLField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            // Header
-            headerLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
-            headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            headerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
-            
-            // Description
-            descLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 10),
-            descLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            descLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
-            
-            // Status dot + label
-            statusDot.topAnchor.constraint(equalTo: descLabel.bottomAnchor, constant: 24),
-            statusDot.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            
-            statusLabel.centerYAnchor.constraint(equalTo: statusDot.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: statusDot.trailingAnchor, constant: 6),
-            
-            // Sign In button
-            signInButton.topAnchor.constraint(equalTo: statusDot.bottomAnchor, constant: 20),
-            signInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            signInButton.widthAnchor.constraint(equalToConstant: 180),
-            
-            // Sign Out button
-            signOutButton.centerYAnchor.constraint(equalTo: signInButton.centerYAnchor),
-            signOutButton.leadingAnchor.constraint(equalTo: signInButton.trailingAnchor, constant: 12),
-            
-            // Divider
-            divider.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
-            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            // Loading Indicator
-            loadingIndicator.centerYAnchor.constraint(equalTo: statusDot.centerYAnchor),
-            loadingIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
-            
-            // ScrollView (Cloud Files List)
-            scrollView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 16),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
-            scrollView.heightAnchor.constraint(equalToConstant: 180),
-            
-            // Sync Now
-            syncNowButton.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 12),
-            syncNowButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            
-            // Last Synced
-            lastSyncedLabel.centerYAnchor.constraint(equalTo: syncNowButton.centerYAnchor),
-            lastSyncedLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            
-            // Privacy Note
-            syncInfoLabel.topAnchor.constraint(equalTo: syncNowButton.bottomAnchor, constant: 12),
-            syncInfoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            syncInfoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
+            webDAVURLField.widthAnchor.constraint(equalToConstant: 250),
         ])
+        
+        grid.addRow(with: [urlLabel, webDAVURLField])
+        
+        let userLabel = NSTextField(labelWithString: NSLocalizedString("Username:", comment: ""))
+        userLabel.alignment = .right
+        
+        webDAVUserField = NSTextField()
+        webDAVUserField.placeholderString = "username"
+        webDAVUserField.stringValue = defaults.string(forKey: "OEWebDAVUsername") ?? ""
+        webDAVUserField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            webDAVUserField.widthAnchor.constraint(equalToConstant: 250),
+        ])
+        
+        grid.addRow(with: [userLabel, webDAVUserField])
+        
+        let passLabel = NSTextField(labelWithString: NSLocalizedString("Password:", comment: ""))
+        passLabel.alignment = .right
+        
+        webDAVPassField = NSSecureTextField()
+        webDAVPassField.placeholderString = "password"
+        webDAVPassField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            webDAVPassField.widthAnchor.constraint(equalToConstant: 250),
+        ])
+        
+        grid.addRow(with: [passLabel, webDAVPassField])
+        
+        providerSettingsContainer.addArrangedSubview(grid)
+        
+        webDAVSaveButton = NSButton(title: NSLocalizedString("Save & Connect", comment: ""), target: self, action: #selector(saveWebDAVSettings(_:)))
+        providerSettingsContainer.addArrangedSubview(webDAVSaveButton)
+        
+        let hint = NSTextField(labelWithString: NSLocalizedString("Tip: Use rclone serve webdav with Docker for easy NAS setup.", comment: ""))
+        hint.font = .systemFont(ofSize: 10)
+        hint.textColor = .tertiaryLabelColor
+        hint.preferredMaxLayoutWidth = 380
+        providerSettingsContainer.addArrangedSubview(hint)
     }
     
-    // MARK: - Status Update
+    // MARK: - Status
     
     private func updateStatus() {
-        let isSignedIn = OESaveSyncManager.shared.isSignedIn
+        let type = manager.libraryProviderType
         
-        if isSignedIn {
-            statusDot.textColor    = NSColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1)  // green
-            statusLabel.stringValue = "Connected"
-            statusLabel.textColor   = NSColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1)
-            fetchCloudFiles()
+        if type == .local {
+            statusIndicator.stringValue = "●"
+            statusIndicator.textColor = .systemGray
+            statusLabel.stringValue = NSLocalizedString("Local storage — no cloud sync active", comment: "")
         } else {
-            statusDot.textColor    = NSColor(red: 0.87, green: 0.20, blue: 0.18, alpha: 1) // red
-            statusLabel.stringValue = "Not Connected"
-            statusLabel.textColor   = NSColor(red: 0.87, green: 0.20, blue: 0.18, alpha: 1)
-            cloudFiles = []
-            tableView.reloadData()
-        }
-        
-        signInButton.isHidden  = isSignedIn
-        signOutButton.isHidden = !isSignedIn
-        
-        scrollView.isHidden    = !isSignedIn
-        syncNowButton.isHidden = !isSignedIn
-        lastSyncedLabel.isHidden = !isSignedIn
-        
-        if isSignedIn {
-            if let date = OESaveSyncManager.shared.lastSyncDate {
-                lastSyncedLabel.stringValue = "Last synced: \(dateFormatter.string(from: date))"
+            let provider = manager.provider(for: type)
+            if provider?.isAuthenticated == true {
+                statusIndicator.stringValue = "●"
+                statusIndicator.textColor = .systemGreen
+                
+                let dateStr: String
+                if let lastSync = UserDefaults.standard.object(forKey: "OELastCloudSyncDate") as? Date {
+                    let formatter = DateFormatter()
+                    formatter.dateStyle = .short
+                    formatter.timeStyle = .short
+                    dateStr = formatter.string(from: lastSync)
+                } else {
+                    dateStr = NSLocalizedString("Never", comment: "")
+                }
+                statusLabel.stringValue = String(format: NSLocalizedString("Connected — Last sync: %@", comment: ""), dateStr)
             } else {
-                lastSyncedLabel.stringValue = "Not synced yet"
-            }
-        }
-    }
-    
-    private func fetchCloudFiles() {
-        guard OESaveSyncManager.shared.isSignedIn else { return }
-        
-        loadingIndicator.startAnimation(nil)
-        
-        Task {
-            do {
-                let files = try await OESaveSyncManager.shared.fetchCloudFileList()
-                await MainActor.run {
-                    self.cloudFiles = files.sorted { ($0.modifiedTime ?? .distantPast) > ($1.modifiedTime ?? .distantPast) }
-                    self.tableView.reloadData()
-                    self.loadingIndicator.stopAnimation(nil)
-                }
-            } catch {
-                await MainActor.run {
-                    self.loadingIndicator.stopAnimation(nil)
-                }
+                statusIndicator.stringValue = "●"
+                statusIndicator.textColor = .systemOrange
+                statusLabel.stringValue = NSLocalizedString("Not authenticated", comment: "")
             }
         }
     }
     
     // MARK: - Actions
     
-    @objc private func signIn() {
-        OESaveSyncManager.shared.signIn()
-    }
-    
-    @objc private func signOut() {
-        let alert = NSAlert()
-        alert.messageText     = "Sign Out of Google Drive?"
-        alert.informativeText = "Your local saves will not be affected. You can sign back in at any time."
-        alert.addButton(withTitle: "Sign Out")
-        alert.addButton(withTitle: "Cancel")
-        alert.alertStyle = .warning
-        
-        guard alert.runModal() == .alertFirstButtonReturn else { return }
-        OESaveSyncManager.shared.signOut()
+    @objc private func providerChanged(_ sender: NSPopUpButton) {
+        let type = selectedProviderType()
+        manager.setProvider(type)
+        updateProviderSettings()
         updateStatus()
     }
     
-    @objc private func syncNow() {
-        OESaveSyncManager.shared.performFullSyncCheck()
-        fetchCloudFiles()
+    @objc private func syncScopeChanged(_ sender: NSButton) {
+        if sender.tag == 0 {
+            // Saves only
+            manager.syncScope = .saves
+            savesOnlyRadio.state = .on
+            fullLibraryRadio.state = .off
+        } else {
+            // Full library
+            manager.syncScope = .all
+            fullLibraryRadio.state = .on
+            savesOnlyRadio.state = .off
+        }
     }
-}
-
-// MARK: - TableView Data Source & Delegate
-
-extension PrefCloudSyncController: NSTableViewDataSource, NSTableViewDelegate {
     
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        return cloudFiles.count
-    }
-    
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let identifier = NSUserInterfaceItemIdentifier("CloudFileCell")
-        var view = tableView.makeView(withIdentifier: identifier, owner: self) as? NSTextField
+    @objc private func signIn(_ sender: NSButton) {
+        let type = selectedProviderType()
+        guard let provider = manager.provider(for: type) else { return }
         
-        if view == nil {
-            view = NSTextField(labelWithString: "")
-            view?.identifier = identifier
-            view?.font = .systemFont(ofSize: 11)
+        sender.isEnabled = false
+        sender.title = NSLocalizedString("Signing in…", comment: "")
+        
+        Task {
+            do {
+                try await provider.authenticate()
+                await MainActor.run {
+                    sender.isEnabled = true
+                    updateProviderSettings()
+                    updateStatus()
+                }
+            } catch {
+                await MainActor.run {
+                    sender.isEnabled = true
+                    sender.title = NSLocalizedString("Sign In Failed — Retry", comment: "")
+                    
+                    let alert = NSAlert()
+                    alert.messageText = NSLocalizedString("Sign In Failed", comment: "")
+                    alert.informativeText = error.localizedDescription
+                    alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+                    alert.runModal()
+                }
+            }
+        }
+    }
+    
+    @objc private func signOut(_ sender: NSButton) {
+        Task {
+            await manager.signOutAll()
+            await MainActor.run {
+                providerPopup.selectItem(at: 0)
+                updateProviderSettings()
+                updateStatus()
+            }
+        }
+    }
+    
+    @objc private func saveWebDAVSettings(_ sender: NSButton) {
+        let url = webDAVURLField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        let user = webDAVUserField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        let pass = webDAVPassField.stringValue
+        
+        guard !url.isEmpty else {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Server URL is required.", comment: "")
+            alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+            alert.runModal()
+            return
         }
         
-        let file = cloudFiles[row]
-        let name = file.name ?? "Unknown"
+        UserDefaults.standard.set(url, forKey: "OEWebDAVServerURL")
+        UserDefaults.standard.set(user, forKey: "OEWebDAVUsername")
         
-        switch tableColumn?.identifier.rawValue {
-        case "System":
-            // Attempt to extract system from path: "openemu.system.gba/Game.sav"
-            let parts = name.components(separatedBy: CharacterSet(charactersIn: "/\\"))
-            if let firstPart = parts.first {
-                let sys = String(firstPart).replacingOccurrences(of: "openemu.system.", with: "").uppercased()
-                view?.stringValue = sys
-            } else {
-                view?.stringValue = "???"
-            }
-            
-        case "Filename":
-            let parts = name.components(separatedBy: CharacterSet(charactersIn: "/\\"))
-            if let lastPart = parts.last {
-                view?.stringValue = String(lastPart)
-            } else {
-                view?.stringValue = name
-            }
-            
-        case "Modified":
-            if let date = file.modifiedTime {
-                view?.stringValue = tableDateFormatter.string(from: date)
-            } else {
-                view?.stringValue = "-"
-            }
-            
-        default:
-            break
+        // Store password in Keychain via the WebDAV provider
+        if let webDAVProvider = manager.provider(for: .webDAV) as? OEWebDAVStorageProvider,
+           let serverURL = URL(string: url) {
+            webDAVProvider.configure(serverURL: serverURL, username: user, password: pass)
         }
         
-        return view
+        sender.isEnabled = false
+        sender.title = NSLocalizedString("Connecting…", comment: "")
+        
+        Task {
+            do {
+                try await manager.provider(for: .webDAV)?.authenticate()
+                await MainActor.run {
+                    sender.isEnabled = true
+                    sender.title = NSLocalizedString("Save & Connect", comment: "")
+                    updateStatus()
+                }
+            } catch {
+                await MainActor.run {
+                    sender.isEnabled = true
+                    sender.title = NSLocalizedString("Save & Connect", comment: "")
+                    
+                    let alert = NSAlert()
+                    alert.messageText = NSLocalizedString("Connection Failed", comment: "")
+                    alert.informativeText = error.localizedDescription
+                    alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+                    alert.runModal()
+                }
+            }
+        }
+    }
+    
+    @objc private func evictionDaysChanged(_ sender: NSStepper) {
+        let days = sender.integerValue
+        evictionDaysLabel.stringValue = "\(days) days"
+        UserDefaults.standard.set(days, forKey: Self.evictionDaysKey)
+    }
+    
+    @objc private func recentPlayDaysChanged(_ sender: NSStepper) {
+        let days = sender.integerValue
+        recentPlayDaysLabel.stringValue = "\(days) days"
+        UserDefaults.standard.set(days, forKey: Self.recentPlayDaysKey)
+    }
+    
+    @objc private func syncNow(_ sender: NSButton) {
+        sender.isEnabled = false
+        sender.title = NSLocalizedString("Syncing…", comment: "")
+        
+        Task {
+            do {
+                try await manager.authenticate()
+                UserDefaults.standard.set(Date(), forKey: "OELastCloudSyncDate")
+                await MainActor.run {
+                    sender.isEnabled = true
+                    sender.title = NSLocalizedString("Sync Now", comment: "")
+                    updateStatus()
+                }
+            } catch {
+                await MainActor.run {
+                    sender.isEnabled = true
+                    sender.title = NSLocalizedString("Sync Now", comment: "")
+                }
+            }
+        }
+    }
+    
+    @objc private func statusDidChange(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateStatus()
+            self?.updateProviderSettings()
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func selectedProviderType() -> OEStorageProviderType {
+        switch providerPopup.indexOfSelectedItem {
+        case 0: return .local
+        case 1: return .iCloud
+        case 2: return .googleDrive
+        case 3: return .dropbox
+        case 4: return .webDAV
+        default: return .local
+        }
     }
 }
 
@@ -406,14 +639,13 @@ extension PrefCloudSyncController: NSTableViewDataSource, NSTableViewDelegate {
 extension PrefCloudSyncController: PreferencePane {
     
     var icon: NSImage? {
-        // Use the built-in iCloud/cloud SF Symbol (available macOS 11+), fallback to nil.
         if #available(macOS 11.0, *) {
-            return NSImage(systemSymbolName: "icloud.and.arrow.up", accessibilityDescription: "Cloud Sync")
+            return NSImage(systemSymbolName: "cloud", accessibilityDescription: "Cloud Storage")
         }
         return NSImage(named: NSImage.networkName)
     }
     
-    var panelTitle: String { "Cloud Sync" }
+    var panelTitle: String { "Cloud Storage" }
     
-    var viewSize: NSSize { NSSize(width: 468, height: 480) }
+    var viewSize: NSSize { NSSize(width: 468, height: 560) }
 }

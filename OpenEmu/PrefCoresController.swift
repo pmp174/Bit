@@ -246,5 +246,5 @@ extension PrefCoresController: PreferencePane {
     
     var panelTitle: String { "Cores" }
     
-    var viewSize: NSSize { view.fittingSize }
+    var viewSize: NSSize { NSSize(width: 500, height: 450) }
 }

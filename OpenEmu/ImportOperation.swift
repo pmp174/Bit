@@ -953,6 +953,19 @@ final class ImportOperation: Operation, NSCopying {
             
             self.rom = rom
             
+            // Upload to cloud storage if configured
+            if OECloudStorageManager.shared.isCloudEnabled,
+               let romURL = rom.url,
+               let location = rom.location {
+                rom.setDownloaded(true)
+                Task.detached(priority: .utility) {
+                    try? await OECloudStorageManager.shared.uploadROM(
+                        localURL: romURL,
+                        relativePath: location
+                    )
+                }
+            }
+            
             exit(with: .success, error: nil)
         }
         else {

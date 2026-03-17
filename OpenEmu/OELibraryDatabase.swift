@@ -188,8 +188,8 @@ final class OELibraryDatabase: NSObject {
         let url = databaseURL.appendingPathComponent(Self.databaseFileName, isDirectory: false)
         
         let options = [
-            NSMigratePersistentStoresAutomaticallyOption : false,
-            NSInferMappingModelAutomaticallyOption       : false,
+            NSMigratePersistentStoresAutomaticallyOption : true,
+            NSInferMappingModelAutomaticallyOption       : true,
         ]
         
         do {

@@ -319,6 +319,11 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
     SEL action = [item action];
     if (action == @selector(showInFinder:))
         return [[self selectedGames] count] > 0;
+    if (action == @selector(toggleKeepDownloaded:) ||
+        action == @selector(unpinSelectedGames:) ||
+        action == @selector(downloadFromCloud:) ||
+        action == @selector(removeLocalCopy:))
+        return [[self selectedGames] count] > 0;
     return YES;
 }
 
@@ -591,6 +596,78 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
     });
 }
 
+#pragma mark - Cloud Storage Actions
+
+- (void)toggleKeepDownloaded:(id)sender
+{
+    NSArray *selectedGames = [self selectedGames];
+    for(OEDBGame *game in selectedGames)
+    {
+        OEDBRom *rom = [game defaultROM];
+        [rom setIsLocallyPinned:![rom isLocallyPinned]];
+    }
+    [self reloadData];
+}
+
+- (void)unpinSelectedGames:(id)sender
+{
+    NSArray *selectedGames = [self selectedGames];
+    for(OEDBGame *game in selectedGames)
+    {
+        OEDBRom *rom = [game defaultROM];
+        [rom setIsLocallyPinned:NO];
+    }
+    [self reloadData];
+}
+
+- (void)downloadFromCloud:(id)sender
+{
+    NSArray *selectedGames = [self selectedGames];
+    for(OEDBGame *game in selectedGames)
+    {
+        OEDBRom *rom = [game defaultROM];
+        if(![rom isLocallyAvailable])
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSError *error = nil;
+                // Swift async bridged through a wrapper; use performSelector for simplicity
+                [rom performSelectorInBackground:@selector(downloadFromCloudInBackground) withObject:nil];
+            });
+        }
+    }
+}
+
+- (void)removeLocalCopy:(id)sender
+{
+    NSArray *selectedGames = [self selectedGames];
+    
+    OEAlert *alert = [[OEAlert alloc] init];
+    if([selectedGames count] == 1)
+        alert.messageText = NSLocalizedString(@"Remove the local copy of this game? It will remain available in the cloud.", @"");
+    else
+        alert.messageText = [NSString stringWithFormat:NSLocalizedString(@"Remove local copies of %lu games? They will remain available in the cloud.", @""), [selectedGames count]];
+    alert.defaultButtonTitle = NSLocalizedString(@"Remove", @"");
+    alert.alternateButtonTitle = NSLocalizedString(@"Cancel", @"");
+    
+    if([alert runModal] != NSAlertFirstButtonReturn)
+        return;
+    
+    for(OEDBGame *game in selectedGames)
+    {
+        OEDBRom *rom = [game defaultROM];
+        if([rom isLocallyAvailable] && ![rom isLocallyPinned])
+        {
+            NSURL *romURL = [rom URL];
+            if(romURL)
+            {
+                [[NSFileManager defaultManager] removeItemAtURL:romURL error:nil];
+                [rom setDownloaded:NO];
+            }
+        }
+    }
+    [self reloadData];
+}
+
 #pragma mark - Context Menu
 - (NSMenu *)menuForItemsAtIndexes:(NSIndexSet*)indexes
 {
@@ -649,6 +726,22 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
         if(hasLocalFiles)
             [menu addItemWithTitle:NSLocalizedString(@"Consolidate Files…", @"") action:@selector(consolidateFiles:) keyEquivalent:@""];
 
+        // Cloud storage options
+        if([[OECloudStorageManager shared] isCloudEnabled])
+        {
+            OEDBRom *rom = [game defaultROM];
+            [menu addItem:[NSMenuItem separatorItem]];
+            if([rom isLocallyPinned])
+                [menu addItemWithTitle:NSLocalizedString(@"Remove Download Pin", @"") action:@selector(toggleKeepDownloaded:) keyEquivalent:@""];
+            else
+                [menu addItemWithTitle:NSLocalizedString(@"Keep Downloaded", @"") action:@selector(toggleKeepDownloaded:) keyEquivalent:@""];
+            
+            if(![rom isLocallyAvailable])
+                [menu addItemWithTitle:NSLocalizedString(@"Download Now", @"") action:@selector(downloadFromCloud:) keyEquivalent:@""];
+            else if(![rom isLocallyPinned])
+                [menu addItemWithTitle:NSLocalizedString(@"Remove Local Copy", @"") action:@selector(removeLocalCopy:) keyEquivalent:@""];
+        }
+
         //[menu addItemWithTitle:@"Add Save File To Game…" action:@selector(addSaveStateFromFile:) keyEquivalent:@""];
         [menu addItem:[NSMenuItem separatorItem]];
         // Create Add to collection menu
@@ -690,6 +783,15 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
         [menu addItemWithTitle:NSLocalizedString(@"Download Cover Art", @"") action:@selector(downloadCoverArt:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Add Cover Art from File…", @"") action:@selector(addCoverArtFromFile:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Consolidate Files…", @"") action:@selector(consolidateFiles:) keyEquivalent:@""];
+
+        // Cloud storage options (multi-selection)
+        if([[OECloudStorageManager shared] isCloudEnabled])
+        {
+            [menu addItem:[NSMenuItem separatorItem]];
+            [menu addItemWithTitle:NSLocalizedString(@"Keep Downloaded", @"") action:@selector(toggleKeepDownloaded:) keyEquivalent:@""];
+            [menu addItemWithTitle:NSLocalizedString(@"Remove Download Pin", @"") action:@selector(unpinSelectedGames:) keyEquivalent:@""];
+            [menu addItemWithTitle:NSLocalizedString(@"Remove Local Copies", @"") action:@selector(removeLocalCopy:) keyEquivalent:@""];
+        }
 
         [menu addItem:[NSMenuItem separatorItem]];
         // Create Add to collection menu

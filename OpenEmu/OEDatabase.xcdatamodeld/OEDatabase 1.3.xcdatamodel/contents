@@ -49,11 +49,15 @@
     </entity>
     <entity name="ROM" representedClassName=".OEDBRom" syncable="YES">
         <attribute name="archiveFileIndex" optional="YES" attributeType="Integer 16" minValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="cloudIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="crc32" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="favorite" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="header" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDownloaded" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPinned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="lastEvictionCheck" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lastPlayed" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="md5" optional="YES" attributeType="String" syncable="YES"/>
@@ -67,8 +71,10 @@
         <relationship name="screenShots" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Screenshot" inverseName="rom" inverseEntity="Screenshot" syncable="YES"/>
     </entity>
     <entity name="SaveState" representedClassName=".OEDBSaveState" syncable="YES">
+        <attribute name="cloudIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="coreIdentifier" attributeType="String" syncable="YES"/>
         <attribute name="coreVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDownloaded" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -76,6 +82,7 @@
         <relationship name="rom" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ROM" inverseName="saveStates" inverseEntity="ROM" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Screenshot" representedClassName=".OEDBScreenshot" syncable="YES">
+        <attribute name="cloudIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -99,9 +106,9 @@
         <element name="Game" positionX="0" positionY="0" width="128" height="240"/>
         <element name="Genre" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Image" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="ROM" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="SaveState" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="Screenshot" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="ROM" positionX="0" positionY="0" width="128" height="360"/>
+        <element name="SaveState" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="Screenshot" positionX="0" positionY="0" width="128" height="150"/>
         <element name="SmartCollection" positionX="0" positionY="0" width="128" height="45"/>
         <element name="System" positionX="0" positionY="0" width="128" height="120"/>
     </elements>

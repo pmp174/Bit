@@ -53,8 +53,10 @@ final class OEDBSaveState: OEDBItem {
     
     // MARK: - CoreDataProperties
     
+    @NSManaged var cloudIdentifier: String?
     @NSManaged var coreIdentifier: String
     @NSManaged var coreVersion: String?
+    @NSManaged var isDownloaded: NSNumber?
     @NSManaged var location: String
     @NSManaged var name: String
     @NSManaged var timestamp: Date?
@@ -536,6 +538,19 @@ final class OEDBSaveState: OEDBItem {
     
     var isSpecialState: Bool {
         return name.hasPrefix(Self.specialNamePrefix)
+    }
+    
+    // MARK: - Cloud Storage
+    
+    /// Whether the save state files are currently downloaded locally.
+    var isLocallyAvailable: Bool {
+        return isDownloaded?.boolValue ?? true
+    }
+    
+    /// Mark this save state as downloaded or cloud-only.
+    func setDownloaded(_ downloaded: Bool) {
+        isDownloaded = NSNumber(value: downloaded)
+        save()
     }
 }
 

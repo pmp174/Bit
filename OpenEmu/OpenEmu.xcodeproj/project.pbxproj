@@ -190,23 +190,19 @@
 		05F5BAE9228662C5004D713C /* OpenEmuShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05F5BAE8228662C5004D713C /* OpenEmuShaders.framework */; };
 		05F5BAED228662D3004D713C /* OpenEmuShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05F5BAE8228662C5004D713C /* OpenEmuShaders.framework */; };
 		05F5BAEE22866317004D713C /* OpenEmuShaders.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = 05F5BAE8228662C5004D713C /* OpenEmuShaders.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		060837EB57D7C9F44F51156B /* OESyncStatusOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE228E57ED51524BAE52BB /* OESyncStatusOverlayView.swift */; };
 		081A462F1B9574CE00565444 /* Pokemon mini.oesystemplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 081A46261B95744A00565444 /* Pokemon mini.oesystemplugin */; };
 		0867695A1B96E8B2006545DA /* OEPMSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 086769591B96E8B2006545DA /* OEPMSystemResponder.m */; };
 		086769671B96E92C006545DA /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 086769661B96E92C006545DA /* Keyboard-Mappings.plist */; };
 		086769691B96E936006545DA /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 086769681B96E936006545DA /* Controller-Preferences.plist */; };
 		0867696B1B96E93F006545DA /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0867696A1B96E93F006545DA /* Controller-Mappings.plist */; };
 		08D786151B95870000CCC1A3 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
-		12EDAEC64C70D710AF8B8065 /* OEGoogleDriveConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF3ECDABF5A2D068218C7F /* OEGoogleDriveConfig.swift */; };
 		141554211442B7B100A01683 /* OEN64SystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 141554201442B7B100A01683 /* OEN64SystemResponder.m */; };
 		14CB5DAA16FE1F8300342817 /* OEAudioDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14CB5DA916FE1F8300342817 /* OEAudioDeviceManager.m */; };
 		14F6A926168180D00071386D /* GameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F6A925168180CF0071386D /* GameWindowController.swift */; };
-		170AA9A84CF138836883E194 /* OEGoogleDriveSecrets.template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8401C31D685D3E7EAA048 /* OEGoogleDriveSecrets.template.swift */; };
 		1B32151514DDD49E00C5B50A /* OpenEmu.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1B32151214DDD06500C5B50A /* OpenEmu.dae */; };
 		1B32151614DDD49E00C5B50A /* OpenEmuText.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1B32151314DDD06500C5B50A /* OpenEmuText.dae */; };
 		1B6DA4A914DDE6A40067F7F6 /* SetupAssistantQCOpenGLLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6DA4A814DDE6A40067F7F6 /* SetupAssistantQCOpenGLLayer.swift */; };
 		1BFC26D0116C1CA300B95689 /* OpenEmuHelperApp in Resources */ = {isa = PBXBuildFile; fileRef = 1BEF2A9411682A530090F72B /* OpenEmuHelperApp */; };
-		1E0E90051A8932BB72161909 /* PrefCloudSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF37C00BE9099269AB29467 /* PrefCloudSyncController.swift */; };
 		1E2F3DBB10DEAB4C0019AA84 /* OEVersionMigrationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F3DBA10DEAB4C0019AA84 /* OEVersionMigrationController.m */; };
 		277CBA3719DE54200059A2C1 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
 		277CBA4A19DE54A80059A2C1 /* OEIntellivisionSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 277CBA4819DE54A80059A2C1 /* OEIntellivisionSystemResponder.m */; };
@@ -294,6 +290,17 @@
 		5AC349311D89E4EB0089B26F /* NSDocumentController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC349301D89E4EB0089B26F /* NSDocumentController+Additions.swift */; };
 		5AC349331D89EB7B0089B26F /* GameIntegralScalingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC349321D89EB7B0089B26F /* GameIntegralScalingDelegate.swift */; };
 		5AFD06BD2058893B00DFE765 /* GameScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFD06BC2058893B00DFE765 /* GameScannerViewController.swift */; };
+		630A9A862F68D5D100384730 /* OEStorageProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A852F68D5D100384730 /* OEStorageProviderType.swift */; };
+		630A9A882F68D5E900384730 /* OEStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A872F68D5E900384730 /* OEStorageProvider.swift */; };
+		630A9A8A2F68D61800384730 /* OELocalStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A892F68D61800384730 /* OELocalStorageProvider.swift */; };
+		630A9A8C2F68D63500384730 /* OEiCloudStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A8B2F68D63500384730 /* OEiCloudStorageProvider.swift */; };
+		630A9A8E2F68D66700384730 /* OEWebDAVStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A8D2F68D66700384730 /* OEWebDAVStorageProvider.swift */; };
+		630A9A902F68D6A800384730 /* OEGoogleDriveStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A8F2F68D6A800384730 /* OEGoogleDriveStorageProvider.swift */; };
+		630A9A922F68D6D900384730 /* OEDropboxStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A912F68D6D900384730 /* OEDropboxStorageProvider.swift */; };
+		630A9A942F68D74700384730 /* OECloudStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A932F68D74700384730 /* OECloudStorageManager.swift */; };
+		630A9A962F68DB0500384730 /* PrefCloudSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A952F68DB0500384730 /* PrefCloudSyncController.swift */; };
+		630A9A982F68DB8A00384730 /* OEEvictionScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A972F68DB8A00384730 /* OEEvictionScheduler.swift */; };
+		630A9A9A2F68DC1700384730 /* OEFileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A992F68DC1700384730 /* OEFileMonitor.swift */; };
 		632C6DDB2F6851CE0083E29D /* 3DO.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 943F99B31707DF3700270E89 /* 3DO.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		632C6DDC2F6851D80083E29D /* Dreamcast.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87DF04FE1BCE2D100060E2C2 /* Dreamcast.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		632C6DDD2F6851E20083E29D /* Jaguar.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 943C80121708A62E00D8D93E /* Jaguar.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -708,7 +715,6 @@
 		C6D120E617112EFB00E868A8 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
 		C6F696C01648F64B00B243DB /* Controller-Database.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F696BF1648F64B00B243DB /* Controller-Database.plist */; };
 		C6F697D6164E0EFD00B243DB /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F697D5164E0EFD00B243DB /* Keyboard-Mappings.plist */; };
-		DFDDE95A9D47B0C0B525780A /* OESaveSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F74677D2124A2E934C10038 /* OESaveSyncManager.swift */; };
 		EF2FDBEB14CFFE06002A64F2 /* ControlsKeyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CC5514068DA90096F791 /* ControlsKeyButton.swift */; };
 		EF2FDBED14CFFE1B002A64F2 /* ControlsKeySeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D9991E146F40DA004409DC /* ControlsKeySeparatorView.swift */; };
 		EFBD5D7814EFE19A00FBD1E0 /* NSColor+OEAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBD5D7714EFE19A00FBD1E0 /* NSColor+OEAdditions.swift */; };
@@ -1345,7 +1351,6 @@
 		086769661B96E92C006545DA /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
 		086769681B96E936006545DA /* Controller-Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
 		0867696A1B96E93F006545DA /* Controller-Mappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
-		0EF37C00BE9099269AB29467 /* PrefCloudSyncController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrefCloudSyncController.swift; sourceTree = "<group>"; };
 		1415540F1442B3B300A01683 /* N64.oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = N64.oesystemplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		1415541F1442B7B100A01683 /* OEN64SystemResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEN64SystemResponder.h; sourceTree = "<group>"; };
 		141554201442B7B100A01683 /* OEN64SystemResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEN64SystemResponder.m; sourceTree = "<group>"; };
@@ -1372,7 +1377,6 @@
 		277CBA5B19DE553C0059A2C1 /* Controller-Mappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
 		277CBA5C19DE553C0059A2C1 /* Controller-Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
 		32DBCF750370BD2300C91783 /* OpenEmu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenEmu_Prefix.pch; sourceTree = "<group>"; };
-		35F8401C31D685D3E7EAA048 /* OEGoogleDriveSecrets.template.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OEGoogleDriveSecrets.template.swift; sourceTree = "<group>"; };
 		3887A7F61024D1F9000FC4CF /* OESaveStateQLPlugin.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OESaveStateQLPlugin.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		3887A8021024D2BC000FC4CF /* GenerateThumbnailForURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateThumbnailForURL.m; sourceTree = "<group>"; };
 		3887A8031024D2BC000FC4CF /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
@@ -1476,11 +1480,20 @@
 		5AC349321D89EB7B0089B26F /* GameIntegralScalingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameIntegralScalingDelegate.swift; sourceTree = "<group>"; };
 		5AECA1471BE1D25600C3B4E2 /* OpenEmu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenEmu-Bridging-Header.h"; sourceTree = "<group>"; };
 		5AFD06BC2058893B00DFE765 /* GameScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScannerViewController.swift; sourceTree = "<group>"; };
-		5CCE228E57ED51524BAE52BB /* OESyncStatusOverlayView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OESyncStatusOverlayView.swift; sourceTree = "<group>"; };
+		630A9A852F68D5D100384730 /* OEStorageProviderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEStorageProviderType.swift; sourceTree = "<group>"; };
+		630A9A872F68D5E900384730 /* OEStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEStorageProvider.swift; sourceTree = "<group>"; };
+		630A9A892F68D61800384730 /* OELocalStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OELocalStorageProvider.swift; sourceTree = "<group>"; };
+		630A9A8B2F68D63500384730 /* OEiCloudStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEiCloudStorageProvider.swift; sourceTree = "<group>"; };
+		630A9A8D2F68D66700384730 /* OEWebDAVStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEWebDAVStorageProvider.swift; sourceTree = "<group>"; };
+		630A9A8F2F68D6A800384730 /* OEGoogleDriveStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEGoogleDriveStorageProvider.swift; sourceTree = "<group>"; };
+		630A9A912F68D6D900384730 /* OEDropboxStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEDropboxStorageProvider.swift; sourceTree = "<group>"; };
+		630A9A932F68D74700384730 /* OECloudStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OECloudStorageManager.swift; sourceTree = "<group>"; };
+		630A9A952F68DB0500384730 /* PrefCloudSyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefCloudSyncController.swift; sourceTree = "<group>"; };
+		630A9A972F68DB8A00384730 /* OEEvictionScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEEvictionScheduler.swift; sourceTree = "<group>"; };
+		630A9A992F68DC1700384730 /* OEFileMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEFileMonitor.swift; sourceTree = "<group>"; };
 		6355D36E2F664AA00024B088 /* PrefAppearanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefAppearanceController.swift; sourceTree = "<group>"; };
 		6355D3702F66546B0024B088 /* PrefGeneralController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefGeneralController.swift; sourceTree = "<group>"; };
 		6355D3722F66B9A40024B088 /* Bit App Icon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "Bit App Icon.icon"; sourceTree = "<group>"; };
-		6F74677D2124A2E934C10038 /* OESaveSyncManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OESaveSyncManager.swift; sourceTree = "<group>"; };
 		7699EC921D6303EB005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7699EC931D6303EC005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7699EC941D6303EC005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/ControlLabels.strings; sourceTree = "<group>"; };
@@ -1986,7 +1999,6 @@
 		94D7E8E115073E3800FBDD85 /* OENDSSystemResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OENDSSystemResponder.m; sourceTree = "<group>"; };
 		94D7E8E215073E3800FBDD85 /* OENDSSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OENDSSystemResponderClient.h; sourceTree = "<group>"; };
 		94E6C303166DB15900082F27 /* Controller-Mappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
-		9BAF3ECDABF5A2D068218C7F /* OEGoogleDriveConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OEGoogleDriveConfig.swift; sourceTree = "<group>"; };
 		C60CDDD611780DF100EB472F /* OpenGL Format Table.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "OpenGL Format Table.txt"; sourceTree = "<group>"; };
 		C6252DAA14E752E300350A13 /* Controller-Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
 		C6252DAD14E7556800350A13 /* Controller-Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
@@ -2930,6 +2942,7 @@
 				14F6A92A168184550071386D /* Game Document */,
 				C69DCD000FE994A5009AE5A6 /* PluginDocument.swift */,
 				1BEF34751168F88A0090F72B /* Additions */,
+				630A9A832F68D5BD00384730 /* Cloud Storage */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -3043,6 +3056,7 @@
 				83753F1914F5383F00D708A7 /* PrefDebugController.xib */,
 				6355D36E2F664AA00024B088 /* PrefAppearanceController.swift */,
 				6355D3702F66546B0024B088 /* PrefGeneralController.swift */,
+				630A9A952F68DB0500384730 /* PrefCloudSyncController.swift */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -3173,6 +3187,31 @@
 				5AECA1471BE1D25600C3B4E2 /* OpenEmu-Bridging-Header.h */,
 			);
 			name = "Swift Bridging Header";
+			sourceTree = "<group>";
+		};
+		630A9A832F68D5BD00384730 /* Cloud Storage */ = {
+			isa = PBXGroup;
+			children = (
+				630A9A842F68D5C000384730 /* Providers */,
+				630A9A852F68D5D100384730 /* OEStorageProviderType.swift */,
+				630A9A872F68D5E900384730 /* OEStorageProvider.swift */,
+				630A9A932F68D74700384730 /* OECloudStorageManager.swift */,
+				630A9A972F68DB8A00384730 /* OEEvictionScheduler.swift */,
+				630A9A992F68DC1700384730 /* OEFileMonitor.swift */,
+			);
+			path = "Cloud Storage";
+			sourceTree = "<group>";
+		};
+		630A9A842F68D5C000384730 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				630A9A892F68D61800384730 /* OELocalStorageProvider.swift */,
+				630A9A8B2F68D63500384730 /* OEiCloudStorageProvider.swift */,
+				630A9A8D2F68D66700384730 /* OEWebDAVStorageProvider.swift */,
+				630A9A8F2F68D6A800384730 /* OEGoogleDriveStorageProvider.swift */,
+				630A9A912F68D6D900384730 /* OEDropboxStorageProvider.swift */,
+			);
+			path = Providers;
 			sourceTree = "<group>";
 		};
 		820EB74D1483F9D3008EC398 /* NeoGeoPocket */ = {
@@ -4128,11 +4167,6 @@
 		B8396A2616B1FF9F2C6C8029 /* OpenEmu */ = {
 			isa = PBXGroup;
 			children = (
-				9BAF3ECDABF5A2D068218C7F /* OEGoogleDriveConfig.swift */,
-				6F74677D2124A2E934C10038 /* OESaveSyncManager.swift */,
-				5CCE228E57ED51524BAE52BB /* OESyncStatusOverlayView.swift */,
-				0EF37C00BE9099269AB29467 /* PrefCloudSyncController.swift */,
-				35F8401C31D685D3E7EAA048 /* OEGoogleDriveSecrets.template.swift */,
 			);
 			name = OpenEmu;
 			sourceTree = "<group>";
@@ -4706,6 +4740,7 @@
 				8D15AC330486D014006FF6A4 /* Frameworks */,
 				828ED4F00E7D98F60059F397 /* Copy Frameworks to App Frameworks */,
 				948E540C1571D739002D26E0 /* Copy System Plugins to App Plugins */,
+				630A9A9C2F69031F00384730 /* Copy Core Plugins to App Bundle */,
 				8309A77E166CE51E0013AD4A /* Copy SaveState QL Generator */,
 				0547FDDB24E8614C005C1FFC /* Copy Auxilliary Executables */,
 				0547FE1F24E86D9F005C1FFC /* Embed XPC Services */,
@@ -6157,6 +6192,24 @@
 			shellPath = /bin/sh;
 			shellScript = "rm -rf \"$USER_LIBRARY_DIR/Frameworks/OpenEmuBase.framework\"\ncp -R \"$BUILT_PRODUCTS_DIR/OpenEmuBase.framework\" \"$USER_LIBRARY_DIR/Frameworks/OpenEmuBase.framework\"\n";
 		};
+		630A9A9C2F69031F00384730 /* Copy Core Plugins to App Bundle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Core Plugins to App Bundle";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Copy pre-built core plugins into the app bundle so users don't need to build them separately\nCORES_SRC=\"${HOME}/Library/Application Support/Bit/Cores\"\nCORES_DST=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/PlugIns/Cores\"\n\nif [ ! -d \"${CORES_SRC}\" ]; then\n    echo \"warning: Core plugins source directory not found: ${CORES_SRC}\"\n    echo \"warning: Build the cores first using the 'OpenEmu + Cores' scheme, then rebuild.\"\n    exit 0\nfi\n\nmkdir -p \"${CORES_DST}\"\n\nCORE_COUNT=0\nfor plugin in \"${CORES_SRC}\"/*.oecoreplugin; do\n    [ -d \"${plugin}\" ] || continue\n    PLUGIN_NAME=$(basename \"${plugin}\")\n    echo \"Embedding core plugin: ${PLUGIN_NAME}\"\n    rsync -a --delete \"${plugin}/\" \"${CORES_DST}/${PLUGIN_NAME}/\"\n    # Re-sign the plugin so it matches the app's ad-hoc signature\n    /usr/bin/codesign --force --sign - --deep \"${CORES_DST}/${PLUGIN_NAME}\"\n    CORE_COUNT=$((CORE_COUNT + 1))\ndone\n\necho \"Embedded ${CORE_COUNT} core plugin(s) into app bundle.\"\n";
+		};
 		8FA5FB93283C5E7D00CC11A8 /* Update Info.plist Build Version */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -6342,6 +6395,7 @@
 				1E2F3DBB10DEAB4C0019AA84 /* OEVersionMigrationController.m in Sources */,
 				5A575DFD1E92D23600491B0D /* Cheats.swift in Sources */,
 				53439A9A13B92C97005C0CC8 /* OEDBAllGamesCollection.swift in Sources */,
+				630A9A922F68D6D900384730 /* OEDropboxStorageProvider.swift in Sources */,
 				8FEE03E126D556610087CB51 /* OEDBRom.swift in Sources */,
 				83CACEC8196D6D1300999E70 /* Download.swift in Sources */,
 				8306CD101BD3AC180025BC6C /* LibraryGamesViewController.swift in Sources */,
@@ -6352,6 +6406,7 @@
 				5A9606DC1C0A84BC0089B494 /* LibraryToolbar.swift in Sources */,
 				8FEA676C270252860034CFCE /* SetupAssistant.swift in Sources */,
 				8FDCE3972520022700277BFA /* GlossCheckboxCell.swift in Sources */,
+				630A9A8E2F68D66700384730 /* OEWebDAVStorageProvider.swift in Sources */,
 				052EA5BC2357941100DEC2A3 /* NSBitmapImageRep+OEAdditions.swift in Sources */,
 				5A3DB1691D8C93C3009445EC /* PreferencesControlsBox.swift in Sources */,
 				5A9606EA1C0BD2BD0089B494 /* Logging.swift in Sources */,
@@ -6375,6 +6430,8 @@
 				8F65E76526F3988500471DC4 /* GridSizeSlider.swift in Sources */,
 				836AEA711975BFE100B86935 /* OEGridCell.m in Sources */,
 				05644A4823331EA90033576F /* AboutViewController.swift in Sources */,
+				630A9A902F68D6A800384730 /* OEGoogleDriveStorageProvider.swift in Sources */,
+				630A9A862F68D5D100384730 /* OEStorageProviderType.swift in Sources */,
 				5A9606E81C0BCD350089B494 /* NSImage+DrawingAdditions.swift in Sources */,
 				83199722142741790068C865 /* ROMImporter.swift in Sources */,
 				83507247142F6029005D9033 /* ControllerImageView.swift in Sources */,
@@ -6395,6 +6452,7 @@
 				8FC080272825914E00F18E15 /* OELibraryDatabase.swift in Sources */,
 				8FDCCADA27063FDE00CBF2E3 /* GameCollectionViewItemIndicationLayer.swift in Sources */,
 				839310BC147802380020058E /* CoreDownload.swift in Sources */,
+				630A9A882F68D5E900384730 /* OEStorageProvider.swift in Sources */,
 				5A3DB1B11D8E6806009445EC /* AppDelegate.swift in Sources */,
 				6355D3712F66546B0024B088 /* PrefGeneralController.swift in Sources */,
 				83CA87B41961CDD400D86D55 /* 1.2 to 1.3.xcmappingmodel in Sources */,
@@ -6411,6 +6469,8 @@
 				8FBAE9EB254BD7FA00446C3B /* NSControl+i18n.swift in Sources */,
 				0571307F259A8859001CB13A /* AppMover.swift in Sources */,
 				05888F3A25A0373300286232 /* ShaderParametersViewController.swift in Sources */,
+				630A9A962F68DB0500384730 /* PrefCloudSyncController.swift in Sources */,
+				630A9A8A2F68D61800384730 /* OELocalStorageProvider.swift in Sources */,
 				8F80217A24F45E4800DC82E3 /* ControlsScroller.swift in Sources */,
 				EFBD5D7814EFE19A00FBD1E0 /* NSColor+OEAdditions.swift in Sources */,
 				8F3A184E2860B5D9008A7AC9 /* OELibraryDatabase+Moving.swift in Sources */,
@@ -6437,6 +6497,7 @@
 				8FBD79192736A17B00E455FC /* GameInfoHelper.swift in Sources */,
 				5A438A1B1D89AEB60061A47C /* OpenEmuApplication.swift in Sources */,
 				8F2F92AA2519A9E700699691 /* GameScannerButton.swift in Sources */,
+				630A9A942F68D74700384730 /* OECloudStorageManager.swift in Sources */,
 				8F80217C24F45E6700DC82E3 /* ControlsPopUpButton.swift in Sources */,
 				5AC349311D89E4EB0089B26F /* NSDocumentController+Additions.swift in Sources */,
 				8FEE03D526D555B90087CB51 /* OEDBCollection.swift in Sources */,
@@ -6446,6 +6507,7 @@
 				83D33BD61AEB9ABE0085753B /* ALIterativeMigrator.m in Sources */,
 				6355D36F2F664AA00024B088 /* PrefAppearanceController.swift in Sources */,
 				5A79F7951C15F542003124D5 /* PreferencesWindowController.swift in Sources */,
+				630A9A8C2F68D63500384730 /* OEiCloudStorageProvider.swift in Sources */,
 				059ECCC22524030D00DCA0F6 /* ShaderParametersWindowController.swift in Sources */,
 				8FAD320225B31FB100323020 /* URL+OEAdditions.swift in Sources */,
 				05E789A723D01B16000E14EE /* GameDocumentController.swift in Sources */,
@@ -6474,6 +6536,7 @@
 				5A3BB0391D964A4500E10F27 /* CenteredTextFieldCell.swift in Sources */,
 				8FC3CC692708BD4200747DC2 /* OEGameDocument.swift in Sources */,
 				0544B6A323D16D6300F63D61 /* NSImageView+OEAdditions.swift in Sources */,
+				630A9A982F68DB8A00384730 /* OEEvictionScheduler.swift in Sources */,
 				14CB5DAA16FE1F8300342817 /* OEAudioDeviceManager.m in Sources */,
 				8FEE03DF26D556290087CB51 /* OEDBImage.swift in Sources */,
 				0544B69723D16D0C00F63D61 /* ImageCacheService.swift in Sources */,
@@ -6487,14 +6550,10 @@
 				0544B69823D16D0C00F63D61 /* ImageCollectionDataSource.swift in Sources */,
 				5A9606D61C0A7C9D0089B494 /* NSWindow+FullScreen.swift in Sources */,
 				83AB259917A6A432009C80BC /* ControlsSectionTitleView.swift in Sources */,
+				630A9A9A2F68DC1700384730 /* OEFileMonitor.swift in Sources */,
 				C67DBF4317DBE859006AF087 /* NSDocument+OEAdditions.m in Sources */,
 				8CBD3AA217D23AA80022399B /* OEGridGameCell.m in Sources */,
 				5A9606D41C0A63740089B494 /* NSMutableDictionary+Pop.swift in Sources */,
-				12EDAEC64C70D710AF8B8065 /* OEGoogleDriveConfig.swift in Sources */,
-				DFDDE95A9D47B0C0B525780A /* OESaveSyncManager.swift in Sources */,
-				060837EB57D7C9F44F51156B /* OESyncStatusOverlayView.swift in Sources */,
-				1E0E90051A8932BB72161909 /* PrefCloudSyncController.swift in Sources */,
-				170AA9A84CF138836883E194 /* OEGoogleDriveSecrets.template.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

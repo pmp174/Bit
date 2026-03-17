@@ -31,6 +31,7 @@ final class OEDBScreenshot: OEDBItem {
     
     // MARK: - CoreDataProperties
     
+    @NSManaged var cloudIdentifier: String?
     @NSManaged var location: String
     @NSManaged var name: String
     @NSManaged var timestamp: Date?

@@ -98,5 +98,5 @@ extension PrefGameplayController: PreferencePane {
     
     var panelTitle: String { "Gameplay" }
     
-    var viewSize: NSSize { view.fittingSize }
+    var viewSize: NSSize { NSSize(width: 540, height: 202) }
 }

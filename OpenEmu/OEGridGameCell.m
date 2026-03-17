@@ -428,6 +428,24 @@ static NSDictionary *disabledActions = nil;
     {
         indicationType = OEGridViewCellIndicationTypeDropOn;
     }
+    
+    // Cloud storage badges (only when no higher-priority indicator)
+    if(indicationType == OEGridViewCellIndicationTypeNone && [[OECloudStorageManager shared] isCloudEnabled])
+    {
+        id item = [self representedItem];
+        if([item isKindOfClass:[OEDBGame class]])
+        {
+            OEDBRom *rom = [(OEDBGame *)item defaultROM];
+            if(rom != nil)
+            {
+                if([rom isLocallyPinned])
+                    indicationType = OEGridViewCellIndicationTypePinned;
+                else if(![rom isLocallyAvailable])
+                    indicationType = OEGridViewCellIndicationTypeCloudOnly;
+            }
+        }
+    }
+    
     return indicationType;
 }
 
