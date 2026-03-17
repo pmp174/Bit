@@ -292,5 +292,5 @@ extension PrefBiosController: PreferencePane {
     
     var panelTitle: String { "System Files" }
     
-    var viewSize: NSSize { view.fittingSize }
+    var viewSize: NSSize { NSSize(width: 500, height: 450) }
 }

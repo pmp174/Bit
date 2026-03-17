@@ -215,18 +215,9 @@ final class MainWindowController: NSWindowController {
     }
     
     private func setUpCurrentContentController() {
-        if !UserDefaults.standard.bool(forKey: SetupAssistant.hasFinishedKey) {
-            let setupAssistant = SetupAssistant()
-            setupAssistant.completionBlock = {
-                self.currentContentController = self.libraryController
-            }
-            
-            window?.center()
-            
-            currentContentController = setupAssistant
-        } else {
-            currentContentController = libraryController
-        }
+        // Skip setup assistant and go straight to library
+        UserDefaults.standard.set(true, forKey: SetupAssistant.hasFinishedKey)
+        currentContentController = libraryController
     }
     
     private func setUpViewMenuItemBindings() {

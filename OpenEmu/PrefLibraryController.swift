@@ -56,6 +56,7 @@ final class PrefLibraryController: NSViewController {
     private var signOutButton: NSButton!
 
     private var providerSettingsContainer: NSStackView!
+    private var cloudDetailsContainer: NSStackView!
 
     private lazy var cloudManager = OECloudStorageManager.shared
 
@@ -243,11 +244,23 @@ final class PrefLibraryController: NSViewController {
         cloudStack.addArrangedSubview(providerGrid)
         cloudStack.setCustomSpacing(16, after: providerGrid)
 
+        // ── CLOUD DETAILS (hidden when Local is selected) ───────
+        cloudDetailsContainer = NSStackView()
+        cloudDetailsContainer.orientation = .vertical
+        cloudDetailsContainer.alignment = .leading
+        cloudDetailsContainer.spacing = 0
+        cloudDetailsContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        cloudStack.addArrangedSubview(cloudDetailsContainer)
+        NSLayoutConstraint.activate([
+            cloudDetailsContainer.widthAnchor.constraint(equalTo: cloudStack.widthAnchor),
+        ])
+
         // ── WHAT TO SYNC ─────────────────────────────────────────
         let scopeLabel = NSTextField(labelWithString: NSLocalizedString("What to Sync:", comment: ""))
         scopeLabel.font = .boldSystemFont(ofSize: 11)
-        cloudStack.addArrangedSubview(scopeLabel)
-        cloudStack.setCustomSpacing(6, after: scopeLabel)
+        cloudDetailsContainer.addArrangedSubview(scopeLabel)
+        cloudDetailsContainer.setCustomSpacing(6, after: scopeLabel)
 
         savesOnlyRadio = NSButton(radioButtonWithTitle: NSLocalizedString("Saves only (battery saves + save states)", comment: ""),
                                    target: self, action: #selector(cloudSyncScopeChanged(_:)))
@@ -257,10 +270,10 @@ final class PrefLibraryController: NSViewController {
                                      target: self, action: #selector(cloudSyncScopeChanged(_:)))
         fullLibraryRadio.tag = 1
 
-        cloudStack.addArrangedSubview(savesOnlyRadio)
-        cloudStack.setCustomSpacing(4, after: savesOnlyRadio)
-        cloudStack.addArrangedSubview(fullLibraryRadio)
-        cloudStack.setCustomSpacing(16, after: fullLibraryRadio)
+        cloudDetailsContainer.addArrangedSubview(savesOnlyRadio)
+        cloudDetailsContainer.setCustomSpacing(4, after: savesOnlyRadio)
+        cloudDetailsContainer.addArrangedSubview(fullLibraryRadio)
+        cloudDetailsContainer.setCustomSpacing(16, after: fullLibraryRadio)
 
         // ── PROVIDER SETTINGS BOX ────────────────────────────────
         providerSettingsContainer = NSStackView()
@@ -283,11 +296,11 @@ final class PrefLibraryController: NSViewController {
             ])
         }
 
-        cloudStack.addArrangedSubview(providerSettingsBox)
+        cloudDetailsContainer.addArrangedSubview(providerSettingsBox)
         NSLayoutConstraint.activate([
-            providerSettingsBox.widthAnchor.constraint(equalTo: cloudStack.widthAnchor),
+            providerSettingsBox.widthAnchor.constraint(equalTo: cloudDetailsContainer.widthAnchor),
         ])
-        cloudStack.setCustomSpacing(16, after: providerSettingsBox)
+        cloudDetailsContainer.setCustomSpacing(16, after: providerSettingsBox)
 
         // ── STATUS ROW ───────────────────────────────────────────
         let statusRow = NSStackView()
@@ -303,27 +316,28 @@ final class PrefLibraryController: NSViewController {
         statusLabel.font = .systemFont(ofSize: 12)
         statusRow.addArrangedSubview(statusLabel)
 
-        cloudStack.addArrangedSubview(statusRow)
-        cloudStack.setCustomSpacing(16, after: statusRow)
+        cloudDetailsContainer.addArrangedSubview(statusRow)
+        cloudDetailsContainer.setCustomSpacing(16, after: statusRow)
 
         // ── EVICTION ─────────────────────────────────────────────
         let evictionLabel = NSTextField(labelWithString: NSLocalizedString("Eviction:", comment: ""))
         evictionLabel.font = .boldSystemFont(ofSize: 11)
-        cloudStack.addArrangedSubview(evictionLabel)
-        cloudStack.setCustomSpacing(6, after: evictionLabel)
+        cloudDetailsContainer.addArrangedSubview(evictionLabel)
+        cloudDetailsContainer.setCustomSpacing(6, after: evictionLabel)
 
         let evictionGrid = buildCloudEvictionSection()
-        cloudStack.addArrangedSubview(evictionGrid)
-        cloudStack.setCustomSpacing(16, after: evictionGrid)
+        cloudDetailsContainer.addArrangedSubview(evictionGrid)
+        cloudDetailsContainer.setCustomSpacing(16, after: evictionGrid)
 
         // ── SYNC NOW ─────────────────────────────────────────────
         syncNowButton = NSButton(title: NSLocalizedString("Sync Now", comment: ""), target: self, action: #selector(cloudSyncNow(_:)))
-        cloudStack.addArrangedSubview(syncNowButton)
+        cloudDetailsContainer.addArrangedSubview(syncNowButton)
 
         // Initialize state
         updateCloudProviderSettings()
         updateCloudStatus()
         updateCloudSyncScopeSelection()
+        updateCloudDetailsVisibility()
     }
 
     private func buildCloudEvictionSection() -> NSView {
@@ -543,6 +557,12 @@ final class PrefLibraryController: NSViewController {
         cloudManager.setProvider(type)
         updateCloudProviderSettings()
         updateCloudStatus()
+        updateCloudDetailsVisibility()
+    }
+
+    private func updateCloudDetailsVisibility() {
+        let isLocal = selectedCloudProviderType() == .local
+        cloudDetailsContainer.isHidden = isLocal
     }
 
     @objc private func cloudSyncScopeChanged(_ sender: NSButton) {
@@ -708,5 +728,5 @@ extension PrefLibraryController: PreferencePane {
 
     var panelTitle: String { "Library" }
 
-    var viewSize: NSSize { NSSize(width: 468, height: 700) }
+    var viewSize: NSSize { NSSize(width: 620, height: 860) }
 }

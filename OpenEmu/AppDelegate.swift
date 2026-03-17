@@ -375,8 +375,11 @@ class AppDelegate: NSObject {
         let context = library.mainThreadContext
         for plugin in OESystemPlugin.allPlugins {
             if plugin.controller != nil {
+                let isNew = OEDBSystem.system(for: plugin.systemIdentifier, in: context) == nil
                 let system = OEDBSystem.system(for: plugin, in: context)
-                if !system.isEnabled {
+                // Only auto-enable newly discovered systems; respect the user's
+                // choice for systems that already exist in the database.
+                if isNew && !system.isEnabled {
                     system.isEnabled = true
                 }
             }
