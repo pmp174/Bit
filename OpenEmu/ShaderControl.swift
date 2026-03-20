@@ -71,9 +71,11 @@ public class ShaderControl: NSObject {
     /// - Returns: The shader preset assigned to the system plugin.
     public static func currentPreset(forSystemPlugin systemPlugin: OESystemPlugin) -> ShaderPreset {
         if let preset = SystemShaderPresetStore.shared.findPresetForSystem(systemPlugin.systemIdentifier) {
+            NSLog("[ShaderControl] Using stored preset '%@' (shader: '%@') for system '%@'", preset.name, preset.shader.name, systemPlugin.systemIdentifier)
             return preset
         }
         let shader = OESystemShaderStore.shared.shader(forSystem: systemPlugin.systemIdentifier)
+        NSLog("[ShaderControl] Using default shader '%@' for system '%@'", shader.shader.name, systemPlugin.systemIdentifier)
         return presetForSystemShader(shader, systemPlugin)
     }
     
@@ -148,17 +150,35 @@ public class ShaderControl: NSObject {
         let params = preset.parameters as [String: NSNumber]?
         let shader = preset.shader
         
-        helper?.setShaderURL(shader.url, parameters: params) { error in
+        guard let helper = helper else {
+            NSLog("[ShaderControl] ERROR: helper is nil — cannot apply shader '%@'. Saving preference anyway.", shader.name)
+            // Still save the preference so it takes effect on next launch
+            self.preset = preset
+            if preset.isDefault {
+                OESystemShaderStore.shared.setShader(shader, forSystem: self.systemIdentifier)
+                SystemShaderPresetStore.shared.resetPresetForSystem(self.systemIdentifier)
+            } else {
+                SystemShaderPresetStore.shared.setPreset(preset, forSystem: self.systemIdentifier)
+                OESystemShaderStore.shared.resetShader(forSystem: self.systemIdentifier)
+            }
+            handler?(nil)
+            NotificationCenter.default.post(name: .shaderControlPresetDidChange, object: self)
+            return
+        }
+        
+        NSLog("[ShaderControl] Applying shader '%@' for system '%@' via helper", shader.name, systemIdentifier)
+        helper.setShaderURL(shader.url, parameters: params) { error in
             if let error = error {
+                NSLog("[ShaderControl] ERROR applying shader '%@': %@", shader.name, error.localizedDescription)
                 handler?(error)
                 return
             }
             
+            NSLog("[ShaderControl] Shader '%@' applied successfully for system '%@'", shader.name, self.systemIdentifier)
             let changedShader = preset.shader.name != self.preset.shader.name
             
             self.preset = preset
             
-            // Alternates between
             if preset.isDefault {
                 OESystemShaderStore.shared.setShader(shader, forSystem: self.systemIdentifier)
                 SystemShaderPresetStore.shared.resetPresetForSystem(self.systemIdentifier)

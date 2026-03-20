@@ -122,7 +122,9 @@ public enum Compiled {
             case .version2_1:
                 self = .version2_1
             default:
-                if ((3 << 16)..<(4 << 16)).contains(mtl.rawValue) {
+                // Handle Metal 3.x and 4.x+ language versions by mapping
+                // to MSL 2.4 (the highest version supported by SPIRV-Cross)
+                if mtl.rawValue >= (3 << 16) {
                     self = .version2_4
                 } else {
                     throw LanguageVersionError.unsupportedVersion

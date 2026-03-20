@@ -58,7 +58,12 @@ public class ShaderPassCompiler {
         case .version2_2:
             version = makeVersion(major: 2, minor: 2)
         default:
-            version = makeVersion(major: 2, minor: 1)
+            // Metal 3.x and 4.x+ are backwards compatible with MSL 2.4
+            if options.languageVersion.rawValue >= (3 << 16) {
+                version = makeVersion(major: 2, minor: 4)
+            } else {
+                version = makeVersion(major: 2, minor: 1)
+            }
         }
         
         let vsData = try irForPass(pass, ofType: .vertex, options: options)

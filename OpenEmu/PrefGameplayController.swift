@@ -85,7 +85,12 @@ final class PrefGameplayController: NSViewController {
         guard let shaderName = globalDefaultShaderSelection.selectedItem?.title else { return }
         
         let allSystemIdentifiers = OEDBSystem.allSystemIdentifiers(in: context)
-        allSystemIdentifiers.forEach(OESystemShaderStore.shared.resetShader(forSystem:))
+        // Reset both per-system shader assignments and per-system preset
+        // assignments so the new global default takes effect everywhere.
+        allSystemIdentifiers.forEach { identifier in
+            OESystemShaderStore.shared.resetShader(forSystem: identifier)
+            SystemShaderPresetStore.shared.resetPresetForSystem(identifier)
+        }
         OEShaderStore.shared.defaultShaderName = shaderName
     }
 }

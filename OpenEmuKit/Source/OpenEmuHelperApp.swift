@@ -128,9 +128,15 @@ extension OSLog {
         _scope          = MTLCaptureManager.shared().makeCaptureScope(device: _device)
         _commandQueue   = _device.makeCommandQueue()
         
-        // TODO: Handle error
-        // Original Obj-C didn't handle the error either
-        _filterChain    = try? FilterChain(device: _device)
+        // FilterChain initialization
+        do {
+            _filterChain = try FilterChain(device: _device)
+            os_log(.info, log: .helper, "FilterChain initialized successfully")
+        } catch {
+            os_log(.fault, log: .helper, "FilterChain initialization FAILED: %{public}@", error.localizedDescription)
+            // Create a fallback — without FilterChain, no rendering is possible
+            _filterChain = try? FilterChain(device: _device)
+        }
         _screenshot     = Screenshot(device: _device)
         
         updateScreenSize()
@@ -138,9 +144,17 @@ extension OSLog {
         setupCVBuffer()
         setupRemoteLayer()
         if let _shader = _shader {
-            try? setShaderURL(_shader, parameters: _shaderParameters)
+            os_log(.info, log: .helper, "Attempting to load initial shader: %{public}@", _shader.absoluteString)
+            do {
+                try setShaderURL(_shader, parameters: _shaderParameters)
+                os_log(.info, log: .helper, "Initial shader loaded successfully from %{public}@", _shader.lastPathComponent)
+            } catch {
+                os_log(.fault, log: .helper, "Failed to load initial shader from %{public}@: %{public}@", _shader.lastPathComponent, error.localizedDescription)
+            }
             self._shader            = nil
             self._shaderParameters  = nil
+        } else {
+            os_log(.error, log: .helper, "No initial shader URL provided — _shader is nil")
         }
     }
     
@@ -414,20 +428,39 @@ extension OSLog {
     }
     
     public func setShaderURL(_ url: URL, parameters: [String: NSNumber]?, completionHandler block: @escaping (Error?) -> Void) {
+        os_log(.info, log: .helper, "setShaderURL called for %{public}@", url.lastPathComponent)
         gameCore.perform {
             do {
                 try self.setShaderURL(url, parameters: parameters as? [String: Double])
+                os_log(.info, log: .helper, "Shader applied successfully: %{public}@", url.lastPathComponent)
                 block(nil)
             } catch {
+                os_log(.error, log: .helper, "Failed to apply shader %{public}@: %{public}@", url.lastPathComponent, error.localizedDescription)
                 block(error)
             }
         }
     }
     
     func setShaderURL(_ url: URL, parameters: [String: Double]?) throws {
+        os_log(.info, log: .helper, "setShaderURL internal: url=%{public}@, filterChain=%{public}@, currentShader=%{public}@",
+               url.absoluteString,
+               _filterChain != nil ? "exists" : "NIL",
+               _currentShader?.absoluteString ?? "nil")
+        
+        guard _filterChain != nil else {
+            os_log(.fault, log: .helper, "Cannot set shader — _filterChain is nil!")
+            return
+        }
+        
         if _currentShader != url {
+            os_log(.info, log: .helper, "Loading new shader from URL: %{public}@", url.absoluteString)
+            let fileExists = FileManager.default.fileExists(atPath: url.path)
+            os_log(.info, log: .helper, "Shader file exists at path: %{public}@", fileExists ? "YES" : "NO")
             try _filterChain.setShader(fromURL: url, options: .makeOptions())
             _currentShader = url
+            os_log(.info, log: .helper, "Shader loaded, filterChain.hasShader=%{public}@", _filterChain.hasShader ? "true" : "false")
+        } else {
+            os_log(.info, log: .helper, "Shader URL unchanged, skipping reload")
         }
         
         if let parameters = parameters, let filter = _filterChain {
