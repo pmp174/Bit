@@ -59,6 +59,7 @@ Currently, OpenEmu can load the following game engines as plugins:
 * Pokémon Mini ([PokeMini](https://github.com/pokerazor/pokemini)) 
 * WonderSwan ([Mednafen](https://mednafen.github.io)) 
 * Commodore 64 ([VirtualC64](https://github.com/dirkwhoffmann/virtualc64)))
+
 Currently not available but in the pipeline
 
 * PPSSP
