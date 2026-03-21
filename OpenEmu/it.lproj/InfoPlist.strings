@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%@ Game</key>
+	<string>Gioco %@</string>
+	<key>Archived Game</key>
+	<string>Gioco archiviato</string>
+	<key>OpenEmu Core Plugin</key>
+	<string>Plugin core</string>
+	<key>OpenEmu Save State</key>
+	<string>Salvataggio emulazione OpenEmu</string>
+	<key>OpenEmu Shader</key>
+	<string>Plugin filtro video</string>
+	<key>OpenEmu System Plugin</key>
+	<string>Plugin di sistema</string>
+</dict>
+</plist>

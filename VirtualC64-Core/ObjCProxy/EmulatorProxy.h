@@ -1,0 +1,789 @@
+// -----------------------------------------------------------------------------
+// This file is part of VirtualC64
+//
+// Copyright (C) Dirk W. Hoffmann. www.dirkwhoffmann.de
+// Licensed under the GNU General Public License v3
+//
+// See https://www.gnu.org for license information
+// -----------------------------------------------------------------------------
+
+#import "config.h"
+#import "VirtualC64Types.h"
+#import "Devices/DeviceTypes.h"
+#import "Images/ImageTypes.h"
+#import "FileSystems/CBM/FSTypes.h"
+#import <Cocoa/Cocoa.h>
+#import <MetalKit/MetalKit.h>
+
+using retro::vault::ImageType;
+using retro::vault::ImageFormat;
+using retro::vault::ImageInfo;
+using retro::vault::Diameter;
+using retro::vault::Density;
+using retro::vault::cbm::FSFormat;
+
+using namespace vc64;
+
+@class AudioPortProxy;
+@class EmulatorProxy;
+@class C64Proxy;
+@class CIAProxy;
+@class Constants;
+@class ControlPortProxy;
+@class CPUProxy;
+@class DatasetteProxy;
+@class DefaultsProxy;
+@class DmaDebuggerProxy;
+@class DriveProxy;
+@class ExpansionPortProxy;
+@class SerialPortProxy;
+@class JoystickProxy;
+@class KeyboardProxy;
+@class MemoryProxy;
+@class MouseProxy;
+@class MyController;
+@class RemoteManagerProxy;
+@class RetroShellProxy;
+@class RS232Proxy;
+@class SIDProxy;
+@class SnapshotProxy;
+@class UserPortProxy;
+@class VICIIProxy;
+@class VideoPortProxy;
+
+NSString *EventSlotName(EventSlot slot);
+
+
+//
+// Exception wrapper
+//
+
+@interface ExceptionWrapper : NSObject
+
+@property (nonatomic, strong) NSNumber *fault;
+@property (nonatomic, copy) NSString *key;
+@property (nonatomic, copy) NSString *what;
+
+@end
+/*
+@interface ExceptionWrapper : NSObject {
+    
+    NSInteger fault;
+    NSString *key;
+    NSString *what;
+}
+
+@property NSInteger fault;
+@property NSString *key;
+@property NSString *what;
+
+@end
+*/
+
+//
+// Base proxies
+//
+
+@interface Proxy : NSObject {
+    
+    // Reference to the wrapped C++ instance
+    @public void *obj;
+}
+
+- (instancetype) initWith:(void *)ref;
+
+@end
+
+@interface SubComponentProxy : Proxy {
+
+    // Reference to the emulator instance
+    @public void *emu;
+}
+@end
+
+//
+// Constants
+//
+
+@interface Constants : NSObject {
+
+}
+
+@property (class, readonly) NSInteger texWidth;
+@property (class, readonly) NSInteger texHeight;
+
+@end
+
+//
+// Emulator
+//
+
+@interface EmulatorProxy : Proxy {
+        
+    AudioPortProxy *audioPort;
+    CIAProxy *cia1;
+    CIAProxy *cia2;
+    ControlPortProxy *port1;
+    ControlPortProxy *port2;
+    CPUProxy *cpu;
+    DatasetteProxy *datasette;
+    DmaDebuggerProxy *dmaDebugger;
+    DriveProxy *drive8;
+    DriveProxy *drive9;
+    ExpansionPortProxy *expansionport;
+    UserPortProxy *userPort;
+    SerialPortProxy *iec;
+    KeyboardProxy *keyboard;
+    MemoryProxy *mem;
+    MouseProxy *mouse;
+    RetroShellProxy *retroShell;
+    SIDProxy *sid;
+    VICIIProxy *vic;
+    VideoPortProxy *videoPort;
+}
+
+@property (class, readonly, strong) DefaultsProxy *defaults;
+
+@property (readonly, strong) AudioPortProxy *audioPort;
+@property (readonly, strong) C64Proxy *c64;
+@property (readonly, strong) CIAProxy *cia1;
+@property (readonly, strong) CIAProxy *cia2;
+@property (readonly, strong) ControlPortProxy *port1;
+@property (readonly, strong) ControlPortProxy *port2;
+@property (readonly, strong) CPUProxy *cpu;
+@property (readonly, strong) DatasetteProxy *datasette;
+@property (readonly, strong) DmaDebuggerProxy *dmaDebugger;
+@property (readonly, strong) DriveProxy *drive8;
+@property (readonly, strong) DriveProxy *drive9;
+@property (readonly, strong) ExpansionPortProxy *expansionport;
+@property (readonly, strong) UserPortProxy *userPort;
+@property (readonly, strong) SerialPortProxy *iec;
+@property (readonly, strong) KeyboardProxy *keyboard;
+@property (readonly, strong) MemoryProxy *mem;
+@property (readonly, strong) RemoteManagerProxy *remoteManager;
+@property (readonly, strong) RetroShellProxy *retroShell;
+@property (readonly, strong) SIDProxy *sid;
+@property (readonly, strong) VICIIProxy *vic;
+@property (readonly, strong) VideoPortProxy *videoPort;
+
+- (void)dealloc;
+- (void)kill;
+
+@property (class, readonly) NSString *build;
+@property (class, readonly) NSString *version;
+
+@property (readonly) EmulatorInfo info;
+@property (readonly) EmulatorInfo cachedInfo;
+@property (readonly) EmulatorStats stats;
+
+@property (readonly) BOOL poweredOn;
+@property (readonly) BOOL poweredOff;
+@property (readonly) BOOL paused;
+@property (readonly) BOOL running;
+@property (readonly) BOOL suspended;
+@property (readonly) BOOL halted;
+@property (readonly) BOOL warping;
+@property (readonly) BOOL tracking;
+
+- (void)isReady:(ExceptionWrapper *)ex;
+- (void)powerOn:(ExceptionWrapper *)ex;
+- (void)powerOff;
+- (void)run:(ExceptionWrapper *)ex;
+- (void)pause;
+- (void)halt;
+- (void)suspend;
+- (void)resume;
+- (void)warpOn;
+- (void)warpOn:(NSInteger)source;
+- (void)warpOff;
+- (void)warpOff:(NSInteger)source;
+- (void)trackOn;
+- (void)trackOn:(NSInteger)source;
+- (void)trackOff;
+- (void)trackOff:(NSInteger)source;
+
+- (void)hardReset;
+- (void)softReset;
+
+- (void)stepInto;
+- (void)stepOver;
+- (void)stepCycle;
+- (void)finishLine;
+- (void)finishFrame;
+
+- (void)launch:(ExceptionWrapper *)ex;
+- (void)launch:(const void *)listener function:(Callback *)func exception:(ExceptionWrapper *)ex;
+- (void)wakeUp;
+
+- (NSInteger)get:(Opt)opt;
+- (NSInteger)get:(Opt)opt id:(NSInteger)id;
+- (NSInteger)get:(Opt)opt drive:(NSInteger)id;
+- (BOOL)set:(Opt)opt value:(NSInteger)val;
+- (BOOL)set:(Opt)opt enable:(BOOL)val;
+- (BOOL)set:(Opt)opt id:(NSInteger)id value:(NSInteger)val;
+- (BOOL)set:(Opt)opt id:(NSInteger)id enable:(BOOL)val;
+- (BOOL)set:(Opt)opt drive:(NSInteger)id value:(NSInteger)val;
+- (BOOL)set:(Opt)opt drive:(NSInteger)id enable:(BOOL)val;
+- (void)set:(ConfigScheme)value;
+- (void)exportConfig:(NSURL *)url exception:(ExceptionWrapper *)ex;
+
+- (void)put:(Cmd)cmd;
+- (void)put:(Cmd)type value:(NSInteger)value;
+- (void)put:(Cmd)type value:(NSInteger)value value2:(NSInteger)value2;
+- (void)put:(Cmd)type key:(KeyCmd)cmd;
+- (void)put:(Cmd)type coord:(CoordCmd)cmd;
+- (void)put:(Cmd)type action:(GamePadCmd)cmd;
+
+- (BOOL)isRom:(RomType)type url:(NSURL *)url;
+
+- (void)installOpenRoms;
+- (RomType *)romType:(NSURL *)url;
+- (void)loadRom:(NSURL *)url exception:(ExceptionWrapper *)ex;
+- (void)loadRom:(NSURL *)url exception:(ExceptionWrapper *)ex type:(RomType)type;
+
+- (void)saveRom:(RomType)type url:(NSURL *)url exception:(ExceptionWrapper *)ex;
+- (void)deleteRom:(RomType)type;
+
+- (void)flashFile:(NSURL *)url exception:(ExceptionWrapper *)ex;
+
+@end
+
+
+//
+// Defaults
+//
+
+@interface DefaultsProxy : SubComponentProxy { }
+
+- (void)load:(NSURL *)url exception:(ExceptionWrapper *)ex;
+- (void)save:(NSURL *)url exception:(ExceptionWrapper *)ex;
+
+- (void)register:(NSString *)key value:(NSString *)value;
+
+- (NSString *)getString:(NSString *)key;
+- (NSInteger)getInt:(NSString *)key;
+- (NSInteger)getOpt:(Opt)option;
+- (NSInteger)getOpt:(Opt)option nr:(NSInteger)nr;
+
+- (void)setKey:(NSString *)key value:(NSString *)value;
+- (void)setOpt:(Opt)option value:(NSInteger)value;
+- (void)setOpt:(Opt)option nr:(NSInteger)nr value:(NSInteger)value;
+
+- (void)removeAll;
+- (void)removeKey:(NSString *)key;
+- (void)remove:(Opt)option;
+- (void)remove:(Opt) option nr:(NSInteger)nr;
+
+@end
+
+
+//
+// C64
+//
+
+@interface C64Proxy : SubComponentProxy { }
+
+@property (readonly) C64Info info;
+@property (readonly) C64Info cachedInfo;
+- (EventSlotInfo)cachedSlotInfo:(NSInteger)slot;
+@property NSInteger autoInspectionMask;
+@property (readonly) NSString *stateString;
+
+- (RomTraits)getRomTraits:(RomType)type;
+@property (readonly) RomTraits basicRom;
+@property (readonly) RomTraits charRom;
+@property (readonly) RomTraits kernalRom;
+@property (readonly) RomTraits vc1541Rom;
+
+- (SnapshotProxy *)takeSnapshot:(Compressor)compressor;
+- (void)loadSnapshot:(SnapshotProxy *)proxy exception:(ExceptionWrapper *)ex;
+- (void)loadSnapshotFromUrl:(NSURL *)url exception:(ExceptionWrapper *)ex;
+- (void)saveSnapshotToUrl:(NSURL *)url compressor:(Compressor)c exception:(ExceptionWrapper *)ex;
+
+- (void)loadWorkspace:(NSURL *)url exception:(ExceptionWrapper *)ex;
+- (void)saveWorkspace:(NSURL *)url exception:(ExceptionWrapper *)ex;
+
+- (BOOL) getMessage:(Message *)msg;
+
+@end
+
+//
+// CPU
+//
+
+struct GuardInfo {
+
+    u32 addr;
+    bool enabled;
+    long hits;
+    long ignore;
+};
+
+@interface CPUProxy : SubComponentProxy { }
+
+@property (readonly) CPUInfo info;
+@property (readonly) CPUInfo cachedInfo;
+
+- (NSInteger)loggedInstructions;
+- (void)clearLog;
+
+- (void)setHex;
+- (void)setDec;
+
+- (NSString *)disassemble:(NSInteger)addr format:(NSString *)fmt length:(NSInteger *)len;
+- (NSString *)disassembleRecorded:(NSInteger)i format:(NSString *)fmt length:(NSInteger *)len;
+
+- (BOOL) hasBreakpointWithNr:(NSInteger)nr;
+- (GuardInfo) breakpointWithNr:(NSInteger)nr;
+- (BOOL) hasBreakpointAtAddr:(NSInteger)addr;
+- (GuardInfo) breakpointAtAddr:(NSInteger)addr;
+
+- (BOOL) hasWatchpointWithNr:(NSInteger)nr;
+- (GuardInfo) watchpointWithNr:(NSInteger)nr;
+- (BOOL) hasWatchpointAtAddr:(NSInteger)addr;
+- (GuardInfo) watchpointAtAddr:(NSInteger)addr;
+
+@end
+
+
+//
+// CIA
+//
+
+@interface CIAProxy : SubComponentProxy { }
+
+@property (readonly) CIAConfig config;
+@property (readonly) CIAInfo info;
+@property (readonly) CIAInfo cachedInfo;
+@property (readonly) CIAStats stats;
+
+@end
+
+
+//
+// Memory
+//
+
+@interface MemoryProxy : SubComponentProxy { }
+
+@property (readonly) MemConfig config;
+@property (readonly) MemInfo info;
+@property (readonly) MemInfo cachedInfo;
+
+- (NSString *)memdump:(NSInteger)addr num:(NSInteger)num hex:(BOOL)hex src:(MemType)src;
+- (NSString *)txtdump:(NSInteger)addr num:(NSInteger)num src:(MemType)src;
+
+- (void)drawHeatmap:(u32 *)buffer w:(NSInteger)w h:(NSInteger)h;
+
+@end
+
+
+//
+// VICII
+//
+
+
+@interface VICIIProxy : SubComponentProxy { }
+
+@property (readonly) VICIITraits traits;
+@property (readonly) VICIIConfig config;
+@property (readonly) VICIIInfo info;
+@property (readonly) VICIIInfo cachedInfo;
+- (SpriteInfo)getSpriteInfo:(NSInteger)sprite;
+
+- (NSColor *)color:(NSInteger)nr;
+- (UInt32)rgbaColor:(NSInteger)nr palette:(Palette)palette;
+
+@end
+
+
+//
+// DmaDebugger
+//
+
+@interface DmaDebuggerProxy : SubComponentProxy { }
+
+- (DmaDebuggerConfig)getConfig;
+
+@end
+
+
+//
+// SID
+//
+
+@interface SIDProxy : SubComponentProxy { }
+
+- (SIDInfo)getInfo:(NSInteger)nr;
+
+- (float)drawWaveform:(u32 *)buffer w:(NSInteger)w h:(NSInteger)h scale:(float)s color:(u32)c source:(NSInteger)source;
+- (float)drawWaveform:(u32 *)buffer size:(NSSize)size scale:(float)s color:(u32)c source:(NSInteger)source;
+
+@end
+
+
+//
+// Audio port
+//
+
+@interface AudioPortProxy : SubComponentProxy { }
+
+@property (readonly) AudioPortStats stats;
+
+- (NSInteger)copyMono:(float *)target size:(NSInteger)n;
+- (NSInteger)copyStereo:(float *)target1 buffer2:(float *)target2 size:(NSInteger)n;
+- (NSInteger)copyInterleaved:(float *)target size:(NSInteger)n;
+
+@end
+
+
+//
+// Video port
+//
+
+@interface VideoPortProxy : SubComponentProxy { }
+
+- (void)lockTexture;
+- (void)unlockTexture;
+
+- (void)texture:(const u32 **)ptr nr:(NSInteger *)nr;
+- (void)dmaTexture:(const u32 **)ptr nr:(NSInteger *)nr;
+
+- (void)innerArea:(NSInteger *)x1 x2:(NSInteger *)x2 y1:(NSInteger *)y1 y2:(NSInteger *)y2;
+- (void)innerAreaNormalized:(double *)x1 x2:(double *)x2 y1:(double *)y1 y2:(double *)y2;
+
+@end
+
+
+//
+// Keyboard
+//
+
+@interface KeyboardProxy : SubComponentProxy { }
+
+- (BOOL)isPressed:(NSInteger)nr;
+- (void)pressKey:(NSInteger)nr;
+- (void)releaseKey:(NSInteger)nr;
+- (void)releaseKey:(NSInteger)nr delay:(double)delay;
+- (void)releaseAll;
+- (void)releaseAllWithDelay:(double)delay;
+- (void)toggleKey:(NSInteger)nr;
+- (void)toggleKeyAtRow:(NSInteger)row col:(NSInteger)col;
+
+- (void)autoType:(NSString *)text;
+- (void)abortAutoTyping;
+
+@end
+
+
+//
+// ControlPort
+//
+
+@interface ControlPortProxy : SubComponentProxy {
+
+    JoystickProxy *joystick;
+    MouseProxy *mouse;
+}
+
+@property (readonly) JoystickProxy *joystick;
+@property (readonly) MouseProxy *mouse;
+
+@end
+
+
+//
+// ExpansionPort
+//
+
+@interface ExpansionPortProxy : SubComponentProxy { }
+
+@property (readonly) CartridgeTraits traits;
+@property (readonly) CartridgeInfo info;
+@property (readonly) CartridgeInfo cachedInfo;
+- (CartridgeRomInfo)getRomInfo:(NSInteger)nr;
+
+- (BOOL)cartridgeAttached;
+- (void)attachCartridge:(NSURL *)url reset:(BOOL)reset exception:(ExceptionWrapper *)ex;
+- (void)attachReuCartridge:(NSInteger)capacity;
+- (void)attachGeoRamCartridge:(NSInteger)capacity;
+- (void)attachIsepicCartridge;
+- (void)detachCartridge;
+- (void)writeToFile:(NSURL *)path exception:(ExceptionWrapper *)ex;
+
+@end
+
+
+//
+// RS232
+//
+
+@interface RS232Proxy : SubComponentProxy { }
+
+// @property (readonly) RS232Info info;
+// @property (readonly) RS232Info cachedInfo;
+
+- (NSInteger)readIncomingPrintableByte;
+- (NSInteger)readOutgoingPrintableByte;
+
+@end
+
+
+//
+// UserPort
+//
+
+@interface UserPortProxy : SubComponentProxy {
+
+    RS232Proxy *rs232;
+}
+
+@property (readonly) RS232Proxy *rs232;
+
+@end
+
+
+
+//
+// Serial port
+//
+
+@interface SerialPortProxy : SubComponentProxy { }
+
+@end
+
+
+//
+// Drive
+//
+
+@interface DriveProxy : SubComponentProxy {
+
+}
+
+@property (readonly) DriveConfig config;
+@property (readonly) DriveInfo info;
+@property (readonly) DriveInfo cachedInfo;
+
+- (void)insertBlankDisk:(FSFormat)fstype name:(NSString *)name exception:(ExceptionWrapper *)ex;
+- (void)insert:(NSURL *)url protected:(BOOL)wp exception:(ExceptionWrapper *)ex;
+- (void)ejectDisk;
+- (void)writeToFile:(NSURL *)path exception:(ExceptionWrapper *)ex;
+- (void)saveFiles:(NSURL *)path exception:(ExceptionWrapper *)ex;
+
+@end
+
+
+//
+// DiskAnalyzer
+//
+
+@interface DiskAnalyzerProxy : Proxy { }
+
+- (instancetype) initWithDrive:(DriveProxy *)drive;
+- (void)dealloc;
+
+- (NSInteger)lengthOfTrack:(Track)t;
+- (NSInteger)lengthOfHalftrack:(Halftrack)ht;
+
+- (SectorLayout)sectorInfo:(Halftrack)ht sector:(Sector)s;
+- (const char *)diskNameAsString;
+- (const char *)trackBitsAsString:(Halftrack)ht;
+- (const char *)sectorHeaderBytesAsString:(Halftrack)ht sector:(Sector)s hex:(BOOL)hex;
+- (const char *)sectorDataBytesAsString:(Halftrack)ht sector:(Sector)s hex:(BOOL)hex;
+
+- (NSString *)getLogbook:(Halftrack)ht;
+
+@end
+
+
+//
+// Datasette
+//
+
+@interface DatasetteProxy : SubComponentProxy { }
+
+@property (readonly) DatasetteInfo info;
+@property (readonly) DatasetteInfo cachedInfo;
+
+- (void)pressPlay;
+- (void)pressStop;
+- (void)rewind;
+- (void)ejectTape;
+- (void)insertTape:(NSURL *)url exception:(ExceptionWrapper *)ex;
+- (void)exportTape:(NSURL *)url exception:(ExceptionWrapper *)ex;
+
+@end
+
+
+//
+// Mouse
+//
+
+@interface MouseProxy : SubComponentProxy { }
+
+- (void)setXY:(NSPoint)pos;
+- (void)setDxDy:(NSPoint)pos;
+- (void)trigger:(GamePadAction)event;
+- (BOOL)detectShakeAbs:(NSPoint)pos;
+- (BOOL)detectShakeRel:(NSPoint)pos;
+
+@end
+
+
+//
+// Joystick
+//
+
+@interface JoystickProxy : SubComponentProxy { }
+
+@property (readonly) JoystickInfo info;
+@property (readonly) JoystickInfo cachedInfo;
+
+- (void)trigger:(GamePadAction)event;
+
+@end
+
+
+//
+// RemoteManager
+//
+
+@interface RemoteManagerProxy : SubComponentProxy { }
+
+@property (readonly) RemoteManagerInfo info;
+
+@end
+
+
+//
+// RetroShell
+//
+
+@interface RetroShellProxy : SubComponentProxy { }
+
+@property (readonly) RetroShellInfo info;
+
+- (NSString *)getText;
+- (void)pressKey:(char)c;
+- (void)pressSpecialKey:(RSKey)key;
+- (void)pressSpecialKey:(RSKey)key shift:(BOOL)shift;
+- (void)executeScript:(NSURL *)url exception:(ExceptionWrapper *)ex;
+- (void)executeString:(NSString *)string;
+
+@end
+
+
+//
+// F I L E   T Y P E   P R O X I E S
+//
+
+@protocol MakeWithFile <NSObject>
++ (instancetype)makeWithFile:(NSString *)path exception:(ExceptionWrapper *)ex;
+@end
+
+@protocol MakeWithBuffer <NSObject>
++ (instancetype)makeWithBuffer:(const void *)buf length:(NSInteger)len exception:(ExceptionWrapper *)ex;
+@end
+
+@protocol MakeWithDrive <NSObject>
+
++ (instancetype)makeWithDrive:(DriveProxy *)proxy
+                       format:(ImageFormat)fmt
+                    exception:(ExceptionWrapper *)ex;
+@end
+
+
+//
+// AnyFile
+//
+
+@interface AnyFileProxy : Proxy { }
+
+@property (readonly) NSURL *path;
+@property (readonly) NSInteger size;
+@property (readonly) u64 fnv;
+
+- (void)setPath:(NSURL *)path;
+- (NSInteger)writeToFile:(NSURL *)path exception:(ExceptionWrapper *)ex;
+
+@end
+
+
+//
+// Snapshot
+//
+
+@interface SnapshotProxy : AnyFileProxy
+{
+    NSImage *preview;
+}
+
++ (instancetype)makeWithC64:(EmulatorProxy *)proxy compressor:(Compressor)c;
+
+@property (readonly) NSInteger size;
+@property (readonly) u64 fnv;
+@property (readonly) Compressor compressor;
+@property (readonly) BOOL compressed;
+
+@property (readonly) u8 *data;
+
+@property (readonly, strong) NSImage *previewImage;
+@property (readonly) time_t timeStamp;
+
+@end
+
+
+//
+// DiskImageProxy
+//
+
+@interface DiskImageProxy : Proxy { }
+
++ (ImageInfo)about:(NSURL *)url;
+
+- (NSArray<NSString *> *)describe;
+
+@property (readonly) NSURL *path;
+@property (readonly) NSInteger size;
+@property (readonly) u64 fnv;
+
+- (NSInteger)writeToFile:(NSURL *)path exception:(ExceptionWrapper *)ex;
+
+@property (readonly) ImageType type;
+@property (readonly) ImageFormat format;
+@property (readonly) ImageInfo info;
+
+@property (readonly) NSInteger bsize;
+@property (readonly) NSInteger numCyls;
+@property (readonly) NSInteger numHeads;
+@property (readonly) NSInteger numTracks;
+@property (readonly) NSInteger numSectors;
+@property (readonly) NSInteger numBlocks;
+@property (readonly) NSInteger numBytes;
+
+- (NSInteger)readByte:(NSInteger)b offset:(NSInteger)offset;
+- (NSString *)asciidump:(NSInteger)b offset:(NSInteger)offset len:(NSInteger)len;
+
+@end
+
+
+//
+// FloppyDiskImageProxy
+//
+
+@interface FloppyDiskImageProxy : DiskImageProxy <MakeWithDrive> { }
+
++ (ImageInfo)about:(NSURL *)url;
+
++ (instancetype)makeWithDrive:(DriveProxy *)proxy
+                       format:(ImageFormat)fmt
+                    exception:(ExceptionWrapper *)ex;
+
+@property (readonly) Diameter diameter;
+@property (readonly) Density density;
+@property (readonly) BOOL isSD;
+@property (readonly) BOOL isDD;
+@property (readonly) BOOL isHD;
+
+@end

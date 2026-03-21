@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="24128" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24128"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="qNz-Gs-wX5">
+            <objects>
+                <windowController storyboardIdentifier="MyWindowController" id="pY4-EW-Sco" customClass="Dashboard" customModule="VirtualC64" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Dashboard" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="8ha-YH-oax">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="255" y="323" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
+                        <view key="contentView" id="axK-ob-lcB">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <connections>
+                            <outlet property="delegate" destination="pY4-EW-Sco" id="naD-5E-vsD"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="Go2-Z3-3Aa" kind="relationship" relationship="window.shadowedContentViewController" id="7rM-Cy-KqH"/>
+                    </connections>
+                </windowController>
+                <customObject id="RXT-Ij-peO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1114" y="144"/>
+        </scene>
+        <!--Dashboard View Controller-->
+        <scene sceneID="nZp-QB-dwv">
+            <objects>
+                <viewController id="Go2-Z3-3Aa" customClass="DashboardViewController" customModule="VirtualC64" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="MmD-Ai-crE">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WmY-pq-lBg">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <segue destination="3Vb-4c-Tsz" kind="embed" id="ATR-2f-42w"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="WmY-pq-lBg" id="mq7-NK-Ndv"/>
+                    </connections>
+                </viewController>
+                <customObject id="hg1-DB-5QP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1821" y="113"/>
+        </scene>
+        <!--Overview Controller-->
+        <scene sceneID="Cy5-6D-N07">
+            <objects>
+                <viewController storyboardIdentifier="ViewController1" id="3Vb-4c-Tsz" customClass="OverviewController" customModule="VirtualC64" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="1Du-0G-H7d">
+                        <rect key="frame" x="0.0" y="0.0" width="612" height="316"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box title="Left Audio" titlePosition="noTitle" id="Q47-RT-twk">
+                                <rect key="frame" x="452" y="16" width="139" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="Mxk-Gf-fo6">
+                                    <rect key="frame" x="0.0" y="0.0" width="139" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                            <box title="CPU Load" titlePosition="noTitle" id="SG0-Yn-4va">
+                                <rect key="frame" x="17" y="158" width="139" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="N6D-Sc-d2i">
+                                    <rect key="frame" x="0.0" y="0.0" width="139" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                            <box title="GPU Refresh Rate" titlePosition="noTitle" id="0F7-Mg-R5k">
+                                <rect key="frame" x="161" y="158" width="141" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="yuY-c6-5UG">
+                                    <rect key="frame" x="0.0" y="0.0" width="141" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                            <box title="Amiga Fps" titlePosition="noTitle" id="ID4-Om-2NI">
+                                <rect key="frame" x="309" y="158" width="139" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="IW7-JV-LM3">
+                                    <rect key="frame" x="0.0" y="0.0" width="139" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                            <box title="Amiga Frequency" titlePosition="noTitle" id="eqI-BG-PUg">
+                                <rect key="frame" x="453" y="158" width="140" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="e5l-N1-ya5">
+                                    <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                            <box title="CIA A" titlePosition="noTitle" id="IDe-Kq-5VK">
+                                <rect key="frame" x="16" y="16" width="140" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="rFN-P3-QUV">
+                                    <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                            <box title="CIA B" titlePosition="noTitle" id="zSw-uF-aUE">
+                                <rect key="frame" x="161" y="16" width="141" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="Vzq-FK-cbi">
+                                    <rect key="frame" x="0.0" y="0.0" width="141" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                            <box title="Audio Fill Level" titlePosition="noTitle" id="jo1-Nm-oa2">
+                                <rect key="frame" x="309" y="16" width="139" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" id="H98-Ya-Loh">
+                                    <rect key="frame" x="0.0" y="0.0" width="139" height="140"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                            </box>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="ciaABox" destination="IDe-Kq-5VK" id="6vB-Z6-MVI"/>
+                        <outlet property="ciaBBox" destination="zSw-uF-aUE" id="f4H-9A-X4l"/>
+                        <outlet property="emuFpsBox" destination="ID4-Om-2NI" id="cZT-H1-26k"/>
+                        <outlet property="emuMhzBox" destination="eqI-BG-PUg" id="Zld-Ds-ixE"/>
+                        <outlet property="fillLevelBox" destination="jo1-Nm-oa2" id="lEj-TZ-WiV"/>
+                        <outlet property="hostFpsBox" destination="0F7-Mg-R5k" id="yVa-gc-iSw"/>
+                        <outlet property="hostLoadBox" destination="SG0-Yn-4va" id="ktN-7V-P44"/>
+                        <outlet property="waveformLBox" destination="Q47-RT-twk" id="bzg-qk-sul"/>
+                    </connections>
+                </viewController>
+                <customObject id="O3r-bP-hCi" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1591" y="619"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="xAQ-2M-GO5">
+            <objects>
+                <viewController storyboardIdentifier="ViewController2" id="eVN-Ng-vsg" sceneMemberID="viewController">
+                    <view key="view" id="xHb-d8-g4M">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="130"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </viewController>
+                <customObject id="6cH-RA-1KB" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2059" y="526"/>
+        </scene>
+    </scenes>
+</document>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%@ Game</key>
+	<string>%@ 游戏</string>
+	<key>Arcade Game</key>
+	<string>街机游戏</string>
+	<key>Archived Game</key>
+	<string>库存游戏</string>
+	<key>Atari 2600 Game</key>
+	<string>Atari 2800 游戏</string>
+	<key>Atari 5200 Game</key>
+	<string>Atari 5200 游戏</string>
+	<key>Atari 7800 Game</key>
+	<string>Atari 7800 游戏</string>
+	<key>Atari Lynx Game</key>
+	<string>Atari Lynx 游戏</string>
+	<key>ColecoVision Game</key>
+	<string>ColecoVision 游戏</string>
+	<key>Famicom Disk System Game</key>
+	<string>Famicom Disk System 游戏</string>
+	<key>Game Boy Advance Game</key>
+	<string>Game Boy Advance 游戏</string>
+	<key>Game Boy Game</key>
+	<string>Game Boy 游戏</string>
+	<key>Game Gear Game</key>
+	<string>Game Gear 游戏</string>
+	<key>GameCube Game</key>
+	<string>GameCube 游戏</string>
+	<key>Intellivision Game</key>
+	<string>Intellivision 游戏</string>
+	<key>NeoGeo Pocket Game</key>
+	<string>NeoGeo Pocket 游戏</string>
+	<key>Nintendo (NES) Game</key>
+	<string>Famicom 游戏</string>
+	<key>Nintendo 64 Game</key>
+	<string>Nintendo 64 游戏</string>
+	<key>Nintendo DS Game</key>
+	<string>Nintendo DS 游戏</string>
+	<key>OpenEmu Core Plugin</key>
+	<string>游戏核心插件</string>
+	<key>OpenEmu Game</key>
+	<string>OpenEmu 游戏</string>
+	<key>OpenEmu Save State</key>
+	<string>OpenEmu 保存状态</string>
+	<key>OpenEmu Shader</key>
+	<string>视频滤镜插件</string>
+	<key>OpenEmu System Plugin</key>
+	<string>系统插件</string>
+	<key>SG-1000 Game</key>
+	<string>SG-1000 游戏</string>
+	<key>Sega 32X Game</key>
+	<string>Sega Super 32X 游戏</string>
+	<key>Sega Master System Game</key>
+	<string>Sega Master System 游戏</string>
+	<key>Sega Mega Drive Game</key>
+	<string>Sega Mega Drive 游戏</string>
+	<key>Sony PSP Game</key>
+	<string>Sony PSP 游戏</string>
+	<key>Sony PlayStation Game</key>
+	<string>Sony PlayStation 游戏</string>
+	<key>Super Nintendo (SNES) Game</key>
+	<string>Super Famicom 游戏</string>
+	<key>TurboGrafx-16 Game</key>
+	<string>PC Engine 游戏</string>
+	<key>Vectrex Game</key>
+	<string>Vectrex 游戏</string>
+	<key>Virtual Boy Game</key>
+	<string>Virtual Boy 游戏</string>
+	<key>WonderSwan Game</key>
+	<string>WonderSwan 游戏</string>
+</dict>
+</plist>

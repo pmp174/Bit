@@ -1,0 +1,344 @@
+// -----------------------------------------------------------------------------
+// This file is part of VirtualC64
+//
+// Copyright (C) Dirk W. Hoffmann. www.dirkwhoffmann.de
+// Licensed under the GNU General Public License v3
+//
+// See https://www.gnu.org for license information
+// -----------------------------------------------------------------------------
+
+@MainActor
+extension C64Proxy {
+
+    func loadSnapshot(_ proxy: SnapshotProxy) throws {
+
+        let exc = ExceptionWrapper()
+        loadSnapshot(proxy, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+    
+    func loadSnapshot(url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        loadSnapshot(from: url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func saveSnapshot(url: URL, compressor: Compressor) throws {
+
+        let exc = ExceptionWrapper()
+        saveSnapshot(to: url, compressor: compressor, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func loadWorkspace(url: URL) throws {
+        
+        let exc = ExceptionWrapper()
+        loadWorkspace(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+    
+    func saveWorkspace(url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        saveWorkspace(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+}
+
+//
+// Factory extensions
+//
+
+
+
+//
+// Exception passing
+//
+
+@MainActor
+extension EmulatorProxy {
+
+    func launch() throws {
+        
+        let exc = ExceptionWrapper()
+        launch(exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+    
+    func launch(_ listener: UnsafeRawPointer, _ callback: @escaping @convention(c) (UnsafeRawPointer?, Message) -> Void) throws
+    {
+        let exc = ExceptionWrapper()
+        launch(listener, function: callback, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+    
+    func isReady() throws {
+        
+        let exc = ExceptionWrapper()
+        isReady(exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func powerOn() throws {
+        
+        let exc = ExceptionWrapper()
+        power(on: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func run() throws {
+        
+        let exc = ExceptionWrapper()
+        run(exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func exportConfig(url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        exportConfig(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func loadRom(url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        loadRom(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func loadRom(_ type: vc64.RomType, url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        loadRom(url, exception: exc, type: type)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func saveRom(_ type: vc64.RomType, url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        save(type, url: url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func flash(url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        flashFile(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+}
+
+@MainActor
+extension DriveProxy {
+    
+    func insert(url: URL, protected wp: Bool) throws {
+        
+        let exc = ExceptionWrapper()
+        insert(url, protected: wp, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+    
+    func insert(format: FSFormat, name: String) throws {
+    
+        let exc = ExceptionWrapper()
+        insertBlankDisk(format, name: name, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+        
+    func write(toFile url: URL) throws {
+        
+        let exc = ExceptionWrapper()
+        write(toFile: url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func saveFiles(url: URL) throws {
+
+        let exc = ExceptionWrapper()
+        saveFiles(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+}
+
+@MainActor
+extension DatasetteProxy {
+    
+    func insertTape(_ url: URL) throws {
+        
+        let exc = ExceptionWrapper()
+        insertTape(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func exportTape(_ url: URL) throws {
+        
+        let exc = ExceptionWrapper()
+        exportTape(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+}
+
+@MainActor
+extension ExpansionPortProxy {
+    
+    func attachCartridge(_ url: URL, reset: Bool) throws {
+        
+        let exc = ExceptionWrapper()
+        attachCartridge(url, reset: reset, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+    func write(toFile url: URL) throws {
+        
+        let exc = ExceptionWrapper()
+        write(toFile: url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+}
+
+@MainActor
+extension AnyFileProxy {
+    
+    func writeToFile(url: URL) throws {
+        
+        let exc = ExceptionWrapper()
+        write(toFile: url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+}
+
+@MainActor
+extension RetroShellProxy {
+  
+    func executeScript(url: URL) throws {
+        
+        let exc = ExceptionWrapper()
+        executeScript(url, exception: exc)
+        if let _ = exc.fault { throw AppError(exc) }
+    }
+
+}
+
+@MainActor
+extension RemoteManagerProxy {
+
+    var icon: NSImage? {
+
+        var numActive = 0
+        var numConnected = 0
+
+        func count(_ info: RemoteServerInfo) {
+
+            if info.state != .OFF { numActive += 1 }
+            if info.state == .CONNECTED { numConnected += 1 }
+        }
+
+        let info = info
+        count(info.rshInfo)
+        count(info.rpcInfo)
+        count(info.dapInfo)
+        count(info.promInfo)
+
+        if numConnected > 0 { return SFSymbol.get(.serverConnected) }
+        if numActive > 0 { return SFSymbol.get(.serverListening) }
+
+        return nil
+    }
+}
+
+//
+// Keyboard
+//
+
+@MainActor
+extension KeyboardProxy {
+
+    func isPressed(_ key: C64Key) -> Bool {
+
+        return isPressed(key.nr)
+    }
+}
+
+//
+// Other extensions
+//
+
+@MainActor
+extension EmulatorProxy {
+    
+    func drive(_ nr: NSInteger) -> DriveProxy {
+        
+        switch nr {
+            
+        case DRIVE8: return drive8
+        case DRIVE9: return drive9
+        
+        default:
+            fatalError()
+        }
+    }
+    
+    func drive(_ item: NSButton!) -> DriveProxy {
+        
+        return drive(item.tag)
+    }
+    
+    func drive(_ item: NSMenuItem!) -> DriveProxy {
+        
+        return drive(item.tag)
+    }
+    
+    func image(data: UnsafeMutablePointer<UInt8>?, size: NSSize) -> NSImage {
+        
+        var bitmap = data
+        let width = Int(size.width)
+        let height = Int(size.height)
+        
+        let imageRep = NSBitmapImageRep(bitmapDataPlanes: &bitmap,
+                                        pixelsWide: width,
+                                        pixelsHigh: height,
+                                        bitsPerSample: 8,
+                                        samplesPerPixel: 4,
+                                        hasAlpha: true,
+                                        isPlanar: false,
+                                        colorSpaceName: NSColorSpaceName.calibratedRGB,
+                                        bytesPerRow: 4 * width,
+                                        bitsPerPixel: 32)
+        
+        let image = NSImage(size: (imageRep?.size)!)
+        image.addRepresentation(imageRep!)
+        image.makeGlossy()
+        
+        return image
+    }
+}
+
+@MainActor
+extension DriveProxy {
+    
+    static let ledGray = NSImage(named: "LEDgray")!
+    static let ledGreen = NSImage(named: "LEDgreen")!
+    static let ledRed = NSImage(named: "LEDred")!
+    static let diskProt = NSImage(named: "diskTemplate")!
+    static let diskProtGray = NSImage(named: "diskGrayTemplate")!
+    static let diskUnprot = NSImage(named: "diskWritableTemplate")!
+    static let diskUnprotGray = NSImage(named: "diskWritableGrayTemplate")!
+
+    var greenLedImage: NSImage {        
+        return config.switchedOn ? DriveProxy.ledGreen : DriveProxy.ledGray
+    }
+    
+    var redLedImage: NSImage {
+        return info.redLED ? DriveProxy.ledRed : DriveProxy.ledGray
+    }
+
+    var icon: NSImage {
+        if info.hasProtectedDisk {
+            return info.hasModifiedDisk ? DriveProxy.diskProtGray : DriveProxy.diskProt
+        } else {
+            return info.hasModifiedDisk ? DriveProxy.diskUnprotGray : DriveProxy.diskUnprot
+        }
+    }
+}
