@@ -310,6 +310,7 @@
 		6355D36F2F664AA00024B088 /* PrefAppearanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6355D36E2F664AA00024B088 /* PrefAppearanceController.swift */; };
 		6355D3712F66546B0024B088 /* PrefGeneralController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6355D3702F66546B0024B088 /* PrefGeneralController.swift */; };
 		6355D3732F66B9A40024B088 /* Bit App Icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 6355D3722F66B9A40024B088 /* Bit App Icon.icon */; };
+		63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87FBC06D1BFC70FE00AECF5A /* Commodore 64.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8227756B1489471A00B19E27 /* OEGGSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8227755C1489471A00B19E27 /* OEGGSystemResponder.m */; };
 		82C2909114840024007C0214 /* OENGPSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 820EB7571483F9D3008EC398 /* OENGPSystemResponder.m */; };
 		82DD29DB12369F1100B58A8F /* KeyboardUsages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 82DD29DA12369F1100B58A8F /* KeyboardUsages.plist */; };
@@ -1203,6 +1204,7 @@
 			dstPath = Systems;
 			dstSubfolderSpec = 13;
 			files = (
+				63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */,
 				632C6DE02F6851F80083E29D /* Supervision.oesystemplugin in Copy System Plugins to App Plugins */,
 				632C6DDF2F6851F00083E29D /* Pokemon mini.oesystemplugin in Copy System Plugins to App Plugins */,
 				632C6DDE2F6851E80083E29D /* MSX.oesystemplugin in Copy System Plugins to App Plugins */,
