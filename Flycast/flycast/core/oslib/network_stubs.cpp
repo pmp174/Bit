@@ -134,3 +134,58 @@ void serialModemTerm() {}
 std::string os_PrecomposedString(std::string str) {
     return str;
 }
+
+// --- GGPO netplay stubs ---
+
+#include "network/ggpo.h"
+#include "hw/maple/maple_cfg.h"
+#include "input/gamepad_device.h"
+#include <future>
+
+namespace ggpo {
+
+bool inRollback = false;
+
+std::future<bool> startNetwork() {
+    std::promise<bool> p;
+    p.set_value(false);
+    return p.get_future();
+}
+
+void startSession(int localPort, int localPlayerNum) { (void)localPort; (void)localPlayerNum; }
+void stopSession() {}
+
+void getInput(MapleInputState inputState[4]) {
+    os_UpdateInputState();
+    for (int player = 0; player < 4; player++) {
+        MapleInputState& state = inputState[player];
+        state.kcode = kcode[player];
+        state.halfAxes[PJTI_L] = lt[player];
+        state.halfAxes[PJTI_R] = rt[player];
+        state.halfAxes[PJTI_L2] = lt2[player];
+        state.halfAxes[PJTI_R2] = rt2[player];
+        state.fullAxes[PJAI_X1] = joyx[player];
+        state.fullAxes[PJAI_Y1] = joyy[player];
+        state.fullAxes[PJAI_X2] = joyrx[player];
+        state.fullAxes[PJAI_Y2] = joyry[player];
+        state.fullAxes[PJAI_X3] = joy3x[player];
+        state.fullAxes[PJAI_Y3] = joy3y[player];
+    }
+}
+
+bool nextFrame() { return false; }
+bool active() { return false; }
+void displayStats() {}
+void endOfFrame() {}
+void sendChatMessage(int playerNum, const std::string& msg) { (void)playerNum; (void)msg; }
+void receiveChatMessages(void (*callback)(int, const std::string&)) { (void)callback; }
+
+}
+
+// --- i18n::getCurrentLocale for macOS ---
+
+namespace i18n {
+std::string getCurrentLocale() {
+    return "en";
+}
+}

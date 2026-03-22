@@ -240,48 +240,87 @@ static void writeSaveFile(const char* path)
 #pragma mark Execution
 - (BOOL)loadFileAtPath:(NSString *)path error:(NSError **)error
 {
+    NSLog(@"[3DO] loadFileAtPath: %@", path);
     romName = [path copy];
-    
+
     NSString *isoPath;
     NSError *errorCue;
-    
+
     currentSector = 0;
     sampleCurrent = 0;
     memset(sampleBuffer, 0, sizeof(int32_t) * TEMP_BUFFER_SIZE);
-    
+
     NSString *cue = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&errorCue];
-    
+
+    if (!cue) {
+        NSLog(@"[3DO] Failed to read CUE file at %@: %@", path, errorCue);
+        if (error) {
+            *error = [NSError errorWithDomain:OEGameCoreErrorDomain
+                                         code:OEGameCoreCouldNotLoadROMError
+                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to read the CUE file for the 3DO disc image."}];
+        }
+        return NO;
+    }
+    NSLog(@"[3DO] CUE contents:\n%@", cue);
+
     const char *cueCString = [cue UTF8String];
     Cd *cd = cue_parse_string(cueCString);
-    NSLog(@"CUE file found and parsed");
-    if (cd_get_ntrack(cd)!=1)
+    NSLog(@"[3DO] CUE parsed, cd=%p, ntrack=%d", cd, cd ? cd_get_ntrack(cd) : -1);
+    if (!cd || cd_get_ntrack(cd)!=1)
     {
-        NSLog(@"Cue file found, but the number of tracks within was not 1.");
+        NSLog(@"[3DO] Cue file found, but could not parse or the number of tracks was not 1.");
+        if (error) {
+            *error = [NSError errorWithDomain:OEGameCoreErrorDomain
+                                         code:OEGameCoreCouldNotLoadROMError
+                                     userInfo:@{NSLocalizedDescriptionKey: @"The CUE file could not be parsed or contains an unsupported number of tracks."}];
+        }
         return NO;
     }
-    
+
     Track *track = cd_get_track(cd, 1);
     isoMode = (TrackMode)track_get_mode(track);
-    
+    NSLog(@"[3DO] Track mode: %d (MODE1=%d, MODE1_RAW=%d)", isoMode, MODE_MODE1, MODE_MODE1_RAW);
+
     if ((isoMode!=MODE_MODE1&&isoMode!=MODE_MODE1_RAW))
     {
-        NSLog(@"Cue file found, but the track within was not in the right format (should be BINARY and Mode1+2048 or Mode1+2352)");
+        NSLog(@"[3DO] Cue file found, but the track within was not in the right format (should be BINARY and Mode1+2048 or Mode1+2352)");
+        if (error) {
+            *error = [NSError errorWithDomain:OEGameCoreErrorDomain
+                                         code:OEGameCoreCouldNotLoadROMError
+                                     userInfo:@{NSLocalizedDescriptionKey: @"The disc image track is not in the expected format (Mode1/2048 or Mode1/2352)."}];
+        }
         return NO;
     }
-    
+
     NSString *isoTrack = [NSString stringWithUTF8String:track_get_filename(track)];
     isoPath = [path stringByReplacingOccurrencesOfString:[path lastPathComponent] withString:isoTrack];
-    
+    NSLog(@"[3DO] ISO path: %@", isoPath);
+
     isoStream = [NSFileHandle fileHandleForReadingAtPath:isoPath];
-    
+    NSLog(@"[3DO] isoStream: %@", isoStream);
+
+    if (!isoStream) {
+        NSLog(@"[3DO] Failed to open ISO file at path: %@", isoPath);
+        if (error) {
+            *error = [NSError errorWithDomain:OEGameCoreErrorDomain
+                                         code:OEGameCoreCouldNotLoadROMError
+                                     userInfo:@{NSLocalizedDescriptionKey:
+                                         [NSString stringWithFormat:@"Could not open the disc image file referenced by the CUE sheet: %@", isoTrack]}];
+        }
+        return NO;
+    }
+
     uint8_t sectorZero[2048];
     [self readSector:0 toBuffer:sectorZero];
     VolumeHeader *header = (VolumeHeader*)sectorZero;
     sectorCount = (int)reverseBytes(header->blockCount);
-    NSLog(@"Sector count is %d", sectorCount);
+    NSLog(@"[3DO] Sector count is %d", sectorCount);
 
     // init libfreedo
-    [self loadBIOSes];
+    NSLog(@"[3DO] Loading BIOS from: %@", [self biosDirectoryPath]);
+    if (![self loadBIOSes:error])
+        return NO;
+    NSLog(@"[3DO] BIOS loaded successfully");
     [self initVideo];
     
     memset(sampleBuffer, 0, sizeof(int32_t) * TEMP_BUFFER_SIZE);
@@ -684,30 +723,42 @@ char CalculateDeviceHighByte(int deviceNumber)
     memset(frame, 0, sizeof(VDLFrame));
 }
 
-- (void)loadBIOSes
+- (BOOL)loadBIOSes:(NSError **)error
 {
     NSString *rom1Path = [[self biosDirectoryPath] stringByAppendingPathComponent:@"panafz10.bin"];
     NSData *data = [NSData dataWithContentsOfFile:rom1Path];
     NSUInteger len = [data length];
-    assert(len==ROM1_SIZE);
+    if (len != ROM1_SIZE) {
+        NSLog(@"[3DO] BIOS file panafz10.bin missing or wrong size (expected %d, got %lu)", ROM1_SIZE, (unsigned long)len);
+        if (error) {
+            *error = [NSError errorWithDomain:OEGameCoreErrorDomain
+                                         code:OEGameCoreCouldNotLoadROMError
+                                     userInfo:@{NSLocalizedDescriptionKey: @"3DO BIOS file 'panafz10.bin' is missing or invalid. Please place the correct BIOS file in the OpenEmu BIOS directory."}];
+        }
+        return NO;
+    }
     biosRom1Copy = (unsigned char *)malloc(len);
     memcpy(biosRom1Copy, [data bytes], len);
-    
-    // "ROM 2 Japanese Character ROM" / Set it if we find it. It's not requiered for soem JAP games. We still have to init the memory tho
+
+    // "ROM 2 Japanese Character ROM" / Set it if we find it. It's not required for some JAP games. We still have to init the memory tho
     NSString *rom2Path = [[self biosDirectoryPath] stringByAppendingPathComponent:@"rom2.rom"];
     data = [NSData dataWithContentsOfFile:rom2Path];
     if(data)
     {
         len = [data length];
-        assert(len==ROM2_SIZE);
-        biosRom2Copy = (unsigned char *)malloc(len);
-        memcpy(biosRom2Copy, [data bytes], len);
+        if (len != ROM2_SIZE) {
+            NSLog(@"[3DO] ROM2 file rom2.rom wrong size (expected %d, got %lu)", ROM2_SIZE, (unsigned long)len);
+            biosRom2Copy = (unsigned char *)calloc(ROM2_SIZE, 1);
+        } else {
+            biosRom2Copy = (unsigned char *)malloc(len);
+            memcpy(biosRom2Copy, [data bytes], len);
+        }
     }
     else
     {
-        biosRom2Copy = (unsigned char *)malloc(len);
-        memset(biosRom2Copy, 0, len);
+        biosRom2Copy = (unsigned char *)calloc(ROM2_SIZE, 1);
     }
+    return YES;
 }
 
 static uint32_t reverseBytes(uint32_t value)

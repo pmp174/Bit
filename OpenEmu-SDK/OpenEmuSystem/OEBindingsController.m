@@ -78,7 +78,7 @@ static NSURL *configurationsFolder;
         
         if(urls.count > 0)
         {
-            configurationsFolder = [[urls.firstObject URLByAppendingPathComponent:@"OpenEmu"] URLByAppendingPathComponent:@"Bindings"];
+            configurationsFolder = [[urls.firstObject URLByAppendingPathComponent:@"Bit"] URLByAppendingPathComponent:@"Bindings"];
             [fileManager createDirectoryAtURL:configurationsFolder withIntermediateDirectories:YES attributes:nil error:NULL];
         }
     }

@@ -58,7 +58,7 @@ Currently, OpenEmu can load the following game engines as plugins:
 * 3DO ([4DO](https://github.com/fourdo/fourdo)) 
 * Pokémon Mini ([PokeMini](https://github.com/pokerazor/pokemini)) 
 * WonderSwan ([Mednafen](https://mednafen.github.io)) 
-* Commodore 64 ([VirtualC64](https://github.com/dirkwhoffmann/virtualc64)))
+* Commodore 64 ([VirtualC64](https://github.com/dirkwhoffmann/virtualc64))
 
 Currently not available but in the pipeline
 

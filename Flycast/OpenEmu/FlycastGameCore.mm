@@ -22,6 +22,11 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// Rename macOS Carbon's RGBColor to avoid clash with Flycast's RGBColor
+#define RGBColor __macOS_RGBColor
+#import <Cocoa/Cocoa.h>
+#undef RGBColor
+
 #import "FlycastGameCore.h"
 #import <OpenEmuBase/OERingBuffer.h>
 #import <OpenEmuBase/OEGameCore.h>
@@ -38,6 +43,9 @@
 #include "audio/audiostream.h"
 #include "ui/gui.h"
 #include "rend/gles/gles.h"
+#include "hw/mem/addrspace.h"
+#include "oslib/oslib.h"
+#include "wsi/osx.h"
 
 #include <OpenGL/gl3.h>
 #include <sys/stat.h>
@@ -148,10 +156,16 @@ __weak FlycastGameCore *_current;
     add_system_data_dir(biosPath.fileSystemRepresentation);
 
     // Configure options before init
-    config::ThreadedRendering = false;  // We drive the frame loop
     config::RendererType = RenderType::OpenGL;
     config::AudioBackend.set("openemu");
     config::DynarecEnabled = true;
+
+    // Reserve the Dreamcast virtual address space and install fault handlers
+    // (normally done by flycast_init, which we bypass in OpenEmu)
+    if (!addrspace::reserve()) {
+        NSLog(@"[Flycast] Failed to reserve address space");
+    }
+    os_InstallFaultHandler();
 
     // Initialize the emulator
     emu.init();
@@ -167,9 +181,12 @@ __weak FlycastGameCore *_current;
     if (_isInitialized) {
         emu.stop();
         emu.unloadGame();
-        emu.term();
+        rend_term_renderer();
+        theGLContext.term();
         _isInitialized = NO;
     }
+    os_UninstallFaultHandler();
+    emu.term();  // internally calls addrspace::release() as its last step
     [super stopEmulation];
 }
 
@@ -187,7 +204,18 @@ __weak FlycastGameCore *_current;
     if (!_isInitialized) {
         // Load and start the game on first frame
         try {
+            // Initialize the GL graphics context (registers with Flycast's renderer system)
+            // OpenEmu's GL context is already current at this point
+            theGLContext.init();
+
             emu.loadGame(_romPath.fileSystemRepresentation);
+
+            // Override settings that loadGame() may have reset from saved config
+            config::ThreadedRendering.override(false);  // OpenEmu drives the frame loop
+
+            // Initialize the OpenGL renderer (creates shaders, FBOs, etc.)
+            rend_init_renderer();
+
             emu.start();
             gui_setState(GuiState::Closed);
             _isInitialized = YES;
@@ -202,7 +230,7 @@ __weak FlycastGameCore *_current;
 
     // Run one frame and render via OpenGL into OpenEmu's FBO
     [self.renderDelegate presentDoubleBufferedFBO];
-    emu.run();
+    emu.render();
 }
 
 #pragma mark - Video
@@ -248,14 +276,12 @@ __weak FlycastGameCore *_current;
 
 - (void)saveStateToFileAtPath:(NSString *)fileName completionHandler:(void (^)(BOOL, NSError *))block
 {
-    // Flycast uses index-based save states, but we need file-based for OpenEmu.
-    // Use the serialization API directly.
     if (_isInitialized) {
         @try {
             dc_savestate(0);
 
             // Copy the save state file from Flycast's data dir to OpenEmu's path
-            std::string srcPath = get_writable_data_path(settings.content.fileName + ".state");
+            std::string srcPath = hostfs::getSavestatePath(0, false);
             NSString *src = [NSString stringWithUTF8String:srcPath.c_str()];
             NSError *err = nil;
             [[NSFileManager defaultManager] removeItemAtPath:fileName error:nil];
@@ -282,7 +308,7 @@ __weak FlycastGameCore *_current;
     if (_isInitialized) {
         @try {
             // Copy OpenEmu's save state to Flycast's expected location
-            std::string dstPath = get_writable_data_path(settings.content.fileName + ".state");
+            std::string dstPath = hostfs::getSavestatePath(0, true);
             NSString *dst = [NSString stringWithUTF8String:dstPath.c_str()];
             NSError *err = nil;
             [[NSFileManager defaultManager] removeItemAtPath:dst error:nil];
@@ -325,10 +351,10 @@ __weak FlycastGameCore *_current;
             joyx[player] = value * 32767;
             break;
         case OEDCAnalogL:
-            lt[player] = value ? 255 : 0;
+            lt[player] = (u16)(value * 65535);
             break;
         case OEDCAnalogR:
-            rt[player] = value ? 255 : 0;
+            rt[player] = (u16)(value * 65535);
             break;
         default:
             break;

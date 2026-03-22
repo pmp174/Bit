@@ -364,10 +364,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8CBB42FF178C399D00FA270D"
-               BuildableName = "Build &amp; Install Reicast"
-               BlueprintName = "Build &amp; Install Reicast"
-               ReferencedContainer = "container:Reicast/Reicast.xcodeproj">
+               BlueprintIdentifier = "82B9195310150EA2007BD6DB"
+               BuildableName = "Build &amp; Install BSNES"
+               BlueprintName = "Build &amp; Install BSNES"
+               ReferencedContainer = "container:BSNES/BSNES.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -378,10 +378,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "82B9195310150EA2007BD6DB"
-               BuildableName = "Build &amp; Install BSNES"
-               BlueprintName = "Build &amp; Install BSNES"
-               ReferencedContainer = "container:BSNES/BSNES.xcodeproj">
+               BlueprintIdentifier = "634BA32D2F6F93C6006BB7BE"
+               BuildableName = "Build &amp; Install Flycast"
+               BlueprintName = "Build &amp; Install Flycast"
+               ReferencedContainer = "container:Flycast/Flycast.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

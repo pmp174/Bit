@@ -78,7 +78,7 @@ NSString *OEEventNamespaceKeys[] = { @"", @"OEGlobalNamespace", @"OEKeyboardName
         NSArray *urls = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
         NSURL *baseURL = (urls.count > 0) ? urls.firstObject : fileManager.temporaryDirectory;
 
-        NSURL *supportFolder = [baseURL URLByAppendingPathComponent:@"OpenEmu"];
+        NSURL *supportFolder = [baseURL URLByAppendingPathComponent:@"Bit"];
         _supportDirectory = [supportFolder URLByAppendingPathComponent:_pluginName];
         _biosDirectory    = [supportFolder URLByAppendingPathComponent:@"BIOS"];
     }
