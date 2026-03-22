@@ -20,9 +20,9 @@ This version of OpenEmu has been specifically patched to run natively on Apple S
 
 - She Comes In Colors
 
-![Bit Colors](https://github.com/pmp174/Bit/blob/44a994098f8fde66afd829bde2721b459a994ec2/Bit%20SnapShots/Colors.png)
+![Bit Colors](https://github.com/pmp174/Bit/blob/e2af42584a27c03e2ecfc6ea19b71a47c66c73bc/Bit%20SnapShots/Colors.png)
 
-![Bit Dark](https://github.com/pmp174/Bit/blob/55e1baab12d7f795078ea0d3faef777ebbb8adf9/Bit%20SnapShots/ColorsDark.png)
+![Bit Dark](https://github.com/pmp174/Bit/blob/e2af42584a27c03e2ecfc6ea19b71a47c66c73bc/Bit%20SnapShots/ColorsDark.png)
 
 > [!IMPORTANT]
 > **Transparency Disclaimer:** This repository is an experimental port of OpenEmu, created and maintained entirely through **AI-assisted coding** (using "Vibe Coding" techniques). The project was initiated by a user with no formal coding experience to test the capabilities of advanced AI agents (specifically Antigravity & Claud) in porting complex legacy software to run natively on Apple Silicon. This is based on work made in the original openemu repository, work made by bazley82, and work made by pystIC. 
