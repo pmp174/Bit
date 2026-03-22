@@ -49,7 +49,7 @@ class AppDelegate: NSObject {
     
     lazy var mainWindowController = MainWindowController(windowNibName: "MainWindow")
     
-    lazy var preferencesWindowController = PreferencesWindowController(windowNibName: "Preferences")
+    lazy var preferencesWindowController = SettingsWindowController()
     
     var documentController = GameDocumentController.shared
     
@@ -964,6 +964,7 @@ extension AppDelegate: NSMenuDelegate {
     }
     
     func applicationDidResignActive(_ notification: Notification) {
+        ControllerNavigationManager.shared.deactivateCurrentMode()
         updateEventHandlers()
     }
     
@@ -1018,19 +1019,33 @@ extension AppDelegate: NSMenuDelegate {
     func updateEventHandlers() {
         let block = {
             let games = NSApp.orderedDocuments.compactMap({$0 as? OEGameDocument})
-            guard games.count > 0 else { return }
-            
-            if let game = games.first {
-                game.handleEvents = self.shouldHandleControllerEvents
-                game.handleKeyboardEvents = self.shouldHandleKeyboardEvents
-            }
-            
-            games.dropFirst().forEach {
-                $0.handleEvents = false
-                $0.handleKeyboardEvents = false
+            let nav = ControllerNavigationManager.shared
+
+            if games.count > 0 {
+                // A game is running -- use in-game mode for Start+Select detection
+                nav.deactivateLibraryMode()
+                if nav.mode == .inactive {
+                    nav.activateInGameMode()
+                }
+
+                if let game = games.first {
+                    game.handleEvents = self.shouldHandleControllerEvents
+                    game.handleKeyboardEvents = self.shouldHandleKeyboardEvents
+                }
+
+                games.dropFirst().forEach {
+                    $0.handleEvents = false
+                    $0.handleKeyboardEvents = false
+                }
+            } else {
+                // No game running -- use library mode for controller navigation
+                nav.deactivateInGameMode()
+                if NSApp.isActive, nav.mode == .inactive {
+                    nav.activateLibraryMode()
+                }
             }
         }
-        
+
         if #available(macOS 13.0, *) {
             // Workaround; the documents in NSApp.orderedDocuments are not yet in the correct order on Ventura,
             // so when switching between game documents, the previous one would be chosen to handle input.

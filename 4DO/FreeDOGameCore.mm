@@ -61,18 +61,19 @@ inputState internal_input_state[6];
 @interface FreeDOGameCore () <OE3DOSystemResponderClient>
 {
     NSString *romName;
-    
+
     unsigned char *biosRom1Copy;
     unsigned char *biosRom2Copy;
     VDLFrame *frame;
-    
+
     NSFileHandle *isoStream;
     TrackMode isoMode;
     int sectorCount;
     int currentSector;
     BOOL isSwapFrameSignaled;
-    
+
     uint32_t *videoBuffer;
+    void *renderBuffer; // pointer to the active render destination (hint or videoBuffer)
     int videoWidth, videoHeight;
     //uintptr_t sampleBuffer[TEMP_BUFFER_SIZE];
     int32_t sampleBuffer[TEMP_BUFFER_SIZE];
@@ -104,6 +105,15 @@ static void *fdcCallback(int procedure, void *data)
         case EXT_SWAPFRAME:
         {
             current->isSwapFrameSignaled = YES;
+            // Render the VDL frame to bitmap immediately so the buffer is
+            // ready when the Metal renderer copies it to the GPU texture.
+            if (current->renderBuffer) {
+                struct BitmapCrop bmpcrop;
+                ScalingAlgorithm sca = None;
+                int rw, rh;
+                Get_Frame_Bitmap((VDLFrame *)current->frame, current->renderBuffer, 0, &bmpcrop,
+                                 current->videoWidth, current->videoHeight, false, true, false, sca, &rw, &rh);
+            }
             return current->frame;
         }
         case EXT_PUSH_SAMPLE:
@@ -476,15 +486,14 @@ static void writeSaveFile(const char* path)
         hint = videoBuffer;
     }
 
-    if(isSwapFrameSignaled)
-    {
-        isSwapFrameSignaled = NO;
-        struct BitmapCrop bmpcrop;
-        ScalingAlgorithm sca;
-        int rw, rh;
-        Get_Frame_Bitmap((VDLFrame *)frame, hint, 0, &bmpcrop, videoWidth, videoHeight, false, true, false, sca, &rw, &rh);
+    // Store the render destination so EXT_SWAPFRAME can write directly into it.
+    // Pre-fill with 0xFF so alpha bytes (skipped by Get_Frame_Bitmap) are opaque.
+    if (renderBuffer != hint) {
+        renderBuffer = hint;
+        memset(renderBuffer, 0xFF, videoWidth * videoHeight * 4);
     }
-    return videoBuffer;
+
+    return hint;
 }
 
 - (OEIntRect)screenRect

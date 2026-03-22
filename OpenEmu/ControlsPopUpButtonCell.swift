@@ -24,60 +24,6 @@
 
 import Cocoa
 
+/// Uses standard system popup button drawing — wood texture removed.
 final class ControlsPopUpButtonCell: NSPopUpButtonCell {
-    
-    override func drawBorderAndBackground(withFrame cellFrame: NSRect, in controlView: NSView) {
-        NSImage(named: "wood_popup_button")?.draw(in: cellFrame)
-    }
-    
-    override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
-        image.draw(in: frame)
-    }
-    
-    override func titleRect(forBounds cellFrame: NSRect) -> NSRect {
-        if #available(macOS 11.0, *) {
-            return super.titleRect(forBounds: cellFrame)
-        }
-        var titleRect = super.titleRect(forBounds: cellFrame)
-        titleRect.origin.y += 1
-        return titleRect
-    }
-    
-    override func imageRect(forBounds rect: NSRect) -> NSRect {
-        if #available(macOS 11.0, *) {
-            var imageRect = super.imageRect(forBounds: rect)
-            imageRect.origin.y -= 1
-            return imageRect
-        }
-        return super.imageRect(forBounds: rect)
-    }
-    
-    override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
-        var titleRect = titleRect(forBounds: cellFrame)
-        let imageRect = imageRect(forBounds: cellFrame)
-        
-        if !titleRect.isEmpty {
-            titleRect.origin.y -= 3
-            let attributedTitle = NSAttributedString(string: title, attributes: Self.attributes)
-            drawTitle(attributedTitle, withFrame: titleRect, in: controlView)
-        }
-        if !imageRect.isEmpty,
-           let image = image {
-            drawImage(image, withFrame: imageRect, in: controlView)
-        }
-    }
-    
-    private static let attributes: [NSAttributedString.Key : Any] = {
-        
-        let style = NSMutableParagraphStyle()
-        style.lineBreakMode = .byTruncatingTail
-        
-        let attributes: [NSAttributedString.Key : Any] =
-                                          [.font: NSFont.boldSystemFont(ofSize: 11),
-                                .foregroundColor: NSColor.black,
-                                         .shadow: NSShadow.oeControls,
-                                 .paragraphStyle: style]
-        
-        return attributes
-    }()
 }

@@ -19,33 +19,21 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <view id="3" userLabel="Controls" customClass="BackgroundImageView" customModule="OpenEmu" customModuleProvider="target">
+        <view id="3" userLabel="Controls">
             <rect key="frame" x="0.0" y="0.0" width="760" height="450"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lKD-EX-QDV">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="103">
                     <rect key="frame" x="0.0" y="0.0" width="500" height="450"/>
                     <constraints>
-                        <constraint firstAttribute="width" priority="750" constant="500" id="EgJ-HE-wrq"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="EgJ-HE-wrq"/>
                     </constraints>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="controls_shadow" id="yx0-xn-xNL"/>
-                </imageView>
-                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="103">
-                    <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="SdG-k8-Iue">
                     <rect key="frame" x="500" y="0.0" width="260" height="450"/>
                     <subviews>
-                        <visualEffectView fixedFrame="YES" blendingMode="behindWindow" material="sidebar" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-pL-hLm">
+                        <visualEffectView blendingMode="behindWindow" material="sidebar" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-pL-hLm">
                             <rect key="frame" x="0.0" y="0.0" width="260" height="450"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <subviews>
-                                <box horizontalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="DwP-z5-SEX">
-                                    <rect key="frame" x="-2" y="0.0" width="5" height="450"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                </box>
-                            </subviews>
                         </visualEffectView>
                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7">
                             <rect key="frame" x="11" y="412" width="239" height="25"/>
@@ -64,13 +52,6 @@
                                 <action selector="changeSystem:" target="-2" id="48"/>
                             </connections>
                         </popUpButton>
-                        <box title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="etN-Fb-f1F">
-                            <rect key="frame" x="11" y="10" width="238" height="394"/>
-                            <view key="contentView" id="2lL-Qf-ie1">
-                                <rect key="frame" x="4" y="5" width="230" height="386"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </view>
-                        </box>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="116">
                             <rect key="frame" x="14" y="14" width="232" height="388"/>
                             <subviews>
@@ -170,39 +151,33 @@
                         </customView>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="7" firstAttribute="top" secondItem="SdG-k8-Iue" secondAttribute="top" constant="14" id="2ZT-6Y-NTl"/>
-                        <constraint firstAttribute="height" priority="750" constant="450" id="6Rc-G3-4Af"/>
-                        <constraint firstItem="116" firstAttribute="top" secondItem="etN-Fb-f1F" secondAttribute="top" id="Lk9-LM-DKc"/>
+                        <!-- Pin visual effect view with insets for rounded corners -->
+                        <constraint firstItem="I6g-pL-hLm" firstAttribute="top" secondItem="SdG-k8-Iue" secondAttribute="top" constant="6" id="ve-top-pin"/>
+                        <constraint firstItem="I6g-pL-hLm" firstAttribute="leading" secondItem="SdG-k8-Iue" secondAttribute="leading" constant="6" id="ve-lead-pin"/>
+                        <constraint firstAttribute="trailing" secondItem="I6g-pL-hLm" secondAttribute="trailing" constant="6" id="ve-trail-pin"/>
+                        <constraint firstAttribute="bottom" secondItem="I6g-pL-hLm" secondAttribute="bottom" constant="6" id="ve-bot-pin"/>
+                        <!-- System popup at top with insets to sit inside rounded VE -->
+                        <constraint firstItem="7" firstAttribute="top" secondItem="SdG-k8-Iue" secondAttribute="top" constant="16" id="2ZT-6Y-NTl"/>
                         <constraint firstAttribute="bottom" secondItem="116" secondAttribute="bottom" constant="14" id="PZG-zE-Nad"/>
-                        <constraint firstItem="116" firstAttribute="bottom" secondItem="etN-Fb-f1F" secondAttribute="bottom" id="Ro9-CV-ifm"/>
                         <constraint firstAttribute="trailing" secondItem="116" secondAttribute="trailing" constant="14" id="WQa-pM-nj4"/>
-                        <constraint firstItem="116" firstAttribute="trailing" secondItem="etN-Fb-f1F" secondAttribute="trailing" id="Wje-sO-uqW"/>
-                        <constraint firstItem="116" firstAttribute="leading" secondItem="etN-Fb-f1F" secondAttribute="leading" id="a9a-9v-rh2"/>
                         <constraint firstItem="116" firstAttribute="trailing" secondItem="7" secondAttribute="trailing" id="fFy-cD-v1B"/>
                         <constraint firstItem="116" firstAttribute="leading" secondItem="7" secondAttribute="leading" id="kJh-wk-8gd"/>
                         <constraint firstItem="116" firstAttribute="leading" secondItem="SdG-k8-Iue" secondAttribute="leading" constant="14" id="ljD-R2-RiC"/>
-                        <constraint firstItem="116" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="14" id="lmA-iR-zVI"/>
-                        <constraint firstAttribute="width" priority="750" constant="260" id="yrI-Ud-ITe"/>
+                        <constraint firstItem="116" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="8" id="lmA-iR-zVI"/>
+                        <constraint firstAttribute="width" constant="260" id="yrI-Ud-ITe"/>
                     </constraints>
                 </customView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="SdG-k8-Iue" secondAttribute="bottom" id="8zM-co-Moy"/>
-                <constraint firstItem="lKD-EX-QDV" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="CW3-lP-ldZ"/>
-                <constraint firstItem="SdG-k8-Iue" firstAttribute="leading" secondItem="lKD-EX-QDV" secondAttribute="trailing" id="Ea5-JL-59s"/>
-                <constraint firstItem="lKD-EX-QDV" firstAttribute="top" secondItem="3" secondAttribute="top" id="GWx-yu-hK6"/>
+                <constraint firstItem="103" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="CW3-lP-ldZ"/>
+                <constraint firstItem="103" firstAttribute="top" secondItem="3" secondAttribute="top" id="GWx-yu-hK6"/>
+                <constraint firstAttribute="bottom" secondItem="103" secondAttribute="bottom" id="j9n-yx-ZaG"/>
+                <constraint firstItem="SdG-k8-Iue" firstAttribute="leading" secondItem="103" secondAttribute="trailing" id="Ea5-JL-59s"/>
                 <constraint firstItem="SdG-k8-Iue" firstAttribute="top" secondItem="3" secondAttribute="top" id="LjZ-32-bFq"/>
                 <constraint firstAttribute="trailing" secondItem="SdG-k8-Iue" secondAttribute="trailing" id="Rvl-pt-Ccf"/>
-                <constraint firstAttribute="bottom" secondItem="lKD-EX-QDV" secondAttribute="bottom" id="j9n-yx-ZaG"/>
+                <constraint firstAttribute="bottom" secondItem="SdG-k8-Iue" secondAttribute="bottom" id="8zM-co-Moy"/>
             </constraints>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="image" keyPath="image" value="controls_background"/>
-            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="-212" y="120"/>
         </view>
     </objects>
-    <resources>
-        <image name="controls_background" width="755" height="451"/>
-        <image name="controls_shadow" width="60" height="60"/>
-    </resources>
 </document>

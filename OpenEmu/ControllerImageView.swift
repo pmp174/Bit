@@ -101,50 +101,76 @@ final class ControllerImageView: NSView {
     
     private func commonInit() {
         wantsLayer = true
-        
+
         let overlayAnimation = CABasicAnimation()
         let ringAnimation = CABasicAnimation()
         ringAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         ringAnimation.delegate = self
-        
+
         animations = [
             #keyPath(ringAlpha): ringAnimation,
             #keyPath(ringPosition): ringAnimation,
             #keyPath(overlayAlpha): overlayAnimation,
         ]
     }
-    
+
+    // MARK: - Image Geometry
+
+    /// Returns the scale factor and target rect for drawing the image
+    /// scaled to fit within the view bounds with 10pt padding.
+    private func imageTargetRect() -> (rect: NSRect, scale: CGFloat) {
+        guard let image = image else { return (.zero, 1) }
+        let imageSize = image.size
+        guard imageSize.width > 0 && imageSize.height > 0 else { return (.zero, 1) }
+
+        let padding: CGFloat = 10
+        let availableWidth = max(1, bounds.width - padding * 2)
+        let availableHeight = max(1, bounds.height - padding * 2)
+
+        let scale = min(1, min(availableWidth / imageSize.width, availableHeight / imageSize.height))
+        let scaledSize = NSSize(width: imageSize.width * scale, height: imageSize.height * scale)
+        let origin = NSPoint(x: (bounds.width - scaledSize.width) / 2,
+                             y: (bounds.height - scaledSize.height) / 2)
+        return (NSRect(origin: origin, size: scaledSize), scale)
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         guard let image = image else { return }
-        
-        var targetRect = NSRect()
-        targetRect.size = image.size
-        targetRect.origin = NSPoint(x: (frame.size.width-image.size.width)/2, y: 0)
-        
-        image.draw(in: targetRect, from: .zero, operation: .copy, fraction: 1, respectFlipped: false, hints: [.interpolation: NSNumber(value: NSImageInterpolation.none.rawValue)])
-        
+
+        let (targetRect, scale) = imageTargetRect()
+
+        image.draw(in: targetRect, from: .zero, operation: .copy, fraction: 1, respectFlipped: false, hints: [.interpolation: NSNumber(value: NSImageInterpolation.high.rawValue)])
+
         if UserDefaults.standard.bool(forKey: Self.drawControllerMaskKey) {
-            imageMask?.draw(in: targetRect, from: .zero, operation: .sourceOver, fraction: 1, respectFlipped: false, hints: [.interpolation: NSNumber(value: NSImageInterpolation.none.rawValue)])
+            imageMask?.draw(in: targetRect, from: .zero, operation: .sourceOver, fraction: 1, respectFlipped: false, hints: [.interpolation: NSNumber(value: NSImageInterpolation.high.rawValue)])
         }
-        
+
         if overlayAlpha != overlayAlphaOff {
             NSGraphicsContext.saveGraphicsState()
-            let rect = NSRect(x: targetRect.origin.x + ringPosition.x - 33, y: targetRect.origin.y + ringPosition.y - 33, width: 66, height: 66)
-            
+            let ringSize: CGFloat = 66 * scale
+            let rect = NSRect(x: targetRect.origin.x + ringPosition.x * scale - ringSize / 2,
+                              y: targetRect.origin.y + ringPosition.y * scale - ringSize / 2,
+                              width: ringSize, height: ringSize)
+
             let path = NSBezierPath(rect: bounds)
             path.windingRule = .evenOdd
             path.appendOval(in: rect)
             path.setClip()
-            
+
             NSColor(deviceWhite: 0, alpha: overlayAlpha).setFill()
             bounds.fill(using: .sourceAtop)
             NSGraphicsContext.restoreGraphicsState()
         }
-        
+
         if ringAlpha != 0 {
-            let highlightPoint = NSPoint(x: targetRect.origin.x + ringPosition.x - 38, y: targetRect.origin.y + ringPosition.y - 45)
             let highlightImage = NSImage(named: "controls_highlight")
-            highlightImage?.draw(at: highlightPoint, from: .zero, operation: .sourceOver, fraction: ringAlpha)
+            let highlightSize = NSSize(width: (highlightImage?.size.width ?? 76) * scale,
+                                       height: (highlightImage?.size.height ?? 90) * scale)
+            let highlightRect = NSRect(
+                x: targetRect.origin.x + ringPosition.x * scale - highlightSize.width / 2,
+                y: targetRect.origin.y + ringPosition.y * scale - highlightSize.height / 2,
+                width: highlightSize.width, height: highlightSize.height)
+            highlightImage?.draw(in: highlightRect, from: .zero, operation: .sourceOver, fraction: ringAlpha)
         }
     }
     
@@ -212,29 +238,31 @@ final class ControllerImageView: NSView {
     
     override func mouseDown(with event: NSEvent) {
         var selected = selectedKey
-        
+
         let eventLocation = event.locationInWindow
         let localEventLocation = convert(eventLocation, from: nil)
         let ringLocation = ringPositionInView
-        
-        var targetRect = NSRect()
-        targetRect.size = image?.size ?? .zero
-        targetRect.origin = NSPoint(x: (bounds.size.width-(image?.size.width ?? 0))/2, y: 0)
-        
+
+        let (targetRect, scale) = imageTargetRect()
+
         let selectAButton = imageMask?.hitTest(NSRect(origin: localEventLocation, size: .zero), withDestinationRect: targetRect, context: nil, hints: nil, flipped: false)
-        
+
         if selectAButton ?? false {
-            let locationOnController = localEventLocation.subtracting(targetRect.origin)
+            // Convert click position back to unscaled controller coordinates
+            let locationOnController = NSPoint(
+                x: (localEventLocation.x - targetRect.origin.x) / scale,
+                y: (localEventLocation.y - targetRect.origin.y) / scale)
             selected = keyForHighlightPointClosestToPoint(locationOnController)
         }
-        
+
         if selected == selectedKey && ringLocation != .zero {
+            let scaledRadius = ringRadius * imageTargetRect().scale
             let distance = localEventLocation.distance(to: ringLocation)
-            if distance > ringRadius && bounds.contains(localEventLocation) {
+            if distance > scaledRadius && bounds.contains(localEventLocation) {
                 selected = nil
             }
         }
-        
+
         if selected != selectedKey {
             selectedKey = selected
             if let action = action {
@@ -242,15 +270,16 @@ final class ControllerImageView: NSView {
             }
         }
     }
-    
+
     var ringPositionInView: NSPoint {
         let ringLocation = ringPosition
         if ringLocation == .zero {
             return .zero
         }
-        
-        let offset = NSPoint(x: (frame.size.width-(image?.size.width ?? 0))/2, y: 0)
-        return offset.adding(ringLocation)
+
+        let (targetRect, scale) = imageTargetRect()
+        return NSPoint(x: targetRect.origin.x + ringLocation.x * scale,
+                       y: targetRect.origin.y + ringLocation.y * scale)
     }
 }
 

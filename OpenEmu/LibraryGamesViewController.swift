@@ -38,8 +38,8 @@ final class LibraryGamesViewController: NSSplitViewController {
     private let sidebarMaxWidth: CGFloat = 450
     private let collectionViewMinWidth: CGFloat = 495
     
-    private var sidebarController: SidebarController!
-    private var collectionController: OEGameCollectionViewController!
+    var sidebarController: SidebarController!
+    var collectionController: OEGameCollectionViewController!
     private var libraryTintOverlay: NSView?
     
     private var toolbar: LibraryToolbar? {

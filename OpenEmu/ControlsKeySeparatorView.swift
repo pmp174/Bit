@@ -26,27 +26,12 @@ import Cocoa
 
 final class ControlsKeySeparatorView: NSView {
     
-    private let topColor = NSColor(red: 85/255, green: 45/255, blue: 0, alpha: 1)
-    private let bottomColor = NSColor(red: 1, green: 1, blue: 0, alpha: 0.2)
-    
     override func draw(_ dirtyRect: NSRect) {
-        
         var lineRect = bounds
         lineRect.size.height = 1
-        lineRect.origin.y = bounds.size.height/2
+        lineRect.origin.y = bounds.size.height / 2
         
-        if OEAppearance.controlsPrefs == .wood {
-            
-            topColor.setFill()
-            lineRect.fill()
-            
-            lineRect.origin.y -= 1
-            bottomColor.setFill()
-            
-        } else {
-            NSColor.darkGray.setFill()
-        }
-        
+        NSColor.separatorColor.setFill()
         lineRect.fill(using: .sourceOver)
     }
 }

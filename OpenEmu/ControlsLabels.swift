@@ -36,37 +36,18 @@ class ControlsLabel: NSTextField {
         commonInit()
     }
     
-    let isWood = OEAppearance.controlsPrefs == .wood
-    
     private func commonInit() {
-        
         isBezeled = false
         isEditable = false
         isSelectable = false
         drawsBackground = false
-        
-        if isWood {
-            textColor = .black
-            font = .boldSystemFont(ofSize: 11)
-        } else {
-            textColor = .labelColor
-            font = .systemFont(ofSize: 11)
-        }
+        textColor = .labelColor
+        font = .systemFont(ofSize: 11)
         
         setUpAttributes()
     }
     
     func setUpAttributes() {
-    }
-    
-    override func draw(_ dirtyRect: NSRect) {
-        guard isWood else { return super.draw(dirtyRect) }
-        
-        let attributedString = attributedStringValue.mutableCopy() as! NSMutableAttributedString
-        attributedString.addAttributes([.shadow : NSShadow.oeControls], range: NSRange(location: 0, length: attributedString.length))
-        attributedStringValue = attributedString
-        
-        super.draw(dirtyRect)
     }
 }
 
@@ -74,11 +55,7 @@ class ControlsLabel: NSTextField {
 final class ControlsKeyHeadline: ControlsLabel {
     
     override func setUpAttributes() {
-        if isWood {
-            font = .boldSystemFont(ofSize: 11.5)
-        } else {
-            font = .systemFont(ofSize: 11.5)
-        }
+        font = .systemFont(ofSize: 11.5, weight: .medium)
     }
 }
 

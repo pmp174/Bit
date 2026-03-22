@@ -74,7 +74,6 @@ final class PrefControlsController: NSViewController {
     @IBOutlet weak var consolesPopupButton: NSPopUpButton!
     @IBOutlet weak var playerPopupButton: NSPopUpButton!
     @IBOutlet weak var inputPopupButton: NSPopUpButton!
-    @IBOutlet weak var gradientOverlay: NSView!
     @IBOutlet weak var veView: NSVisualEffectView!
     @IBOutlet weak var controlsSetupView: ControlsButtonSetupView!
     
@@ -116,11 +115,7 @@ final class PrefControlsController: NSViewController {
     // MARK: - ViewController Overrides
     
     override var nibName: NSNib.Name? {
-        if OEAppearance.controlsPrefs == .wood {
-            return "PrefControlsController"
-        } else {
-            return "PrefControlsController2"
-        }
+        return "PrefControlsController2"
     }
     
     override func viewDidLoad() {
@@ -149,22 +144,46 @@ final class PrefControlsController: NSViewController {
         changeSystem(consolesPopupButton)
         CATransaction.commit()
         
-        if OEAppearance.controlsPrefs == .wood {
-            let gradient = CAGradientLayer()
-            let topColor = NSColor(deviceWhite: 0, alpha: 0.3)
-            let bottomColor = NSColor(deviceWhite: 0, alpha: 0)
-            gradient.colors = [bottomColor.cgColor, topColor.cgColor]
+        // Apply rounded corners and styling to the controls sidebar
+        if let ve = veView, let container = ve.superview {
+            let cornerRadius: CGFloat = 14
             
-            gradientOverlay.layer? = gradient
+            // Create a rounded-rect mask image for the VE view.
+            // maskImage is the reliable way to round NSVisualEffectView corners
+            // since the backing layer may not exist yet during viewDidLoad.
+            ve.maskImage = Self.makeRoundedCornerMask(radius: cornerRadius)
             
-            controlsSetupView.enclosingScrollView?.appearance = NSAppearance(named: .aqua)
+            if #available(macOS 26.0, *) {
+                // Place a glass view behind the VE view, pinned to the same edges
+                let glassView = NSGlassEffectView()
+                glassView.style = .regular
+                glassView.cornerRadius = cornerRadius
+                glassView.translatesAutoresizingMaskIntoConstraints = false
+                
+                container.addSubview(glassView, positioned: .below, relativeTo: ve)
+                
+                NSLayoutConstraint.activate([
+                    glassView.topAnchor.constraint(equalTo: ve.topAnchor),
+                    glassView.leadingAnchor.constraint(equalTo: ve.leadingAnchor),
+                    glassView.trailingAnchor.constraint(equalTo: ve.trailingAnchor),
+                    glassView.bottomAnchor.constraint(equalTo: ve.bottomAnchor),
+                ])
+                
+                // Make the VE view fully transparent so glass shows through,
+                // but keep it in the hierarchy as the constraint anchor for content
+                ve.alphaValue = 0
+            } else {
+                // Fallback: NSVisualEffectView with sidebar material
+                ve.blendingMode = .behindWindow
+                ve.material = .sidebar
+                ve.state = .active
+            }
         }
-        else if OEAppearance.controlsPrefs == .woodVibrant {
-            veView.blendingMode = .withinWindow
-            veView.state = .active
-        }
-        
+
         controllerView?.wantsLayer = true
+        // Ensure no shadow on the controller image container
+        controllerContainerView?.shadow = nil
+        controllerContainerView?.layer?.shadowOpacity = 0
         
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(systemsChanged), name: .OEDBSystemAvailabilityDidChange, object: nil)
@@ -365,60 +384,98 @@ final class PrefControlsController: NSViewController {
         let imageViewLayer = controllerContainerView.layer
         
         let newControllerView = ControllerImageView(frame: controllerContainerView.bounds)
+        newControllerView.autoresizingMask = [.width, .height]
         newControllerView.image = systemController?.controllerImage
         newControllerView.imageMask = systemController?.controllerImageMask
         newControllerView.keyPositions = systemController?.controllerKeyPositions
         newControllerView.target = self
         newControllerView.action = #selector(changeInputControl(_:))
         
-        // Setup animation that transitions the old controller image out
-        let pathTransitionOut = CGMutablePath()
-        pathTransitionOut.move(to: CGPoint(x: 0, y: 0))
-        pathTransitionOut.addLine(to: CGPoint(x: 0, y: 450))
+        let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
         
-        let outTransition = CAKeyframeAnimation(keyPath: "position")
-        outTransition.path = pathTransitionOut
+        guard let imageViewLayer = imageViewLayer else {
+            // No layer — just swap the views without animation
+            if let oldView = controllerView {
+                controllerContainerView.replaceSubview(oldView, with: newControllerView)
+            } else {
+                controllerContainerView.addSubview(newControllerView)
+            }
+            controllerView = newControllerView
+            controlsSetupView.layoutSubviews()
+            return
+        }
+        
+        // Use the layer's current position as the anchor for animation
+        // so we don't fight with Auto Layout by calling setFrameOrigin
+        let restPosition = imageViewLayer.position
+        let offscreenPosition = CGPoint(x: restPosition.x, y: restPosition.y + 450)
+        
+        // Setup animation that transitions the old controller image out
+        let outTransition = CABasicAnimation(keyPath: "position")
+        outTransition.fromValue = NSValue(point: restPosition)
+        outTransition.toValue = NSValue(point: offscreenPosition)
         outTransition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         outTransition.duration = 0.35
         outTransition.fillMode = .forwards
         outTransition.isRemovedOnCompletion = false
         
         // Setup animation that transitions the new controller image in
-        let pathTransitionIn = CGMutablePath()
-        pathTransitionIn.move(to: CGPoint(x: 0, y: 450))
-        pathTransitionIn.addLine(to: CGPoint(x: 0, y: 0))
-        
-        let inTransition = CAKeyframeAnimation(keyPath: "position")
-        inTransition.path = pathTransitionIn
+        let inTransition = CABasicAnimation(keyPath: "position")
+        inTransition.fromValue = NSValue(point: offscreenPosition)
+        inTransition.toValue = NSValue(point: restPosition)
         inTransition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         inTransition.duration = 0.35
         
-        let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
-        
         CATransaction.begin()
         CATransaction.setCompletionBlock {
-            self.controllerContainerView.setFrameOrigin(NSPoint(x: 0, y: 450))
-            
-            if self.controllerView != nil {
-                self.controllerContainerView.replaceSubview(self.controllerView, with: newControllerView)
+            // Swap the subview while the container is offscreen
+            if let oldView = self.controllerView {
+                self.controllerContainerView.replaceSubview(oldView, with: newControllerView)
             } else {
                 self.controllerContainerView.addSubview(newControllerView)
             }
             self.controllerView = newControllerView
             
-            self.controllerContainerView.setFrameOrigin(.zero)
+            // Remove the out-transition and add the in-transition
+            imageViewLayer.removeAnimation(forKey: "animatePosition")
             if !reduceMotion {
-                imageViewLayer?.add(inTransition, forKey: "animatePosition")
+                imageViewLayer.add(inTransition, forKey: "animatePosition")
             }
         }
         
         if !reduceMotion {
-            imageViewLayer?.add(outTransition, forKey: "animatePosition")
+            imageViewLayer.add(outTransition, forKey: "animatePosition")
+        } else {
+            // No animation — just swap immediately
+            CATransaction.setCompletionBlock(nil)
+            if let oldView = controllerView {
+                controllerContainerView.replaceSubview(oldView, with: newControllerView)
+            } else {
+                controllerContainerView.addSubview(newControllerView)
+            }
+            controllerView = newControllerView
         }
         
         CATransaction.commit()
         
         controlsSetupView.layoutSubviews()
+    }
+    
+    /// Creates a resizable mask image with rounded corners for use with
+    /// NSVisualEffectView.maskImage. The image uses cap insets so it scales
+    /// to any size without distorting the corners.
+    private static func makeRoundedCornerMask(radius: CGFloat) -> NSImage {
+        let diameter = radius * 2 + 1 // +1 for the stretchable center
+        let size = NSSize(width: diameter, height: diameter)
+        let image = NSImage(size: size, flipped: false) { rect in
+            let path = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
+            NSColor.black.setFill()
+            path.fill()
+            return true
+        }
+        image.capInsets = NSEdgeInsets(top: radius, left: radius, bottom: radius, right: radius)
+        image.resizingMode = .stretch
+        return image
     }
     
     // MARK: - Actions
@@ -733,18 +790,16 @@ final class PrefControlsController: NSViewController {
 // MARK: - PreferencePane
 
 extension PrefControlsController: PreferencePane {
-    
+
     var icon: NSImage? { NSImage(named: "controls_tab_icon") }
-    
+
     var panelTitle: String { "Controls" }
-    
+
     var viewSize: NSSize {
-        if OEAppearance.controlsPrefs == .wood {
-            return NSSize(width: 755, height: 450)
-        } else {
-            return view.fittingSize
-        }
+        return view.fittingSize
     }
+
+    var prefersFlexibleSize: Bool { true }
 }
 
 /// Wraps an ``OEHIDEvent`` to customise the ``Hashable`` and ``Equatable``

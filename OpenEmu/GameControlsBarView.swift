@@ -29,6 +29,7 @@ final class GameControlsBarView: NSView {
     private var slider: NSSlider!
     private var fullScreenButton: NSButton!
     private var pauseButton: NSButton!
+    private(set) var orderedControls: [NSView] = []
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -185,6 +186,9 @@ final class GameControlsBarView: NSView {
         }
         
         NSLayoutConstraint.activate(constraints)
+
+        // Store controls in left-to-right order for controller navigation
+        orderedControls = [stop, playPause, restart, saves, options, volumeDown, volume, volumeUp, fullScreen]
     }
     
     // MARK: - Actions

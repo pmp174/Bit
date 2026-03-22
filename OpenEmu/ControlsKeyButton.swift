@@ -24,24 +24,33 @@
 
 final class ControlsKeyButton: NSButton {
     
-    private let isWood = OEAppearance.controlsPrefs == .wood
-    
     override var isFlipped: Bool {
         return false
     }
     
     override func draw(_ dirtyRect: NSRect) {
+        // Native rounded rect button appearance
+        let bgRect = bounds.insetBy(dx: 1, dy: 1)
+        let path = NSBezierPath(roundedRect: bgRect, xRadius: 4, yRadius: 4)
         
-        var image: NSImage?
-        if isWood {
-            image = state == .on ? NSImage(named: "wood_textfield_focus") : NSImage(named: "wood_textfield")
+        if state == .on {
+            // Selected state: accent color background
+            NSColor.controlAccentColor.withAlphaComponent(0.2).setFill()
+            path.fill()
+            NSColor.controlAccentColor.setStroke()
+            path.lineWidth = 1.5
+            path.stroke()
         } else {
-            image = state == .on ? NSImage(named: "controls_textfield_focus")?.withTintColor(OEAppearance.accentColor) : NSImage(named: "controls_textfield")
+            // Normal state: subtle background
+            NSColor.controlBackgroundColor.setFill()
+            path.fill()
+            NSColor.separatorColor.setStroke()
+            path.lineWidth = 0.5
+            path.stroke()
         }
-        image?.draw(in: bounds)
         
         let p = NSPoint(x: bounds.origin.x + 4, y: bounds.origin.y + (isFlipped ? 4 : 6))
-        title.draw(at: p, withAttributes: isWood ? Self.attributesWood : Self.attributes)
+        title.draw(at: p, withAttributes: Self.attributes)
     }
     
     private static let attributes: [NSAttributedString.Key : Any]? = {
@@ -49,16 +58,6 @@ final class ControlsKeyButton: NSButton {
         let attributes: [NSAttributedString.Key : Any] =
                                           [.font: NSFont.systemFont(ofSize: 11),
                                 .foregroundColor: NSColor.labelColor]
-        
-        return attributes
-    }()
-    
-    private static let attributesWood: [NSAttributedString.Key : Any]? = {
-        
-        let attributes: [NSAttributedString.Key : Any] =
-                                          [.font: NSFont.boldSystemFont(ofSize: 11),
-                                .foregroundColor: NSColor.black,
-                                         .shadow: NSShadow.oeControls]
         
         return attributes
     }()

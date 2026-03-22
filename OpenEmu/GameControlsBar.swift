@@ -46,7 +46,7 @@ final class GameControlsBar: NSWindow {
     @objc var canShow = true
     private var eventMonitor: Any?
     private var fadeTimer: Timer?
-    private var controlsView: GameControlsBarView!
+    var controlsView: GameControlsBarView!
     weak var gameViewController: GameViewController!
     private var lastGameWindowFrame = NSRect.zero
     private var lastMouseMovement: Date! {
@@ -172,7 +172,21 @@ final class GameControlsBar: NSWindow {
             animator().alphaValue = 1
         }
     }
-    
+
+    /// Prevents the HUD bar from auto-hiding. Used during controller navigation.
+    func holdVisible() {
+        fadeTimer?.invalidate()
+        fadeTimer = nil
+        if canShow {
+            animator().alphaValue = 1
+        }
+    }
+
+    /// Resumes normal auto-hide behavior after controller navigation ends.
+    func resumeAutoHide() {
+        lastMouseMovement = Date()
+    }
+
     func hide(animated: Bool = true, hideCursor: Bool = true) {
         NSCursor.setHiddenUntilMouseMoves(hideCursor)
         

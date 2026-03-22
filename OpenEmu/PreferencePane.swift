@@ -28,4 +28,12 @@ protocol PreferencePane: NSViewController {
     var icon: NSImage? { get }
     var panelTitle: String { get }
     var viewSize: NSSize { get }
+    
+    /// Return `true` if this pane should fill the available content area
+    /// instead of using its fixed `viewSize`.
+    var prefersFlexibleSize: Bool { get }
+}
+
+extension PreferencePane {
+    var prefersFlexibleSize: Bool { false }
 }

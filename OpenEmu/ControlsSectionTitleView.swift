@@ -26,29 +26,7 @@ import Cocoa
 
 final class ControlsSectionTitleView: NSView {
     
-    private lazy var topColor = NSColor(deviceRed: 85/255, green: 45/255, blue: 0, alpha: 1)
-    private lazy var bottomColor = NSColor(deviceRed: 1, green: 1, blue: 0, alpha: 0.2)
     private let leftGap: CGFloat = 16
-    
-    private let isWood = OEAppearance.controlsPrefs == .wood
-    private let isWoodVibrant = OEAppearance.controlsPrefs == .woodVibrant
-    
-    private lazy var veView: NSVisualEffectView = {
-        let veView = NSVisualEffectView()
-        
-        if isWoodVibrant {
-            veView.blendingMode = .withinWindow
-            veView.state = .active
-        }
-        
-        return veView
-    }()
-    
-    private lazy var box: NSBox = {
-        let box = NSBox()
-        box.titlePosition = .noTitle
-        return box
-    }()
     
     private lazy var separator: NSBox = {
         let box = NSBox()
@@ -56,7 +34,12 @@ final class ControlsSectionTitleView: NSView {
         return box
     }()
     
-    private let textField = ControlsLabel()
+    private let textField: NSTextField = {
+        let tf = NSTextField(labelWithString: "")
+        tf.font = .systemFont(ofSize: 11, weight: .semibold)
+        tf.textColor = .secondaryLabelColor
+        return tf
+    }()
     
     var stringValue: String {
         get {
@@ -67,13 +50,7 @@ final class ControlsSectionTitleView: NSView {
         }
     }
     
-    var isPinned = false {
-        didSet {
-            if isWood {
-                needsDisplay = true
-            }
-        }
-    }
+    var isPinned = false
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -82,37 +59,29 @@ final class ControlsSectionTitleView: NSView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         
-        if !isWood {
-            addSubview(veView)
-            
-            veView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                veView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 1),
-                veView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                veView.topAnchor.constraint(equalTo: topAnchor),
-                veView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            ])
-            
-            addSubview(box)
-            
-            box.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                box.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -6),
-                box.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 6),
-                box.topAnchor.constraint(equalTo: topAnchor, constant: -6),
-                box.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 6),
-            ])
-            
-            box.addSubview(separator)
-            
-            separator.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                separator.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-                separator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -9),
-                separator.bottomAnchor.constraint(equalTo: bottomAnchor),
-                separator.heightAnchor.constraint(equalToConstant: 1),
-            ])
-        }
+        // Opaque background so pinned headers properly obscure content beneath
+        let bgView = NSVisualEffectView()
+        bgView.material = .sidebar
+        bgView.blendingMode = .withinWindow
+        bgView.state = .active
+        bgView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(bgView)
+        NSLayoutConstraint.activate([
+            bgView.topAnchor.constraint(equalTo: topAnchor),
+            bgView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bgView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bgView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+        
+        addSubview(separator)
+        
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            separator.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            separator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -9),
+            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 1),
+        ])
         
         addSubview(textField)
         
@@ -121,57 +90,5 @@ final class ControlsSectionTitleView: NSView {
             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leftGap),
             textField.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
-    }
-    
-    override func draw(_ dirtyRect: NSRect) {
-        guard isWood else {
-            return super.draw(dirtyRect)
-        }
-        
-        NSColor.clear.setFill()
-        bounds.fill()
-        
-        // hacky solution to get section headers to clip underlying views:
-        // we let the wood background view draw to an image and then draw the portion we need here
-        NSGraphicsContext.current?.saveGraphicsState()
-        let woodBackground = superview?.superview?.superview?.superview?.superview
-        
-        let woodBgRect = bounds.insetBy(dx: 5, dy: 0)
-        let portion = convert(woodBgRect, to: woodBackground)
-        woodBgRect.clip()
-        
-        let image = NSImage(size: woodBackground?.bounds.size ?? .zero)
-        image.lockFocus()
-        woodBackground?.draw(portion)
-        image.unlockFocus()
-        
-        image.draw(in: woodBgRect, from: portion, operation: .copy, fraction: 1)
-        NSGraphicsContext.current?.restoreGraphicsState()
-        
-        // draw spearator style lines at the top and the bottom
-        var lineRect = bounds
-        lineRect.size.height = 1
-        
-        // draw bottom line
-        if frame.origin.y != 0 {
-            topColor.setFill()
-            lineRect.origin.y = 0
-            lineRect.fill()
-            
-            bottomColor.setFill()
-            lineRect.origin.y = 1
-            lineRect.fill(using: .sourceOver)
-        }
-        
-        // draw top line if the view is not pinned
-        if !isPinned {
-            topColor.setFill()
-            lineRect.origin.y = bounds.size.height-1
-            lineRect.fill()
-            
-            bottomColor.setFill()
-            lineRect.origin.y = bounds.size.height-2
-            lineRect.fill(using: .sourceOver)
-        }
     }
 }
