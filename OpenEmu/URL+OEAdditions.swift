@@ -56,7 +56,7 @@ extension URL {
             return false
         }
         
-        return resourceValues.isDirectory! && !resourceValues.isPackage!
+        return (resourceValues.isDirectory ?? false) && !(resourceValues.isPackage ?? false)
     }
     
     var fileSize: Int {
@@ -65,7 +65,7 @@ extension URL {
             return 0
         }
         
-        return resourceValues.fileSize!
+        return resourceValues.fileSize ?? 0
     }
     
     func url(relativeTo url: URL) -> URL? {

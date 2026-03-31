@@ -76,6 +76,7 @@ import AudioToolbox
     func setCheat(_ cheatCode: String, withType type: String, enabled: Bool)
     func setDisc(_ discNumber: UInt)
     func changeDisplay(withMode displayMode: String)
+    func changePeripheral(forPort portIdentifier: String, toDevice deviceIdentifier: String)
     func insertFile(at url: URL, completionHandler block: @escaping (Bool, Error?) -> Void)
     
     func handleMouseEvent(_ event: OEEvent)

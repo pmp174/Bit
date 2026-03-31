@@ -34,10 +34,27 @@ class OEWiiSystemController: OESystemController {
             return .yes
         }
 
-        // RVZ files could be GameCube or Wii; check header
-        // For ISO, GCZ, CISO, and NKit formats, check the Wii magic word
-        if ["iso", "gcz", "rvz", "ciso", "nkit.iso", "nkit.gcz"].contains(ext) {
-            // Wii magic word at offset 0x18: 0x5D1C9EA3
+        // Wii magic word 0x5D1C9EA3
+        let wiiMagic = Data([0x5D, 0x1C, 0x9E, 0xA3])
+
+        // RVZ/WIA: disc header is stored uncompressed at file offset 0x58.
+        // The Wii magic word is at disc offset 0x18, so file offset 0x58 + 0x18 = 0x70.
+        if ext == "rvz" {
+            let dataBuffer = file.readData(in: NSRange(location: 0x70, length: 4))
+            return dataBuffer == wiiMagic ? .yes : .no
+        }
+
+        // GCZ: compressed format — disc data is not at raw file offsets.
+        // Check GCZ container magic to confirm format, then return .uncertain
+        // since we can't verify the disc magic without decompression.
+        if ext == "gcz" {
+            let containerMagic = file.readData(in: NSRange(location: 0x0, length: 4))
+            let gczMagic = Data([0xB1, 0x0B, 0xC0, 0x01])
+            return containerMagic == gczMagic ? .uncertain : .no
+        }
+
+        // For ISO, CISO, and NKit formats, check the Wii magic word at standard offset
+        if ["iso", "ciso", "nkit.iso", "nkit.gcz"].contains(ext) {
             var dataRange = NSRange(location: 0x18, length: 4)
 
             if ext == "ciso" {
@@ -45,10 +62,7 @@ class OEWiiSystemController: OESystemController {
             }
 
             let dataBuffer = file.readData(in: dataRange)
-            let wiiMagic: [UInt8] = [0x5D, 0x1C, 0x9E, 0xA3]
-            let comparisonData = Data(bytes: wiiMagic, count: 4)
-
-            if dataBuffer == comparisonData {
+            if dataBuffer == wiiMagic {
                 return .yes
             }
         }

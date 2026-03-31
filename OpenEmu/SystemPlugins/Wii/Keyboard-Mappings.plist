@@ -27,9 +27,9 @@
 	<key>OEWiiNunchukAnalogUp</key>
 	<integer>26</integer>
 	<key>OEWiiNunchukAnalogDown</key>
-	<integer>22</integer>
+	<integer>25</integer>
 	<key>OEWiiNunchukAnalogLeft</key>
-	<integer>4</integer>
+	<integer>6</integer>
 	<key>OEWiiNunchukAnalogRight</key>
 	<integer>7</integer>
 	<key>OEWiiNunchukButtonC</key>

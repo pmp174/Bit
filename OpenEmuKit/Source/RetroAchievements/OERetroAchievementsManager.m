@@ -25,7 +25,15 @@
 #import "OERetroAchievementsManager.h"
 
 #import <OpenEmuBase/OEGameCore.h>
-#import "OEGameCoreOwner.h"
+
+// Informal protocol declaring the achievement event methods we send to the game core owner.
+// The actual OEGameCoreOwner protocol is defined in Swift; we declare these selectors here
+// to avoid needing the generated Swift header at compile time.
+@interface NSObject (OERetroAchievementsEvents)
+- (void)achievementTriggeredWithTitle:(NSString *)title description:(NSString *)description points:(NSInteger)points badgeURL:(NSString * _Nullable)badgeURL;
+- (void)achievementProgressWithTitle:(NSString *)title description:(NSString *)description progress:(NSString *)progress;
+- (void)gameCompleted;
+@end
 
 // rcheevos headers
 #include "rc_client.h"
@@ -37,12 +45,13 @@
 @interface OERetroAchievementsManager () {
     @public
     OEGameCore *_gameCore;
-    __weak id<OEGameCoreOwner> _gameCoreOwner;
+    __weak id _gameCoreOwner;
     rc_client_t *_client;
     NSString *_systemIdentifier;
     NSString *_pendingMD5;
     BOOL _loggedIn;
 }
+- (void)_beginLoadGame:(NSString *)md5;
 @end
 
 // MARK: - Console ID Mapping
@@ -91,31 +100,11 @@ static uint32_t oe_read_memory(uint32_t address, uint8_t *buffer, uint32_t num_b
     OERetroAchievementsManager *manager = (__bridge OERetroAchievementsManager *)rc_client_get_userdata(client);
     OEGameCore *core = manager->_gameCore;
 
-    if (![core respondsToSelector:@selector(achievementMemoryRegionCount)]) {
+    if (![core respondsToSelector:@selector(achievementReadMemoryAtAddress:buffer:size:)]) {
         return 0;
     }
 
-    NSUInteger regionCount = core.achievementMemoryRegionCount;
-    uint32_t offset = 0;
-
-    for (NSUInteger i = 0; i < regionCount; i++) {
-        NSUInteger regionSize = [core achievementMemorySizeForRegion:i];
-
-        if (address < offset + (uint32_t)regionSize) {
-            const void *regionBuffer = [core achievementMemoryBufferForRegion:i];
-            if (!regionBuffer) return 0;
-
-            uint32_t regionOffset = address - offset;
-            uint32_t available = (uint32_t)regionSize - regionOffset;
-            uint32_t toRead = (num_bytes < available) ? num_bytes : available;
-            memcpy(buffer, (const uint8_t *)regionBuffer + regionOffset, toRead);
-            return toRead;
-        }
-
-        offset += (uint32_t)regionSize;
-    }
-
-    return 0;
+    return (uint32_t)[core achievementReadMemoryAtAddress:address buffer:buffer size:num_bytes];
 }
 
 static void oe_server_call(const rc_api_request_t *request,
@@ -169,7 +158,13 @@ static void oe_server_call(const rc_api_request_t *request,
 
 static void oe_event_handler(const rc_client_event_t *event, rc_client_t *client) {
     OERetroAchievementsManager *manager = (__bridge OERetroAchievementsManager *)rc_client_get_userdata(client);
-    id<OEGameCoreOwner> owner = manager->_gameCoreOwner;
+    id owner = manager->_gameCoreOwner;
+
+    // Do NOT use respondsToSelector: on `owner`. The owner is typically an
+    // NSXPCConnection proxy (NSProxy subclass), which does not reliably report
+    // YES for @objc optional protocol methods. Send the message directly —
+    // the NSXPCInterface already declares these selectors, and messaging nil
+    // is safe in ObjC.
 
     switch (event->type) {
         case RC_CLIENT_EVENT_ACHIEVEMENT_TRIGGERED: {
@@ -178,15 +173,12 @@ static void oe_event_handler(const rc_client_event_t *event, rc_client_t *client
                 ? [NSString stringWithUTF8String:event->achievement->title] : @"Achievement";
             NSString *desc = event->achievement->description
                 ? [NSString stringWithUTF8String:event->achievement->description] : @"";
-            int points = (int)event->achievement->points;
+            NSInteger points = (NSInteger)event->achievement->points;
             NSString *badgeURL = event->achievement->badge_url
                 ? [NSString stringWithUTF8String:event->achievement->badge_url] : nil;
 
-            NSLog(@"[RetroAchievements] Achievement triggered: %@ (%d pts)", title, points);
-
-            if ([owner respondsToSelector:@selector(achievementTriggeredWithTitle:description:points:badgeURL:)]) {
-                [owner achievementTriggeredWithTitle:title description:desc points:points badgeURL:badgeURL];
-            }
+            NSLog(@"[RetroAchievements] Achievement triggered: %@ (%ld pts)", title, (long)points);
+            [owner achievementTriggeredWithTitle:title description:desc points:points badgeURL:badgeURL];
             break;
         }
 
@@ -199,17 +191,13 @@ static void oe_event_handler(const rc_client_event_t *event, rc_client_t *client
                 ? [NSString stringWithUTF8String:event->achievement->description] : @"";
             NSString *progress = [NSString stringWithUTF8String:event->achievement->measured_progress];
 
-            if ([owner respondsToSelector:@selector(achievementProgressWithTitle:description:progress:)]) {
-                [owner achievementProgressWithTitle:title description:desc progress:progress];
-            }
+            [owner achievementProgressWithTitle:title description:desc progress:progress];
             break;
         }
 
         case RC_CLIENT_EVENT_GAME_COMPLETED: {
             NSLog(@"[RetroAchievements] Game completed!");
-            if ([owner respondsToSelector:@selector(gameCompleted)]) {
-                [owner gameCompleted];
-            }
+            [owner gameCompleted];
             break;
         }
 
@@ -278,7 +266,7 @@ static void oe_log_message(const char *message, const rc_client_t *client) {
 @implementation OERetroAchievementsManager
 
 - (instancetype)initWithGameCore:(OEGameCore *)gameCore
-                  gameCoreOwner:(id<OEGameCoreOwner>)owner
+                  gameCoreOwner:(id)owner
                systemIdentifier:(NSString *)systemIdentifier {
     self = [super init];
     if (self) {

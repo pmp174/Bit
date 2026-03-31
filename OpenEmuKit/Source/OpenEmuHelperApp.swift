@@ -24,6 +24,7 @@
 
 import AudioToolbox
 import Foundation
+import QuartzCore
 import OpenEmuBase
 import OpenEmuSystem
 import OpenEmuKitPrivate
@@ -36,7 +37,7 @@ extension OSLog {
 }
 
 @objc public class OpenEmuHelperApp: NSResponder, NSApplicationDelegate {
-    @objc public var gameCoreOwner: OEGameCoreOwner!
+    @objc public var gameCoreOwner: OEGameCoreOwner?
     @objc public private(set) var gameCore: OEGameCore!
     @objc public private(set) var gameSystemResponderClientProtocol: Protocol!
     
@@ -87,7 +88,10 @@ extension OSLog {
     
     var _handleEvents: Bool = false
     var _handleKeyboardEvents: Bool = false
-    
+
+    var _achievementsManager: OERetroAchievementsManager?
+    var _achievementFrameCounter: UInt = 0
+
     var loadedRom = false
     
     // frame rate debugging
@@ -280,39 +284,94 @@ extension OSLog {
         
         _shader = info.shaderURL
         _shaderParameters = info.shaderParameters
-        _systemController = OESystemPlugin.systemPlugin(bundleAtURL: info.systemPluginURL)!.controller
+
+        os_log(.info, log: .helper, "System plugin URL: %{public}@", info.systemPluginURL.path)
+        os_log(.info, log: .helper, "Core plugin URL: %{public}@", info.corePluginURL.path)
+
+        guard let systemPlugin = OESystemPlugin.systemPlugin(bundleAtURL: info.systemPluginURL) else {
+            os_log(.error, log: .helper, "Failed to load system plugin at %{public}@", info.systemPluginURL.path)
+            throw OEGameCoreErrorCodes(.couldNotLoadROMError,
+                                       userInfo: [NSLocalizedDescriptionKey: "Failed to load system plugin."])
+        }
+        guard let systemController = systemPlugin.controller else {
+            os_log(.error, log: .helper, "System plugin has nil controller")
+            throw OEGameCoreErrorCodes(.couldNotLoadROMError,
+                                       userInfo: [NSLocalizedDescriptionKey: "System plugin controller is nil."])
+        }
+        _systemController = systemController
         _systemResponder  = _systemController.newGameSystemResponder()
-        
-        _gameController = OECorePlugin.corePlugin(bundleAtURL: info.corePluginURL)!.controller
+
+        guard _systemResponder != nil else {
+            os_log(.error, log: .helper, "Failed to create system responder for system controller %{public}@", String(describing: type(of: systemController)))
+            throw OEGameCoreErrorCodes(.couldNotLoadROMError,
+                                       userInfo: [NSLocalizedDescriptionKey: "Failed to create system responder. The system plugin may be missing required responder class."])
+        }
+
+        guard let corePlugin = OECorePlugin.corePlugin(bundleAtURL: info.corePluginURL) else {
+            os_log(.error, log: .helper, "Failed to load core plugin at %{public}@", info.corePluginURL.path)
+            throw OEGameCoreErrorCodes(.couldNotLoadROMError,
+                                       userInfo: [NSLocalizedDescriptionKey: "Failed to load core plugin."])
+        }
+        guard let coreController = corePlugin.controller else {
+            os_log(.error, log: .helper, "Core plugin has nil controller")
+            throw OEGameCoreErrorCodes(.couldNotLoadROMError,
+                                       userInfo: [NSLocalizedDescriptionKey: "Core plugin controller is nil."])
+        }
+        _gameController = coreController
         gameCore = _gameController.newGameCore()
-        
-        let systemIdentifier = _systemController.systemIdentifier!
-        
+
+        if gameCore == nil {
+            os_log(.error, log: .helper, "newGameCore() returned nil for controller %{public}@",
+                   String(describing: type(of: coreController)))
+            throw OEGameCoreErrorCodes(.couldNotLoadROMError,
+                                       userInfo: [NSLocalizedDescriptionKey: "Failed to create game core instance."])
+        }
+
+        guard let systemIdentifier = _systemController.systemIdentifier else {
+            os_log(.error, log: .helper, "System controller has nil systemIdentifier")
+            throw OEGameCoreErrorCodes(.couldNotLoadROMError,
+                                       userInfo: [NSLocalizedDescriptionKey: "System identifier is nil."])
+        }
+
+        os_log(.info, log: .helper, "System identifier: %{public}@, gameCore: %{public}@",
+               systemIdentifier, String(describing: type(of: gameCore as Any)))
+
         gameCore.owner          = _gameController
         gameCore.delegate       = self
         gameCore.renderDelegate = self
         gameCore.audioDelegate  = self
-        
+
         gameCore.systemIdentifier   = systemIdentifier
         gameCore.systemRegion       = info.systemRegion
         gameCore.displayModeInfo    = info.displayModeInfo ?? [:]
         gameCore.romMD5             = info.romMD5
         gameCore.romHeader          = info.romHeader
         gameCore.romSerial          = info.romSerial
-        
+
         _systemResponder.client                 = gameCore
         _systemResponder.globalEventsHandler    = self
         
-        _unhandledEventsMonitor = OEDeviceManager.shared.addUnhandledEventMonitorHandler { [weak self] _, event in
+        _unhandledEventsMonitor = OEDeviceManager.shared.addUnhandledEventMonitorHandler { [weak self] handler, event in
             guard
                 let self = self,
                 self._handleEvents,
                 self._handleKeyboardEvents || event.type != .keyboard
             else { return }
-            
+
+            os_log(.debug, log: .helper, "Unhandled event: type=%ld, handler=%{public}@",
+                   event.type.rawValue,
+                   handler != nil ? String(describing: type(of: handler)) : "nil")
             self._systemResponder.handle(event)
         }
-        
+
+        let dm = OEDeviceManager.shared
+        os_log(.info, log: .helper, "Helper OEDeviceManager controllers: %lu", dm.controllerDeviceHandlers.count)
+        for handler in dm.controllerDeviceHandlers {
+            os_log(.info, log: .helper, "  Controller in helper: %{public}@ (id: %{public}@)",
+                   String(describing: type(of: handler)),
+                   handler.uniqueIdentifier ?? "nil")
+        }
+
         os_log(.debug, log: .helper, "Loaded bundle.")
         
         guard FileManager.default.isReadableFile(atPath: url.path)
@@ -330,15 +389,39 @@ extension OSLog {
         do {
             try gameCore.loadFile(at: url)
             os_log(.debug, log: .helper, "Loaded new ROM: %{public}@", url.path)
-            
-            gameCoreOwner.setDiscCount(gameCore.discCount)
-            if let displayModes = gameCore.displayModes {
-                gameCoreOwner.setDisplayModes(displayModes)
+
+            if let owner = gameCoreOwner {
+                owner.setDiscCount(gameCore.discCount)
+                if let displayModes = gameCore.displayModes {
+                    owner.setDisplayModes(displayModes)
+                }
+                if let peripheralDevices = gameCore.peripheralDevices {
+                    owner.setPeripheralDevices(peripheralDevices)
+                }
+            } else {
+                os_log(.error, log: .helper, "gameCoreOwner is nil after loading ROM")
             }
-            
+
             loadedRom = true
+
+            // Initialize RetroAchievements if credentials are provided
+            if let raUsername = info.retroAchievementsUsername,
+               let raToken = info.retroAchievementsToken,
+               !raUsername.isEmpty, !raToken.isEmpty,
+               let sysId = _systemController.systemIdentifier,
+               let owner = gameCoreOwner {
+                let manager = OERetroAchievementsManager(
+                    gameCore: gameCore,
+                    gameCoreOwner: owner,
+                    systemIdentifier: sysId
+                )
+                _achievementsManager = manager
+                manager.login(withUsername: raUsername, token: raToken)
+                manager.loadGame(withMD5: info.romMD5)
+                os_log(.info, log: .helper, "RetroAchievements initialized for system: %{public}@", sysId)
+            }
         } catch {
-            os_log(.debug, log: .helper, "Failed to load ROM.")
+            os_log(.debug, log: .helper, "Failed to load ROM: %{public}@", error.localizedDescription)
             gameCore = nil
             
 			throw OEGameCoreErrorCodes(.couldNotLoadROMError,
@@ -357,12 +440,12 @@ extension OSLog {
                "Notify OEGameCoreOwner of display size update: screenSize = %{public}@, aspectSize = %{public}@",
                NSStringFromOEIntSize(newScreenSize),
                NSStringFromOEIntSize(newAspectSize))
-        
-        gameCoreOwner.setScreenSize(newScreenSize, aspectSize: newAspectSize)
+
+        gameCoreOwner?.setScreenSize(newScreenSize, aspectSize: newAspectSize)
     }
-    
+
     private func updateRemoteContextID(_ newContextID: CAContextID) {
-        gameCoreOwner.setRemoteContextID(newContextID)
+        gameCoreOwner?.setRemoteContextID(newContextID)
     }
 }
 
@@ -378,7 +461,8 @@ extension OSLog {
     
     public func setPauseEmulation(_ paused: Bool) {
         gameCore.perform {
-            self.gameCore.setPauseEmulation(paused)
+            guard let gameCore = self.gameCore else { return }
+            gameCore.setPauseEmulation(paused)
         }
     }
     
@@ -507,40 +591,56 @@ extension OSLog {
     
     public func saveStateToFile(at fileURL: URL, completionHandler block: @escaping (Bool, Error?) -> Void) {
         gameCore.perform {
-            self.gameCore.saveStateToFile(at: fileURL, completionHandler: block)
+            guard let gameCore = self.gameCore else { return }
+            gameCore.saveStateToFile(at: fileURL, completionHandler: block)
         }
     }
     
     public func loadStateFromFile(at fileURL: URL, completionHandler block: @escaping (Bool, Error?) -> Void) {
         gameCore.perform {
-            self.gameCore.loadStateFromFile(at: fileURL, completionHandler: block)
+            guard let gameCore = self.gameCore else { return }
+            gameCore.loadStateFromFile(at: fileURL, completionHandler: block)
         }
     }
     
     public func setCheat(_ cheatCode: String, withType type: String, enabled: Bool) {
         gameCore.perform {
-            self.gameCore.setCheat(cheatCode, setType: type, setEnabled: enabled)
+            guard let gameCore = self.gameCore else { return }
+            gameCore.setCheat(cheatCode, setType: type, setEnabled: enabled)
         }
     }
     
     public func setDisc(_ discNumber: UInt) {
         gameCore.perform {
-            self.gameCore.setDisc(discNumber)
+            guard let gameCore = self.gameCore else { return }
+            gameCore.setDisc(discNumber)
         }
     }
     
     public func changeDisplay(withMode displayMode: String) {
         gameCore.perform {
-            self.gameCore.changeDisplay(withMode: displayMode)
-            if let displayModes = self.gameCore.displayModes {
-                self.gameCoreOwner.setDisplayModes(displayModes)
+            guard let gameCore = self.gameCore else { return }
+            gameCore.changeDisplay(withMode: displayMode)
+            if let displayModes = gameCore.displayModes {
+                self.gameCoreOwner?.setDisplayModes(displayModes)
+            }
+        }
+    }
+
+    public func changePeripheral(forPort portIdentifier: String, toDevice deviceIdentifier: String) {
+        gameCore.perform {
+            guard let gameCore = self.gameCore else { return }
+            gameCore.changePeripheral(forPort: portIdentifier, toDevice: deviceIdentifier)
+            if let peripheralDevices = gameCore.peripheralDevices {
+                self.gameCoreOwner?.setPeripheralDevices(peripheralDevices)
             }
         }
     }
     
     public func insertFile(at url: URL, completionHandler block: @escaping (Bool, Error?) -> Void) {
         gameCore.perform {
-            self.gameCore.insertFile(at: url, completionHandler: block)
+            guard let gameCore = self.gameCore else { return }
+            gameCore.insertFile(at: url, completionHandler: block)
         }
     }
     
@@ -551,20 +651,27 @@ extension OSLog {
     }
     
     public func setHandleEvents(_ handleEvents: Bool) {
+        os_log(.info, log: .helper, "setHandleEvents: %{public}@", handleEvents ? "YES" : "NO")
         _handleEvents = handleEvents
     }
-    
+
     public func setHandleKeyboardEvents(_ handleKeyboardEvents: Bool) {
+        os_log(.info, log: .helper, "setHandleKeyboardEvents: %{public}@", handleKeyboardEvents ? "YES" : "NO")
         _handleKeyboardEvents = handleKeyboardEvents
     }
     
     public func systemBindingsDidSetEvent(_ event: OEHIDEvent, forBinding bindingDescription: OEBindingDescription, playerNumber: UInt) {
+        os_log(.info, log: .helper, "systemBindingsDidSetEvent: event=%{public}@, binding=%{public}@, player=%lu, responder=%{public}@",
+               String(describing: event), String(describing: bindingDescription), playerNumber,
+               _systemResponder != nil ? String(describing: type(of: _systemResponder!)) : "NIL")
         DispatchQueue.main.async {
             self._systemResponder.systemBindingsDidSetEvent(event, forBinding: bindingDescription, playerNumber: playerNumber)
         }
     }
-    
+
     public func systemBindingsDidUnsetEvent(_ event: OEHIDEvent, forBinding bindingDescription: OEBindingDescription, playerNumber: UInt) {
+        os_log(.info, log: .helper, "systemBindingsDidUnsetEvent: event=%{public}@, binding=%{public}@, player=%lu",
+               String(describing: event), String(describing: bindingDescription), playerNumber)
         DispatchQueue.main.async {
             self._systemResponder.systemBindingsDidUnsetEvent(event, forBinding: bindingDescription, playerNumber: playerNumber)
         }
@@ -666,9 +773,16 @@ extension OSLog {
         }
         
         _gameRenderer.didExecuteFrame()
-        
+
         CATransaction.commit()
-        
+
+        // Throttle achievement checks to every 4th frame (~15 Hz) to reduce per-frame overhead
+        _achievementFrameCounter += 1
+        if _achievementFrameCounter >= 4 {
+            _achievementFrameCounter = 0
+            _achievementsManager?.doFrame()
+        }
+
         if !_hasStartedAudio {
             _gameAudio.startAudio()
             _hasStartedAudio = true
@@ -720,16 +834,30 @@ extension OSLog {
         defer {
             _scope.end()
         }
-        
+
+        // FPS calculation — runs on every frame callback regardless of rendering
+        let now = CACurrentMediaTime()
+        if previous > 0 {
+            frameRate = 1.0 / (now - previous)
+        }
+        previous = now
+        // Only send FPS after emulation is running and at most once per second
+        if loadedRom, lastLog > 0, now - lastLog > 1, frameRate > 0 {
+            gameCoreOwner?.setFrameRate(frameRate)
+            lastLog = now
+        } else if lastLog == 0 {
+            lastLog = now
+        }
+
         guard isExecuting || _effectsMode == .displayAlways
         else { return }
-        
+
         guard _inflightSemaphore.wait(timeout: .now()) == .success
         else {
             _skippedFrames += 1
             return
         }
-        
+
         autoreleasepool {
             // Ensure signal if we do not add it to finalCB
             var skipped: DispatchSemaphore? = _inflightSemaphore
@@ -740,7 +868,7 @@ extension OSLog {
                     skipped.signal()
                 }
             }
-            
+
             guard let offscreenCB = _commandQueue.makeCommandBuffer() else { return }
             offscreenCB.label = "offscreen"
             offscreenCB.enqueue()
@@ -748,31 +876,31 @@ extension OSLog {
                 _filterChain.renderOffscreenPasses(sourceTexture: sourceTexture, commandBuffer: offscreenCB)
             }
             offscreenCB.commit()
-            
+
             guard let drawable = _videoLayer.nextDrawable() else { return }
-            
+
             let rpd = MTLRenderPassDescriptor()
             rpd.colorAttachments[0].clearColor = _clearColor
             // TODO: Investigate whether we can avoid the MTLLoadActionClear
             // Frame buffer should be overwritten completely by final pass.
             rpd.colorAttachments[0].loadAction = .clear
             rpd.colorAttachments[0].texture    = drawable.texture
-            
+
             guard
                 let finalCB = _commandQueue.makeCommandBuffer(),
                 let rce     = finalCB.makeRenderCommandEncoder(descriptor: rpd)
             else { return }
             finalCB.label = "final"
-            
+
             _filterChain.renderFinalPass(withCommandEncoder: rce, flipVertically: flipVertically)
             rce.endEncoding()
-            
+
             skipped = nil
             let inflight = _inflightSemaphore
             finalCB.addCompletedHandler { _ in
                 inflight.signal()
             }
-            
+
             if _adaptiveSyncEnabled {
                 if #available(macOS 10.15.4, *) {
                     // NOTE:
@@ -789,23 +917,7 @@ extension OSLog {
             } else {
                 finalCB.present(drawable)
             }
-            
-#if false
-            // TODO: Add developer option to show using ImGui?
-            if #available(macOS 10.15.4, *) {
-                drawable.addPresentedHandler { d in
-                    let dur = d.presentedTime - self.previous
-                    self.frameRate = 1.0 / dur
-                    self.previous = d.presentedTime
-                    if d.presentedTime - self.lastLog > 1 {
-                        os_log(.debug, log: .display,
-                               "frame rate: %0.2f fps, interval: %0.2f Hz",
-                               self.frameRate, self.gameCore.frameInterval)
-                        self.lastLog = d.presentedTime
-                    }
-                }
-            }
-#endif
+
             finalCB.commit()
         }
     }
@@ -813,79 +925,79 @@ extension OSLog {
 
 @objc extension OpenEmuHelperApp: OEGlobalEventsHandler {
     public func saveState(_ sender: Any) {
-        gameCoreOwner.saveState()
+        gameCoreOwner?.saveState()
     }
-    
+
     public func loadState(_ sender: Any) {
-        gameCoreOwner.loadState()
+        gameCoreOwner?.loadState()
     }
-    
+
     public func quickSave(_ sender: Any) {
-        gameCoreOwner.quickSave()
+        gameCoreOwner?.quickSave()
     }
-    
+
     public func quickLoad(_ sender: Any) {
-        gameCoreOwner.quickLoad()
+        gameCoreOwner?.quickLoad()
     }
-    
+
     public func toggleFullScreen(_ sender: Any) {
-        gameCoreOwner.toggleFullScreen()
+        gameCoreOwner?.toggleFullScreen()
     }
-    
+
     public func toggleAudioMute(_ sender: Any) {
-        gameCoreOwner.toggleAudioMute()
+        gameCoreOwner?.toggleAudioMute()
     }
-    
+
     public func volumeDown(_ sender: Any) {
-        gameCoreOwner.volumeDown()
+        gameCoreOwner?.volumeDown()
     }
-    
+
     public func volumeUp(_ sender: Any) {
-        gameCoreOwner.volumeUp()
+        gameCoreOwner?.volumeUp()
     }
-    
+
     public func stopEmulation(_ sender: Any) {
-        gameCoreOwner.stopEmulation()
+        gameCoreOwner?.stopEmulation()
     }
-    
+
     public func resetEmulation(_ sender: Any) {
-        gameCoreOwner.resetEmulation()
+        gameCoreOwner?.resetEmulation()
     }
-    
+
     public func toggleEmulationPaused(_ sender: Any) {
-        gameCoreOwner.toggleEmulationPaused()
+        gameCoreOwner?.toggleEmulationPaused()
     }
-    
+
     public func takeScreenshot(_ sender: Any) {
-        gameCoreOwner.takeScreenshot()
+        gameCoreOwner?.takeScreenshot()
     }
-    
+
     public func fastForwardGameplay(_ enable: Bool) {
         // Required so that _videoLayer.nextDrawable() vends frames faster than the display refresh rate
         // Fixes: https://github.com/OpenEmu/OpenEmu/issues/4780
         _videoLayer.displaySyncEnabled = !enable
-        gameCoreOwner.fastForwardGameplay(enable)
+        gameCoreOwner?.fastForwardGameplay(enable)
     }
-    
+
     public func rewindGameplay(_ enable: Bool) {
         // TODO: technically a data race, but it is only updating a single NSInteger
         _filterChain.frameDirection = enable ? -1 : 1
-        gameCoreOwner.rewindGameplay(enable)
+        gameCoreOwner?.rewindGameplay(enable)
     }
-    
+
     public func stepGameplayFrameForward(_ sender: Any) {
-        gameCoreOwner.stepGameplayFrameForward()
+        gameCoreOwner?.stepGameplayFrameForward()
     }
-    
+
     public func stepGameplayFrameBackward(_ sender: Any) {
-        gameCoreOwner.stepGameplayFrameBackward()
+        gameCoreOwner?.stepGameplayFrameBackward()
     }
-    
+
     public func nextDisplayMode(_ sender: Any) {
-        gameCoreOwner.nextDisplayMode()
+        gameCoreOwner?.nextDisplayMode()
     }
     
     public func lastDisplayMode(_ sender: Any) {
-        gameCoreOwner.lastDisplayMode()
+        gameCoreOwner?.lastDisplayMode()
     }
 }

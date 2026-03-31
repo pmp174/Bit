@@ -645,4 +645,47 @@ const int GBMap[] = {gambatte::InputGetter::UP, gambatte::InputGetter::DOWN, gam
     }
 }
 
+#pragma mark - Achievements Memory Access
+
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes
+{
+    NSUInteger bytesRead = 0;
+
+    while (bytesRead < numBytes) {
+        NSUInteger addr = address + bytesRead;
+        int value = -1;
+
+        if (addr <= 0xFFFF) {
+            // Direct CPU address space
+            value = gb.cpuRead((unsigned short)addr);
+        }
+        else if (addr >= 0x10000 && addr <= 0x15FFF) {
+            // GBC WRAM banks 2-7
+            if (gb.isCgb()) {
+                NSUInteger offset = (addr - 0x10000) + 2 * 0x1000;
+                size_t wramSz = gb.wramSize();
+                if (offset < wramSz) {
+                    value = gb.wramData()[offset];
+                }
+            }
+        }
+        else if (addr >= 0x16000 && addr <= 0x33FFF) {
+            // Cart SRAM banks 1-15
+            NSUInteger offset = (addr - 0x16000) + 1 * 0x2000;
+            size_t sramSz = gb.sramSize();
+            if (offset < sramSz) {
+                value = gb.sramData()[offset];
+            }
+        }
+
+        if (value < 0)
+            break;
+
+        buffer[bytesRead] = (uint8_t)value;
+        bytesRead++;
+    }
+
+    return bytesRead;
+}
+
 @end

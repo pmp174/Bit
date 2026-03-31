@@ -87,10 +87,20 @@ import Foundation
     private func setup() {
         let dm = OEDeviceManager.shared
         if #available(macOS 10.15, *) {
-            if dm.accessType != .granted {
-                dm.requestAccess()
-                os_log(.info, log: .helper, "Input monitoring failed: Access Denied")
+            let accessType = dm.accessType
+            os_log(.info, log: .helper, "Input monitoring access type: %{public}@",
+                   accessType == .granted ? "granted" : accessType == .denied ? "denied" : "unknown")
+            if accessType != .granted {
+                let result = dm.requestAccess()
+                os_log(.info, log: .helper, "Input monitoring requestAccess result: %{public}@", result ? "true" : "false")
             }
+        }
+        let controllers = dm.controllerDeviceHandlers
+        os_log(.info, log: .helper, "OEDeviceManager detected %lu controller(s)", controllers.count)
+        for handler in controllers {
+            os_log(.info, log: .helper, "  Controller: %{public}@ (id: %{public}@)",
+                   String(describing: type(of: handler)),
+                   handler.uniqueIdentifier ?? "nil")
         }
     }
     
@@ -115,6 +125,42 @@ import Foundation
                         argumentIndex: 0,
                         ofReply: false)
         
+        // Register classes for input event methods
+        let eventClasses: NSSet = [OEHIDEvent.self]
+        let bindingClasses: NSSet = [OEBindingDescription.self, OEKeyBindingDescription.self, OEKeyBindingGroupDescription.self, OEOrientedKeyGroupBindingDescription.self]
+        
+        // systemBindingsDidSetEvent(_:forBinding:playerNumber:)
+        // swiftlint:disable:next force_cast
+        intf.setClasses(eventClasses as! Set<AnyHashable>,
+                        for: #selector(OEGameCoreHelper.systemBindingsDidSetEvent(_:forBinding:playerNumber:)),
+                        argumentIndex: 0,
+                        ofReply: false)
+        // swiftlint:disable:next force_cast
+        intf.setClasses(bindingClasses as! Set<AnyHashable>,
+                        for: #selector(OEGameCoreHelper.systemBindingsDidSetEvent(_:forBinding:playerNumber:)),
+                        argumentIndex: 1,
+                        ofReply: false)
+        
+        // systemBindingsDidUnsetEvent(_:forBinding:playerNumber:)
+        // swiftlint:disable:next force_cast
+        intf.setClasses(eventClasses as! Set<AnyHashable>,
+                        for: #selector(OEGameCoreHelper.systemBindingsDidUnsetEvent(_:forBinding:playerNumber:)),
+                        argumentIndex: 0,
+                        ofReply: false)
+        // swiftlint:disable:next force_cast
+        intf.setClasses(bindingClasses as! Set<AnyHashable>,
+                        for: #selector(OEGameCoreHelper.systemBindingsDidUnsetEvent(_:forBinding:playerNumber:)),
+                        argumentIndex: 1,
+                        ofReply: false)
+        
+        // handleMouseEvent(_:)
+        let mouseEventClasses: NSSet = [OEEvent.self]
+        // swiftlint:disable:next force_cast
+        intf.setClasses(mouseEventClasses as! Set<AnyHashable>,
+                        for: #selector(OEGameCoreHelper.handleMouseEvent(_:)),
+                        argumentIndex: 0,
+                        ofReply: false)
+        
         gameCoreConnection = newConnection
         
         newConnection.exportedInterface = intf
@@ -131,12 +177,19 @@ import Foundation
         
         newConnection.resume()
         
-        gameCoreOwner = newConnection.remoteObjectProxyWithErrorHandler({ error in
+        let proxy = newConnection.remoteObjectProxyWithErrorHandler({ error in
             os_log(.debug, log: .helper, "Error communicating with OEGameCoreOwner proxy: %{public}@", error.localizedDescription)
             self.stopEmulation {
             }
-        }) as? OEGameCoreOwner
-        
+        })
+        gameCoreOwner = proxy as? OEGameCoreOwner
+        if gameCoreOwner == nil {
+            os_log(.error, log: .helper, "Failed to cast XPC proxy to OEGameCoreOwner. Proxy type: %{public}@",
+                   String(describing: type(of: proxy)))
+        } else {
+            os_log(.info, log: .helper, "gameCoreOwner proxy set successfully")
+        }
+
         return true
     }
     

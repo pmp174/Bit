@@ -118,6 +118,10 @@ extension GameCoreManager: OEGameCoreHelper {
         gameCoreHelper?.changeDisplay(withMode: displayMode)
     }
 
+    public func changePeripheral(forPort portIdentifier: String, toDevice deviceIdentifier: String) {
+        gameCoreHelper?.changePeripheral(forPort: portIdentifier, toDevice: deviceIdentifier)
+    }
+
     public func setOutputBounds(_ rect: NSRect) {
         gameCoreHelper?.setOutputBounds(rect)
     }

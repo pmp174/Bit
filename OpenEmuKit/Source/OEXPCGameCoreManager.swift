@@ -82,6 +82,48 @@ import OpenEmuKitPrivate
                         argumentIndex: 0,
                         ofReply: false)
         
+        // Register classes for input event methods
+        // Use NSClassFromString since OpenEmuSystem types aren't directly importable in this module
+        if let hidEventClass = NSClassFromString("OEHIDEvent"),
+           let bindingDescClass = NSClassFromString("OEBindingDescription"),
+           let keyBindingDescClass = NSClassFromString("OEKeyBindingDescription"),
+           let keyBindingGroupDescClass = NSClassFromString("OEKeyBindingGroupDescription"),
+           let orientedKeyGroupClass = NSClassFromString("OEOrientedKeyGroupBindingDescription"),
+           let oeEventClass = NSClassFromString("OEEvent") {
+            
+            // swiftlint:disable force_cast
+            let eventClasses = NSSet(array: [hidEventClass]) as! Set<AnyHashable>
+            let bindingClasses = NSSet(array: [bindingDescClass, keyBindingDescClass, keyBindingGroupDescClass, orientedKeyGroupClass]) as! Set<AnyHashable>
+            
+            // systemBindingsDidSetEvent(_:forBinding:playerNumber:)
+            intf.setClasses(eventClasses,
+                            for: #selector(OEGameCoreHelper.systemBindingsDidSetEvent(_:forBinding:playerNumber:)),
+                            argumentIndex: 0,
+                            ofReply: false)
+            intf.setClasses(bindingClasses,
+                            for: #selector(OEGameCoreHelper.systemBindingsDidSetEvent(_:forBinding:playerNumber:)),
+                            argumentIndex: 1,
+                            ofReply: false)
+            
+            // systemBindingsDidUnsetEvent(_:forBinding:playerNumber:)
+            intf.setClasses(eventClasses,
+                            for: #selector(OEGameCoreHelper.systemBindingsDidUnsetEvent(_:forBinding:playerNumber:)),
+                            argumentIndex: 0,
+                            ofReply: false)
+            intf.setClasses(bindingClasses,
+                            for: #selector(OEGameCoreHelper.systemBindingsDidUnsetEvent(_:forBinding:playerNumber:)),
+                            argumentIndex: 1,
+                            ofReply: false)
+            
+            // handleMouseEvent(_:)
+            let mouseEventClasses = NSSet(array: [oeEventClass]) as! Set<AnyHashable>
+            intf.setClasses(mouseEventClasses,
+                            for: #selector(OEGameCoreHelper.handleMouseEvent(_:)),
+                            argumentIndex: 0,
+                            ofReply: false)
+            // swiftlint:enable force_cast
+        }
+        
         cn.remoteObjectInterface = intf
         cn.resume()
         

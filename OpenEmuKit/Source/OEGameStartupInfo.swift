@@ -36,12 +36,16 @@ import Foundation
     public let shaderParameters: [String: Double]
     public let corePluginURL: URL
     public let systemPluginURL: URL
-    
+    public let retroAchievementsUsername: String?
+    public let retroAchievementsToken: String?
+
     public init(romURL: URL, romMD5: String, romHeader: String, romSerial: String,
                 systemRegion: String,
                 displayModeInfo: [String: Any]?,
                 shaderURL: URL, shaderParameters: [String: Double],
-                corePluginURL: URL, systemPluginURL: URL) {
+                corePluginURL: URL, systemPluginURL: URL,
+                retroAchievementsUsername: String? = nil,
+                retroAchievementsToken: String? = nil) {
         self.romURL = romURL
         self.romMD5 = romMD5
         self.romHeader = romHeader
@@ -52,6 +56,8 @@ import Foundation
         self.shaderParameters = shaderParameters
         self.corePluginURL = corePluginURL
         self.systemPluginURL = systemPluginURL
+        self.retroAchievementsUsername = retroAchievementsUsername
+        self.retroAchievementsToken = retroAchievementsToken
     }
     
     // MARK: - NSSecureCoding
@@ -83,8 +89,10 @@ import Foundation
         self.shaderParameters = shaderParameters
         self.corePluginURL = corePluginURL
         self.systemPluginURL = systemPluginURL
+        self.retroAchievementsUsername = coder.decodeObject(of: NSString.self, forKey: CodingKeys.retroAchievementsUsername.rawValue) as? String
+        self.retroAchievementsToken = coder.decodeObject(of: NSString.self, forKey: CodingKeys.retroAchievementsToken.rawValue) as? String
     }
-    
+
     public func encode(with coder: NSCoder) {
         coder.encode(romURL, forKey: CodingKeys.romURL.rawValue)
         coder.encode(romMD5, forKey: CodingKeys.romMD5.rawValue)
@@ -96,12 +104,15 @@ import Foundation
         coder.encode(shaderParameters, forKey: CodingKeys.shaderParameters.rawValue)
         coder.encode(corePluginURL, forKey: CodingKeys.corePluginURL.rawValue)
         coder.encode(systemPluginURL, forKey: CodingKeys.systemPluginURL.rawValue)
+        coder.encode(retroAchievementsUsername, forKey: CodingKeys.retroAchievementsUsername.rawValue)
+        coder.encode(retroAchievementsToken, forKey: CodingKeys.retroAchievementsToken.rawValue)
     }
-    
+
     private enum CodingKeys: String {
         case romURL, romMD5, romHeader, romSerial
         case systemRegion, displayModeInfo
         case shaderURL, shaderParameters
         case corePluginURL, systemPluginURL
+        case retroAchievementsUsername, retroAchievementsToken
     }
 }

@@ -73,4 +73,18 @@ public typealias OEContextID = UInt32
     /// when the core manager is deallocated right after the game core is
     /// stopped).
     @objc optional func gameCoreDidTerminate()
+
+    // MARK: - RetroAchievements
+
+    @objc optional func achievementTriggered(title: String, description: String, points: Int, badgeURL: String?)
+    @objc optional func achievementProgress(title: String, description: String, progress: String)
+    @objc optional func gameCompleted()
+
+    // MARK: - Peripheral Devices
+
+    func setPeripheralDevices(_ peripheralDevices: [[String: Any]])
+
+    // MARK: - Developer
+
+    func setFrameRate(_ fps: Double)
 }

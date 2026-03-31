@@ -25,8 +25,6 @@
 #import <Foundation/Foundation.h>
 #import <OpenEmuBase/OEGameCore.h>
 
-@protocol OEGameCoreOwner;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Manages the rcheevos rc_client lifecycle within the helper process.
@@ -38,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param owner The game core owner for dispatching achievement events back to the main app.
 /// @param systemIdentifier The OpenEmu system identifier (e.g. "openemu.system.snes").
 - (instancetype)initWithGameCore:(OEGameCore *)gameCore
-                  gameCoreOwner:(id<OEGameCoreOwner>)owner
+                  gameCoreOwner:(id)owner
                systemIdentifier:(NSString *)systemIdentifier;
 
 /// Login with a RetroAchievements API token.
