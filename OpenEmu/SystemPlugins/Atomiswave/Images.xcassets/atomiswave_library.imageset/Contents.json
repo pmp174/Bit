@@ -1,0 +1,18 @@
+{
+  "images" : [
+    {
+      "filename" : "atomiswave_library.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "atomiswave_library@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

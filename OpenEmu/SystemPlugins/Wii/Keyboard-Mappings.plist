@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OEWiiButtonUp</key>
+	<integer>82</integer>
+	<key>OEWiiButtonDown</key>
+	<integer>81</integer>
+	<key>OEWiiButtonLeft</key>
+	<integer>80</integer>
+	<key>OEWiiButtonRight</key>
+	<integer>79</integer>
+	<key>OEWiiButtonA</key>
+	<integer>27</integer>
+	<key>OEWiiButtonB</key>
+	<integer>29</integer>
+	<key>OEWiiButton1</key>
+	<integer>22</integer>
+	<key>OEWiiButton2</key>
+	<integer>4</integer>
+	<key>OEWiiButtonPlus</key>
+	<integer>46</integer>
+	<key>OEWiiButtonMinus</key>
+	<integer>45</integer>
+	<key>OEWiiButtonHome</key>
+	<integer>40</integer>
+	<key>OEWiiNunchukAnalogUp</key>
+	<integer>26</integer>
+	<key>OEWiiNunchukAnalogDown</key>
+	<integer>22</integer>
+	<key>OEWiiNunchukAnalogLeft</key>
+	<integer>4</integer>
+	<key>OEWiiNunchukAnalogRight</key>
+	<integer>7</integer>
+	<key>OEWiiNunchukButtonC</key>
+	<integer>20</integer>
+	<key>OEWiiNunchukButtonZ</key>
+	<integer>9</integer>
+	<key>OEWiiIRUp</key>
+	<integer>12</integer>
+	<key>OEWiiIRDown</key>
+	<integer>14</integer>
+	<key>OEWiiIRLeft</key>
+	<integer>13</integer>
+	<key>OEWiiIRRight</key>
+	<integer>15</integer>
+</dict>
+</plist>

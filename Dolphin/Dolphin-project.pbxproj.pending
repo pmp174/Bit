@@ -1,0 +1,555 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* DolphinGameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* DolphinGameCore.mm */; };
+		A10000000000000000000002 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000021 /* OpenEmuBase.framework */; };
+		A10000000000000000000003 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000031 /* Metal.framework */; };
+		A10000000000000000000004 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000041 /* AppKit.framework */; };
+		A10000000000000000000005 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000051 /* CoreAudio.framework */; };
+		A10000000000000000000006 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000061 /* AudioToolbox.framework */; };
+		A10000000000000000000007 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000071 /* IOKit.framework */; };
+		A10000000000000000000008 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000081 /* OpenGL.framework */; };
+		A10000000000000000000009 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000091 /* libz.tbd */; };
+		A1000000000000000000000A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A100000000000000000000A1 /* Foundation.framework */; };
+		A1000000000000000000000B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A100000000000000000000B1 /* QuartzCore.framework */; };
+		A1000000000000000000000C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A100000000000000000000C1 /* CoreVideo.framework */; };
+		A1000000000000000000000D /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A100000000000000000000D1 /* AudioUnit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A10000000000000000000010 /* DolphinGameCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DolphinGameCore.h; sourceTree = "<group>"; };
+		A10000000000000000000011 /* DolphinGameCore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DolphinGameCore.mm; sourceTree = "<group>"; };
+		A10000000000000000000012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10000000000000000000013 /* Dolphin-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dolphin-Prefix.pch"; sourceTree = "<group>"; };
+		A10000000000000000000020 /* Dolphin.oecoreplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Dolphin.oecoreplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000021 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenEmuBase.framework; path = "../OpenEmu-SDK/build/Release/OpenEmuBase.framework"; sourceTree = "<group>"; };
+		A10000000000000000000031 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		A10000000000000000000041 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		A10000000000000000000051 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		A10000000000000000000061 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		A10000000000000000000071 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		A10000000000000000000081 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		A10000000000000000000091 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		A100000000000000000000A1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A100000000000000000000B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		A100000000000000000000C1 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		A100000000000000000000D1 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10000000000000000000100 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000002 /* OpenEmuBase.framework in Frameworks */,
+				A10000000000000000000003 /* Metal.framework in Frameworks */,
+				A10000000000000000000004 /* AppKit.framework in Frameworks */,
+				A10000000000000000000005 /* CoreAudio.framework in Frameworks */,
+				A10000000000000000000006 /* AudioToolbox.framework in Frameworks */,
+				A10000000000000000000007 /* IOKit.framework in Frameworks */,
+				A10000000000000000000008 /* OpenGL.framework in Frameworks */,
+				A10000000000000000000009 /* libz.tbd in Frameworks */,
+				A1000000000000000000000A /* Foundation.framework in Frameworks */,
+				A1000000000000000000000B /* QuartzCore.framework in Frameworks */,
+				A1000000000000000000000C /* CoreVideo.framework in Frameworks */,
+				A1000000000000000000000D /* AudioUnit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10000000000000000000200 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000210 /* OpenEmu */,
+				A10000000000000000000220 /* Frameworks */,
+				A10000000000000000000230 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000210 /* OpenEmu */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000010 /* DolphinGameCore.h */,
+				A10000000000000000000011 /* DolphinGameCore.mm */,
+				A10000000000000000000012 /* Info.plist */,
+				A10000000000000000000013 /* Dolphin-Prefix.pch */,
+			);
+			path = OpenEmu;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000220 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000021 /* OpenEmuBase.framework */,
+				A10000000000000000000031 /* Metal.framework */,
+				A10000000000000000000041 /* AppKit.framework */,
+				A10000000000000000000051 /* CoreAudio.framework */,
+				A10000000000000000000061 /* AudioToolbox.framework */,
+				A10000000000000000000071 /* IOKit.framework */,
+				A10000000000000000000081 /* OpenGL.framework */,
+				A10000000000000000000091 /* libz.tbd */,
+				A100000000000000000000A1 /* Foundation.framework */,
+				A100000000000000000000B1 /* QuartzCore.framework */,
+				A100000000000000000000C1 /* CoreVideo.framework */,
+				A100000000000000000000D1 /* AudioUnit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000230 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000020 /* Dolphin.oecoreplugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000000000000000000300 /* Dolphin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000500 /* Build configuration list for PBXNativeTarget "Dolphin" */;
+			buildPhases = (
+				A10000000000000000000310 /* Sources */,
+				A10000000000000000000100 /* Frameworks */,
+				A10000000000000000000320 /* Install Plugin */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dolphin;
+			productName = Dolphin;
+			productReference = A10000000000000000000020 /* Dolphin.oecoreplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10000000000000000000400 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1540;
+			};
+			buildConfigurationList = A10000000000000000000600 /* Build configuration list for PBXProject "Dolphin" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10000000000000000000200;
+			productRefGroup = A10000000000000000000230 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000000000000000000300 /* Dolphin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A10000000000000000000320 /* Install Plugin */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Install Plugin";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/Bit/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/$PROJECT_NAME.oecoreplugin\"\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\" \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10000000000000000000310 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* DolphinGameCore.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A10000000000000000000501 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenEmu/Dolphin-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/OpenEmu/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				OTHER_CFLAGS = (
+					"-Wno-narrowing",
+					"-Wno-shorten-64-to-32",
+					"-Wno-unused-variable",
+					"-Wno-unused-function",
+					"-Wno-sign-compare",
+					"-Wno-deprecated-declarations",
+					"-Wno-missing-field-initializers",
+					"-Wno-c++11-narrowing",
+				);
+				OTHER_LDFLAGS = (
+					"-lcore",
+					"-lcommon",
+					"-laudiocommon",
+					"-lvideocommon",
+					"-linputcommon",
+					"-ldiscio",
+					"-luicommon",
+					"-lvideometal",
+					"-lvideoogl",
+					"-lvideovulkan",
+					"-lvideonull",
+					"-lvideosoftware",
+					"-lspirv_cross",
+					"-lglslang",
+					"-lSPIRV",
+					"-lOSDependent",
+					"-lMachineIndependent",
+					"-lGenericCodeGen",
+					"-lSDL3",
+					"-lcubeb",
+					"-lmbedtls",
+					"-lmbedx509",
+					"-lmbedcrypto",
+					"-lminizip-ng",
+					"-lzlib-ng",
+					"-llzo2",
+					"-llz4",
+					"-lspng",
+					"-lxxhash",
+					"-lsfml-network-s",
+					"-lsfml-system-s",
+					"-lhidapi",
+					"-lminiupnpc",
+					"-ldiscord-rpc",
+					"-lfmt",
+					"-lMoltenVK",
+					"-lbz2",
+					"-lzstd",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Dolphin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = oecoreplugin;
+			};
+			name = Debug;
+		};
+		A10000000000000000000502 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenEmu/Dolphin-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/OpenEmu/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				OTHER_CFLAGS = (
+					"-Wno-narrowing",
+					"-Wno-shorten-64-to-32",
+					"-Wno-unused-variable",
+					"-Wno-unused-function",
+					"-Wno-sign-compare",
+					"-Wno-deprecated-declarations",
+					"-Wno-missing-field-initializers",
+					"-Wno-c++11-narrowing",
+				);
+				OTHER_LDFLAGS = (
+					"-lcore",
+					"-lcommon",
+					"-laudiocommon",
+					"-lvideocommon",
+					"-linputcommon",
+					"-ldiscio",
+					"-luicommon",
+					"-lvideometal",
+					"-lvideoogl",
+					"-lvideovulkan",
+					"-lvideonull",
+					"-lvideosoftware",
+					"-lspirv_cross",
+					"-lglslang",
+					"-lSPIRV",
+					"-lOSDependent",
+					"-lMachineIndependent",
+					"-lGenericCodeGen",
+					"-lSDL3",
+					"-lcubeb",
+					"-lmbedtls",
+					"-lmbedx509",
+					"-lmbedcrypto",
+					"-lminizip-ng",
+					"-lzlib-ng",
+					"-llzo2",
+					"-llz4",
+					"-lspng",
+					"-lxxhash",
+					"-lsfml-network-s",
+					"-lsfml-system-s",
+					"-lhidapi",
+					"-lminiupnpc",
+					"-ldiscord-rpc",
+					"-lfmt",
+					"-lMoltenVK",
+					"-lbz2",
+					"-lzstd",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Dolphin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = oecoreplugin;
+			};
+			name = Release;
+		};
+		A10000000000000000000601 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/../OpenEmu-SDK/build/Release",
+					"$(PROJECT_DIR)/../OpenEmu-SDK/build/Debug",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Source/Core",
+					"$(SRCROOT)/Source/Core/Core",
+					"$(SRCROOT)/Source/Core/Common",
+					"$(SRCROOT)/Externals",
+					"$(SRCROOT)/build-arm64/Source/Core",
+					"$(SRCROOT)/../OpenEmu/SystemPlugins/GameCube",
+					"$(SRCROOT)/../OpenEmu/SystemPlugins/Wii",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/build-arm64/Source/Core/Core",
+					"$(SRCROOT)/build-arm64/Source/Core/Common",
+					"$(SRCROOT)/build-arm64/Source/Core/AudioCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/InputCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/DiscIO",
+					"$(SRCROOT)/build-arm64/Source/Core/UICommon",
+					"$(SRCROOT)/build-arm64/Source/Core/UpdaterCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Metal",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/OGL",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Vulkan",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Null",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Software",
+					"$(SRCROOT)/build-arm64/Externals/glslang",
+					"$(SRCROOT)/build-arm64/Externals/spirv_cross",
+					"$(SRCROOT)/build-arm64/Externals/SDL/SDL",
+					"$(SRCROOT)/build-arm64/Externals/cubeb",
+					"$(SRCROOT)/build-arm64/Externals/mbedtls/library",
+					"$(SRCROOT)/build-arm64/Externals/minizip-ng",
+					"$(SRCROOT)/build-arm64/Externals/zlib-ng",
+					"$(SRCROOT)/build-arm64/Externals/LZO",
+					"$(SRCROOT)/build-arm64/Externals/lz4",
+					"$(SRCROOT)/build-arm64/Externals/libspng",
+					"$(SRCROOT)/build-arm64/Externals/xxhash",
+					"$(SRCROOT)/build-arm64/Externals/SFML",
+					"$(SRCROOT)/build-arm64/Externals/hidapi",
+					"$(SRCROOT)/build-arm64/Externals/miniupnpc",
+					"$(SRCROOT)/build-arm64/Externals/discord-rpc/src",
+					"$(SRCROOT)/build-arm64/Externals/fmt",
+					"$(SRCROOT)/build-arm64/Externals/MoltenVK/MoltenVK-prefix/src/MoltenVK/Package/Release/MoltenVK/lib",
+					"$(SRCROOT)/build-arm64/Externals/bzip2",
+					"$(SRCROOT)/build-arm64/Externals/zstd",
+					"$(SRCROOT)/build-arm64/Externals/gtest",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A10000000000000000000602 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/../OpenEmu-SDK/build/Release",
+					"$(PROJECT_DIR)/../OpenEmu-SDK/build/Debug",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"NDEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Source/Core",
+					"$(SRCROOT)/Source/Core/Core",
+					"$(SRCROOT)/Source/Core/Common",
+					"$(SRCROOT)/Externals",
+					"$(SRCROOT)/build-arm64/Source/Core",
+					"$(SRCROOT)/../OpenEmu/SystemPlugins/GameCube",
+					"$(SRCROOT)/../OpenEmu/SystemPlugins/Wii",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/build-arm64/Source/Core/Core",
+					"$(SRCROOT)/build-arm64/Source/Core/Common",
+					"$(SRCROOT)/build-arm64/Source/Core/AudioCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/InputCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/DiscIO",
+					"$(SRCROOT)/build-arm64/Source/Core/UICommon",
+					"$(SRCROOT)/build-arm64/Source/Core/UpdaterCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Metal",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/OGL",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Vulkan",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Null",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Software",
+					"$(SRCROOT)/build-arm64/Externals/glslang",
+					"$(SRCROOT)/build-arm64/Externals/spirv_cross",
+					"$(SRCROOT)/build-arm64/Externals/SDL/SDL",
+					"$(SRCROOT)/build-arm64/Externals/cubeb",
+					"$(SRCROOT)/build-arm64/Externals/mbedtls/library",
+					"$(SRCROOT)/build-arm64/Externals/minizip-ng",
+					"$(SRCROOT)/build-arm64/Externals/zlib-ng",
+					"$(SRCROOT)/build-arm64/Externals/LZO",
+					"$(SRCROOT)/build-arm64/Externals/lz4",
+					"$(SRCROOT)/build-arm64/Externals/libspng",
+					"$(SRCROOT)/build-arm64/Externals/xxhash",
+					"$(SRCROOT)/build-arm64/Externals/SFML",
+					"$(SRCROOT)/build-arm64/Externals/hidapi",
+					"$(SRCROOT)/build-arm64/Externals/miniupnpc",
+					"$(SRCROOT)/build-arm64/Externals/discord-rpc/src",
+					"$(SRCROOT)/build-arm64/Externals/fmt",
+					"$(SRCROOT)/build-arm64/Externals/MoltenVK/MoltenVK-prefix/src/MoltenVK/Package/Release/MoltenVK/lib",
+					"$(SRCROOT)/build-arm64/Externals/bzip2",
+					"$(SRCROOT)/build-arm64/Externals/zstd",
+					"$(SRCROOT)/build-arm64/Externals/gtest",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10000000000000000000500 /* Build configuration list for PBXNativeTarget "Dolphin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000501 /* Debug */,
+				A10000000000000000000502 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000600 /* Build configuration list for PBXProject "Dolphin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000601 /* Debug */,
+				A10000000000000000000602 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = A10000000000000000000400 /* Project object */;
+}
