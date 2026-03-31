@@ -7,6 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000000000000AA0000000026 /* OERetroAchievementsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000002 /* OERetroAchievementsManager.m */; };
+		000000000000AA0000000027 /* rc_client.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000003 /* rc_client.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000028 /* rc_version.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000004 /* rc_version.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000029 /* rc_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000005 /* rc_util.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000002A /* rc_compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000006 /* rc_compat.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000002E /* lboard.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000000A /* lboard.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000002F /* runtime.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000000B /* runtime.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000030 /* format.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000000C /* format.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000031 /* rc_validate.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000000D /* rc_validate.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000032 /* consoleinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000000E /* consoleinfo.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000033 /* condset.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000000F /* condset.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000034 /* runtime_progress.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000010 /* runtime_progress.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000035 /* alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000011 /* alloc.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000036 /* condition.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000012 /* condition.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000037 /* trigger.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000013 /* trigger.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000038 /* memref.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000014 /* memref.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000039 /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000015 /* value.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000003A /* operand.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000016 /* operand.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000003B /* richpresence.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000017 /* richpresence.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000003C /* aes.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000018 /* aes.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000003D /* hash_zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000019 /* hash_zip.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000003E /* hash_disc.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000001A /* hash_disc.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA000000003F /* hash_encrypted.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000001B /* hash_encrypted.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000040 /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000001C /* hash.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000041 /* cdreader.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000001D /* cdreader.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000042 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000001E /* md5.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000043 /* hash_rom.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA000000001F /* hash_rom.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000044 /* url.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000020 /* url.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000045 /* rc_api_editor.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000021 /* rc_api_editor.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000046 /* rc_api_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000022 /* rc_api_common.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000047 /* rc_api_user.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000023 /* rc_api_user.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000048 /* rc_api_runtime.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000024 /* rc_api_runtime.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
+		000000000000AA0000000049 /* rc_api_info.c in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000AA0000000025 /* rc_api_info.c */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
 		0518D6E824F32DD10037101D /* NSEvent+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0518D6E724F32DD10037101D /* NSEvent+Combine.swift */; };
 		05201D652777C8CC0028CBE0 /* ShaderPresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05201D642777C8CC0028CBE0 /* ShaderPresetStore.swift */; };
 		05201D672777EA910028CBE0 /* OESystemShaderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05201D662777EA910028CBE0 /* OESystemShaderStore.swift */; };
@@ -109,6 +142,43 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000000000000AA0000000001 /* OERetroAchievementsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OERetroAchievementsManager.h; sourceTree = "<group>"; };
+		000000000000AA0000000002 /* OERetroAchievementsManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OERetroAchievementsManager.m; sourceTree = "<group>"; };
+		000000000000AA0000000003 /* rc_client.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_client.c; sourceTree = "<group>"; };
+		000000000000AA0000000004 /* rc_version.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_version.c; sourceTree = "<group>"; };
+		000000000000AA0000000005 /* rc_util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_util.c; sourceTree = "<group>"; };
+		000000000000AA0000000006 /* rc_compat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_compat.c; sourceTree = "<group>"; };
+		000000000000AA0000000007 /* rc_libretro.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_libretro.c; sourceTree = "<group>"; };
+		000000000000AA0000000008 /* rc_client_external.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_client_external.c; sourceTree = "<group>"; };
+		000000000000AA0000000009 /* rc_client_raintegration.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_client_raintegration.c; sourceTree = "<group>"; };
+		000000000000AA000000000A /* lboard.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lboard.c; sourceTree = "<group>"; };
+		000000000000AA000000000B /* runtime.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = runtime.c; sourceTree = "<group>"; };
+		000000000000AA000000000C /* format.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = format.c; sourceTree = "<group>"; };
+		000000000000AA000000000D /* rc_validate.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_validate.c; sourceTree = "<group>"; };
+		000000000000AA000000000E /* consoleinfo.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = consoleinfo.c; sourceTree = "<group>"; };
+		000000000000AA000000000F /* condset.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = condset.c; sourceTree = "<group>"; };
+		000000000000AA0000000010 /* runtime_progress.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = runtime_progress.c; sourceTree = "<group>"; };
+		000000000000AA0000000011 /* alloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = alloc.c; sourceTree = "<group>"; };
+		000000000000AA0000000012 /* condition.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = condition.c; sourceTree = "<group>"; };
+		000000000000AA0000000013 /* trigger.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = trigger.c; sourceTree = "<group>"; };
+		000000000000AA0000000014 /* memref.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = memref.c; sourceTree = "<group>"; };
+		000000000000AA0000000015 /* value.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = value.c; sourceTree = "<group>"; };
+		000000000000AA0000000016 /* operand.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = operand.c; sourceTree = "<group>"; };
+		000000000000AA0000000017 /* richpresence.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = richpresence.c; sourceTree = "<group>"; };
+		000000000000AA0000000018 /* aes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = aes.c; sourceTree = "<group>"; };
+		000000000000AA0000000019 /* hash_zip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hash_zip.c; sourceTree = "<group>"; };
+		000000000000AA000000001A /* hash_disc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hash_disc.c; sourceTree = "<group>"; };
+		000000000000AA000000001B /* hash_encrypted.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hash_encrypted.c; sourceTree = "<group>"; };
+		000000000000AA000000001C /* hash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hash.c; sourceTree = "<group>"; };
+		000000000000AA000000001D /* cdreader.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cdreader.c; sourceTree = "<group>"; };
+		000000000000AA000000001E /* md5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = md5.c; sourceTree = "<group>"; };
+		000000000000AA000000001F /* hash_rom.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hash_rom.c; sourceTree = "<group>"; };
+		000000000000AA0000000020 /* url.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = url.c; sourceTree = "<group>"; };
+		000000000000AA0000000021 /* rc_api_editor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_api_editor.c; sourceTree = "<group>"; };
+		000000000000AA0000000022 /* rc_api_common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_api_common.c; sourceTree = "<group>"; };
+		000000000000AA0000000023 /* rc_api_user.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_api_user.c; sourceTree = "<group>"; };
+		000000000000AA0000000024 /* rc_api_runtime.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_api_runtime.c; sourceTree = "<group>"; };
+		000000000000AA0000000025 /* rc_api_info.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rc_api_info.c; sourceTree = "<group>"; };
 		050A9A0924F9B26C00321847 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		050A9A0B24F9B2B800321847 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		050A9A0C24F9B2E900321847 /* QuartzCoreSPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuartzCoreSPI.h; sourceTree = "<group>"; };
@@ -221,6 +291,98 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		000000000000AA000000004A /* RetroAchievements */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000AA0000000001 /* OERetroAchievementsManager.h */,
+				000000000000AA0000000002 /* OERetroAchievementsManager.m */,
+				000000000000AA000000004B /* rcheevos */,
+			);
+			path = RetroAchievements;
+			sourceTree = "<group>";
+		};
+		000000000000AA000000004B /* rcheevos */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000AA000000004C /* src */,
+			);
+			path = rcheevos;
+			sourceTree = "<group>";
+		};
+		000000000000AA000000004C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000AA0000000003 /* rc_client.c */,
+				000000000000AA0000000004 /* rc_version.c */,
+				000000000000AA0000000005 /* rc_util.c */,
+				000000000000AA0000000006 /* rc_compat.c */,
+				000000000000AA0000000007 /* rc_libretro.c */,
+				000000000000AA0000000008 /* rc_client_external.c */,
+				000000000000AA0000000009 /* rc_client_raintegration.c */,
+				000000000000AA000000004D /* rcheevos */,
+				000000000000AA000000004E /* rhash */,
+				000000000000AA000000004F /* rurl */,
+				000000000000AA0000000050 /* rapi */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		000000000000AA000000004D /* rcheevos */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000AA000000000A /* lboard.c */,
+				000000000000AA000000000B /* runtime.c */,
+				000000000000AA000000000C /* format.c */,
+				000000000000AA000000000D /* rc_validate.c */,
+				000000000000AA000000000E /* consoleinfo.c */,
+				000000000000AA000000000F /* condset.c */,
+				000000000000AA0000000010 /* runtime_progress.c */,
+				000000000000AA0000000011 /* alloc.c */,
+				000000000000AA0000000012 /* condition.c */,
+				000000000000AA0000000013 /* trigger.c */,
+				000000000000AA0000000014 /* memref.c */,
+				000000000000AA0000000015 /* value.c */,
+				000000000000AA0000000016 /* operand.c */,
+				000000000000AA0000000017 /* richpresence.c */,
+			);
+			path = rcheevos;
+			sourceTree = "<group>";
+		};
+		000000000000AA000000004E /* rhash */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000AA0000000018 /* aes.c */,
+				000000000000AA0000000019 /* hash_zip.c */,
+				000000000000AA000000001A /* hash_disc.c */,
+				000000000000AA000000001B /* hash_encrypted.c */,
+				000000000000AA000000001C /* hash.c */,
+				000000000000AA000000001D /* cdreader.c */,
+				000000000000AA000000001E /* md5.c */,
+				000000000000AA000000001F /* hash_rom.c */,
+			);
+			path = rhash;
+			sourceTree = "<group>";
+		};
+		000000000000AA000000004F /* rurl */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000AA0000000020 /* url.c */,
+			);
+			path = rurl;
+			sourceTree = "<group>";
+		};
+		000000000000AA0000000050 /* rapi */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000AA0000000021 /* rc_api_editor.c */,
+				000000000000AA0000000022 /* rc_api_common.c */,
+				000000000000AA0000000023 /* rc_api_user.c */,
+				000000000000AA0000000024 /* rc_api_runtime.c */,
+				000000000000AA0000000025 /* rc_api_info.c */,
+			);
+			path = rapi;
+			sourceTree = "<group>";
+		};
 		050A9A0A24F9B29300321847 /* OpenEmuKitPrivate */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +480,7 @@
 				050A9A0E24F9B36400321847 /* Module */,
 				050A9A0A24F9B29300321847 /* OpenEmuKitPrivate */,
 				05E695C924CCD32900ACFB35 /* Classes */,
+				000000000000AA000000004A /* RetroAchievements */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -699,6 +862,39 @@
 				05ED1CF9259D1FB200A2D400 /* FileManager+ExtendedAttributes.swift in Sources */,
 				05B0781927371B2200F1E302 /* GameAudio.swift in Sources */,
 				0518D6E824F32DD10037101D /* NSEvent+Combine.swift in Sources */,
+				000000000000AA0000000026 /* OERetroAchievementsManager.m in Sources */,
+				000000000000AA0000000027 /* rc_client.c in Sources */,
+				000000000000AA0000000028 /* rc_version.c in Sources */,
+				000000000000AA0000000029 /* rc_util.c in Sources */,
+				000000000000AA000000002A /* rc_compat.c in Sources */,
+				000000000000AA000000002E /* lboard.c in Sources */,
+				000000000000AA000000002F /* runtime.c in Sources */,
+				000000000000AA0000000030 /* format.c in Sources */,
+				000000000000AA0000000031 /* rc_validate.c in Sources */,
+				000000000000AA0000000032 /* consoleinfo.c in Sources */,
+				000000000000AA0000000033 /* condset.c in Sources */,
+				000000000000AA0000000034 /* runtime_progress.c in Sources */,
+				000000000000AA0000000035 /* alloc.c in Sources */,
+				000000000000AA0000000036 /* condition.c in Sources */,
+				000000000000AA0000000037 /* trigger.c in Sources */,
+				000000000000AA0000000038 /* memref.c in Sources */,
+				000000000000AA0000000039 /* value.c in Sources */,
+				000000000000AA000000003A /* operand.c in Sources */,
+				000000000000AA000000003B /* richpresence.c in Sources */,
+				000000000000AA000000003C /* aes.c in Sources */,
+				000000000000AA000000003D /* hash_zip.c in Sources */,
+				000000000000AA000000003E /* hash_disc.c in Sources */,
+				000000000000AA000000003F /* hash_encrypted.c in Sources */,
+				000000000000AA0000000040 /* hash.c in Sources */,
+				000000000000AA0000000041 /* cdreader.c in Sources */,
+				000000000000AA0000000042 /* md5.c in Sources */,
+				000000000000AA0000000043 /* hash_rom.c in Sources */,
+				000000000000AA0000000044 /* url.c in Sources */,
+				000000000000AA0000000045 /* rc_api_editor.c in Sources */,
+				000000000000AA0000000046 /* rc_api_common.c in Sources */,
+				000000000000AA0000000047 /* rc_api_user.c in Sources */,
+				000000000000AA0000000048 /* rc_api_runtime.c in Sources */,
+				000000000000AA0000000049 /* rc_api_info.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -871,6 +1067,10 @@
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../OpenEmu";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Source/RetroAchievements/rcheevos/include",
+				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -901,6 +1101,10 @@
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../OpenEmu";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Source/RetroAchievements/rcheevos/include",
+				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
