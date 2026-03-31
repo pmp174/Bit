@@ -23,6 +23,10 @@
 				011FD376252679A1006D7C05 /* PBXTargetDependency */,
 				011FD378252679AD006D7C05 /* PBXTargetDependency */,
 				011FD36E25267973006D7C05 /* PBXTargetDependency */,
+				A66B954560001AAA00000019 /* PBXTargetDependency */,
+				B77C065670002BBB00000019 /* PBXTargetDependency */,
+				C88D176780003CCC00000019 /* PBXTargetDependency */,
+				D99E287890004DDD00000019 /* PBXTargetDependency */,
 			);
 			name = "Build Experimental SystemPlugins";
 			productName = "Build Experimental SystemPlugins";
@@ -298,6 +302,9 @@
 		630A9A962F68DB0500384730 /* PrefCloudSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A952F68DB0500384730 /* PrefCloudSyncController.swift */; };
 		630A9A982F68DB8A00384730 /* OEEvictionScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A972F68DB8A00384730 /* OEEvictionScheduler.swift */; };
 		630A9A9A2F68DC1700384730 /* OEFileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A992F68DC1700384730 /* OEFileMonitor.swift */; };
+		630D27EA2F738E12005FBEAD /* RetroAchievementsCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27E92F738E12005FBEAD /* RetroAchievementsCredentialStore.swift */; };
+		630D27EC2F738E64005FBEAD /* PrefAccountsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27EB2F738E64005FBEAD /* PrefAccountsController.swift */; };
+		630D27EE2F738EB2005FBEAD /* AchievementNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27ED2F738EB2005FBEAD /* AchievementNotificationView.swift */; };
 		63195AAB2F70627100E25883 /* ControllerNavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63195AAA2F70627100E25883 /* ControllerNavigationManager.swift */; };
 		6324EFD52F706CFC006AC7A8 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6324EFD42F706CFC006AC7A8 /* SettingsWindowController.swift */; };
 		6324EFD72F706D23006AC7A8 /* SettingsSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6324EFD62F706D23006AC7A8 /* SettingsSidebarViewController.swift */; };
@@ -310,7 +317,16 @@
 		632C6DE02F6851F80083E29D /* Supervision.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 837964E11A6149C000A8DE5C /* Supervision.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6355D3712F66546B0024B088 /* PrefGeneralController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6355D3702F66546B0024B088 /* PrefGeneralController.swift */; };
 		6355D3732F66B9A40024B088 /* Bit App Icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 6355D3722F66B9A40024B088 /* Bit App Icon.icon */; };
+		6376EB0C2F7235D400F07E39 /* SystemInfoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB0B2F7235D400F07E39 /* SystemInfoPopoverViewController.swift */; };
+		6376EB0F2F72C6D700F07E39 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
+		6376EB102F72C6E700F07E39 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
+		6376EB112F72C6F700F07E39 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
+		6376EB122F72C70300F07E39 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
+		6376EB162F72E28100F07E39 /* OENaomiSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB152F72E28100F07E39 /* OENaomiSystemResponder.m */; };
+		6376EB1A2F72E29D00F07E39 /* OENaomi2SystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB192F72E29D00F07E39 /* OENaomi2SystemResponder.m */; };
+		6376EB1E2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */; };
 		63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87FBC06D1BFC70FE00AECF5A /* Commodore 64.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		63CF88602F7776E000F574F3 /* PrefDeveloperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CF885F2F7776E000F574F3 /* PrefDeveloperController.swift */; };
 		8227756B1489471A00B19E27 /* OEGGSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8227755C1489471A00B19E27 /* OEGGSystemResponder.m */; };
 		82C2909114840024007C0214 /* OENGPSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 820EB7571483F9D3008EC398 /* OENGPSystemResponder.m */; };
 		82DD29DB12369F1100B58A8F /* KeyboardUsages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 82DD29DA12369F1100B58A8F /* KeyboardUsages.plist */; };
@@ -641,6 +657,18 @@
 		94DEA000171896AE00073397 /* NDS.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 94D7E8C915073BA000FBDD85 /* NDS.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		94E6C304166DB15900082F27 /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94E6C303166DB15900082F27 /* Controller-Mappings.plist */; };
 		94EBBD31183F4DB000743756 /* Arcade.oesystemplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 945E42FB1517F2B500057D08 /* Arcade.oesystemplugin */; };
+		A66B954560001AAA0000000D /* OENaomiSystemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B954560001AAA0000000C /* OENaomiSystemController.swift */; };
+		A66B954560001AAA0000000F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A66B954560001AAA0000000E /* Images.xcassets */; };
+		A66B954560001AAA00000011 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A66B954560001AAA00000010 /* Controller-Preferences.plist */; };
+		A66B954560001AAA00000013 /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = A66B954560001AAA00000012 /* Keyboard-Mappings.plist */; };
+		A66B954560001AAA00000015 /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = A66B954560001AAA00000014 /* Controller-Mappings.plist */; };
+		A66B954560001AAA00000017 /* Naomi.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = A66B954560001AAA00000002 /* Naomi.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B77C065670002BBB0000000D /* OENaomi2SystemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C065670002BBB0000000C /* OENaomi2SystemController.swift */; };
+		B77C065670002BBB0000000F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B77C065670002BBB0000000E /* Images.xcassets */; };
+		B77C065670002BBB00000011 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = B77C065670002BBB00000010 /* Controller-Preferences.plist */; };
+		B77C065670002BBB00000013 /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = B77C065670002BBB00000012 /* Keyboard-Mappings.plist */; };
+		B77C065670002BBB00000015 /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = B77C065670002BBB00000014 /* Controller-Mappings.plist */; };
+		B77C065670002BBB00000017 /* Naomi 2.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = B77C065670002BBB00000002 /* Naomi 2.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C6252DAC14E752E300350A13 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6252DAA14E752E300350A13 /* Controller-Preferences.plist */; };
 		C6252DAE14E7556800350A13 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6252DAD14E7556800350A13 /* Controller-Preferences.plist */; };
 		C6252DB214E7566600350A13 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6252DB114E7566600350A13 /* Controller-Preferences.plist */; };
@@ -711,6 +739,19 @@
 		C6D120E617112EFB00E868A8 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
 		C6F696C01648F64B00B243DB /* Controller-Database.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F696BF1648F64B00B243DB /* Controller-Database.plist */; };
 		C6F697D6164E0EFD00B243DB /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F697D5164E0EFD00B243DB /* Keyboard-Mappings.plist */; };
+		C88D176780003CCC0000000D /* OEAtomiswaveSystemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C88D176780003CCC0000000C /* OEAtomiswaveSystemController.swift */; };
+		C88D176780003CCC0000000F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C88D176780003CCC0000000E /* Images.xcassets */; };
+		C88D176780003CCC00000011 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = C88D176780003CCC00000010 /* Controller-Preferences.plist */; };
+		C88D176780003CCC00000013 /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = C88D176780003CCC00000012 /* Keyboard-Mappings.plist */; };
+		C88D176780003CCC00000015 /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = C88D176780003CCC00000014 /* Controller-Mappings.plist */; };
+		C88D176780003CCC00000017 /* Atomiswave.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = C88D176780003CCC00000002 /* Atomiswave.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D99E287890004DDD0000000D /* OEWiiSystemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99E287890004DDD0000000C /* OEWiiSystemController.swift */; };
+		D99E287890004DDD0000000F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D99E287890004DDD0000000E /* Images.xcassets */; };
+		D99E287890004DDD00000011 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = D99E287890004DDD00000010 /* Controller-Preferences.plist */; };
+		D99E287890004DDD00000013 /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = D99E287890004DDD00000012 /* Keyboard-Mappings.plist */; };
+		D99E287890004DDD00000015 /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = D99E287890004DDD00000014 /* Controller-Mappings.plist */; };
+		D99E287890004DDD00000017 /* .oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = D99E287890004DDD00000002 /* .oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D99E287890004DDD0000001A /* OEWiiSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = D99E287890004DDD0000001B /* OEWiiSystemResponder.m */; };
 		EF2FDBEB14CFFE06002A64F2 /* ControlsKeyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8396CC5514068DA90096F791 /* ControlsKeyButton.swift */; };
 		EF2FDBED14CFFE1B002A64F2 /* ControlsKeySeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D9991E146F40DA004409DC /* ControlsKeySeparatorView.swift */; };
 		EFBD5D7814EFE19A00FBD1E0 /* NSColor+OEAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBD5D7714EFE19A00FBD1E0 /* NSColor+OEAdditions.swift */; };
@@ -1103,6 +1144,34 @@
 			remoteGlobalIDString = 94D7E8C815073BA000FBDD85;
 			remoteInfo = NDS;
 		};
+		A66B954560001AAA00000018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A66B954560001AAA00000001;
+			remoteInfo = Naomi;
+		};
+		B77C065670002BBB00000018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B77C065670002BBB00000001;
+			remoteInfo = "Naomi 2";
+		};
+		C88D176780003CCC00000018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C88D176780003CCC00000001;
+			remoteInfo = Atomiswave;
+		};
+		D99E287890004DDD00000018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D99E287890004DDD00000001;
+			remoteInfo = Wii;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1237,6 +1306,10 @@
 				948E54131571D78D002D26E0 /* GameBoy Advance.oesystemplugin in Copy System Plugins to App Plugins */,
 				948E54141571D78D002D26E0 /* NeoGeo Pocket.oesystemplugin in Copy System Plugins to App Plugins */,
 				948E54151571D78D002D26E0 /* GameGear.oesystemplugin in Copy System Plugins to App Plugins */,
+				A66B954560001AAA00000017 /* Naomi.oesystemplugin in Copy System Plugins to App Plugins */,
+				B77C065670002BBB00000017 /* Naomi 2.oesystemplugin in Copy System Plugins to App Plugins */,
+				C88D176780003CCC00000017 /* Atomiswave.oesystemplugin in Copy System Plugins to App Plugins */,
+				D99E287890004DDD00000017 /* .oesystemplugin in Copy System Plugins to App Plugins */,
 			);
 			name = "Copy System Plugins to App Plugins";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1485,12 +1558,26 @@
 		630A9A952F68DB0500384730 /* PrefCloudSyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefCloudSyncController.swift; sourceTree = "<group>"; };
 		630A9A972F68DB8A00384730 /* OEEvictionScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEEvictionScheduler.swift; sourceTree = "<group>"; };
 		630A9A992F68DC1700384730 /* OEFileMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEFileMonitor.swift; sourceTree = "<group>"; };
+		630D27E92F738E12005FBEAD /* RetroAchievementsCredentialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAchievementsCredentialStore.swift; sourceTree = "<group>"; };
+		630D27EB2F738E64005FBEAD /* PrefAccountsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefAccountsController.swift; sourceTree = "<group>"; };
+		630D27ED2F738EB2005FBEAD /* AchievementNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNotificationView.swift; sourceTree = "<group>"; };
 		63195AAA2F70627100E25883 /* ControllerNavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerNavigationManager.swift; sourceTree = "<group>"; };
 		6324EFD42F706CFC006AC7A8 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		6324EFD62F706D23006AC7A8 /* SettingsSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSidebarViewController.swift; sourceTree = "<group>"; };
 		6324EFD82F706DC2006AC7A8 /* PrefCoresAndSystemFilesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefCoresAndSystemFilesController.swift; sourceTree = "<group>"; };
 		6355D3702F66546B0024B088 /* PrefGeneralController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefGeneralController.swift; sourceTree = "<group>"; };
 		6355D3722F66B9A40024B088 /* Bit App Icon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "Bit App Icon.icon"; sourceTree = "<group>"; };
+		6376EB0B2F7235D400F07E39 /* SystemInfoPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfoPopoverViewController.swift; sourceTree = "<group>"; };
+		6376EB132F72E26F00F07E39 /* OENaomiSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OENaomiSystemResponderClient.h; sourceTree = "<group>"; };
+		6376EB142F72E27F00F07E39 /* OENaomiSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OENaomiSystemResponder.h; sourceTree = "<group>"; };
+		6376EB152F72E28100F07E39 /* OENaomiSystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OENaomiSystemResponder.m; sourceTree = "<group>"; };
+		6376EB172F72E29B00F07E39 /* OENaomi2SystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OENaomi2SystemResponderClient.h; sourceTree = "<group>"; };
+		6376EB182F72E29C00F07E39 /* OENaomi2SystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OENaomi2SystemResponder.h; sourceTree = "<group>"; };
+		6376EB192F72E29D00F07E39 /* OENaomi2SystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OENaomi2SystemResponder.m; sourceTree = "<group>"; };
+		6376EB1B2F72E2B100F07E39 /* OEAtomiswaveSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEAtomiswaveSystemResponderClient.h; sourceTree = "<group>"; };
+		6376EB1C2F72E2B200F07E39 /* OEAtomiswaveSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEAtomiswaveSystemResponder.h; sourceTree = "<group>"; };
+		6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OEAtomiswaveSystemResponder.m; sourceTree = "<group>"; };
+		63CF885F2F7776E000F574F3 /* PrefDeveloperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefDeveloperController.swift; sourceTree = "<group>"; };
 		7699EC921D6303EB005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7699EC931D6303EC005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7699EC941D6303EC005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/ControlLabels.strings; sourceTree = "<group>"; };
@@ -1991,6 +2078,20 @@
 		94D7E8E115073E3800FBDD85 /* OENDSSystemResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OENDSSystemResponder.m; sourceTree = "<group>"; };
 		94D7E8E215073E3800FBDD85 /* OENDSSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OENDSSystemResponderClient.h; sourceTree = "<group>"; };
 		94E6C303166DB15900082F27 /* Controller-Mappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
+		A66B954560001AAA00000002 /* Naomi.oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Naomi.oesystemplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		A66B954560001AAA00000003 /* Naomi-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Naomi-Info.plist"; sourceTree = "<group>"; };
+		A66B954560001AAA0000000C /* OENaomiSystemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OENaomiSystemController.swift; sourceTree = "<group>"; };
+		A66B954560001AAA0000000E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A66B954560001AAA00000010 /* Controller-Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
+		A66B954560001AAA00000012 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		A66B954560001AAA00000014 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
+		B77C065670002BBB00000002 /* Naomi 2.oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Naomi 2.oesystemplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B77C065670002BBB00000003 /* Naomi2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Naomi2-Info.plist"; sourceTree = "<group>"; };
+		B77C065670002BBB0000000C /* OENaomi2SystemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OENaomi2SystemController.swift; sourceTree = "<group>"; };
+		B77C065670002BBB0000000E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B77C065670002BBB00000010 /* Controller-Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
+		B77C065670002BBB00000012 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		B77C065670002BBB00000014 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
 		C60CDDD611780DF100EB472F /* OpenGL Format Table.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "OpenGL Format Table.txt"; sourceTree = "<group>"; };
 		C6252DAA14E752E300350A13 /* Controller-Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
 		C6252DAD14E7556800350A13 /* Controller-Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
@@ -2054,6 +2155,23 @@
 		C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEmuSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F696BF1648F64B00B243DB /* Controller-Database.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Controller-Database.plist"; sourceTree = "<group>"; };
 		C6F697D5164E0EFD00B243DB /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		C88D176780003CCC00000002 /* Atomiswave.oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Atomiswave.oesystemplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		C88D176780003CCC00000003 /* Atomiswave-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Atomiswave-Info.plist"; sourceTree = "<group>"; };
+		C88D176780003CCC0000000C /* OEAtomiswaveSystemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEAtomiswaveSystemController.swift; sourceTree = "<group>"; };
+		C88D176780003CCC0000000E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		C88D176780003CCC00000010 /* Controller-Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
+		C88D176780003CCC00000012 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		C88D176780003CCC00000014 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
+		D99E287890004DDD00000002 /* .oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = .oesystemplugin; path = Wii.oesystemplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		D99E287890004DDD00000003 /* Wii-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Wii-Info.plist"; sourceTree = "<group>"; };
+		D99E287890004DDD0000000C /* OEWiiSystemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEWiiSystemController.swift; sourceTree = "<group>"; };
+		D99E287890004DDD0000000E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D99E287890004DDD00000010 /* Controller-Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
+		D99E287890004DDD00000012 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		D99E287890004DDD00000014 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
+		D99E287890004DDD0000001B /* OEWiiSystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OEWiiSystemResponder.m; sourceTree = "<group>"; };
+		D99E287890004DDD0000001C /* OEWiiSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEWiiSystemResponder.h; sourceTree = "<group>"; };
+		D99E287890004DDD0000001D /* OEWiiSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEWiiSystemResponderClient.h; sourceTree = "<group>"; };
 		DBFF44DC2E9D79C700B30F0A /* OENESSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OENESSystemResponderClient.h; sourceTree = "<group>"; };
 		DBFF44DD2E9D79D400B30F0A /* OEFDSSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEFDSSystemResponderClient.h; sourceTree = "<group>"; };
 		EFBD5D7714EFE19A00FBD1E0 /* NSColor+OEAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+OEAdditions.swift"; sourceTree = "<group>"; };
@@ -2450,6 +2568,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A66B954560001AAA00000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6376EB0F2F72C6D700F07E39 /* OpenEmuSystem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77C065670002BBB00000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6376EB102F72C6E700F07E39 /* OpenEmuSystem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C646574513771F12002A4F70 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2495,6 +2629,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6D120CF17112EB200E868A8 /* OpenEmuSystem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C88D176780003CCC00000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6376EB122F72C70300F07E39 /* OpenEmuSystem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D99E287890004DDD00000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6376EB112F72C6F700F07E39 /* OpenEmuSystem.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2722,6 +2872,7 @@
 				5A46AC401DC66D8300771B3B /* GameViewController+TouchBar.swift */,
 				14F6A925168180CF0071386D /* GameWindowController.swift */,
 				5AC349321D89EB7B0089B26F /* GameIntegralScalingDelegate.swift */,
+				630D27ED2F738EB2005FBEAD /* AchievementNotificationView.swift */,
 			);
 			name = "Game Document";
 			sourceTree = "<group>";
@@ -2782,6 +2933,10 @@
 				8F94DEBA250EC701003A1F33 /* OpenEmuQLThumbnail.appex */,
 				8F94DECF250ED838003A1F33 /* OpenEmuQLPreview.appex */,
 				8F7C2948288A2A2200A16C09 /* OECoreListUpdater */,
+				A66B954560001AAA00000002 /* Naomi.oesystemplugin */,
+				B77C065670002BBB00000002 /* Naomi 2.oesystemplugin */,
+				C88D176780003CCC00000002 /* Atomiswave.oesystemplugin */,
+				D99E287890004DDD00000002 /* .oesystemplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3045,6 +3200,9 @@
 				6324EFD42F706CFC006AC7A8 /* SettingsWindowController.swift */,
 				6324EFD62F706D23006AC7A8 /* SettingsSidebarViewController.swift */,
 				6324EFD82F706DC2006AC7A8 /* PrefCoresAndSystemFilesController.swift */,
+				630D27E92F738E12005FBEAD /* RetroAchievementsCredentialStore.swift */,
+				630D27EB2F738E64005FBEAD /* PrefAccountsController.swift */,
+				63CF885F2F7776E000F574F3 /* PrefDeveloperController.swift */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -3246,6 +3404,7 @@
 				8F2F92A92519A9E700699691 /* GameScannerButton.swift */,
 				8306CD0E1BD3AC180025BC6C /* LibraryGamesViewController.swift */,
 				8F5074751C10BCEC00F52B83 /* LibraryGamesViewController.xib */,
+				6376EB0B2F7235D400F07E39 /* SystemInfoPopoverViewController.swift */,
 			);
 			name = "Games Library";
 			sourceTree = "<group>";
@@ -4151,6 +4310,54 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A66B954560001AAA00000004 /* Naomi */ = {
+			isa = PBXGroup;
+			children = (
+				A66B954560001AAA0000000C /* OENaomiSystemController.swift */,
+				A66B954560001AAA00000005 /* Supporting Files */,
+				6376EB132F72E26F00F07E39 /* OENaomiSystemResponderClient.h */,
+				6376EB142F72E27F00F07E39 /* OENaomiSystemResponder.h */,
+				6376EB152F72E28100F07E39 /* OENaomiSystemResponder.m */,
+			);
+			path = Naomi;
+			sourceTree = "<group>";
+		};
+		A66B954560001AAA00000005 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A66B954560001AAA0000000E /* Images.xcassets */,
+				A66B954560001AAA00000003 /* Naomi-Info.plist */,
+				A66B954560001AAA00000012 /* Keyboard-Mappings.plist */,
+				A66B954560001AAA00000014 /* Controller-Mappings.plist */,
+				A66B954560001AAA00000010 /* Controller-Preferences.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B77C065670002BBB00000004 /* Naomi 2 */ = {
+			isa = PBXGroup;
+			children = (
+				B77C065670002BBB0000000C /* OENaomi2SystemController.swift */,
+				B77C065670002BBB00000005 /* Supporting Files */,
+				6376EB172F72E29B00F07E39 /* OENaomi2SystemResponderClient.h */,
+				6376EB182F72E29C00F07E39 /* OENaomi2SystemResponder.h */,
+				6376EB192F72E29D00F07E39 /* OENaomi2SystemResponder.m */,
+			);
+			path = "Naomi 2";
+			sourceTree = "<group>";
+		};
+		B77C065670002BBB00000005 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B77C065670002BBB0000000E /* Images.xcassets */,
+				B77C065670002BBB00000003 /* Naomi2-Info.plist */,
+				B77C065670002BBB00000012 /* Keyboard-Mappings.plist */,
+				B77C065670002BBB00000014 /* Controller-Mappings.plist */,
+				B77C065670002BBB00000010 /* Controller-Preferences.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		B8396A2616B1FF9F2C6C8029 /* OpenEmu */ = {
 			isa = PBXGroup;
 			children = (
@@ -4314,6 +4521,10 @@
 				94A224851707541E00098DA0 /* Virtual Boy */,
 				943C80371708F23900D8D93E /* VMU */,
 				94A224451707539D00098DA0 /* WonderSwan */,
+				A66B954560001AAA00000004 /* Naomi */,
+				B77C065670002BBB00000004 /* Naomi 2 */,
+				C88D176780003CCC00000004 /* Atomiswave */,
+				D99E287890004DDD00000004 /* Wii */,
 			);
 			name = "System Plugins";
 			path = SystemPlugins;
@@ -4386,6 +4597,54 @@
 				C6AF2857164E472A00681A06 /* Keyboard-Mappings.plist */,
 				9496290B164F834D00952A86 /* Controller-Mappings.plist */,
 				C6252DBB14E75A4800350A13 /* Controller-Preferences.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C88D176780003CCC00000004 /* Atomiswave */ = {
+			isa = PBXGroup;
+			children = (
+				C88D176780003CCC0000000C /* OEAtomiswaveSystemController.swift */,
+				C88D176780003CCC00000005 /* Supporting Files */,
+				6376EB1B2F72E2B100F07E39 /* OEAtomiswaveSystemResponderClient.h */,
+				6376EB1C2F72E2B200F07E39 /* OEAtomiswaveSystemResponder.h */,
+				6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */,
+			);
+			path = Atomiswave;
+			sourceTree = "<group>";
+		};
+		C88D176780003CCC00000005 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C88D176780003CCC0000000E /* Images.xcassets */,
+				C88D176780003CCC00000003 /* Atomiswave-Info.plist */,
+				C88D176780003CCC00000012 /* Keyboard-Mappings.plist */,
+				C88D176780003CCC00000014 /* Controller-Mappings.plist */,
+				C88D176780003CCC00000010 /* Controller-Preferences.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D99E287890004DDD00000004 /* Wii */ = {
+			isa = PBXGroup;
+			children = (
+				D99E287890004DDD0000000C /* OEWiiSystemController.swift */,
+				D99E287890004DDD0000001C /* OEWiiSystemResponder.h */,
+				D99E287890004DDD0000001B /* OEWiiSystemResponder.m */,
+				D99E287890004DDD0000001D /* OEWiiSystemResponderClient.h */,
+				D99E287890004DDD00000005 /* Supporting Files */,
+			);
+			path = Wii;
+			sourceTree = "<group>";
+		};
+		D99E287890004DDD00000005 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D99E287890004DDD0000000E /* Images.xcassets */,
+				D99E287890004DDD00000003 /* Wii-Info.plist */,
+				D99E287890004DDD00000012 /* Keyboard-Mappings.plist */,
+				D99E287890004DDD00000014 /* Controller-Mappings.plist */,
+				D99E287890004DDD00000010 /* Controller-Preferences.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -5232,6 +5491,40 @@
 			productReference = 94D7E8C915073BA000FBDD85 /* NDS.oesystemplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
+		A66B954560001AAA00000001 /* Naomi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A66B954560001AAA0000000B /* Build configuration list for PBXNativeTarget "Naomi" */;
+			buildPhases = (
+				A66B954560001AAA00000006 /* Sources */,
+				A66B954560001AAA00000007 /* Frameworks */,
+				A66B954560001AAA00000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Naomi;
+			productName = Naomi;
+			productReference = A66B954560001AAA00000002 /* Naomi.oesystemplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+		B77C065670002BBB00000001 /* Naomi 2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B77C065670002BBB0000000B /* Build configuration list for PBXNativeTarget "Naomi 2" */;
+			buildPhases = (
+				B77C065670002BBB00000006 /* Sources */,
+				B77C065670002BBB00000007 /* Frameworks */,
+				B77C065670002BBB00000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Naomi 2";
+			productName = "Naomi 2";
+			productReference = B77C065670002BBB00000002 /* Naomi 2.oesystemplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
 		C646574713771F12002A4F70 /* GameBoy Advance */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C646575113771F12002A4F70 /* Build configuration list for PBXNativeTarget "GameBoy Advance" */;
@@ -5332,6 +5625,40 @@
 			name = Genesis;
 			productName = Genesis;
 			productReference = C6B947E61365080B00A425F0 /* Genesis.oesystemplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+		C88D176780003CCC00000001 /* Atomiswave */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C88D176780003CCC0000000B /* Build configuration list for PBXNativeTarget "Atomiswave" */;
+			buildPhases = (
+				C88D176780003CCC00000006 /* Sources */,
+				C88D176780003CCC00000007 /* Frameworks */,
+				C88D176780003CCC00000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Atomiswave;
+			productName = Atomiswave;
+			productReference = C88D176780003CCC00000002 /* Atomiswave.oesystemplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+		D99E287890004DDD00000001 /* Wii */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D99E287890004DDD0000000B /* Build configuration list for PBXNativeTarget "Wii" */;
+			buildPhases = (
+				D99E287890004DDD00000006 /* Sources */,
+				D99E287890004DDD00000007 /* Frameworks */,
+				D99E287890004DDD00000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Wii;
+			productName = Wii;
+			productReference = D99E287890004DDD00000002 /* .oesystemplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 		FEB6625A187B791800D14713 /* MSX */ = {
@@ -5480,6 +5807,10 @@
 				94A224821707541E00098DA0 /* Virtual Boy */,
 				943C80341708F23900D8D93E /* VMU */,
 				94A224421707539D00098DA0 /* WonderSwan */,
+				A66B954560001AAA00000001 /* Naomi */,
+				B77C065670002BBB00000001 /* Naomi 2 */,
+				C88D176780003CCC00000001 /* Atomiswave */,
+				D99E287890004DDD00000001 /* Wii */,
 				82C9C96F0F080C7F0071460B /* Distribution */,
 				37C802FF101564A300356EF3 /* Build & Copy OpenEmuBase */,
 				83F37141140BB166005A7353 /* Build SystemPlugins */,
@@ -5979,6 +6310,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A66B954560001AAA00000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A66B954560001AAA0000000F /* Images.xcassets in Resources */,
+				A66B954560001AAA00000011 /* Controller-Preferences.plist in Resources */,
+				A66B954560001AAA00000013 /* Keyboard-Mappings.plist in Resources */,
+				A66B954560001AAA00000015 /* Controller-Mappings.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77C065670002BBB00000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B77C065670002BBB0000000F /* Images.xcassets in Resources */,
+				B77C065670002BBB00000011 /* Controller-Preferences.plist in Resources */,
+				B77C065670002BBB00000013 /* Keyboard-Mappings.plist in Resources */,
+				B77C065670002BBB00000015 /* Controller-Mappings.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C646574613771F12002A4F70 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6046,6 +6399,28 @@
 				9496290C164F834D00952A86 /* Controller-Mappings.plist in Resources */,
 				C6AF2858164E472A00681A06 /* Keyboard-Mappings.plist in Resources */,
 				55BE8EE12542AC1D00E3841E /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C88D176780003CCC00000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C88D176780003CCC0000000F /* Images.xcassets in Resources */,
+				C88D176780003CCC00000011 /* Controller-Preferences.plist in Resources */,
+				C88D176780003CCC00000013 /* Keyboard-Mappings.plist in Resources */,
+				C88D176780003CCC00000015 /* Controller-Mappings.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D99E287890004DDD00000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D99E287890004DDD0000000F /* Images.xcassets in Resources */,
+				D99E287890004DDD00000011 /* Controller-Preferences.plist in Resources */,
+				D99E287890004DDD00000013 /* Keyboard-Mappings.plist in Resources */,
+				D99E287890004DDD00000015 /* Controller-Mappings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6384,6 +6759,7 @@
 				8F94B44D25566FE00058AA94 /* NSShadow+OEAdditions.swift in Sources */,
 				0544B6A023D16D3100F63D61 /* CollectionViewItem.swift in Sources */,
 				05201D7E2782501E0028CBE0 /* NameShaderPreset.swift in Sources */,
+				6376EB0C2F7235D400F07E39 /* SystemInfoPopoverViewController.swift in Sources */,
 				8F80217E24F45E6F00DC82E3 /* ControlsPopUpButtonCell.swift in Sources */,
 				6324EFD72F706D23006AC7A8 /* SettingsSidebarViewController.swift in Sources */,
 				5A9606DC1C0A84BC0089B494 /* LibraryToolbar.swift in Sources */,
@@ -6395,6 +6771,7 @@
 				5A9606EA1C0BD2BD0089B494 /* Logging.swift in Sources */,
 				8306CD3E1BD3DB180025BC6C /* OEGameCollectionViewController.m in Sources */,
 				8FDCCAD8270632AC00CBF2E3 /* OEGridViewFieldEditor.swift in Sources */,
+				630D27EE2F738EB2005FBEAD /* AchievementNotificationView.swift in Sources */,
 				53439AAB13B92CE6005C0CC8 /* OECollectionViewController.m in Sources */,
 				8F7AE88A2546802A00B837A8 /* InsetScrollView.swift in Sources */,
 				53439AE313B92E59005C0CC8 /* RatingCell.swift in Sources */,
@@ -6416,6 +6793,7 @@
 				630A9A902F68D6A800384730 /* OEGoogleDriveStorageProvider.swift in Sources */,
 				630A9A862F68D5D100384730 /* OEStorageProviderType.swift in Sources */,
 				63195AAB2F70627100E25883 /* ControllerNavigationManager.swift in Sources */,
+				63CF88602F7776E000F574F3 /* PrefDeveloperController.swift in Sources */,
 				5A9606E81C0BCD350089B494 /* NSImage+DrawingAdditions.swift in Sources */,
 				83199722142741790068C865 /* ROMImporter.swift in Sources */,
 				83507247142F6029005D9033 /* ControllerImageView.swift in Sources */,
@@ -6494,6 +6872,7 @@
 				05E789A723D01B16000E14EE /* GameDocumentController.swift in Sources */,
 				05E789AB23D0256D000E14EE /* NSBindingName+Additions.swift in Sources */,
 				0544B6A923D16DDC00F63D61 /* ScreenshotViewController.swift in Sources */,
+				630D27EA2F738E12005FBEAD /* RetroAchievementsCredentialStore.swift in Sources */,
 				8397082F163C405000E04871 /* 0.2 to 0.3.xcmappingmodel in Sources */,
 				8F419A0325B6C7AE00A7F0BE /* OEAppearance.swift in Sources */,
 				5A575DFB1E92B6CE00491B0D /* BIOSFile.swift in Sources */,
@@ -6517,6 +6896,7 @@
 				5A9606E41C0BA85F0089B494 /* NSURL+LibraryAdditions.swift in Sources */,
 				5A3BB0391D964A4500E10F27 /* CenteredTextFieldCell.swift in Sources */,
 				8FC3CC692708BD4200747DC2 /* OEGameDocument.swift in Sources */,
+				630D27EC2F738E64005FBEAD /* PrefAccountsController.swift in Sources */,
 				0544B6A323D16D6300F63D61 /* NSImageView+OEAdditions.swift in Sources */,
 				630A9A982F68DB8A00384730 /* OEEvictionScheduler.swift in Sources */,
 				14CB5DAA16FE1F8300342817 /* OEAudioDeviceManager.m in Sources */,
@@ -6781,6 +7161,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A66B954560001AAA00000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6376EB162F72E28100F07E39 /* OENaomiSystemResponder.m in Sources */,
+				A66B954560001AAA0000000D /* OENaomiSystemController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77C065670002BBB00000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B77C065670002BBB0000000D /* OENaomi2SystemController.swift in Sources */,
+				6376EB1A2F72E29D00F07E39 /* OENaomi2SystemResponder.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C646574413771F12002A4F70 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6831,6 +7229,24 @@
 			files = (
 				C6B948101365096800A425F0 /* OEGenesisSystemResponder.m in Sources */,
 				943815B8165771EB00D55731 /* OEGenesisSystemController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C88D176780003CCC00000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C88D176780003CCC0000000D /* OEAtomiswaveSystemController.swift in Sources */,
+				6376EB1E2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D99E287890004DDD00000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D99E287890004DDD0000000D /* OEWiiSystemController.swift in Sources */,
+				D99E287890004DDD0000001A /* OEWiiSystemResponder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7115,6 +7531,26 @@
 			isa = PBXTargetDependency;
 			target = 94D7E8C815073BA000FBDD85 /* NDS */;
 			targetProxy = 94D7E8E8150741B500FBDD85 /* PBXContainerItemProxy */;
+		};
+		A66B954560001AAA00000019 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A66B954560001AAA00000001 /* Naomi */;
+			targetProxy = A66B954560001AAA00000018 /* PBXContainerItemProxy */;
+		};
+		B77C065670002BBB00000019 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B77C065670002BBB00000001 /* Naomi 2 */;
+			targetProxy = B77C065670002BBB00000018 /* PBXContainerItemProxy */;
+		};
+		C88D176780003CCC00000019 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C88D176780003CCC00000001 /* Atomiswave */;
+			targetProxy = C88D176780003CCC00000018 /* PBXContainerItemProxy */;
+		};
+		D99E287890004DDD00000019 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D99E287890004DDD00000001 /* Wii */;
+			targetProxy = D99E287890004DDD00000018 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -8502,6 +8938,46 @@
 			};
 			name = Release;
 		};
+		A66B954560001AAA00000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Naomi/Naomi-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Debug;
+		};
+		A66B954560001AAA0000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Naomi/Naomi-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Release;
+		};
+		B77C065670002BBB00000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Naomi 2/Naomi2-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Debug;
+		};
+		B77C065670002BBB0000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Naomi 2/Naomi2-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Release;
+		};
 		C05733C808A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8F22764629D301FC001FB9F8 /* Config.xcconfig */;
@@ -8828,6 +9304,46 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "SystemPlugins/Genesis/Genesis-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Release;
+		};
+		C88D176780003CCC00000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Atomiswave/Atomiswave-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Debug;
+		};
+		C88D176780003CCC0000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Atomiswave/Atomiswave-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Release;
+		};
+		D99E287890004DDD00000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Wii/Wii-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Debug;
+		};
+		D99E287890004DDD0000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Wii/Wii-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = oesystemplugin;
@@ -9316,6 +9832,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A66B954560001AAA0000000B /* Build configuration list for PBXNativeTarget "Naomi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A66B954560001AAA00000009 /* Debug */,
+				A66B954560001AAA0000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B77C065670002BBB0000000B /* Build configuration list for PBXNativeTarget "Naomi 2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B77C065670002BBB00000009 /* Debug */,
+				B77C065670002BBB0000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "OpenEmu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -9384,6 +9918,24 @@
 			buildConfigurations = (
 				C6B947F01365080B00A425F0 /* Debug */,
 				C6B947F11365080B00A425F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C88D176780003CCC0000000B /* Build configuration list for PBXNativeTarget "Atomiswave" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C88D176780003CCC00000009 /* Debug */,
+				C88D176780003CCC0000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D99E287890004DDD0000000B /* Build configuration list for PBXNativeTarget "Wii" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D99E287890004DDD00000009 /* Debug */,
+				D99E287890004DDD0000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

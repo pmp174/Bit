@@ -15,37 +15,42 @@
 // Optimizing code
 //
 
-#if defined(__clang__)
-
+#ifndef unreachable
+#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
 #define unreachable    __builtin_unreachable()
-#define likely(x)      __builtin_expect(!!(x), 1)
-#define unlikely(x)    __builtin_expect(!!(x), 0)
-#define alwaysinline   __attribute__((always_inline))
-
-#elif defined(__GNUC__) || defined(__GNUG__)
-
-#define unreachable    __builtin_unreachable()
-#define likely(x)      __builtin_expect(!!(x), 1)
-#define unlikely(x)    __builtin_expect(!!(x), 0)
-#define alwaysinline   __attribute__((always_inline))
-
 #elif defined(_MSC_VER)
-
 #define unreachable    __assume(false)
-#define likely(x)      (x)
-#define unlikely(x)    (x)
-#define alwaysinline   __forceinline
-
-#elif
-
+#else
 #define unreachable
-#define likely(x)
-#define unlikely(x)
-#define alwaysinline inline
-
+#endif
 #endif
 
+#ifndef likely
+#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+#define likely(x)      __builtin_expect(!!(x), 1)
+#define unlikely(x)    __builtin_expect(!!(x), 0)
+#elif defined(_MSC_VER)
+#define likely(x)      (x)
+#define unlikely(x)    (x)
+#else
+#define likely(x)      (x)
+#define unlikely(x)    (x)
+#endif
+#endif
+
+#ifndef alwaysinline
+#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+#define alwaysinline   __attribute__((always_inline))
+#elif defined(_MSC_VER)
+#define alwaysinline   __forceinline
+#else
+#define alwaysinline   inline
+#endif
+#endif
+
+#ifndef fatalError
 #define fatalError     assert(false); unreachable
+#endif
 
 
 //

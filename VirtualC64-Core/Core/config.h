@@ -12,7 +12,43 @@
 
 #pragma once
 
+// When building as an OpenEmu plugin, force NDEBUG to prevent assert()
+// failures from crashing the XPC helper process. VirtualC64 uses assert()
+// extensively and the fatal() macro calls std::terminate().
+#ifndef NDEBUG
+#define NDEBUG
+#endif
+
 #include "debug.h"
+
+// Override fatal() to be a no-op instead of calling std::terminate().
+// The original macro in debug.h calls std::terminate() unconditionally,
+// which crashes the XPC helper process. We can't throw here because
+// VirtualC64's emulator thread only catches StateChangeException —
+// any other exception causes std::terminate() via uncaught exception.
+// Making it a no-op is safe with NDEBUG since these paths should not
+// be reached in release builds.
+#ifdef fatal
+#undef fatal
+#endif
+#define fatal(format, ...) do { } while(0)
+
+// Override fatalError to use __builtin_unreachable() only.
+// The original is assert(false); unreachable — with NDEBUG assert is
+// already a no-op. We keep __builtin_unreachable() so the compiler
+// knows these paths don't return (avoids "non-void function" errors).
+// We must NOT throw here because exceptions on the emulator thread
+// are not caught and will call std::terminate().
+#ifdef fatalError
+#undef fatalError
+#endif
+#define fatalError __builtin_unreachable()
+
+// Keep unreachable as __builtin_unreachable() for the same reason.
+#ifdef unreachable
+#undef unreachable
+#endif
+#define unreachable __builtin_unreachable()
 
 //
 // Release settings

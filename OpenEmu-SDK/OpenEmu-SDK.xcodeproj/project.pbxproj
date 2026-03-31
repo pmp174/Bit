@@ -30,6 +30,7 @@
 		05FF41B922B08C5F00BB7283 /* OELogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 05FF41B722B08C5F00BB7283 /* OELogging.h */; };
 		27FC95181A92F12700CF1DC6 /* OEDiffQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 27FC95161A92F12700CF1DC6 /* OEDiffQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27FC95191A92F12700CF1DC6 /* OEDiffQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 27FC95171A92F12700CF1DC6 /* OEDiffQueue.mm */; };
+		63CF88622F78022600F574F3 /* OEGameCorePeripheralDevices.h in Headers */ = {isa = PBXBuildFile; fileRef = 63CF88612F78022600F574F3 /* OEGameCorePeripheralDevices.h */; };
 		8363A434193CA52400F18425 /* OEGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8363A433193CA52400F18425 /* OEGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		878203EA21C4A09900C1C2C9 /* OEDreamcastGDI.h in Headers */ = {isa = PBXBuildFile; fileRef = 878203E821C4A09800C1C2C9 /* OEDreamcastGDI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		878203EB21C4A09900C1C2C9 /* OEDreamcastGDI.m in Sources */ = {isa = PBXBuildFile; fileRef = 878203E921C4A09800C1C2C9 /* OEDreamcastGDI.m */; };
@@ -165,6 +166,7 @@
 		05FF41B722B08C5F00BB7283 /* OELogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OELogging.h; sourceTree = "<group>"; };
 		27FC95161A92F12700CF1DC6 /* OEDiffQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEDiffQueue.h; sourceTree = "<group>"; };
 		27FC95171A92F12700CF1DC6 /* OEDiffQueue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OEDiffQueue.mm; sourceTree = "<group>"; };
+		63CF88612F78022600F574F3 /* OEGameCorePeripheralDevices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEGameCorePeripheralDevices.h; sourceTree = "<group>"; };
 		8363A433193CA52400F18425 /* OEGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEGeometry.h; sourceTree = "<group>"; };
 		878203E821C4A09800C1C2C9 /* OEDreamcastGDI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEDreamcastGDI.h; sourceTree = "<group>"; };
 		878203E921C4A09800C1C2C9 /* OEDreamcastGDI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEDreamcastGDI.m; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 				01F306FA20AA1C64005C8F18 /* NSUserDefaults+OpenEmuSDK.m */,
 				011FAED22325B8F900DBEC62 /* NSDictionary+OpenEmuSDK.h */,
 				011FAED32325B8F900DBEC62 /* NSDictionary+OpenEmuSDK.m */,
+				63CF88612F78022600F574F3 /* OEGameCorePeripheralDevices.h */,
 			);
 			path = OpenEmuBase;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 				C6772A741710BD6200ED580A /* OEGameCoreController.h in Headers */,
 				01F306FB20AA1C64005C8F18 /* NSUserDefaults+OpenEmuSDK.h in Headers */,
 				C6772A761710BD6200ED580A /* OERingBuffer.h in Headers */,
+				63CF88622F78022600F574F3 /* OEGameCorePeripheralDevices.h in Headers */,
 				8363A434193CA52400F18425 /* OEGeometry.h in Headers */,
 				011829A720ACA8AA0030B347 /* OEAudioBuffer.h in Headers */,
 				C694EEC21C2A078B00DFD15C /* OEPropertyList.h in Headers */,

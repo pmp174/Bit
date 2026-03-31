@@ -26,26 +26,45 @@ import Foundation
 import OpenEmuSystem
 
 class OEGCSystemController: OESystemController {
-    // Read header to detect GameCube ISO, GCM & CISO.
+    // Read header to detect GameCube ISO, GCM, CISO, GCZ & RVZ.
     override func canHandle(_ file: OEFile) -> OEFileSupport {
-        // Handle gcm file and return early
-        if ["gcm", "gcz", "rvz"].contains(file.fileExtension) {
+        let ext = file.fileExtension.lowercased()
+
+        // GCM files are exclusively GameCube
+        if ext == "gcm" {
             return .yes
+        }
+
+        // GameCube Magicword 0xC2339F3D
+        let gcMagic = Data([0xC2, 0x33, 0x9F, 0x3D])
+
+        // RVZ/WIA: disc header is stored uncompressed at file offset 0x58.
+        // The GameCube magic word is at disc offset 0x1C, so file offset 0x58 + 0x1C = 0x74.
+        if ext == "rvz" {
+            let dataBuffer = file.readData(in: NSRange(location: 0x74, length: 4))
+            return dataBuffer == gcMagic ? .yes : .no
+        }
+
+        // GCZ: compressed format — disc data is not at raw file offsets.
+        // Check GCZ container magic (0xB10BC001) at offset 0, then decompress
+        // would be needed for true detection. Use .uncertain so the Wii controller
+        // also gets a chance, and the user can choose if both claim it.
+        if ext == "gcz" {
+            let containerMagic = file.readData(in: NSRange(location: 0x0, length: 4))
+            let gczMagic = Data([0xB1, 0x0B, 0xC0, 0x01])
+            return containerMagic == gczMagic ? .uncertain : .no
         }
 
         var dataRange = NSRange(location: 0x1C, length: 4)
 
         // Handle ciso file and set the offset for the Magicword in compressed iso.
-        if file.fileExtension == "ciso" {
+        if ext == "ciso" {
             dataRange.location = 0x801C
         }
 
+        // For ISO and CISO, check the GameCube magic word at the standard offset
         let dataBuffer = file.readData(in: dataRange)
-        // GameCube Magicword 0xC2339F3D
-        let bytes: [UInt8] = [0xC2, 0x33, 0x9F, 0x3D]
-        let comparisonData = Data(bytes: bytes, count: 4)
-
-        if dataBuffer == comparisonData {
+        if dataBuffer == gcMagic {
             return .yes
         }
 

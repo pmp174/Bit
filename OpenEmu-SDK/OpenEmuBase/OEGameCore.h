@@ -528,6 +528,28 @@ OE_EXPORTED_CLASS
  *    specified in its OEGameCoreDisplayModeNameKey key. */
 - (void)changeDisplayWithMode:(NSString *)displayMode;
 
+#pragma mark - Peripheral Devices - Optional
+
+/** An array describing the available peripheral port configurations.
+ *  @discussion Each NSDictionary in the array corresponds to a port on the
+ *    emulated system. See OEGameCorePeripheralDevices.h for the keys used
+ *    in each dictionary. Ports can optionally contain expansion sub-ports. */
+@property(readonly, nullable) NSArray<NSDictionary<NSString *, id> *> *peripheralDevices;
+
+/** Change the device assigned to a given port.
+ *  @param portIdentifier The unique identifier of the port (e.g. "maple.0.exp.1").
+ *  @param deviceIdentifier The unique identifier of the device to assign (e.g. "dc.exp.2"). */
+- (void)changePeripheralForPort:(NSString *)portIdentifier toDevice:(NSString *)deviceIdentifier;
+
+#pragma mark - Achievements Memory Access - Optional
+
+/// Reads bytes from the emulated system's memory for achievement scanning.
+/// @param address The address in the rcheevos virtual address space.
+/// @param buffer The buffer to fill with the read data.
+/// @param numBytes The number of bytes to read.
+/// @return The number of bytes actually read, or 0 if the address is invalid.
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes;
+
 @end
 
 #pragma mark - Internal

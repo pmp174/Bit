@@ -261,3 +261,23 @@ void GB::setGameGenie(std::string const &codes) {
 void GB::setGameShark(std::string const &codes) {
 	p_->cpu.setGameShark(codes);
 }
+
+int GB::cpuRead(unsigned short addr) const {
+	return p_->cpu.peek(addr);
+}
+
+unsigned char const * GB::wramData() const {
+	return p_->cpu.wramData();
+}
+
+std::size_t GB::wramSize() const {
+	return p_->cpu.wramDataEnd() - p_->cpu.wramData();
+}
+
+unsigned char const * GB::sramData() const {
+	return p_->cpu.sramData();
+}
+
+std::size_t GB::sramSize() const {
+	return p_->cpu.sramDataEnd() - p_->cpu.sramData();
+}

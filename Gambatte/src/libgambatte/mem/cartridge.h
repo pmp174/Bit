@@ -52,6 +52,9 @@ public:
 	unsigned char * vramdata() const { return memptrs_.vramdata(); }
 	unsigned char * romdata(unsigned area) const { return memptrs_.romdata(area); }
 	unsigned char * wramdata(unsigned area) const { return memptrs_.wramdata(area); }
+	unsigned char * wramdataend() const { return memptrs_.wramdataend(); }
+	unsigned char * rambankdata() const { return memptrs_.rambankdata(); }
+	unsigned char * rambankdataend() const { return memptrs_.rambankdataend(); }
 	unsigned char const * rdisabledRam() const { return memptrs_.rdisabledRam(); }
 	unsigned char const * rsrambankptr() const { return memptrs_.rsrambankptr(); }
 	unsigned char * wsrambankptr() const { return memptrs_.wsrambankptr(); }

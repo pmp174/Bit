@@ -35,6 +35,11 @@
     return @protocol(OEArcadeSystemResponderClient);
 }
 
+- (void)changeAnalogEmulatorKey:(OESystemKey *)aKey value:(CGFloat)value
+{
+    [self.client didMoveArcadeJoystickDirection:(OEArcadeButton)aKey.key withValue:value forPlayer:aKey.player];
+}
+
 - (void)pressEmulatorKey:(OESystemKey *)aKey
 {
     [self.client didPushArcadeButton:(OEArcadeButton)aKey.key forPlayer:aKey.player];

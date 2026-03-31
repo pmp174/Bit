@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)canHandleDevice:(IOHIDDeviceRef)device
 {
     NSString *deviceName = (__bridge id)IOHIDDeviceGetProperty(device, CFSTR(kIOHIDProductKey));
-    return [deviceName hasPrefix:@"Wireless Controller"];
+    return [deviceName hasPrefix:@"Wireless Controller"] || [deviceName hasPrefix:@"DualSense"];
 }
 
 - (BOOL)connect

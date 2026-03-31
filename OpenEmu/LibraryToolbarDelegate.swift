@@ -32,6 +32,7 @@ public extension NSToolbarItem.Identifier {
     static let oeSearch   = NSToolbarItem.Identifier("OEToolbarSearchItem")
     static let oeCategory = NSToolbarItem.Identifier("OEToolbarCategoryItem")
     static let oeAdd      = NSToolbarItem.Identifier("OEToolbarAddItem")
+    static let oeSystemInfo = NSToolbarItem.Identifier("OEToolbarSystemInfoItem")
 }
 
 final class LibraryToolbarDelegate: NSObject, NSToolbarDelegate {
@@ -44,19 +45,22 @@ final class LibraryToolbarDelegate: NSObject, NSToolbarDelegate {
                 .oeViewMode,
                 .oeGridSize,
                 .oeSearch,
-                .oeCategory]
+                .oeCategory,
+                .oeSystemInfo]
     }
     
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         if #available(macOS 11.0, *) {
             return [.oeViewMode,
                     .oeCategory,
+                    .oeSystemInfo,
                     .flexibleSpace,
                     .oeSearch]
         } else {
             return [.oeViewMode,
                     .oeGridSize,
                     .oeCategory,
+                    .oeSystemInfo,
                     .flexibleSpace,
                     .oeSearch]
         }
@@ -79,6 +83,8 @@ final class LibraryToolbarDelegate: NSObject, NSToolbarDelegate {
             return searchToolbarItem
         case .oeAdd:
             return addToolbarItem
+        case .oeSystemInfo:
+            return systemInfoToolbarItem
         default:
             return nil
         }
@@ -274,6 +280,22 @@ final class LibraryToolbarDelegate: NSObject, NSToolbarDelegate {
         return item
     }()
     
+    // MARK: - System Info
+
+    private(set) lazy var systemInfoToolbarItem: NSToolbarItem = {
+        let button = NSButton(image: NSImage(systemSymbolName: "info.circle", accessibilityDescription: NSLocalizedString("System Info", comment: ""))!, target: toolbarOwner, action: #selector(LibraryController.showSystemInfo(_:)))
+        button.bezelStyle = .toolbar
+        button.setButtonType(.momentaryPushIn)
+        button.imagePosition = .imageOnly
+        button.toolTip = NSLocalizedString("System Info", comment: "Toolbar, system info button tooltip")
+
+        let item = NSToolbarItem(itemIdentifier: .oeSystemInfo)
+        item.view = button
+        item.label = NSLocalizedString("System Info", comment: "Toolbar, system info button label")
+
+        return item
+    }()
+
     private lazy var addMenu: NSMenu = {
         
         let addToLibrary = NSMenuItem()

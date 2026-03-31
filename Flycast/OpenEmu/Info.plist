@@ -56,6 +56,60 @@
 				</dict>
 			</array>
 		</dict>
+		<key>openemu.system.naomi</key>
+		<dict>
+			<key>OEGameCoreHasGlitches</key>
+			<false/>
+			<key>OEGameCoreRequiresFiles</key>
+			<true/>
+			<key>OERequiredFiles</key>
+			<array>
+				<dict>
+					<key>Description</key>
+					<string>Naomi BIOS (MAME)</string>
+					<key>Name</key>
+					<string>naomi.zip</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<key>openemu.system.naomi2</key>
+		<dict>
+			<key>OEGameCoreHasGlitches</key>
+			<false/>
+			<key>OEGameCoreRequiresFiles</key>
+			<true/>
+			<key>OERequiredFiles</key>
+			<array>
+				<dict>
+					<key>Description</key>
+					<string>Naomi 2 BIOS (MAME)</string>
+					<key>Name</key>
+					<string>naomi2.zip</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<key>openemu.system.atomiswave</key>
+		<dict>
+			<key>OEGameCoreHasGlitches</key>
+			<false/>
+			<key>OEGameCoreRequiresFiles</key>
+			<true/>
+			<key>OERequiredFiles</key>
+			<array>
+				<dict>
+					<key>Description</key>
+					<string>Atomiswave BIOS (MAME)</string>
+					<key>Name</key>
+					<string>awbios.zip</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
 	</dict>
 	<key>OEGameCorePlayerCount</key>
 	<string>4</string>
@@ -64,6 +118,9 @@
 	<key>OESystemIdentifiers</key>
 	<array>
 		<string>openemu.system.dc</string>
+		<string>openemu.system.naomi</string>
+		<string>openemu.system.naomi2</string>
+		<string>openemu.system.atomiswave</string>
 	</array>
 </dict>
 </plist>

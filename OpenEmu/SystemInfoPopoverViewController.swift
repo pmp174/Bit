@@ -30,6 +30,18 @@ final class SystemInfoPopoverViewController: NSViewController {
     private let scrollView = NSScrollView()
     private let stackView = NSStackView()
     
+    /// The selected system to show info for, or nil to show all systems.
+    private let selectedSystem: OEDBSystem?
+    
+    init(selectedSystem: OEDBSystem?) {
+        self.selectedSystem = selectedSystem
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         let container = NSView(frame: NSRect(x: 0, y: 0, width: 350, height: 450))
         
@@ -37,28 +49,32 @@ final class SystemInfoPopoverViewController: NSViewController {
         scrollView.hasVerticalScroller = true
         scrollView.hasHorizontalScroller = false
         scrollView.drawsBackground = false
-        scrollView.automaticallyAdjustsContentInsets = false
-        scrollView.contentInsets = NSEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        
+
+        // Use a flipped document view so content starts at the top
+        let documentView = FlippedView()
+        documentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.documentView = documentView
+
         stackView.orientation = .vertical
         stackView.alignment = .leading
         stackView.spacing = 4
-        
-        let clipView = scrollView.contentView
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.documentView = stackView
-        
+        documentView.addSubview(stackView)
+
         container.addSubview(scrollView)
-        
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: container.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-            
-            stackView.topAnchor.constraint(equalTo: clipView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: clipView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: clipView.trailingAnchor),
+
+            stackView.topAnchor.constraint(equalTo: documentView.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: documentView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: documentView.trailingAnchor, constant: -16),
+            stackView.bottomAnchor.constraint(equalTo: documentView.bottomAnchor, constant: -16),
+
+            documentView.widthAnchor.constraint(equalTo: scrollView.contentView.widthAnchor),
         ])
         
         self.view = container
@@ -67,51 +83,77 @@ final class SystemInfoPopoverViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         buildContent()
+        updatePreferredContentSize()
+    }
+    
+    private func updatePreferredContentSize() {
+        // Force layout to calculate actual content height
+        view.layoutSubtreeIfNeeded()
+        let fittingHeight = stackView.fittingSize.height + 32 // 16pt padding top + bottom
+        let clampedHeight = min(max(fittingHeight, 80), 450)
+        preferredContentSize = NSSize(width: 350, height: clampedHeight)
     }
     
     // MARK: - Content
     
     private func buildContent() {
-        // Title
-        let title = makeLabel(NSLocalizedString("System Info", comment: ""), bold: true, size: NSFont.systemFontSize + 2)
-        stackView.addArrangedSubview(title)
-        stackView.setCustomSpacing(12, after: title)
+        // Determine which system plugins to show
+        let plugins: [OESystemPlugin]
         
-        // Per-system sections
-        let systems = OESystemPlugin.allPlugins.sorted { $0.systemName.localizedCaseInsensitiveCompare($1.systemName) == .orderedAscending }
-        
-        for plugin in systems {
-            addSystemSection(plugin)
+        if let system = selectedSystem, let plugin = system.plugin {
+            // Show only the selected system
+            plugins = [plugin]
+            
+            let title = makeLabel(plugin.systemName, bold: true, size: NSFont.systemFontSize + 2)
+            stackView.addArrangedSubview(title)
+            stackView.setCustomSpacing(12, after: title)
+        } else {
+            // Show all systems
+            plugins = OESystemPlugin.allPlugins.sorted {
+                $0.systemName.localizedCaseInsensitiveCompare($1.systemName) == .orderedAscending
+            }
+            
+            let title = makeLabel(NSLocalizedString("System Info", comment: ""), bold: true, size: NSFont.systemFontSize + 2)
+            stackView.addArrangedSubview(title)
+            stackView.setCustomSpacing(12, after: title)
         }
         
-        // Separator
-        let sep1 = makeSeparator()
-        stackView.addArrangedSubview(sep1)
-        stackView.setCustomSpacing(8, after: sep1)
-        NSLayoutConstraint.activate([
-            sep1.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            sep1.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-        ])
+        let isSingleSystem = selectedSystem != nil
+        for plugin in plugins {
+            addSystemSection(plugin, showName: !isSingleSystem)
+        }
         
-        // CD-Based Games section
-        addCDBasedGamesSection()
+        // Show CD/multi-disc sections if any shown system supports discs
+        let hasDiscSystem = plugins.contains { $0.supportsDiscsWithDescriptorFile }
         
-        // Separator
-        let sep2 = makeSeparator()
-        stackView.addArrangedSubview(sep2)
-        stackView.setCustomSpacing(8, after: sep2)
-        NSLayoutConstraint.activate([
-            sep2.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            sep2.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-        ])
-        
-        // Multi-Disc Games section
-        addMultiDiscSection()
+        if hasDiscSystem {
+            let sep1 = makeSeparator()
+            stackView.addArrangedSubview(sep1)
+            stackView.setCustomSpacing(8, after: sep1)
+            NSLayoutConstraint.activate([
+                sep1.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                sep1.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            ])
+            
+            addCDBasedGamesSection()
+            
+            let sep2 = makeSeparator()
+            stackView.addArrangedSubview(sep2)
+            stackView.setCustomSpacing(8, after: sep2)
+            NSLayoutConstraint.activate([
+                sep2.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                sep2.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            ])
+            
+            addMultiDiscSection()
+        }
     }
     
-    private func addSystemSection(_ plugin: OESystemPlugin) {
-        let systemName = makeLabel(plugin.systemName, bold: true, size: NSFont.systemFontSize)
-        stackView.addArrangedSubview(systemName)
+    private func addSystemSection(_ plugin: OESystemPlugin, showName: Bool = true) {
+        if showName {
+            let systemName = makeLabel(plugin.systemName, bold: true, size: NSFont.systemFontSize)
+            stackView.addArrangedSubview(systemName)
+        }
         
         // File formats
         let extensions = plugin.supportedTypeExtensions.sorted()
@@ -280,4 +322,9 @@ final class SystemInfoPopoverViewController: NSViewController {
         button.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
         return button
     }
+}
+
+/// An NSView subclass that flips the coordinate system so content starts at the top.
+private final class FlippedView: NSView {
+    override var isFlipped: Bool { true }
 }

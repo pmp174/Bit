@@ -15,18 +15,24 @@
 #define LO_HI(x,y) (u16)((y) << 8 | (x))
 #define HI_LO(x,y) (u16)((x) << 8 | (y))
 
+#ifndef unreachable
 #ifdef _MSC_VER
-
 #define unreachable    __assume(false)
-#define likely(x)      (x)
-#define unlikely(x)    (x)
-
 #else
-
 #define unreachable    __builtin_unreachable()
-#define likely(x)      __builtin_expect(!!(x), 1)
-#define unlikely(x)    __builtin_expect(!!(x), 0)
-
+#endif
 #endif
 
+#ifndef likely
+#ifdef _MSC_VER
+#define likely(x)      (x)
+#define unlikely(x)    (x)
+#else
+#define likely(x)      __builtin_expect(!!(x), 1)
+#define unlikely(x)    __builtin_expect(!!(x), 0)
+#endif
+#endif
+
+#ifndef fatalError
 #define fatalError     assert(false); unreachable
+#endif

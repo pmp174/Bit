@@ -48,6 +48,7 @@ final class GameViewController: NSViewController {
     private var scaledView: OEScaledGameLayerView!
     private(set) var gameView: OEGameLayerView!
     private var notificationView: OEGameLayerNotificationView!
+    private var fpsLabel: NSTextField?
     
     var controlsWindow: GameControlsBar!
     weak var document: OEGameDocument!
@@ -177,6 +178,10 @@ final class GameViewController: NSViewController {
     var supportsDisplayModeChange: Bool {
         document.supportsDisplayModeChange
     }
+
+    var supportsPeripheralDeviceChange: Bool {
+        document.supportsPeripheralDeviceChange
+    }
     
     var coreIdentifier: String {
         document.coreIdentifier
@@ -223,6 +228,36 @@ final class GameViewController: NSViewController {
     
     func setRemoteContextID(_ contextID: OEContextID) {
         gameView.remoteContextID = contextID
+    }
+    
+    func setFrameRate(_ fps: Double) {
+        let enabled = UserDefaults.standard.bool(forKey: "OEShowFPSOverlay")
+        guard enabled else {
+            fpsLabel?.removeFromSuperview()
+            fpsLabel = nil
+            return
+        }
+        
+        if fpsLabel == nil {
+            let label = NSTextField(labelWithString: "")
+            label.font = NSFont.monospacedSystemFont(ofSize: 12, weight: .medium)
+            label.textColor = .white
+            label.backgroundColor = NSColor.black.withAlphaComponent(0.5)
+            label.drawsBackground = true
+            label.isBezeled = false
+            label.isEditable = false
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.wantsLayer = true
+            label.layer?.cornerRadius = 4
+            view.addSubview(label)
+            NSLayoutConstraint.activate([
+                label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+                label.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            ])
+            fpsLabel = label
+        }
+        
+        fpsLabel?.stringValue = String(format: " %.1f FPS ", fps)
     }
     
     func setScreenSize(_ newScreenSize: OEIntSize, aspectSize newAspectSize: OEIntSize) {
@@ -278,6 +313,16 @@ extension GameViewController: OEGameViewDelegate {
     
     func gameView(_ gameView: OEGameLayerView, updateBackingScaleFactor newScaleFactor: CGFloat) {
         document.updateBackingScaleFactor(newScaleFactor)
+    }
+}
+
+// MARK: - Achievement Notifications
+
+extension GameViewController {
+
+    func showAchievementNotification(title: String, description: String, points: Int) {
+        let banner = AchievementNotificationView()
+        banner.show(in: view, title: title, description: description, points: points)
     }
 }
 

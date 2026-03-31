@@ -1048,4 +1048,25 @@ void NST_CALLBACK doEvent(void *userData, Nes::Api::Machine::Event event, Nes::R
     }
 }
 
+#pragma mark - Achievements Memory Access
+
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes
+{
+    // rcheevos NES memory map uses the CPU address space directly:
+    // 0x0000-0x07FF -> System RAM (2KB, mirrored to 0x1FFF)
+    // 0x6000-0x7FFF -> Battery-backed SRAM
+    // Full range 0x0000-0xFFFF is readable via Cpu::Peek
+    Nes::Core::Machine& machine = _emu;
+    NSUInteger bytesRead = 0;
+
+    while (bytesRead < numBytes) {
+        NSUInteger addr = address + bytesRead;
+        if (addr > 0xFFFF) break;
+        buffer[bytesRead] = (uint8_t)machine.cpu.Peek((unsigned int)addr);
+        bytesRead++;
+    }
+
+    return bytesRead;
+}
+
 @end

@@ -1039,4 +1039,38 @@ void S9xParsePortConfig(ConfigFile&, int)
 {
 }
 
+#pragma mark - Achievements Memory Access
+
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes
+{
+    // rcheevos SNES memory map:
+    // 0x000000-0x01FFFF: System RAM (128KB) → Memory.RAM
+    // 0x020000-0x09FFFF: Cartridge RAM (512KB) → Memory.SRAM
+    // 0x0A0000-0x0A07FF: SA-1 I-RAM (2KB) → Not commonly used
+
+    if (address < 0x020000) {
+        // System RAM
+        NSUInteger offset = address;
+        NSUInteger ramSize = 0x20000;
+        if (offset >= ramSize) return 0;
+        NSUInteger available = ramSize - offset;
+        NSUInteger toRead = MIN(numBytes, available);
+        memcpy(buffer, Memory.RAM + offset, toRead);
+        return toRead;
+    }
+    else if (address < 0x0A0000) {
+        // Cartridge SRAM
+        NSUInteger offset = address - 0x020000;
+        NSUInteger sramSize = Memory.SRAMSize ? (1 << (Memory.SRAMSize + 3)) : 0;
+        if (sramSize > 0x80000) sramSize = 0x80000;
+        if (offset >= sramSize || !Memory.SRAM) return 0;
+        NSUInteger available = sramSize - offset;
+        NSUInteger toRead = MIN(numBytes, available);
+        memcpy(buffer, Memory.SRAM + offset, toRead);
+        return toRead;
+    }
+
+    return 0;
+}
+
 @end

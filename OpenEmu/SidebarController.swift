@@ -752,6 +752,10 @@ final class SidebarTintOverlayView: NSView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        return nil
+    }
 }
 
 final class TintedRowView: NSTableRowView {

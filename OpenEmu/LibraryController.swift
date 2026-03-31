@@ -242,6 +242,23 @@ final class LibraryController: NSTabViewController, NSMenuItemValidation {
         }
     }
     
+    @objc func showSystemInfo(_ sender: Any?) {
+        guard let anchorView = toolbar.systemInfoToolbarItem.view else { return }
+
+        // Get the selected system from the games library tab if active
+        let selectedSystem: OEDBSystem?
+        if let gamesVC = tabView.selectedTabViewItem?.viewController as? LibraryGamesViewController {
+            selectedSystem = gamesVC.sidebarController.selectedSidebarItem as? OEDBSystem
+        } else {
+            selectedSystem = nil
+        }
+
+        let popover = NSPopover()
+        popover.behavior = .transient
+        popover.contentViewController = SystemInfoPopoverViewController(selectedSystem: selectedSystem)
+        popover.show(relativeTo: anchorView.bounds, of: anchorView, preferredEdge: .maxY)
+    }
+
     @IBAction func switchToView(_ sender: Any?) {
         switch toolbar.viewModeSelector.selectedSegment {
         case 0:

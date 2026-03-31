@@ -233,14 +233,26 @@ final class PrefCoresAndSystemFilesController: NSViewController {
     // MARK: - BIOS Import Notification
     
     private func biosFileWasImported(_ notification: Notification) {
-        guard let md5 = notification.userInfo?["MD5"] as? String else { return }
+        let md5 = notification.userInfo?["MD5"] as? String
+        let name = notification.userInfo?["Name"] as? String
+        
+        guard md5 != nil || name != nil else { return }
         
         // Find the BIOS file row that matches and refresh it
         for coreItem in items {
             for biosFileItem in coreItem.biosFileItems {
-                guard let fileMD5 = biosFileItem.fileInfo["MD5"] as? String,
-                      fileMD5.caseInsensitiveCompare(md5) == .orderedSame
-                else { continue }
+                let matched: Bool
+                if let md5 = md5,
+                   let fileMD5 = biosFileItem.fileInfo["MD5"] as? String {
+                    matched = fileMD5.caseInsensitiveCompare(md5) == .orderedSame
+                } else if let name = name,
+                          let fileName = biosFileItem.fileInfo["Name"] as? String {
+                    matched = fileName.caseInsensitiveCompare(name) == .orderedSame
+                } else {
+                    matched = false
+                }
+                
+                guard matched else { continue }
                 
                 // Refresh just this row
                 let row = outlineView.row(forItem: biosFileItem)
@@ -522,7 +534,6 @@ extension PrefCoresAndSystemFilesController: NSOutlineViewDelegate {
         let description = file["Description"] as? String ?? ""
         let name = file["Name"] as? String ?? ""
         let md5 = file["MD5"] as? String ?? ""
-        let size = file["Size"] as AnyObject
         let available = BIOSFile.isBIOSFileAvailable(withFileInfo: file)
         
         // Availability indicator — simple colored dot
@@ -544,11 +555,19 @@ extension PrefCoresAndSystemFilesController: NSOutlineViewDelegate {
         container.addSubview(descLabel)
         
         // File name + size (right-aligned)
-        let sizeString = ByteCountFormatter.string(fromByteCount: size.int64Value ?? 0, countStyle: .file)
+        let importByNameOnly = (file["ImportByNameOnly"] as? Bool) ?? false
+        let sizeString: String
+        if let sizeValue = file["Size"] as? Int64 {
+            sizeString = ByteCountFormatter.string(fromByteCount: sizeValue, countStyle: .file)
+        } else if let sizeValue = (file["Size"] as? NSNumber)?.int64Value {
+            sizeString = ByteCountFormatter.string(fromByteCount: sizeValue, countStyle: .file)
+        } else {
+            sizeString = importByNameOnly ? "ZIP archive" : "Unknown size"
+        }
         let fileLabel = NSTextField(labelWithString: "\(name) (\(sizeString))")
         fileLabel.font = .systemFont(ofSize: 11)
         fileLabel.textColor = .tertiaryLabelColor
-        fileLabel.toolTip = "MD5: \(md5)"
+        fileLabel.toolTip = md5.isEmpty ? name : "MD5: \(md5)"
         fileLabel.alignment = .right
         fileLabel.lineBreakMode = .byTruncatingMiddle
         fileLabel.translatesAutoresizingMaskIntoConstraints = false

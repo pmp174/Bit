@@ -78,6 +78,27 @@ public:
 		return cart_.rmem(p >> 12) ? cart_.rmem(p >> 12)[p] : nontrivial_read(p, cc);
 	}
 
+	// Non-timing-sensitive read for external memory scanning (e.g. RetroAchievements).
+	// Returns the byte at address p, or -1 if the page is unmapped.
+	int peek(unsigned p) const {
+		if (p >= 0xFF00) {
+			return ioamhram_[(p & 0xFF) + 0x100];
+		}
+		if (p >= 0xFE00) {
+			return ioamhram_[p - 0xFE00];
+		}
+		unsigned char const *page = cart_.rmem(p >> 12);
+		return page ? page[p] : -1;
+	}
+
+	// Direct access to WRAM data for banked reads (RetroAchievements extended address space).
+	unsigned char const * wramData() const { return cart_.wramdata(0); }
+	unsigned char const * wramDataEnd() const { return cart_.wramdataend(); }
+
+	// Direct access to cart SRAM data for banked reads (RetroAchievements extended address space).
+	unsigned char const * sramData() const { return cart_.rambankdata(); }
+	unsigned char const * sramDataEnd() const { return cart_.rambankdataend(); }
+
 	void write(unsigned p, unsigned data, unsigned long cc) {
 		if (cart_.wmem(p >> 12)) {
 			cart_.wmem(p >> 12)[p] = data;

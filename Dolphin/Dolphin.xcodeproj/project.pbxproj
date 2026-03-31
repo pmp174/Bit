@@ -6,7 +6,25 @@
 	objectVersion = 56;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		6376EB002F71966900F07E39 /* Build & Install Dolphin */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 6376EB032F71966900F07E39 /* Build configuration list for PBXAggregateTarget "Build & Install Dolphin" */;
+			buildPhases = (
+				6376EB062F7196B900F07E39 /* Install Plugin */,
+			);
+			dependencies = (
+				6376EB052F7196AC00F07E39 /* PBXTargetDependency */,
+			);
+			name = "Build & Install Dolphin";
+			packageProductDependencies = (
+			);
+			productName = "Build & Install Dolphin";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
+		6376EB0A2F719C4400F07E39 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6376EB092F719C4400F07E39 /* IOSurface.framework */; };
 		A10000000000000000000001 /* DolphinGameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* DolphinGameCore.mm */; };
 		A10000000000000000000002 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000021 /* OpenEmuBase.framework */; };
 		A10000000000000000000003 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000031 /* Metal.framework */; };
@@ -26,7 +44,18 @@
 		A10000000000000000000010B /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A100000000000000000001B1 /* CoreServices.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6376EB042F7196AC00F07E39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000400 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000300;
+			remoteInfo = Dolphin;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		6376EB092F719C4400F07E39 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		A10000000000000000000010 /* DolphinGameCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DolphinGameCore.h; sourceTree = "<group>"; };
 		A10000000000000000000011 /* DolphinGameCore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DolphinGameCore.mm; sourceTree = "<group>"; };
 		A10000000000000000000012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -55,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6376EB0A2F719C4400F07E39 /* IOSurface.framework in Frameworks */,
 				A10000000000000000000002 /* OpenEmuBase.framework in Frameworks */,
 				A10000000000000000000003 /* Metal.framework in Frameworks */,
 				A10000000000000000000004 /* AppKit.framework in Frameworks */,
@@ -100,6 +130,7 @@
 		A10000000000000000000220 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6376EB092F719C4400F07E39 /* IOSurface.framework */,
 				A10000000000000000000021 /* OpenEmuBase.framework */,
 				A10000000000000000000031 /* Metal.framework */,
 				A10000000000000000000041 /* AppKit.framework */,
@@ -137,7 +168,6 @@
 			buildPhases = (
 				A10000000000000000000310 /* Sources */,
 				A10000000000000000000100 /* Frameworks */,
-				A10000000000000000000320 /* Install Plugin */,
 			);
 			buildRules = (
 			);
@@ -156,6 +186,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					6376EB002F71966900F07E39 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+				};
 			};
 			buildConfigurationList = A10000000000000000000600 /* Build configuration list for PBXProject "Dolphin" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -171,24 +206,29 @@
 			projectRoot = "";
 			targets = (
 				A10000000000000000000300 /* Dolphin */,
+				6376EB002F71966900F07E39 /* Build & Install Dolphin */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A10000000000000000000320 /* Install Plugin */ = {
+		6376EB062F7196B900F07E39 /* Install Plugin */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
 			);
 			name = "Install Plugin";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/Bit/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/$PROJECT_NAME.oecoreplugin\"\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\" \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/\"\n";
+			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/Bit/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/$PROJECT_NAME.oecoreplugin\"\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/Bit/Cores/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -203,7 +243,33 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6376EB052F7196AC00F07E39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000300 /* Dolphin */;
+			targetProxy = 6376EB042F7196AC00F07E39 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		6376EB012F71966900F07E39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VD338C6859;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6376EB022F71966900F07E39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VD338C6859;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		A10000000000000000000501 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -247,11 +313,9 @@
 					"-lz",
 					"-lsfml-network",
 					"-lsfml-system",
-					"-lhidapi",
 					"-lminiupnpc",
 					"-ldiscord-rpc",
 					"-lfmt",
-					"-lMoltenVK",
 					"-lFatFs",
 					"-lFreeSurround",
 					"-limgui",
@@ -278,7 +342,9 @@
 					"-lswscale",
 					"-lavutil",
 					"-lswresample",
+					"-lhidapi",
 					"-lc++",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Dolphin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -330,11 +396,9 @@
 					"-lz",
 					"-lsfml-network",
 					"-lsfml-system",
-					"-lhidapi",
 					"-lminiupnpc",
 					"-ldiscord-rpc",
 					"-lfmt",
-					"-lMoltenVK",
 					"-lFatFs",
 					"-lFreeSurround",
 					"-limgui",
@@ -361,7 +425,9 @@
 					"-lswscale",
 					"-lavutil",
 					"-lswresample",
+					"-lhidapi",
 					"-lc++",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Dolphin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -377,7 +443,7 @@
 				ARCHS = arm64;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -434,7 +500,7 @@
 					"$(SRCROOT)/build-arm64/Source/Core",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/GameCube",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/Wii",
-					"/opt/homebrew/include",
+					/opt/homebrew/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -474,7 +540,7 @@
 					"$(SRCROOT)/build-arm64/Externals/rcheevos",
 					"$(SRCROOT)/build-arm64/Externals/tinygltf",
 					"$(SRCROOT)/build-arm64/Externals/cpp-optparse",
-					"/opt/homebrew/lib",
+					/opt/homebrew/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -491,7 +557,7 @@
 				ARCHS = arm64;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -547,7 +613,7 @@
 					"$(SRCROOT)/build-arm64/Source/Core",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/GameCube",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/Wii",
-					"/opt/homebrew/include",
+					/opt/homebrew/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -587,7 +653,7 @@
 					"$(SRCROOT)/build-arm64/Externals/rcheevos",
 					"$(SRCROOT)/build-arm64/Externals/tinygltf",
 					"$(SRCROOT)/build-arm64/Externals/cpp-optparse",
-					"/opt/homebrew/lib",
+					/opt/homebrew/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_FAST_MATH = YES;
@@ -598,6 +664,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6376EB032F71966900F07E39 /* Build configuration list for PBXAggregateTarget "Build & Install Dolphin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6376EB012F71966900F07E39 /* Debug */,
+				6376EB022F71966900F07E39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A10000000000000000000500 /* Build configuration list for PBXNativeTarget "Dolphin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -617,7 +692,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = A10000000000000000000400 /* Project object */;
 }

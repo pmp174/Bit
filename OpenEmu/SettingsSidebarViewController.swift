@@ -43,7 +43,7 @@ final class SettingsSidebarViewController: NSViewController {
     private(set) var selectedIndex: Int?
     
     private var tableView: NSTableView!
-    
+    private var scrollView: NSScrollView!
     // Each row is either a pane or a separator
     private enum Row {
         case pane(PreferencePane)
@@ -60,6 +60,8 @@ final class SettingsSidebarViewController: NSViewController {
         case "Gameplay":              return "gamecontroller"
         case "Controls":              return "keyboard"
         case "Cores & System Files":  return "cpu"
+        case "Accounts":              return "person.crop.circle"
+        case "Developer":             return "wrench.and.screwdriver"
         case "Secrets":               return "ladybug"
         default:                      return "gearshape"
         }
@@ -68,26 +70,9 @@ final class SettingsSidebarViewController: NSViewController {
     // MARK: - Lifecycle
     
     override func loadView() {
-        let visualEffect = NSVisualEffectView()
-        visualEffect.material = .sidebar
-        visualEffect.blendingMode = .behindWindow
-        visualEffect.state = .active
-        view = visualEffect
-    }
-    
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        // NSSplitViewItem(sidebarWithViewController:) wraps our view in a
-        // system-provided NSVisualEffectView with followsWindowActiveState.
-        // Walk up the hierarchy and force all VE views to .active so the
-        // sidebar stays opaque when the window loses focus.
-        var ancestor = view.superview
-        while let v = ancestor {
-            if let ve = v as? NSVisualEffectView {
-                ve.state = .active
-            }
-            ancestor = v.superview
-        }
+        let container = NSView()
+        container.wantsLayer = true
+        view = container
     }
     
     override func viewDidLoad() {
@@ -113,7 +98,7 @@ final class SettingsSidebarViewController: NSViewController {
         column.isEditable = false
         tableView.addTableColumn(column)
         
-        let scrollView = NSScrollView()
+        scrollView = NSScrollView()
         scrollView.documentView = tableView
         scrollView.hasVerticalScroller = true
         scrollView.hasHorizontalScroller = false

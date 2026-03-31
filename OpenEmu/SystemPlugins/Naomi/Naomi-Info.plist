@@ -23,6 +23,7 @@
 	<key>OEControlListKey</key>
 	<array>
 		<array>
+			<string>D-Pad</string>
 			<dict>
 				<key>OEControlListKeyLabelKey</key>
 				<string>Up</string>
@@ -49,11 +50,78 @@
 			</dict>
 		</array>
 		<array>
+			<string>Analog Stick</string>
 			<dict>
 				<key>OEControlListKeyLabelKey</key>
-				<string>Configure</string>
+				<string>Up</string>
 				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeUIConfigure</string>
+				<string>OEArcadeAnalogUp</string>
+			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>Down</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeAnalogDown</string>
+			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>Left</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeAnalogLeft</string>
+			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>Right</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeAnalogRight</string>
+			</dict>
+		</array>
+		<array>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>A</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeButton1</string>
+			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>B</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeButton2</string>
+			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>C</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeButton3</string>
+			</dict>
+		</array>
+		<array>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>X</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeButton4</string>
+			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>Y</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeButton5</string>
+			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>Z</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeButton6</string>
+			</dict>
+		</array>
+		<array>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>Start</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEArcadeButtonP1Start</string>
 			</dict>
 			<dict>
 				<key>OEControlListKeyLabelKey</key>
@@ -63,60 +131,27 @@
 			</dict>
 			<dict>
 				<key>OEControlListKeyLabelKey</key>
-				<string>Player Start</string>
-				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeButtonP1Start</string>
-			</dict>
-			<dict>
-				<key>OEControlListKeyLabelKey</key>
 				<string>Service</string>
 				<key>OEControlListKeyNameKey</key>
 				<string>OEArcadeButtonService</string>
 			</dict>
-		</array>
-		<array>
 			<dict>
 				<key>OEControlListKeyLabelKey</key>
-				<string>Button 1</string>
+				<string>Configure</string>
 				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeButton1</string>
-			</dict>
-			<dict>
-				<key>OEControlListKeyLabelKey</key>
-				<string>Button 2</string>
-				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeButton2</string>
-			</dict>
-			<dict>
-				<key>OEControlListKeyLabelKey</key>
-				<string>Button 3</string>
-				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeButton3</string>
-			</dict>
-		</array>
-		<array>
-			<dict>
-				<key>OEControlListKeyLabelKey</key>
-				<string>Button 4</string>
-				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeButton4</string>
-			</dict>
-			<dict>
-				<key>OEControlListKeyLabelKey</key>
-				<string>Button 5</string>
-				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeButton5</string>
-			</dict>
-			<dict>
-				<key>OEControlListKeyLabelKey</key>
-				<string>Button 6</string>
-				<key>OEControlListKeyNameKey</key>
-				<string>OEArcadeButton6</string>
+				<string>OEArcadeUIConfigure</string>
 			</dict>
 		</array>
 	</array>
 	<key>OEControlTypesKey</key>
 	<dict>
+		<key>OEAnalogControlsKey</key>
+		<array>
+			<string>OEArcadeAnalogUp</string>
+			<string>OEArcadeAnalogDown</string>
+			<string>OEArcadeAnalogLeft</string>
+			<string>OEArcadeAnalogRight</string>
+		</array>
 		<key>OEAxisControlsKey</key>
 		<array>
 			<array>
@@ -126,6 +161,14 @@
 			<array>
 				<string>OEArcadeButtonLeft</string>
 				<string>OEArcadeButtonRight</string>
+			</array>
+			<array>
+				<string>OEArcadeAnalogUp</string>
+				<string>OEArcadeAnalogDown</string>
+			</array>
+			<array>
+				<string>OEArcadeAnalogLeft</string>
+				<string>OEArcadeAnalogRight</string>
 			</array>
 		</array>
 		<key>OEHatSwitchControlsKey</key>
@@ -163,11 +206,15 @@
 		<string>OEArcadeButtonInsertCoin</string>
 		<string>OEArcadeButtonService</string>
 		<string>OEArcadeUIConfigure</string>
+		<string>OEArcadeAnalogUp</string>
+		<string>OEArcadeAnalogDown</string>
+		<string>OEArcadeAnalogLeft</string>
+		<string>OEArcadeAnalogRight</string>
 	</array>
 	<key>OENumberOfPlayersKey</key>
 	<integer>4</integer>
 	<key>OEResponderClassKey</key>
-	<string>OEArcadeSystemResponder</string>
+	<string>OENaomiSystemResponder</string>
 	<key>OESystemIcon</key>
 	<string>naomi_library</string>
 	<key>OESystemIdentifier</key>

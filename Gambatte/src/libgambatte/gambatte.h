@@ -210,6 +210,20 @@ public:
 	  */
 	void setGameShark(std::string const &codes);
 
+	/** Reads a single byte from the CPU address space (0x0000-0xFFFF).
+	  * Intended for external memory scanning (e.g. RetroAchievements).
+	  * Returns -1 if the address is unmapped.
+	  */
+	int cpuRead(unsigned short addr) const;
+
+	/** Raw WRAM data pointer and size for banked access (RetroAchievements). */
+	unsigned char const * wramData() const;
+	std::size_t wramSize() const;
+
+	/** Raw cart SRAM data pointer and size for banked access (RetroAchievements). */
+	unsigned char const * sramData() const;
+	std::size_t sramSize() const;
+
 private:
 	LoadRes load(File &file, std::string const &filename, unsigned flags);
 

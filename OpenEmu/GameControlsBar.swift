@@ -391,6 +391,15 @@ final class GameControlsBar: NSWindow {
             item.submenu = displayModesMenu
             menu.addItem(item)
         }
+
+        // peripheral devices (controller ports)
+        if gameViewController.supportsPeripheralDeviceChange,
+           !gameViewController.document.peripheralDevices.isEmpty {
+            item = NSMenuItem()
+            item.title = NSLocalizedString("Controller Ports", comment: "")
+            item.submenu = peripheralDevicesMenu
+            menu.addItem(item)
+        }
         
         // video shader
         item = NSMenuItem()
@@ -556,6 +565,83 @@ final class GameControlsBar: NSWindow {
         return menu
     }
     
+    var peripheralDevicesMenu: NSMenu {
+        let menu = NSMenu()
+        menu.autoenablesItems = false
+
+        for portDict in gameViewController.document.peripheralDevices {
+            let portName = portDict["OEPeripheralPortNameKey"] as? String ?? ""
+            let portId = portDict["OEPeripheralPortIdentifierKey"] as? String ?? ""
+            let devices = portDict["OEPeripheralPortDevicesKey"] as? [[String: Any]] ?? []
+
+            let portSubmenu = NSMenu()
+            portSubmenu.autoenablesItems = false
+
+            for deviceDict in devices {
+                let deviceName = deviceDict["OEPeripheralDeviceNameKey"] as? String ?? ""
+                let deviceId = deviceDict["OEPeripheralDeviceIdentifierKey"] as? String ?? ""
+                let selected = deviceDict["OEPeripheralDeviceSelectedKey"] as? Bool ?? false
+
+                let deviceItem = NSMenuItem(
+                    title: deviceName,
+                    action: #selector(OEGameDocument.changePeripheralDevice(_:)),
+                    keyEquivalent: ""
+                )
+                deviceItem.representedObject = ["portIdentifier": portId, "deviceIdentifier": deviceId]
+                deviceItem.state = selected ? .on : .off
+                portSubmenu.addItem(deviceItem)
+            }
+
+            // Expansion sub-ports
+            if let expansions = portDict["OEPeripheralPortExpansionsKey"] as? [[String: Any]], !expansions.isEmpty {
+                portSubmenu.addItem(.separator())
+                for expDict in expansions {
+                    let expName = expDict["OEPeripheralPortNameKey"] as? String ?? ""
+                    let expPortId = expDict["OEPeripheralPortIdentifierKey"] as? String ?? ""
+                    let expDevices = expDict["OEPeripheralPortDevicesKey"] as? [[String: Any]] ?? []
+
+                    let expSubmenu = NSMenu()
+                    expSubmenu.autoenablesItems = false
+
+                    for expDeviceDict in expDevices {
+                        let expDeviceName = expDeviceDict["OEPeripheralDeviceNameKey"] as? String ?? ""
+                        let expDeviceId = expDeviceDict["OEPeripheralDeviceIdentifierKey"] as? String ?? ""
+                        let expSelected = expDeviceDict["OEPeripheralDeviceSelectedKey"] as? Bool ?? false
+
+                        let expDeviceItem = NSMenuItem(
+                            title: expDeviceName,
+                            action: #selector(OEGameDocument.changePeripheralDevice(_:)),
+                            keyEquivalent: ""
+                        )
+                        expDeviceItem.representedObject = ["portIdentifier": expPortId, "deviceIdentifier": expDeviceId]
+                        expDeviceItem.state = expSelected ? .on : .off
+                        expSubmenu.addItem(expDeviceItem)
+                    }
+
+                    let expItem = NSMenuItem()
+                    expItem.title = expName
+                    expItem.submenu = expSubmenu
+                    portSubmenu.addItem(expItem)
+                }
+            }
+
+            let portItem = NSMenuItem()
+            portItem.title = portName
+            portItem.submenu = portSubmenu
+            menu.addItem(portItem)
+        }
+
+        menu.addItem(.separator())
+        let resetItem = NSMenuItem(
+            title: NSLocalizedString("Reset to Default", comment: ""),
+            action: #selector(OEGameDocument.resetPeripheralDevices(_:)),
+            keyEquivalent: ""
+        )
+        menu.addItem(resetItem)
+
+        return menu
+    }
+
     var shadersMenu: NSMenu {
         let menu = NSMenu()
         

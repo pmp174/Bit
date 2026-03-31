@@ -489,22 +489,22 @@ final class ImportOperation: Operation, NSCopying {
         let context = importer.context!
         let enabledSystems = OEDBSystem.enabledSystems(in: context)
         var enabledExtensions: Set<String> = []
-        let arcadeSystem = OEDBSystem.system(for: "openemu.system.arcade", in: context)
-        let isArcadeEnabled = arcadeSystem?.isEnabled ?? false
-        
+        var hasArcadeSystemEnabled = false
+
         // Get extensions from all enabled systems.
         for system in enabledSystems {
-            // Ignore Arcade file extensions (zip, 7z, chd).
-            if system.systemIdentifier == "openemu.system.arcade" {
+            // Ignore arcade-type system file extensions (zip, 7z, chd).
+            if system.plugin?.systemType == "OESystemTypeArcade" {
+                hasArcadeSystemEnabled = true
                 continue
             }
             if let extensions = system.plugin?.supportedTypeExtensions {
                 enabledExtensions.formUnion(extensions)
             }
         }
-        
-        // When Arcade is enabled, remove conflicting extensions found in Arcade ROMs.
-        if isArcadeEnabled {
+
+        // When any arcade-type system is enabled, remove conflicting extensions found in Arcade ROMs.
+        if hasArcadeSystemEnabled {
             enabledExtensions.subtract(["bin", "rom", "a26", "a52", "cas", "col", "com", "int", "p00", "prg"])
         }
         
@@ -532,24 +532,33 @@ final class ImportOperation: Operation, NSCopying {
         }
         DLog("")
         let ext = url.pathExtension.lowercased()
-        
+
+        // Check if the file is a BIOS ZIP archive (e.g. naomi.zip, naomi2.zip, awbios.zip)
+        // before attempting to extract it, since these are multi-entry archives that
+        // should be copied whole to the BIOS folder.
+        if BIOSFile.checkIfBIOSZIPAndImport(at: url) {
+            DLog("File is a BIOS ZIP archive at \(url)")
+            exit(with: .none, error: nil)
+            return
+        }
+
         // nds and some isos might be recognized as compressed archives by XADArchive
         // but we don't ever want to extract anything from those files
         // Exclusions added here also need added to GameInfoHelper and OpenEmuHelperApp
         if ext == "nds" || ext == "iso" {
             return
         }
-        
+
         guard let archive = XADArchive.oe_archiveForFile(at: url) else { return }
         let formatName = archive.formatName()
-        
+
         // XADArchive file detection is not exactly the best
         // ignore some formats
         if formatName == "MacBinary" ||
            formatName == "LZMA_Alone" {
             return
         }
-        
+
         // disable multi-rom archives
         if archive.numberOfEntries() > 1 {
             // Check if archive contains known extensions, otherwise is assumed Arcade.

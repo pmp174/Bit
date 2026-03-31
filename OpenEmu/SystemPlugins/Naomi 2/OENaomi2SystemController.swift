@@ -23,6 +23,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OpenEmuSystem
 
 @objc(OENaomi2SystemController)
 class OENaomi2SystemController: OESystemController {

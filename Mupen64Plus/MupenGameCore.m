@@ -732,4 +732,28 @@ static void MupenSetAudioSpeed(int percent)
     free(gsCode);
 }
 
+#pragma mark - Achievements Memory Access
+
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes
+{
+    // rcheevos N64 memory map:
+    // 0x000000-0x7FFFFF -> RDRAM (8MB, real addr 0x80000000)
+    uint8_t *rdram = (uint8_t *)mem_base_u32(g_mem_base, MM_RDRAM_DRAM);
+    if (!rdram)
+        return 0;
+
+    size_t rdramSize = g_dev.rdram.dram_size;
+    NSUInteger bytesRead = 0;
+
+    while (bytesRead < numBytes) {
+        NSUInteger addr = address + bytesRead;
+        if (addr >= rdramSize)
+            break;
+        buffer[bytesRead] = rdram[addr];
+        bytesRead++;
+    }
+
+    return bytesRead;
+}
+
 @end

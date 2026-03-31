@@ -61,7 +61,6 @@ final class SettingsWindowController: NSWindowController {
     private var splitViewController: NSSplitViewController!
     private var sidebarController: SettingsSidebarViewController!
     private var contentContainerController: SettingsContentContainerViewController!
-    
     // MARK: - Panes
     
     private var panes: [PreferencePane] = []
@@ -82,7 +81,7 @@ final class SettingsWindowController: NSWindowController {
         window.minSize = NSSize(width: 650, height: 450)
         
         // Transparent titlebar lets the sidebar material extend behind
-        // the traffic lights for a seamless Xcode-style appearance
+        // the traffic lights for a seamless liquid glass appearance
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
         
@@ -122,6 +121,8 @@ final class SettingsWindowController: NSWindowController {
             PrefGameplayController(),
             PrefControlsController(),
             PrefCoresAndSystemFilesController(),
+            PrefAccountsController(),
+            PrefDeveloperController(),
         ]
         
         // Check if debug pane should be visible
@@ -475,3 +476,5 @@ final class SettingsContentContainerViewController: NSViewController {
 private class FlippedView: NSView {
     override var isFlipped: Bool { true }
 }
+
+

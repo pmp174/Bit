@@ -1800,4 +1800,35 @@ void ROMCheatUpdate(void)
     }
 }
 
+#pragma mark - Achievements Memory Access
+
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes
+{
+    // rcheevos Mega Drive memory map:
+    // 0x000000-0x00FFFF -> 68K Work RAM (64KB, real addr 0xFF0000)
+    // 0x010000-0x01FFFF -> Cart SRAM (64KB)
+    NSUInteger bytesRead = 0;
+
+    while (bytesRead < numBytes) {
+        NSUInteger addr = address + bytesRead;
+
+        if (addr < 0x10000) {
+            // 68K Work RAM
+            buffer[bytesRead] = work_ram[addr];
+        }
+        else if (addr < 0x20000) {
+            // Cart SRAM
+            NSUInteger offset = addr - 0x10000;
+            buffer[bytesRead] = sram.sram[offset];
+        }
+        else {
+            break;
+        }
+
+        bytesRead++;
+    }
+
+    return bytesRead;
+}
+
 @end

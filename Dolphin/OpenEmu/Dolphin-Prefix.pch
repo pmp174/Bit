@@ -1,3 +1,11 @@
+// Dolphin's Source/Core/Common/assert.h shadows the system <assert.h>.
+// Define the standard C assert macro so OpenEmuBase's TPCircularBuffer.h compiles.
+#ifdef NDEBUG
+#define assert(expression) ((void)0)
+#else
+#define assert(expression) ((void)((expression) || (__assert_rtn(__func__, __FILE__, __LINE__, #expression), 0)))
+#endif
+
 #ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
 #endif

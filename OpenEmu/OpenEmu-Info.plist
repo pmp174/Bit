@@ -149,6 +149,8 @@
 	<string>Copyright © 2009–2023 OpenEmu Team. All rights reserved.</string>
 	<key>NSInputMonitoringUsageDescription</key>
 	<string>Bit requires input monitoring to capture keyboard and controller events while games are running.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Bit needs microphone access for emulated microphone peripherals (e.g. Dreamcast Seaman).</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSPrefersDisplaySafeAreaCompatibilityMode</key>

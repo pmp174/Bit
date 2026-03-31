@@ -62,20 +62,25 @@ func regionalizedSystemName(plugin: Bundle, languageCode lcode: String) -> Strin
 {
     for (region, languages) in regionsToLanguages {
         if languages.contains(lcode) {
-            if let regionalNames = plugin.object(forInfoDictionaryKey: "OERegionalizedSystemNames") as! [String: String]? {
+            if let regionalNames = plugin.object(forInfoDictionaryKey: "OERegionalizedSystemNames") as? [String: String] {
                 return regionalNames[region]
             } else {
                 return nil
             }
         }
     }
-    fatalError("cannot get region corresponding to language \(lcode); update regionsToLanguages in OESystemPluginPostInstall/main.swift")
+    print("WARNING: cannot get region corresponding to language \(lcode); update regionsToLanguages in OESystemPluginPostInstall/main.swift")
+    return nil
 }
 
 
 func toGameFileName(systemName name: String, appBundle app: Bundle, localization loc: String) -> String
 {
-    let locBundle = Bundle(url: app.url(forResource: loc, withExtension: "lproj")!)!
+    guard let lprojURL = app.url(forResource: loc, withExtension: "lproj"),
+          let locBundle = Bundle(url: lprojURL) else {
+        print("WARNING: could not find \(loc).lproj in app bundle")
+        return "\(name) Game"
+    }
     let format = locBundle.localizedString(forKey: "%@ Game", value: "%@ Game", table: "InfoPlist")
     return String(format: format, name)
 }
@@ -153,7 +158,10 @@ func computeCommonExtensions(appBundle: Bundle, systemPlugins: [Bundle]) -> Set<
     var multiSystemExts = Set<String>()
     
     for plugin in systemPlugins {
-        let allExts = plugin.object(forInfoDictionaryKey: "OEFileSuffixes") as! [String]
+        guard let allExts = plugin.object(forInfoDictionaryKey: "OEFileSuffixes") as? [String] else {
+            print("WARNING: plugin \(plugin.bundlePath) has no OEFileSuffixes")
+            continue
+        }
         
         let sanifiedExts = allExts.filter { (ext: String) -> Bool in !extensionBlacklist.contains(ext) }
         if sanifiedExts.count == 0 {
@@ -214,7 +222,10 @@ func updateInfoPlist(appBundle: Bundle, systemPlugins: [Bundle])
     let multiSystemExts = computeCommonExtensions(appBundle: appBundle, systemPlugins: systemPlugins)
     
     for plugin in systemPlugins {
-        let allExts = plugin.object(forInfoDictionaryKey: "OEFileSuffixes") as! [String]
+        guard let allExts = plugin.object(forInfoDictionaryKey: "OEFileSuffixes") as? [String] else {
+            print("WARNING: plugin \(plugin.bundlePath) has no OEFileSuffixes, skipping")
+            continue
+        }
         let sanifiedExts = allExts.filter { (ext: String) -> Bool in
             !extensionBlacklist.contains(ext) && !multiSystemExts.contains(ext)
         }
@@ -222,7 +233,10 @@ func updateInfoPlist(appBundle: Bundle, systemPlugins: [Bundle])
             continue
         }
         
-        let baseSystemName = plugin.object(forInfoDictionaryKey: "OESystemName") as! String
+        guard let baseSystemName = plugin.object(forInfoDictionaryKey: "OESystemName") as? String else {
+            print("WARNING: plugin \(plugin.bundlePath) has no OESystemName, skipping")
+            continue
+        }
         let typeName = toGameFileName(systemName: baseSystemName, appBundle: appBundle, localization: "en")
         
         newTypes += systemDocuments(typeName: typeName, extensions: sanifiedExts)
@@ -247,9 +261,9 @@ func updateInfoPlist(appBundle: Bundle, systemPlugins: [Bundle])
     do {
         var infoPlist = try PropertyListSerialization.propertyList(from: infoPlistXml, options: .mutableContainers, format: nil) as! [String : Any]
         
-        let existingTypes = infoPlist["CFBundleDocumentTypes"] as! [[String : Any]]
-        let generatedTypeNames = Set<String>(newTypes.map({ $0["CFBundleTypeName"] as! String }))
-        let existingTypesToKeep = existingTypes.filter({ !generatedTypeNames.contains($0["CFBundleTypeName"] as! String) })
+        let existingTypes = (infoPlist["CFBundleDocumentTypes"] as? [[String : Any]]) ?? []
+        let generatedTypeNames = Set<String>(newTypes.compactMap({ $0["CFBundleTypeName"] as? String }))
+        let existingTypesToKeep = existingTypes.filter({ !generatedTypeNames.contains(($0["CFBundleTypeName"] as? String) ?? "") })
         infoPlist["CFBundleDocumentTypes"] = existingTypesToKeep + newTypes
         
         let updatedInfoPlist = try PropertyListSerialization.data(fromPropertyList: infoPlist, format: .xml, options: 0)

@@ -246,8 +246,6 @@ NSString *const OEGlobalButtonRapidFireReset    = @"OEGlobalButtonRapidFireReset
 
 - (nullable OEDevicePlayerBindings *)OE_parsedDevicePlayerBindingsForRepresentation:(NSDictionary<NSString *, id> *)representation withControllerDescription:(OEControllerDescription *)controllerDescription
 {
-    __block BOOL corrupted = NO;
-    
     NSMutableDictionary<OEBindingDescription *, OEControlValueDescription *> *rawBindings = [NSMutableDictionary dictionaryWithCapacity:[_systemController.allKeyBindingsDescriptions count]];
     [_systemController.allKeyBindingsDescriptions enumerateKeysAndObjectsUsingBlock:^(NSString *keyName, OEKeyBindingDescription *keyDesc, BOOL *stop) {
         id controlIdentifier = representation[keyName];
@@ -260,9 +258,7 @@ NSString *const OEGlobalButtonRapidFireReset    = @"OEGlobalButtonRapidFireReset
         OEHIDEvent *event = [controlValue event];
 
         if (controlValue == nil) {
-            NSLog(@"Unknown control value for identifier: '%@' associated with key name: '%@'", controlIdentifier, keyName);
-            corrupted = YES;
-            *stop = YES;
+            NSLog(@"Unknown control value for identifier: '%@' associated with key name: '%@' in system '%@', skipping binding", controlIdentifier, keyName, [self->_systemController systemName]);
             return;
         }
 
@@ -284,9 +280,6 @@ NSString *const OEGlobalButtonRapidFireReset    = @"OEGlobalButtonRapidFireReset
         
         rawBindings[[self OE_keyIdentifierForKeyDescription:keyDesc event:event]] = controlValue;
     }];
-    
-    if (corrupted)
-        return nil;
 
     OEDevicePlayerBindings *controller = [[OEDevicePlayerBindings alloc] OE_initWithSystemBindings:self playerNumber:0 deviceHandler:nil];
     [controller OE_setBindingEvents:rawBindings];

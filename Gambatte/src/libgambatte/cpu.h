@@ -77,6 +77,12 @@ public:
 	void setGameGenie(std::string const &codes) { mem_.setGameGenie(codes); }
 	void setGameShark(std::string const &codes) { mem_.setGameShark(codes); }
 
+	int peek(unsigned p) const { return mem_.peek(p); }
+	unsigned char const * wramData() const { return mem_.wramData(); }
+	unsigned char const * wramDataEnd() const { return mem_.wramDataEnd(); }
+	unsigned char const * sramData() const { return mem_.sramData(); }
+	unsigned char const * sramDataEnd() const { return mem_.sramDataEnd(); }
+
 private:
 	Memory mem_;
 	unsigned long cycleCounter_;

@@ -173,7 +173,7 @@ final class LibraryGamesViewController: NSSplitViewController {
     }
     
     // MARK: - Actions
-    
+
     @IBAction func newCollection(_ sender: AnyObject?) {
         sidebarController.newCollection(sender)
     }

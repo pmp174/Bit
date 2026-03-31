@@ -823,6 +823,17 @@ static Class GameCoreClass = Nil;
 {
 }
 
+#pragma mark - Peripheral Devices
+
+- (NSArray<NSDictionary<NSString *, id> *> *)peripheralDevices
+{
+    return nil;
+}
+
+- (void)changePeripheralForPort:(NSString *)portIdentifier toDevice:(NSString *)deviceIdentifier
+{
+}
+
 @end
 
 #pragma mark - NSURL

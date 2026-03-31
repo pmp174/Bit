@@ -67,6 +67,19 @@ namespace MDFN_IEN_VB
     extern void VIP_SetAnaglyphColors(uint32 lcolor, uint32 rcolor);
 }
 
+// RetroAchievements memory access forward declarations
+// PSX MainRAM is a MultiAccessSizeMem<2048*1024, false> whose first member is uint8 data8[2097152].
+// We declare it as an extern byte array to avoid pulling in masmem.h's template.
+namespace MDFN_IEN_PSX
+{
+    MDFN_HIDE extern uint8 MainRAM;
+}
+
+namespace MDFN_IEN_PCE
+{
+    uint8 PCE_PeekMainRAM(uint32 A);
+}
+
 @interface MednafenGameCore () <OELynxSystemResponderClient, OENGPSystemResponderClient, OEPCESystemResponderClient, OEPCECDSystemResponderClient, OEPCFXSystemResponderClient, OEPSXSystemResponderClient, OESaturnSystemResponderClient, OEVBSystemResponderClient, OEWSSystemResponderClient>
 {
     uint32_t *_inputBuffer[13];
@@ -3979,6 +3992,46 @@ const int WSMap[]   = { 0, 2, 3, 1, 4, 6, 7, 5, 9, 10, 8, 11 };
 
     _mouseScaledX = aPoint.x * (CGFloat)scaledRatio.width;
     _mouseScaledY = aPoint.y * (CGFloat)scaledRatio.height;
+}
+
+#pragma mark - Achievements Memory Access
+
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes
+{
+    NSUInteger bytesRead = 0;
+
+    if ([_mednafenCoreModule isEqualToString:@"psx"])
+    {
+        // rcheevos PSX memory map:
+        // 0x000000-0x1FFFFF -> Main RAM (2MB)
+        const size_t mainRAMSize = 2048 * 1024;
+        while (bytesRead < numBytes) {
+            NSUInteger addr = address + bytesRead;
+            if (addr < mainRAMSize) {
+                buffer[bytesRead] = (&MDFN_IEN_PSX::MainRAM)[addr];
+            } else {
+                break;
+            }
+            bytesRead++;
+        }
+    }
+    else if ([_mednafenCoreModule isEqualToString:@"pce"])
+    {
+        // rcheevos PCE memory map:
+        // 0x000000-0x001FFF -> Work RAM (8KB)
+        const size_t workRAMSize = 8192;
+        while (bytesRead < numBytes) {
+            NSUInteger addr = address + bytesRead;
+            if (addr < workRAMSize) {
+                buffer[bytesRead] = MDFN_IEN_PCE::PCE_PeekMainRAM((uint32)addr);
+            } else {
+                break;
+            }
+            bytesRead++;
+        }
+    }
+
+    return bytesRead;
 }
 
 @end

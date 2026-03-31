@@ -37,103 +37,116 @@
 using namespace vc64;
 
 // Video constants from VirtualC64
+// Full emulator texture dimensions
 static const int VC64_TEX_WIDTH  = 520;
 static const int VC64_TEX_HEIGHT = 312;
+
+// Visible area within the full texture (crop coordinates)
+// PAL: Columns 104-487 (384 px), Lines 16-287 (272 lines)
+// NTSC: Columns 104-487 (384 px), Lines 16-249 (234 lines)
+static const int VC64_VISIBLE_X      = 104;
+static const int VC64_VISIBLE_Y_PAL  = 16;
+static const int VC64_VISIBLE_Y_NTSC = 16;
+static const int VC64_VISIBLE_WIDTH  = 384;
+static const int VC64_VISIBLE_HEIGHT_PAL  = 272;
+static const int VC64_VISIBLE_HEIGHT_NTSC = 234;
 
 // Audio
 static const double VC64_SAMPLE_RATE = 48000.0;
 static const int VC64_SAMPLES_PER_FRAME_PAL  = 960;  // 48000 / 50
 static const int VC64_SAMPLES_PER_FRAME_NTSC = 800;  // ~48000 / 60
 
-// macOS virtual keycode to C64Key mapping
-// Uses Carbon kVK_* keycodes (same as NSEvent keyCode)
-static const struct { unsigned short macKey; C64Key c64Key; } kKeyMap[] = {
-    // Letters (ANSI layout keycodes)
-    { 0x00, C64Key::A },       // kVK_ANSI_A
-    { 0x0B, C64Key::B },       // kVK_ANSI_B
-    { 0x08, C64Key::C },       // kVK_ANSI_C (mapped to C64 C key)
-    { 0x02, C64Key::D },       // kVK_ANSI_D
-    { 0x0E, C64Key::E },       // kVK_ANSI_E
-    { 0x03, C64Key::F },       // kVK_ANSI_F
-    { 0x05, C64Key::G },       // kVK_ANSI_G
-    { 0x04, C64Key::H },       // kVK_ANSI_H
-    { 0x22, C64Key::I },       // kVK_ANSI_I
-    { 0x26, C64Key::J },       // kVK_ANSI_J
-    { 0x28, C64Key::K },       // kVK_ANSI_K
-    { 0x25, C64Key::L },       // kVK_ANSI_L
-    { 0x2E, C64Key::M },       // kVK_ANSI_M
-    { 0x2D, C64Key::N },       // kVK_ANSI_N
-    { 0x1F, C64Key::O },       // kVK_ANSI_O
-    { 0x23, C64Key::P },       // kVK_ANSI_P
-    { 0x0C, C64Key::Q },       // kVK_ANSI_Q
-    { 0x0F, C64Key::R },       // kVK_ANSI_R
-    { 0x01, C64Key::S },       // kVK_ANSI_S
-    { 0x11, C64Key::T },       // kVK_ANSI_T
-    { 0x20, C64Key::U },       // kVK_ANSI_U
-    { 0x09, C64Key::V },       // kVK_ANSI_V
-    { 0x0D, C64Key::W },       // kVK_ANSI_W
-    { 0x07, C64Key::X },       // kVK_ANSI_X
-    { 0x10, C64Key::Y },       // kVK_ANSI_Y
-    { 0x06, C64Key::Z },       // kVK_ANSI_Z
+// USB HID usage code to C64Key mapping
+// OEHIDEvent.keycode returns USB HID usage codes (kHIDUsage_Keyboard*),
+// NOT macOS virtual keycodes (kVK_*).
+static const struct { unsigned short hidUsage; C64Key c64Key; } kKeyMap[] = {
+    // Letters (USB HID: A=0x04 through Z=0x1D)
+    { 0x04, C64Key::A },       // kHIDUsage_KeyboardA
+    { 0x05, C64Key::B },       // kHIDUsage_KeyboardB
+    { 0x06, C64Key::C },       // kHIDUsage_KeyboardC
+    { 0x07, C64Key::D },       // kHIDUsage_KeyboardD
+    { 0x08, C64Key::E },       // kHIDUsage_KeyboardE
+    { 0x09, C64Key::F },       // kHIDUsage_KeyboardF
+    { 0x0A, C64Key::G },       // kHIDUsage_KeyboardG
+    { 0x0B, C64Key::H },       // kHIDUsage_KeyboardH
+    { 0x0C, C64Key::I },       // kHIDUsage_KeyboardI
+    { 0x0D, C64Key::J },       // kHIDUsage_KeyboardJ
+    { 0x0E, C64Key::K },       // kHIDUsage_KeyboardK
+    { 0x0F, C64Key::L },       // kHIDUsage_KeyboardL
+    { 0x10, C64Key::M },       // kHIDUsage_KeyboardM
+    { 0x11, C64Key::N },       // kHIDUsage_KeyboardN
+    { 0x12, C64Key::O },       // kHIDUsage_KeyboardO
+    { 0x13, C64Key::P },       // kHIDUsage_KeyboardP
+    { 0x14, C64Key::Q },       // kHIDUsage_KeyboardQ
+    { 0x15, C64Key::R },       // kHIDUsage_KeyboardR
+    { 0x16, C64Key::S },       // kHIDUsage_KeyboardS
+    { 0x17, C64Key::T },       // kHIDUsage_KeyboardT
+    { 0x18, C64Key::U },       // kHIDUsage_KeyboardU
+    { 0x19, C64Key::V },       // kHIDUsage_KeyboardV
+    { 0x1A, C64Key::W },       // kHIDUsage_KeyboardW
+    { 0x1B, C64Key::X },       // kHIDUsage_KeyboardX
+    { 0x1C, C64Key::Y },       // kHIDUsage_KeyboardY
+    { 0x1D, C64Key::Z },       // kHIDUsage_KeyboardZ
 
-    // Digits
-    { 0x12, C64Key::digit1 },  // kVK_ANSI_1
-    { 0x13, C64Key::digit2 },  // kVK_ANSI_2
-    { 0x14, C64Key::digit3 },  // kVK_ANSI_3
-    { 0x15, C64Key::digit4 },  // kVK_ANSI_4
-    { 0x17, C64Key::digit5 },  // kVK_ANSI_5
-    { 0x16, C64Key::digit6 },  // kVK_ANSI_6
-    { 0x1A, C64Key::digit7 },  // kVK_ANSI_7
-    { 0x1C, C64Key::digit8 },  // kVK_ANSI_8
-    { 0x19, C64Key::digit9 },  // kVK_ANSI_9
-    { 0x1D, C64Key::digit0 },  // kVK_ANSI_0
+    // Digits (USB HID: 1=0x1E through 9=0x26, 0=0x27)
+    { 0x1E, C64Key::digit1 },  // kHIDUsage_Keyboard1
+    { 0x1F, C64Key::digit2 },  // kHIDUsage_Keyboard2
+    { 0x20, C64Key::digit3 },  // kHIDUsage_Keyboard3
+    { 0x21, C64Key::digit4 },  // kHIDUsage_Keyboard4
+    { 0x22, C64Key::digit5 },  // kHIDUsage_Keyboard5
+    { 0x23, C64Key::digit6 },  // kHIDUsage_Keyboard6
+    { 0x24, C64Key::digit7 },  // kHIDUsage_Keyboard7
+    { 0x25, C64Key::digit8 },  // kHIDUsage_Keyboard8
+    { 0x26, C64Key::digit9 },  // kHIDUsage_Keyboard9
+    { 0x27, C64Key::digit0 },  // kHIDUsage_Keyboard0
 
     // Special keys
-    { 0x24, C64Key::ret },         // kVK_Return
-    { 0x31, C64Key::space },       // kVK_Space
-    { 0x33, C64Key::del },         // kVK_Delete (backspace)
-    { 0x35, C64Key::runStop },     // kVK_Escape -> Run/Stop
-    { 0x30, C64Key::control },     // kVK_Tab -> Control
-    { 0x38, C64Key::leftShift },   // kVK_Shift (left)
-    { 0x3C, C64Key::rightShift },  // kVK_RightShift
-    { 0x3A, C64Key::commodore },   // kVK_Option -> Commodore
+    { 0x28, C64Key::ret },         // kHIDUsage_KeyboardReturnOrEnter
+    { 0x2C, C64Key::space },       // kHIDUsage_KeyboardSpacebar
+    { 0x2A, C64Key::del },         // kHIDUsage_KeyboardDeleteOrBackspace
+    { 0x29, C64Key::runStop },     // kHIDUsage_KeyboardEscape -> Run/Stop
+    { 0x2B, C64Key::control },     // kHIDUsage_KeyboardTab -> Control
+    { 0xE1, C64Key::leftShift },   // kHIDUsage_KeyboardLeftShift
+    { 0xE5, C64Key::rightShift },  // kHIDUsage_KeyboardRightShift
+    { 0xE2, C64Key::commodore },   // kHIDUsage_KeyboardLeftAlt -> Commodore
+    { 0xE6, C64Key::commodore },   // kHIDUsage_KeyboardRightAlt -> Commodore
 
     // Function keys
-    { 0x7A, C64Key::F1F2 },       // kVK_F1
-    { 0x78, C64Key::F1F2 },       // kVK_F2 (same physical key, shifted)
-    { 0x63, C64Key::F3F4 },       // kVK_F3
-    { 0x76, C64Key::F3F4 },       // kVK_F4
-    { 0x60, C64Key::F5F6 },       // kVK_F5
-    { 0x61, C64Key::F5F6 },       // kVK_F6
-    { 0x62, C64Key::F7F8 },       // kVK_F7
-    { 0x64, C64Key::F7F8 },       // kVK_F8
+    { 0x3A, C64Key::F1F2 },       // kHIDUsage_KeyboardF1
+    { 0x3B, C64Key::F1F2 },       // kHIDUsage_KeyboardF2 (same C64 key, shifted)
+    { 0x3C, C64Key::F3F4 },       // kHIDUsage_KeyboardF3
+    { 0x3D, C64Key::F3F4 },       // kHIDUsage_KeyboardF4
+    { 0x3E, C64Key::F5F6 },       // kHIDUsage_KeyboardF5
+    { 0x3F, C64Key::F5F6 },       // kHIDUsage_KeyboardF6
+    { 0x40, C64Key::F7F8 },       // kHIDUsage_KeyboardF7
+    { 0x41, C64Key::F7F8 },       // kHIDUsage_KeyboardF8
 
     // Cursor keys
-    { 0x7E, C64Key::curUpDown },    // kVK_UpArrow
-    { 0x7D, C64Key::curUpDown },    // kVK_DownArrow
-    { 0x7B, C64Key::curLeftRight }, // kVK_LeftArrow
-    { 0x7C, C64Key::curLeftRight }, // kVK_RightArrow
+    { 0x52, C64Key::curUpDown },    // kHIDUsage_KeyboardUpArrow
+    { 0x51, C64Key::curUpDown },    // kHIDUsage_KeyboardDownArrow
+    { 0x50, C64Key::curLeftRight }, // kHIDUsage_KeyboardLeftArrow
+    { 0x4F, C64Key::curLeftRight }, // kHIDUsage_KeyboardRightArrow
 
     // Symbols
-    { 0x1B, C64Key::minus },      // kVK_ANSI_Minus
-    { 0x18, C64Key::equal },      // kVK_ANSI_Equal -> =
-    { 0x21, C64Key::leftArrow },  // kVK_ANSI_LeftBracket -> left arrow
-    { 0x1E, C64Key::plus },       // kVK_ANSI_RightBracket -> +
-    { 0x29, C64Key::semicolon },  // kVK_ANSI_Semicolon
-    { 0x27, C64Key::colon },      // kVK_ANSI_Quote -> :
-    { 0x2B, C64Key::comma },      // kVK_ANSI_Comma
-    { 0x2F, C64Key::period },     // kVK_ANSI_Period
-    { 0x2C, C64Key::slash },      // kVK_ANSI_Slash
-    { 0x32, C64Key::leftArrow },  // kVK_ANSI_Grave -> left arrow (`)
-    { 0x2A, C64Key::at },         // kVK_ANSI_Backslash -> @
+    { 0x2D, C64Key::minus },      // kHIDUsage_KeyboardHyphen
+    { 0x2E, C64Key::equal },      // kHIDUsage_KeyboardEqualSign -> =
+    { 0x2F, C64Key::leftArrow },  // kHIDUsage_KeyboardOpenBracket -> left arrow
+    { 0x30, C64Key::plus },       // kHIDUsage_KeyboardCloseBracket -> +
+    { 0x33, C64Key::semicolon },  // kHIDUsage_KeyboardSemicolon
+    { 0x34, C64Key::colon },      // kHIDUsage_KeyboardQuote -> :
+    { 0x36, C64Key::comma },      // kHIDUsage_KeyboardComma
+    { 0x37, C64Key::period },     // kHIDUsage_KeyboardPeriod
+    { 0x38, C64Key::slash },      // kHIDUsage_KeyboardSlash
+    { 0x35, C64Key::leftArrow },  // kHIDUsage_KeyboardGraveAccentAndTilde -> left arrow
+    { 0x31, C64Key::at },         // kHIDUsage_KeyboardBackslash -> @
 
     // Home
-    { 0x73, C64Key::home },       // kVK_Home
-    { 0x77, C64Key::home },       // kVK_End -> Home
+    { 0x4A, C64Key::home },       // kHIDUsage_KeyboardHome
+    { 0x4D, C64Key::home },       // kHIDUsage_KeyboardEnd -> Home
 
     // Restore (NMI)
-    { 0x69, C64Key::restore },    // kVK_F13 -> Restore
-    { 0x71, C64Key::restore },    // kVK_F15 -> Restore
+    { 0x68, C64Key::restore },    // kHIDUsage_KeyboardF13 -> Restore
+    { 0x6A, C64Key::restore },    // kHIDUsage_KeyboardF15 -> Restore
 };
 
 static const int kKeyMapSize = sizeof(kKeyMap) / sizeof(kKeyMap[0]);
@@ -163,9 +176,18 @@ static void emuCallback(const void *listener, Message msg)
     // Input
     BOOL _joystickSwapped;
 
+    // Autoload
+    NSString *_pendingAutoType;
+    int _autoTypeDelay;
+
     // Display modes
     BOOL _showBorders;
+    BOOL _warpMode;
+    BOOL _sid8580;
     NSMutableArray<NSMutableDictionary<NSString *, id> *> *_availableDisplayModes;
+
+    // Frame counter for diagnostics
+    int _frameCount;
 }
 @end
 
@@ -175,48 +197,75 @@ static void emuCallback(const void *listener, Message msg)
 
 - (id)init
 {
+    NSLog(@"[VirtualC64] init: entering");
     if (self = [super init]) {
-        _videoBuffer = (uint32_t *)calloc(VC64_TEX_WIDTH * VC64_TEX_HEIGHT, sizeof(uint32_t));
+        _videoBuffer = (uint32_t *)calloc(VC64_VISIBLE_WIDTH * VC64_VISIBLE_HEIGHT_PAL, sizeof(uint32_t));
         _isPAL = YES;
         _showBorders = NO;
         _joystickSwapped = NO;
+        _warpMode = NO;
+        _sid8580 = NO;
+        _pendingAutoType = nil;
+        _autoTypeDelay = 0;
         _samplesPerFrame = VC64_SAMPLES_PER_FRAME_PAL;
 
         // Allocate audio buffers (stereo interleaved)
         _audioFloatBuffer = (float *)calloc(_samplesPerFrame * 2, sizeof(float));
         _audioIntBuffer = (int16_t *)calloc(_samplesPerFrame * 2, sizeof(int16_t));
+        NSLog(@"[VirtualC64] init: VirtualC64 object constructed successfully");
     }
     return self;
 }
 
 - (void)dealloc
 {
-    if (_emu.isRunning()) {
-        _emu.pause();
+    // Ensure emulator thread is stopped (may already be halted by stopEmulation)
+    try {
+        _emu.halt();
+    } catch (...) {
+        // Swallow exceptions during cleanup
     }
-    if (_emu.isPoweredOn()) {
-        _emu.powerOff();
-    }
-    _emu.halt();
 
     free(_videoBuffer);
     free(_audioFloatBuffer);
     free(_audioIntBuffer);
+    // _emu destructor runs automatically (C++ member), calling halt() + delete emu
 }
 
 - (BOOL)loadFileAtPath:(NSString *)path error:(NSError **)error
 {
-    // Launch the emulator thread
-    _emu.launch((__bridge const void *)self, emuCallback);
+    NSLog(@"[VirtualC64] loadFileAtPath: %@", path);
+
+    // =========================================================================
+    // Phase 1: Configure the emulator BEFORE launching the thread
+    // (Matches the reference Headless.cpp initialization order)
+    // =========================================================================
 
     // Install open-source ROMs (MEGA65 OpenROMs) so we don't require BIOS files
+    // This is just a memcpy into emulator memory — safe before launch()
+    NSLog(@"[VirtualC64] loadFileAtPath: installing OpenROMs (pre-launch)...");
     try {
         _emu.c64.installOpenRoms();
+        NSLog(@"[VirtualC64] loadFileAtPath: OpenROMs installed OK");
+    } catch (std::exception &e) {
+        NSLog(@"[VirtualC64] Warning: Could not install OpenROMs: %s", e.what());
     } catch (...) {
-        NSLog(@"[VirtualC64] Warning: Could not install OpenROMs");
+        NSLog(@"[VirtualC64] Warning: Could not install OpenROMs (unknown error)");
     }
 
-    // Configure as PAL by default
+    // Verify ROMs are ready before we launch
+    NSLog(@"[VirtualC64] loadFileAtPath: checking isReady...");
+    try {
+        _emu.isReady();
+        NSLog(@"[VirtualC64] loadFileAtPath: isReady returned OK - ROMs are present");
+    } catch (std::exception &e) {
+        NSLog(@"[VirtualC64] loadFileAtPath: isReady FAILED: %s", e.what());
+    } catch (...) {
+        NSLog(@"[VirtualC64] loadFileAtPath: isReady FAILED (unknown error)");
+    }
+
+    // Configure as PAL by default (queues commands, processed after launch)
+    NSLog(@"[VirtualC64] loadFileAtPath: setting PAL config...");
     try {
         _emu.set(ConfigScheme::PAL);
     } catch (...) {
@@ -236,32 +285,38 @@ static void emuCallback(const void *listener, Message msg)
     } catch (...) {
         NSLog(@"[VirtualC64] Warning: Could not set refresh rate");
     }
+    NSLog(@"[VirtualC64] loadFileAtPath: configuration complete");
 
-    // Determine file type and load
+    // Determine file type and load media (before launch — uses suspend/resume internally)
     NSString *ext = path.pathExtension.lowercaseString;
     std::filesystem::path fsPath(path.fileSystemRepresentation);
+    NSLog(@"[VirtualC64] loadFileAtPath: loading file with extension '%@'", ext);
 
     try {
         if ([ext isEqualToString:@"crt"]) {
-            // Cartridge
+            // Cartridge — no autoload needed, cartridges auto-start
             _emu.expansionPort.attachCartridge(fsPath, false);
         } else if ([ext isEqualToString:@"d64"] ||
                    [ext isEqualToString:@"g64"] ||
                    [ext isEqualToString:@"d71"] ||
                    [ext isEqualToString:@"d81"]) {
-            // Disk image — insert into drive 8
+            // Disk image — insert into drive 8 and autoload
             _emu.drive8.insert(fsPath, false);
+            _pendingAutoType = @"LOAD\"*\",8,1\nRUN\n";
         } else if ([ext isEqualToString:@"tap"]) {
-            // Tape image
+            // Tape image — insert and autoload
             _emu.datasette.insertTape(fsPath);
+            _pendingAutoType = @"LOAD\n";
         } else if ([ext isEqualToString:@"t64"] ||
                    [ext isEqualToString:@"prg"] ||
                    [ext isEqualToString:@"p00"]) {
-            // Program file — flash into memory
+            // Program file — flash into memory and run
             _emu.c64.flash(fsPath);
+            _pendingAutoType = @"RUN\n";
         } else {
             // Try generic flash for unknown types
             _emu.c64.flash(fsPath);
+            _pendingAutoType = @"RUN\n";
         }
     } catch (std::exception &e) {
         NSLog(@"[VirtualC64] Error loading file: %s", e.what());
@@ -285,40 +340,107 @@ static void emuCallback(const void *listener, Message msg)
         return NO;
     }
 
+    // =========================================================================
+    // Phase 2: Launch the emulator thread
+    // ROMs are installed and config is set — thread will process queued commands
+    // =========================================================================
+    NSLog(@"[VirtualC64] loadFileAtPath: launching emulator thread...");
+    try {
+        _emu.launch((__bridge const void *)self, emuCallback);
+    } catch (std::exception &e) {
+        NSLog(@"[VirtualC64] FATAL: launch() failed: %s", e.what());
+        if (error) {
+            *error = [NSError errorWithDomain:OEGameCoreErrorDomain
+                                         code:OEGameCoreCouldNotLoadROMError
+                                     userInfo:@{
+                NSLocalizedDescriptionKey: [NSString stringWithFormat:@"VirtualC64 launch failed: %s", e.what()]
+            }];
+        }
+        return NO;
+    } catch (...) {
+        NSLog(@"[VirtualC64] FATAL: launch() failed with unknown error");
+        if (error) {
+            *error = [NSError errorWithDomain:OEGameCoreErrorDomain
+                                         code:OEGameCoreCouldNotLoadROMError
+                                     userInfo:@{
+                NSLocalizedDescriptionKey: @"VirtualC64 launch failed"
+            }];
+        }
+        return NO;
+    }
+    NSLog(@"[VirtualC64] loadFileAtPath: emulator thread launched OK");
+
+    NSLog(@"[VirtualC64] loadFileAtPath: file loaded successfully");
     return YES;
 }
 
 - (void)setupEmulation
 {
+    NSLog(@"[VirtualC64] setupEmulation");
     _samplesPerFrame = _isPAL ? VC64_SAMPLES_PER_FRAME_PAL : VC64_SAMPLES_PER_FRAME_NTSC;
 }
 
 - (void)startEmulation
 {
+    NSLog(@"[VirtualC64] startEmulation: entering");
     [super startEmulation];
 
+    // Power on and run the emulator
+    NSLog(@"[VirtualC64] startEmulation: calling powerOn...");
+    try {
+        _emu.powerOn();
+        NSLog(@"[VirtualC64] startEmulation: powerOn OK (powered=%d, running=%d)",
+              _emu.isPoweredOn(), _emu.isRunning());
+    } catch (std::exception &e) {
+        NSLog(@"[VirtualC64] Error in powerOn: %s", e.what());
+    } catch (...) {
+        NSLog(@"[VirtualC64] Unknown error in powerOn");
+    }
+
+    NSLog(@"[VirtualC64] startEmulation: calling run...");
     try {
         _emu.run();
+        NSLog(@"[VirtualC64] startEmulation: run OK (powered=%d, running=%d)",
+              _emu.isPoweredOn(), _emu.isRunning());
     } catch (std::exception &e) {
-        NSLog(@"[VirtualC64] Error starting emulation: %s", e.what());
+        NSLog(@"[VirtualC64] Error in run: %s", e.what());
     } catch (...) {
-        NSLog(@"[VirtualC64] Unknown error starting emulation");
+        NSLog(@"[VirtualC64] Unknown error in run");
     }
+
+    NSLog(@"[VirtualC64] startEmulation: calling wakeUp...");
+    try {
+        _emu.wakeUp();
+        NSLog(@"[VirtualC64] startEmulation: wakeUp OK");
+    } catch (std::exception &e) {
+        NSLog(@"[VirtualC64] Error in wakeUp: %s", e.what());
+    } catch (...) {
+        NSLog(@"[VirtualC64] Unknown error in wakeUp");
+    }
+
+    // Set up delay for auto-typing (wait for C64 to boot to BASIC prompt)
+    if (_pendingAutoType) {
+        _autoTypeDelay = 150;
+    }
+    NSLog(@"[VirtualC64] startEmulation: complete (powered=%d, running=%d)",
+          _emu.isPoweredOn(), _emu.isRunning());
 }
 
 - (void)stopEmulation
 {
+    NSLog(@"[VirtualC64] stopEmulation: entering (running=%d, powered=%d)",
+          _emu.isRunning(), _emu.isPoweredOn());
+
+    // Halt the emulator thread synchronously — queue HALT, wake the thread
+    // so it processes the command promptly, then join the thread.
     try {
-        if (_emu.isRunning()) {
-            _emu.pause();
-        }
-        if (_emu.isPoweredOn()) {
-            _emu.powerOff();
-        }
+        _emu.wakeUp();  // Wake thread so it processes commands quickly
+        _emu.halt();    // Queues HALT + joins thread
     } catch (...) {
-        NSLog(@"[VirtualC64] Error stopping emulation");
+        NSLog(@"[VirtualC64] Error halting emulation");
     }
 
+    NSLog(@"[VirtualC64] stopEmulation: emulator thread halted");
     [super stopEmulation];
 }
 
@@ -335,31 +457,102 @@ static void emuCallback(const void *listener, Message msg)
 
 - (void)executeFrame
 {
-    // Signal vsync to the emulator thread — this tells it to compute the next frame
-    _emu.wakeUp();
+    @try {
+        _frameCount++;
 
-    // Copy video data from the emulator's texture
-    _emu.videoPort.lockTexture();
-    const u32 *texture = _emu.videoPort.getTexture();
-    if (texture) {
-        memcpy(_videoBuffer, texture, VC64_TEX_WIDTH * VC64_TEX_HEIGHT * sizeof(uint32_t));
-    }
-    _emu.videoPort.unlockTexture();
-
-    // Copy audio data
-    isize samplesRead = _emu.audioPort.copyInterleaved(_audioFloatBuffer, _samplesPerFrame);
-
-    if (samplesRead > 0) {
-        // Convert float [-1.0, 1.0] to int16
-        for (isize i = 0; i < samplesRead * 2; i++) {
-            float sample = _audioFloatBuffer[i];
-            if (sample > 1.0f) sample = 1.0f;
-            if (sample < -1.0f) sample = -1.0f;
-            _audioIntBuffer[i] = (int16_t)(sample * 32767.0f);
+        // Recovery: if the emulator isn't running after initial startup, try to kick-start it
+        if (_frameCount == 50 && !_emu.isRunning()) {
+            NSLog(@"[VirtualC64] executeFrame: emulator not running at frame 50! "
+                  @"Attempting recovery (powered=%d)", _emu.isPoweredOn());
+            try {
+                if (!_emu.isPoweredOn()) {
+                    _emu.powerOn();
+                    NSLog(@"[VirtualC64] Recovery: powerOn queued");
+                }
+                _emu.run();
+                _emu.wakeUp();
+                NSLog(@"[VirtualC64] Recovery: run + wakeUp sent");
+            } catch (std::exception &e) {
+                NSLog(@"[VirtualC64] Recovery failed: %s", e.what());
+            } catch (...) {
+                NSLog(@"[VirtualC64] Recovery failed (unknown)");
+            }
         }
 
-        [[self audioBufferAtIndex:0] write:_audioIntBuffer
-                                 maxLength:samplesRead * 2 * sizeof(int16_t)];
+        // Handle deferred auto-type after C64 has booted
+        if (_pendingAutoType && _autoTypeDelay > 0) {
+            _autoTypeDelay--;
+            if (_autoTypeDelay == 0) {
+                try {
+                    _emu.keyboard.autoType(std::string(_pendingAutoType.UTF8String));
+                } catch (...) {
+                    NSLog(@"[VirtualC64] Warning: Could not auto-type load command");
+                }
+                _pendingAutoType = nil;
+            }
+        }
+
+        // Signal the emulator thread to compute the next frame
+        try {
+            _emu.wakeUp();
+        } catch (...) {
+            // Emulator thread may have encountered a fatal error
+        }
+
+        // Copy video data from the emulator's texture (with lock for thread safety)
+        // We crop the visible area from the full 520x312 texture so that
+        // bufferSize and screenRect can both use origin (0,0), which is
+        // required by the Metal FilterChain blit copy pipeline.
+        try {
+            _emu.videoPort.lockTexture();
+            const u32 *texture = _emu.videoPort.getTexture();
+
+            if (_frameCount <= 10 || _frameCount % 300 == 0) {
+                u32 px0 = texture ? texture[0] : 0;
+                u32 pxCenter = texture ? texture[150 * VC64_TEX_WIDTH + 260] : 0;
+                NSLog(@"[VirtualC64] executeFrame #%d: running=%d powered=%d "
+                      @"px[0]=0x%08X pxCenter=0x%08X texPtr=%p",
+                      _frameCount, _emu.isRunning(), _emu.isPoweredOn(),
+                      px0, pxCenter, texture);
+            }
+
+            if (texture) {
+                int visibleY = _isPAL ? VC64_VISIBLE_Y_PAL : VC64_VISIBLE_Y_NTSC;
+                int visibleH = _isPAL ? VC64_VISIBLE_HEIGHT_PAL : VC64_VISIBLE_HEIGHT_NTSC;
+
+                // Copy row by row from the visible region of the full texture
+                for (int row = 0; row < visibleH; row++) {
+                    const u32 *srcRow = texture + (visibleY + row) * VC64_TEX_WIDTH + VC64_VISIBLE_X;
+                    u32 *dstRow = _videoBuffer + row * VC64_VISIBLE_WIDTH;
+                    memcpy(dstRow, srcRow, VC64_VISIBLE_WIDTH * sizeof(u32));
+                }
+            }
+            _emu.videoPort.unlockTexture();
+        } catch (...) {
+            try { _emu.videoPort.unlockTexture(); } catch (...) {}
+        }
+
+        // Copy audio data
+        try {
+            isize samplesRead = _emu.audioPort.copyInterleaved(_audioFloatBuffer, _samplesPerFrame);
+
+            if (samplesRead > 0) {
+                // Convert float [-1.0, 1.0] to int16
+                for (isize i = 0; i < samplesRead * 2; i++) {
+                    float sample = _audioFloatBuffer[i];
+                    if (sample > 1.0f) sample = 1.0f;
+                    if (sample < -1.0f) sample = -1.0f;
+                    _audioIntBuffer[i] = (int16_t)(sample * 32767.0f);
+                }
+
+                [[self audioBufferAtIndex:0] write:_audioIntBuffer
+                                         maxLength:samplesRead * 2 * sizeof(int16_t)];
+            }
+        } catch (...) {
+            // Audio may not be available
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"[VirtualC64] executeFrame exception: %@", exception);
     }
 }
 
@@ -372,26 +565,26 @@ static void emuCallback(const void *listener, Message msg)
 
 - (OEIntSize)bufferSize
 {
-    return OEIntSizeMake(VC64_TEX_WIDTH, VC64_TEX_HEIGHT);
+    // We pre-crop the visible area in executeFrame, so our buffer is the
+    // visible area only (not the full 520x312 emulator texture).
+    if (_isPAL) {
+        return OEIntSizeMake(VC64_VISIBLE_WIDTH, VC64_VISIBLE_HEIGHT_PAL);
+    } else {
+        return OEIntSizeMake(VC64_VISIBLE_WIDTH, VC64_VISIBLE_HEIGHT_NTSC);
+    }
 }
 
 - (OEIntRect)screenRect
 {
-    // VirtualC64 texture layout (520x312):
-    //   Columns 0-103:   HBLANK (black, not visible)
-    //   Columns 104-135: Left border (32 px)
-    //   Columns 136-455: Canvas (320 px)
-    //   Columns 456-487: Right border (32 px)
-    //   Columns 488+:    Right HBLANK
-    //   Lines 0-15:      VBLANK (not visible)
-    //   Lines 16-287:    Visible area (PAL, 272 lines)
-    //   Lines 16-249:    Visible area (NTSC, 234 lines)
-
-    // Default: show full visible area with borders (standard C64 display)
+    // Our video buffer already contains only the cropped visible area,
+    // so screenRect starts at origin (0,0). This is required because
+    // the Metal FilterChain creates a renderTexture sized to screenRect
+    // dimensions and then tries to blit from sourceRect origin — a
+    // non-zero origin would exceed the texture bounds.
     if (_isPAL) {
-        return OEIntRectMake(104, 16, 384, 272);
+        return OEIntRectMake(0, 0, VC64_VISIBLE_WIDTH, VC64_VISIBLE_HEIGHT_PAL);
     } else {
-        return OEIntRectMake(104, 16, 384, 234);
+        return OEIntRectMake(0, 0, VC64_VISIBLE_WIDTH, VC64_VISIBLE_HEIGHT_NTSC);
     }
 }
 
@@ -407,11 +600,17 @@ static void emuCallback(const void *listener, Message msg)
 
 - (uint32_t)pixelFormat
 {
-    return OEPixelFormat_BGRA;
+    // VirtualC64 stores pixels as u32 with ABGR layout: 0xAABBGGRR
+    // On little-endian, memory bytes are: R, G, B, A
+    // This matches OEPixelFormat_RGBA + OEPixelType_UNSIGNED_INT_8_8_8_8_REV
+    // which MTLGameRenderer maps to .abgr8Unorm
+    return OEPixelFormat_RGBA;
 }
 
 - (uint32_t)pixelType
 {
+    // VirtualC64 pixel u32 layout: R in bits 0-7, G in bits 8-15, B in bits 16-23, A in bits 24-31
+    // This is the REV (reversed) byte order for GL_UNSIGNED_INT_8_8_8_8
     return OEPixelType_UNSIGNED_INT_8_8_8_8_REV;
 }
 
@@ -491,7 +690,7 @@ static void emuCallback(const void *listener, Message msg)
 - (oneway void)keyDown:(NSUInteger)keyCode
 {
     for (int i = 0; i < kKeyMapSize; i++) {
-        if (kKeyMap[i].macKey == keyCode) {
+        if (kKeyMap[i].hidUsage == keyCode) {
             _emu.keyboard.press(kKeyMap[i].c64Key);
             return;
         }
@@ -501,7 +700,7 @@ static void emuCallback(const void *listener, Message msg)
 - (oneway void)keyUp:(NSUInteger)keyCode
 {
     for (int i = 0; i < kKeyMapSize; i++) {
-        if (kKeyMap[i].macKey == keyCode) {
+        if (kKeyMap[i].hidUsage == keyCode) {
             _emu.keyboard.release(kKeyMap[i].c64Key);
             return;
         }
@@ -669,7 +868,7 @@ static void emuCallback(const void *listener, Message msg)
 
 #pragma mark - File Insertion (Disk Swap)
 
-- (BOOL)insertFileAtURL:(NSURL *)file completionHandler:(void (^)(BOOL, NSError *))block
+- (void)insertFileAtURL:(NSURL *)file completionHandler:(void (^)(BOOL, NSError *))block
 {
     NSString *ext = file.pathExtension.lowercaseString;
     std::filesystem::path path(file.fileSystemRepresentation);
@@ -700,11 +899,10 @@ static void emuCallback(const void *listener, Message msg)
                 }];
                 block(NO, error);
             }
-            return NO;
+            return;
         }
 
         if (block) block(YES, nil);
-        return YES;
     } catch (std::exception &e) {
         NSLog(@"[VirtualC64] Error inserting file: %s", e.what());
         if (block) {
@@ -715,7 +913,6 @@ static void emuCallback(const void *listener, Message msg)
             }];
             block(NO, error);
         }
-        return NO;
     } catch (...) {
         if (block) {
             NSError *error = [NSError errorWithDomain:OEGameCoreErrorDomain
@@ -725,7 +922,6 @@ static void emuCallback(const void *listener, Message msg)
             }];
             block(NO, error);
         }
-        return NO;
     }
 }
 
@@ -747,10 +943,32 @@ static void emuCallback(const void *listener, Message msg)
             ]
         } mutableCopy]];
 
+        // SID model selection
+        [_availableDisplayModes addObject:[@{
+            OEGameCoreDisplayModeGroupNameKey: @"SID Model",
+            OEGameCoreDisplayModeGroupItemsKey: @[
+                @{OEGameCoreDisplayModeNameKey: @"MOS 6581",
+                  OEGameCoreDisplayModeStateKey: @(!_sid8580)},
+                @{OEGameCoreDisplayModeNameKey: @"MOS 8580",
+                  OEGameCoreDisplayModeStateKey: @(_sid8580)},
+            ]
+        } mutableCopy]];
+
+        // Separator
+        [_availableDisplayModes addObject:[@{
+            OEGameCoreDisplayModeSeparatorItemKey: @"",
+        } mutableCopy]];
+
         // Border options
         [_availableDisplayModes addObject:[@{
             OEGameCoreDisplayModeNameKey: @"Show Borders",
             OEGameCoreDisplayModeStateKey: @(_showBorders),
+        } mutableCopy]];
+
+        // Warp mode
+        [_availableDisplayModes addObject:[@{
+            OEGameCoreDisplayModeNameKey: @"Warp Mode",
+            OEGameCoreDisplayModeStateKey: @(_warpMode),
         } mutableCopy]];
     }
 
@@ -773,8 +991,27 @@ static void emuCallback(const void *listener, Message msg)
             _emu.set(ConfigScheme::NTSC);
             _emu.set(Opt::HOST_REFRESH_RATE, 60);
         } catch (...) {}
+    } else if ([displayMode isEqualToString:@"MOS 6581"] && _sid8580) {
+        _sid8580 = NO;
+        try {
+            _emu.set(Opt::SID_REV, (i64)0); // SIDRevision::MOS_6581
+        } catch (...) {}
+    } else if ([displayMode isEqualToString:@"MOS 8580"] && !_sid8580) {
+        _sid8580 = YES;
+        try {
+            _emu.set(Opt::SID_REV, (i64)1); // SIDRevision::MOS_8580
+        } catch (...) {}
     } else if ([displayMode isEqualToString:@"Show Borders"]) {
         _showBorders = !_showBorders;
+    } else if ([displayMode isEqualToString:@"Warp Mode"]) {
+        _warpMode = !_warpMode;
+        try {
+            if (_warpMode) {
+                _emu.warpOn();
+            } else {
+                _emu.warpOff();
+            }
+        } catch (...) {}
     }
 
     // Reset display modes cache to reflect state changes

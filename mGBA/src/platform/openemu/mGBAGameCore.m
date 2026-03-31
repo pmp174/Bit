@@ -335,5 +335,37 @@ const int GBAMap[] = {
 	[cheatSets setObject:[NSValue valueWithPointer:cheatSet] forKey:codeId];
 	mCheatAddSet(cheats, cheatSet);
 }
+
+#pragma mark - Achievements Memory Access
+
+- (NSUInteger)achievementReadMemoryAtAddress:(NSUInteger)address buffer:(uint8_t *)buffer size:(NSUInteger)numBytes
+{
+    // rcheevos GBA memory map:
+    // 0x000000-0x007FFF -> IWRAM (32KB, real addr 0x03000000)
+    // 0x008000-0x047FFF -> EWRAM (256KB, real addr 0x02000000)
+    // 0x048000-0x057FFF -> Save RAM (64KB, real addr 0x0E000000)
+    NSUInteger bytesRead = 0;
+
+    while (bytesRead < numBytes) {
+        NSUInteger addr = address + bytesRead;
+        uint32_t realAddr;
+
+        if (addr < 0x8000) {
+            realAddr = 0x03000000 + (uint32_t)addr;
+        } else if (addr < 0x48000) {
+            realAddr = 0x02000000 + (uint32_t)(addr - 0x8000);
+        } else if (addr < 0x58000) {
+            realAddr = 0x0E000000 + (uint32_t)(addr - 0x48000);
+        } else {
+            break;
+        }
+
+        buffer[bytesRead] = (uint8_t)core->rawRead8(core, realAddr, -1);
+        bytesRead++;
+    }
+
+    return bytesRead;
+}
+
 @end
 

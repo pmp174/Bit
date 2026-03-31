@@ -141,6 +141,7 @@ final class OEGameDocument: NSDocument {
     private(set) var cheats: [Cheat] = []
     private(set) var discCount: UInt = 0
     private(set) var displayModes: [[String: Any]] = []
+    private(set) var peripheralDevices: [[String: Any]] = []
     
     private var gameCoreManager: GameCoreManager?
     
@@ -703,6 +704,7 @@ final class OEGameDocument: NSDocument {
         let preset = ShaderControl.currentPreset(forSystemPlugin: systemPlugin)
         let params = preset.parameters
         
+        let raStore = RetroAchievementsCredentialStore.shared
         let info = OEGameStartupInfo(romURL: romURL,
                                      romMD5: rom.md5 ?? "",
                                      romHeader: rom.header ?? "",
@@ -712,7 +714,9 @@ final class OEGameDocument: NSDocument {
                                      shaderURL: preset.shader.url,
                                      shaderParameters: params,
                                      corePluginURL: corePlugin.url,
-                                     systemPluginURL: systemPlugin.url)
+                                     systemPluginURL: systemPlugin.url,
+                                     retroAchievementsUsername: raStore.username,
+                                     retroAchievementsToken: raStore.token)
         
         if let managerClassName = UserDefaults.standard.string(forKey: OEGameCoreManagerModePreferenceKey),
            let managerClass = NSClassFromString(managerClassName),
@@ -1595,6 +1599,35 @@ final class OEGameDocument: NSDocument {
         }
     }
     
+    // MARK: - Peripheral Devices
+
+    var supportsPeripheralDeviceChange: Bool {
+        return !peripheralDevices.isEmpty
+    }
+
+    @IBAction func changePeripheralDevice(_ sender: NSMenuItem) {
+        guard let info = sender.representedObject as? [String: String],
+              let portId = info["portIdentifier"],
+              let deviceId = info["deviceIdentifier"]
+        else { return }
+
+        // Persist per-core
+        let key = String(format: "peripheralDevices.%@", coreIdentifier)
+        var saved = UserDefaults.standard.dictionary(forKey: key) as? [String: String] ?? [:]
+        saved[portId] = deviceId
+        UserDefaults.standard.set(saved, forKey: key)
+
+        gameCoreManager?.changePeripheral(forPort: portId, toDevice: deviceId)
+    }
+
+    @IBAction func resetPeripheralDevices(_ sender: Any?) {
+        let key = String(format: "peripheralDevices.%@", coreIdentifier)
+        UserDefaults.standard.removeObject(forKey: key)
+
+        // Tell core to reset all ports to defaults
+        gameCoreManager?.changePeripheral(forPort: "__reset__", toDevice: "")
+    }
+
     // MARK: - Saving States
     
     var supportsSaveStates: Bool {
@@ -2014,6 +2047,18 @@ extension OEGameDocument: OESystemBindingsObserver {
     func setDisplayModes(_ displayModes: [[String : Any]]) {
         self.displayModes = displayModes
     }
+
+    func setPeripheralDevices(_ peripheralDevices: [[String: Any]]) {
+        self.peripheralDevices = peripheralDevices
+
+        // Restore saved peripheral config for this core
+        let key = String(format: "peripheralDevices.%@", coreIdentifier)
+        if let saved = UserDefaults.standard.dictionary(forKey: key) as? [String: String] {
+            for (portId, deviceId) in saved {
+                gameCoreManager?.changePeripheral(forPort: portId, toDevice: deviceId)
+            }
+        }
+    }
     
     func setRemoteContextID(_ contextID: OEContextID) {
         gameViewController.setRemoteContextID(contextID)
@@ -2025,6 +2070,28 @@ extension OEGameDocument: OESystemBindingsObserver {
         }
         coreDidTerminateSuddenly = true
         stopEmulation(self)
+    }
+    
+    // MARK: - RetroAchievements
+    
+    func achievementTriggered(title: String, description: String, points: Int, badgeURL: String?) {
+        gameViewController.showAchievementNotification(title: title, description: description, points: points)
+    }
+    
+    func achievementProgress(title: String, description: String, progress: String) {
+        // Progress notifications are optional — could show a subtle indicator.
+        // For now, show the same banner with progress info.
+        gameViewController.showAchievementNotification(title: title, description: "\(description) — \(progress)", points: 0)
+    }
+    
+    func gameCompleted() {
+        gameViewController.showAchievementNotification(title: "Mastered!", description: "All achievements unlocked!", points: 0)
+    }
+    
+    // MARK: - Developer
+    
+    func setFrameRate(_ fps: Double) {
+        gameViewController.setFrameRate(fps)
     }
 }
 

@@ -384,6 +384,20 @@
                ReferencedContainer = "container:Flycast/Flycast.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6376EB002F71966900F07E39"
+               BuildableName = "Build &amp; Install Dolphin"
+               BlueprintName = "Build &amp; Install Dolphin"
+               ReferencedContainer = "container:Dolphin/Dolphin.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

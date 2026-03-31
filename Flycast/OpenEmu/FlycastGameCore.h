@@ -24,11 +24,12 @@
 
 #import <OpenEmuBase/OEGameCore.h>
 #import "OEDCSystemResponderClient.h"
+#import "OEArcadeSystemResponderClient.h"
 
 @class OERingBuffer;
 
 OE_EXPORTED_CLASS
-@interface FlycastGameCore : OEGameCore
+@interface FlycastGameCore : OEGameCore <OEDCSystemResponderClient, OEArcadeSystemResponderClient>
 @end
 
 extern __weak FlycastGameCore *_current;

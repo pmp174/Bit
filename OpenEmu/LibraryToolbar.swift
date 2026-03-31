@@ -55,6 +55,9 @@ final class LibraryToolbar: NSToolbar {
     var searchField: NSSearchField {
         del.searchField
     }
+    var systemInfoToolbarItem: NSToolbarItem {
+        del.systemInfoToolbarItem
+    }
     
     @objc func _allowsSizeMode(_ mode: NSToolbar.SizeMode) -> Bool {
         return mode != .small
