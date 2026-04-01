@@ -47,9 +47,6 @@
       location = "group:JollyCV/JollyCV.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:UME/MAME.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:mGBA/mGBA.xcodeproj">
    </FileRef>
    <FileRef

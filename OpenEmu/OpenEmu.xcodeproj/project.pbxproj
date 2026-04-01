@@ -326,6 +326,7 @@
 		6376EB1A2F72E29D00F07E39 /* OENaomi2SystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB192F72E29D00F07E39 /* OENaomi2SystemResponder.m */; };
 		6376EB1E2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */; };
 		63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87FBC06D1BFC70FE00AECF5A /* Commodore 64.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		63C7E2672F7CA1A900E472F1 /* Arcade.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 945E42FB1517F2B500057D08 /* Arcade.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63CF88602F7776E000F574F3 /* PrefDeveloperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CF885F2F7776E000F574F3 /* PrefDeveloperController.swift */; };
 		8227756B1489471A00B19E27 /* OEGGSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8227755C1489471A00B19E27 /* OEGGSystemResponder.m */; };
 		82C2909114840024007C0214 /* OENGPSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 820EB7571483F9D3008EC398 /* OENGPSystemResponder.m */; };
@@ -1268,6 +1269,7 @@
 			dstPath = Systems;
 			dstSubfolderSpec = 13;
 			files = (
+				63C7E2672F7CA1A900E472F1 /* Arcade.oesystemplugin in Copy System Plugins to App Plugins */,
 				63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */,
 				632C6DE02F6851F80083E29D /* Supervision.oesystemplugin in Copy System Plugins to App Plugins */,
 				632C6DDF2F6851F00083E29D /* Pokemon mini.oesystemplugin in Copy System Plugins to App Plugins */,
@@ -8986,7 +8988,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Bit App Icon";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -9007,9 +9013,10 @@
 					"~/Library/Frameworks",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:identifier)";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.teambit.--PRODUCT-NAME-identifier-";
 				PRODUCT_NAME = Bit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_OBJC_BRIDGING_HEADER = "OpenEmu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -9025,7 +9032,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Bit App Icon";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -9046,9 +9057,10 @@
 					"~/Library/Frameworks",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:identifier)";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.teambit.--PRODUCT-NAME-identifier-";
 				PRODUCT_NAME = Bit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "OpenEmu-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};

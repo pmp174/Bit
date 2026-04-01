@@ -1,0 +1,1695 @@
+-- license:BSD-3-Clause
+-- Auto-generated custom driver configuration for OpenEmu MAME build
+-- Edit custom_drivers.txt and re-run build_custom_drivers.py to update
+
+---------------------------------------------------------------------------
+--
+--   custom.lua
+--
+--   Custom driver build for OpenEmu
+--   Use make SUBTARGET=custom to build
+--
+---------------------------------------------------------------------------
+
+--------------------------------------------------
+-- CPU cores (auto-detected from driver sources)
+--------------------------------------------------
+
+CPUS["ADSP2106X"] = true
+CPUS["ADSP21XX"] = true
+CPUS["ARM7"] = true
+CPUS["ASAP"] = true
+CPUS["DSP16"] = true
+CPUS["DSP32C"] = true
+CPUS["DSP56156"] = true
+CPUS["DSPP"] = true
+CPUS["G65816"] = true
+CPUS["I386"] = true
+CPUS["I8085"] = true
+CPUS["I86"] = true
+CPUS["I960"] = true
+CPUS["JAGUAR"] = true
+CPUS["KC80"] = true
+CPUS["LC8670"] = true
+CPUS["LH5801"] = true
+CPUS["LR35902"] = true
+CPUS["M37710"] = true
+CPUS["M6502"] = true
+CPUS["M6800"] = true
+CPUS["M6805"] = true
+CPUS["M6809"] = true
+CPUS["M680X0"] = true
+CPUS["MB86233"] = true
+CPUS["MB86235"] = true
+CPUS["MB88XX"] = true
+CPUS["MC68HC11"] = true
+CPUS["MCS48"] = true
+CPUS["MCS51"] = true
+CPUS["MINX"] = true
+CPUS["MIPS1"] = true
+CPUS["MIPS3"] = true
+CPUS["NEC"] = true
+CPUS["PIC16C5X"] = true
+CPUS["PIC16C62X"] = true
+CPUS["POWERPC"] = true
+CPUS["PSX"] = true
+CPUS["RSP"] = true
+CPUS["S2650"] = true
+CPUS["SCUDSP"] = true
+CPUS["SE3208"] = true
+CPUS["SH"] = true
+CPUS["SPC700"] = true
+CPUS["SWP30"] = true
+CPUS["T11"] = true
+CPUS["T6A84"] = true
+CPUS["TLCS90"] = true
+CPUS["TMS1000"] = true
+CPUS["TMS320C1X"] = true
+CPUS["TMS320C2X"] = true
+CPUS["TMS320C3X"] = true
+CPUS["TMS340X0"] = true
+CPUS["TMS57002"] = true
+CPUS["UPD7725"] = true
+CPUS["UPD78K"] = true
+CPUS["V60"] = true
+CPUS["V810"] = true
+CPUS["VT3XX_SPU"] = true
+CPUS["Z180"] = true
+CPUS["Z80"] = true
+CPUS["Z8000"] = true
+
+--------------------------------------------------
+-- Sound cores (auto-detected from driver sources)
+--------------------------------------------------
+
+SOUNDS["AC97"] = true
+SOUNDS["AICA"] = true
+SOUNDS["AP2010"] = true
+SOUNDS["ASTROCADE"] = true
+SOUNDS["AY8910"] = true
+SOUNDS["BEEP"] = true
+SOUNDS["C140"] = true
+SOUNDS["C352"] = true
+SOUNDS["CDDA"] = true
+SOUNDS["CEM3394"] = true
+SOUNDS["DAC"] = true
+SOUNDS["DIGITALKER"] = true
+SOUNDS["DISCRETE"] = true
+SOUNDS["DMADAC"] = true
+SOUNDS["GB_SOUND"] = true
+SOUNDS["HC55516"] = true
+SOUNDS["IOPSPU"] = true
+SOUNDS["K005289"] = true
+SOUNDS["K007232"] = true
+SOUNDS["K051649"] = true
+SOUNDS["K053260"] = true
+SOUNDS["K054539"] = true
+SOUNDS["K056800"] = true
+SOUNDS["LC78836M"] = true
+SOUNDS["LC82310"] = true
+SOUNDS["LMC1992"] = true
+SOUNDS["LYNX"] = true
+SOUNDS["MAS3507D"] = true
+SOUNDS["MM5837"] = true
+SOUNDS["MPEG_AUDIO"] = true
+SOUNDS["MSM5205"] = true
+SOUNDS["MULTIPCM"] = true
+SOUNDS["NAMCO"] = true
+SOUNDS["NAMCO_63701X"] = true
+SOUNDS["NES_APU"] = true
+SOUNDS["OKIADPCM"] = true
+SOUNDS["OKIM6295"] = true
+SOUNDS["OKIM6376"] = true
+SOUNDS["OKIM9810"] = true
+SOUNDS["PCD3311"] = true
+SOUNDS["POKEY"] = true
+SOUNDS["QSOUND"] = true
+SOUNDS["RF5C400"] = true
+SOUNDS["RF5C68"] = true
+SOUNDS["RP2C33_SOUND"] = true
+SOUNDS["S14001A"] = true
+SOUNDS["SB0400"] = true
+SOUNDS["SCSP"] = true
+SOUNDS["SEGAPCM"] = true
+SOUNDS["SN76477"] = true
+SOUNDS["SN76496"] = true
+SOUNDS["SP0250"] = true
+SOUNDS["SPEAKER"] = true
+SOUNDS["SPU"] = true
+SOUNDS["S_DSP"] = true
+SOUNDS["TC8830F"] = true
+SOUNDS["TIA"] = true
+SOUNDS["TMS36XX"] = true
+SOUNDS["TMS5110"] = true
+SOUNDS["TMS5220"] = true
+SOUNDS["UPD7759"] = true
+SOUNDS["VA_VCF"] = true
+SOUNDS["VLM5030"] = true
+SOUNDS["VOTRAX_SC01"] = true
+SOUNDS["VOTRAX_SC01A"] = true
+SOUNDS["VRENDER0"] = true
+SOUNDS["X1_010"] = true
+SOUNDS["XT446"] = true
+SOUNDS["Y8950"] = true
+SOUNDS["YM2151"] = true
+SOUNDS["YM2203"] = true
+SOUNDS["YM2413"] = true
+SOUNDS["YM2608"] = true
+SOUNDS["YM2610"] = true
+SOUNDS["YM2612"] = true
+SOUNDS["YM3526"] = true
+SOUNDS["YM3812"] = true
+SOUNDS["YMF262"] = true
+SOUNDS["YMF278B"] = true
+SOUNDS["YMZ280B"] = true
+SOUNDS["YMZ770"] = true
+
+--------------------------------------------------
+-- Video cores (auto-detected from driver sources)
+--------------------------------------------------
+
+VIDEOS["82C425"] = true
+VIDEOS["AVGDVG"] = true
+VIDEOS["BUFSPRITE"] = true
+VIDEOS["CESBLIT"] = true
+VIDEOS["FIXFREQ"] = true
+VIDEOS["GBA_LCD"] = true
+VIDEOS["GB_LCD"] = true
+VIDEOS["GF7600GS"] = true
+VIDEOS["HD44780"] = true
+VIDEOS["HD61830"] = true
+VIDEOS["HD63484"] = true
+VIDEOS["K051316"] = true
+VIDEOS["K053936"] = true
+VIDEOS["M50458"] = true
+VIDEOS["MB86292"] = true
+VIDEOS["MB90082"] = true
+VIDEOS["MC6845"] = true
+VIDEOS["PC_VGA"] = true
+VIDEOS["PC_VGA_NVIDIA"] = true
+VIDEOS["PC_VGA_OAK"] = true
+VIDEOS["PC_VGA_S3"] = true
+VIDEOS["PPU2C0X"] = true
+VIDEOS["PS2GIF"] = true
+VIDEOS["PS2GS"] = true
+VIDEOS["PSX"] = true
+VIDEOS["PWM_DISPLAY"] = true
+VIDEOS["RAMDAC"] = true
+VIDEOS["S3VIRGE"] = true
+VIDEOS["SEGA315_5124"] = true
+VIDEOS["SEGA315_5313"] = true
+VIDEOS["SNES_PPU"] = true
+VIDEOS["TMS9928A"] = true
+VIDEOS["V9938"] = true
+VIDEOS["VOODOO"] = true
+VIDEOS["VOODOO_PCI"] = true
+VIDEOS["VRENDER0"] = true
+VIDEOS["X1_020_DX_101"] = true
+VIDEOS["YM7101"] = true
+VIDEOS["ZEUS2"] = true
+
+--------------------------------------------------
+-- Machine cores (auto-detected from driver sources)
+--------------------------------------------------
+
+MACHINES["2812FIFO"] = true
+MACHINES["6522VIA"] = true
+MACHINES["6821PIA"] = true
+MACHINES["6840PTM"] = true
+MACHINES["68681"] = true
+MACHINES["ACIA6850"] = true
+MACHINES["ADC0804"] = true
+MACHINES["ADC0808"] = true
+MACHINES["ADC083X"] = true
+MACHINES["ADC0844"] = true
+MACHINES["ADC1038"] = true
+MACHINES["ADC1213X"] = true
+MACHINES["AICARTC"] = true
+MACHINES["AM9517A"] = true
+MACHINES["AT28C16"] = true
+MACHINES["AT29X"] = true
+MACHINES["ATAHLE"] = true
+MACHINES["ATASTORAGE"] = true
+MACHINES["BACTA_DATALOGGER"] = true
+MACHINES["BANKDEV"] = true
+MACHINES["CXD1095"] = true
+MACHINES["DS1204"] = true
+MACHINES["DS2401"] = true
+MACHINES["DS2430A"] = true
+MACHINES["EEPROMDEV"] = true
+MACHINES["ER2055"] = true
+MACHINES["FDC37C665GT"] = true
+MACHINES["FDC37C93X"] = true
+MACHINES["GEN_FIFO"] = true
+MACHINES["GEN_LATCH"] = true
+MACHINES["I2CHLE"] = true
+MACHINES["I2CMEM"] = true
+MACHINES["I8243"] = true
+MACHINES["I8251"] = true
+MACHINES["I8255"] = true
+MACHINES["I8257"] = true
+MACHINES["I8279"] = true
+MACHINES["IBM21S850"] = true
+MACHINES["ICD2061A"] = true
+MACHINES["IDECTRL"] = true
+MACHINES["INPUT_MERGER"] = true
+MACHINES["INS8154"] = true
+MACHINES["INS8250"] = true
+MACHINES["INTELFLASH"] = true
+MACHINES["IOPCDVD"] = true
+MACHINES["IOPDMA"] = true
+MACHINES["IOPINTC"] = true
+MACHINES["IOPSIO2"] = true
+MACHINES["IOPTIMER"] = true
+MACHINES["JVS"] = true
+MACHINES["K033906"] = true
+MACHINES["K053252"] = true
+MACHINES["K054321"] = true
+MACHINES["K056230"] = true
+MACHINES["KBDC8042"] = true
+MACHINES["LATCH8"] = true
+MACHINES["LDP1450HLE"] = true
+MACHINES["LDV1000"] = true
+MACHINES["LDV4200HLE"] = true
+MACHINES["LDVP931"] = true
+MACHINES["LPCI"] = true
+MACHINES["LSI53C810"] = true
+MACHINES["M3002"] = true
+MACHINES["M6M80011AP"] = true
+MACHINES["MB3773"] = true
+MACHINES["MB8421"] = true
+MACHINES["MB87030"] = true
+MACHINES["MB87078"] = true
+MACHINES["MB89371"] = true
+MACHINES["MB89374"] = true
+MACHINES["MC146818"] = true
+MACHINES["MC68901"] = true
+MACHINES["METERS"] = true
+MACHINES["MICROTOUCH"] = true
+MACHINES["MOS6530"] = true
+MACHINES["MOS6551"] = true
+MACHINES["MSM6242"] = true
+MACHINES["MSM6253"] = true
+MACHINES["NANDFLASH"] = true
+MACHINES["NCR53C90"] = true
+MACHINES["NETLIST"] = true
+MACHINES["NSCSI"] = true
+MACHINES["OUTPUT_LATCH"] = true
+MACHINES["PCI"] = true
+MACHINES["PCI9050"] = true
+MACHINES["PCKEYBRD"] = true
+MACHINES["PC_LPT"] = true
+MACHINES["PIC8259"] = true
+MACHINES["PIT8253"] = true
+MACHINES["PLA"] = true
+MACHINES["PS2DMAC"] = true
+MACHINES["PS2INTC"] = true
+MACHINES["PS2MC"] = true
+MACHINES["PS2PAD"] = true
+MACHINES["PS2SIF"] = true
+MACHINES["PS2TIMER"] = true
+MACHINES["R65C52"] = true
+MACHINES["RIPPLE_COUNTER"] = true
+MACHINES["RP5C01"] = true
+MACHINES["RP5C15"] = true
+MACHINES["RP5H01"] = true
+MACHINES["RTC4543"] = true
+MACHINES["RTC65271"] = true
+MACHINES["S3520CF"] = true
+MACHINES["SEGACRP2"] = true
+MACHINES["SEGACRPT"] = true
+MACHINES["SEGA_MD_IOPORT"] = true
+MACHINES["SMC91C9X"] = true
+MACHINES["S_SMP"] = true
+MACHINES["TE7750"] = true
+MACHINES["TICKET"] = true
+MACHINES["TIMEKPR"] = true
+MACHINES["TMS6100"] = true
+MACHINES["TSB12LV01A"] = true
+MACHINES["TTL74153"] = true
+MACHINES["TTL74157"] = true
+MACHINES["TTL74259"] = true
+MACHINES["TTL7474"] = true
+MACHINES["UPD1990A"] = true
+MACHINES["UPD4701"] = true
+MACHINES["UPD765"] = true
+MACHINES["VIC_PL192"] = true
+MACHINES["VRENDER0"] = true
+MACHINES["W83977TF"] = true
+MACHINES["WATCHDOG"] = true
+MACHINES["WD33C9X"] = true
+MACHINES["WD_FDC"] = true
+MACHINES["X2212"] = true
+MACHINES["X76F041"] = true
+MACHINES["X76F100"] = true
+MACHINES["Z80CTC"] = true
+MACHINES["Z80DAISY"] = true
+MACHINES["Z80DMA"] = true
+MACHINES["Z80PIO"] = true
+MACHINES["Z80SCC"] = true
+MACHINES["Z80SIO"] = true
+
+--------------------------------------------------
+-- Bus cores (auto-detected from driver sources)
+--------------------------------------------------
+
+BUSES["A800"] = true
+BUSES["ASTROCADE"] = true
+BUSES["ATA"] = true
+BUSES["BBC_CART"] = true
+BUSES["CENTRONICS"] = true
+BUSES["ELECTRON_CART"] = true
+BUSES["GBA"] = true
+BUSES["GENERIC"] = true
+BUSES["ISA"] = true
+BUSES["MEGADRIVE"] = true
+BUSES["MEGADRIVE_CART"] = true
+BUSES["MIDI"] = true
+BUSES["NEOGEO"] = true
+BUSES["NEOGEO_CTRL"] = true
+BUSES["NES"] = true
+BUSES["NES_CTRL"] = true
+BUSES["NSCSI"] = true
+BUSES["PC_KBD"] = true
+BUSES["POFO"] = true
+BUSES["PSX_CONTROLLER"] = true
+BUSES["RS232"] = true
+BUSES["SATURN"] = true
+BUSES["SAT_CTRL"] = true
+BUSES["SCSI"] = true
+BUSES["SEGA8"] = true
+BUSES["SEGAAI"] = true
+BUSES["SG1000_EXP"] = true
+BUSES["SMS_CTRL"] = true
+BUSES["SMS_EXP"] = true
+BUSES["SNES"] = true
+BUSES["SNES_CTRL"] = true
+BUSES["ST"] = true
+BUSES["VBOY"] = true
+BUSES["VCS"] = true
+BUSES["VCS_CTRL"] = true
+
+--------------------------------------------------
+-- Source files for all selected drivers
+--------------------------------------------------
+
+function createProjects_mame_custom(_target, _subtarget)
+	project ("mame_custom")
+	targetsubdir(_target .."_" .. _subtarget)
+	kind (LIBTYPE)
+	uuid (os.uuid("drv-mame-custom"))
+	addprojectflags()
+	precompiledheaders_novs()
+
+	includedirs {
+		MAME_DIR .. "src/osd",
+		MAME_DIR .. "src/emu",
+		MAME_DIR .. "src/devices",
+		MAME_DIR .. "src/mame/shared",
+		MAME_DIR .. "src/lib",
+		MAME_DIR .. "src/lib/util",
+		MAME_DIR .. "3rdparty",
+		GEN_DIR  .. "mame/layout",
+	}
+
+files{
+	MAME_DIR .. "src/mame/atari/a2600.cpp",
+	MAME_DIR .. "src/mame/atari/a7800.cpp",
+	MAME_DIR .. "src/mame/atari/akkaarrh.cpp",
+	MAME_DIR .. "src/mame/atari/antic.cpp",
+	MAME_DIR .. "src/mame/atari/antic.h",
+	MAME_DIR .. "src/mame/atari/arcadecl.cpp",
+	MAME_DIR .. "src/mame/atari/asic65.cpp",
+	MAME_DIR .. "src/mame/atari/asic65.h",
+	MAME_DIR .. "src/mame/atari/asteroid.cpp",
+	MAME_DIR .. "src/mame/atari/asteroid.h",
+	MAME_DIR .. "src/mame/atari/asteroid_a.cpp",
+	MAME_DIR .. "src/mame/atari/asteroid_m.cpp",
+	MAME_DIR .. "src/mame/atari/atari400.cpp",
+	MAME_DIR .. "src/mame/atari/atari400.h",
+	MAME_DIR .. "src/mame/atari/atari400_m.cpp",
+	MAME_DIR .. "src/mame/atari/atari400_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarifb.cpp",
+	MAME_DIR .. "src/mame/atari/atarifb.h",
+	MAME_DIR .. "src/mame/atari/atarifb_a.cpp",
+	MAME_DIR .. "src/mame/atari/atarifb_m.cpp",
+	MAME_DIR .. "src/mame/atari/atarifb_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarig1.cpp",
+	MAME_DIR .. "src/mame/atari/atarig1.h",
+	MAME_DIR .. "src/mame/atari/atarig1_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarig42.cpp",
+	MAME_DIR .. "src/mame/atari/atarig42.h",
+	MAME_DIR .. "src/mame/atari/atarig42_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarigen.cpp",
+	MAME_DIR .. "src/mame/atari/atarigen.h",
+	MAME_DIR .. "src/mame/atari/atarigt.cpp",
+	MAME_DIR .. "src/mame/atari/atarigt.h",
+	MAME_DIR .. "src/mame/atari/atarigt_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarigx2.cpp",
+	MAME_DIR .. "src/mame/atari/atarigx2.h",
+	MAME_DIR .. "src/mame/atari/atarigx2_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarijsa.cpp",
+	MAME_DIR .. "src/mame/atari/atarijsa.h",
+	MAME_DIR .. "src/mame/atari/atarimo.cpp",
+	MAME_DIR .. "src/mame/atari/atarimo.h",
+	MAME_DIR .. "src/mame/atari/atarirle.cpp",
+	MAME_DIR .. "src/mame/atari/atarirle.h",
+	MAME_DIR .. "src/mame/atari/atarisac.cpp",
+	MAME_DIR .. "src/mame/atari/atarisac.h",
+	MAME_DIR .. "src/mame/atari/atariscom.cpp",
+	MAME_DIR .. "src/mame/atari/atariscom.h",
+	MAME_DIR .. "src/mame/atari/atarist.cpp",
+	MAME_DIR .. "src/mame/atari/atarist_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarist_v.h",
+	MAME_DIR .. "src/mame/atari/ataristb.cpp",
+	MAME_DIR .. "src/mame/atari/ataristb.h",
+	MAME_DIR .. "src/mame/atari/atarisy1.cpp",
+	MAME_DIR .. "src/mame/atari/atarisy1.h",
+	MAME_DIR .. "src/mame/atari/atarisy1_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarisy2.cpp",
+	MAME_DIR .. "src/mame/atari/atarisy2.h",
+	MAME_DIR .. "src/mame/atari/atarisy2_v.cpp",
+	MAME_DIR .. "src/mame/atari/atarisy4.cpp",
+	MAME_DIR .. "src/mame/atari/atarittl.cpp",
+	MAME_DIR .. "src/mame/atari/atarivad.cpp",
+	MAME_DIR .. "src/mame/atari/atarivad.h",
+	MAME_DIR .. "src/mame/atari/atarixga.cpp",
+	MAME_DIR .. "src/mame/atari/atarixga.h",
+	MAME_DIR .. "src/mame/atari/atetris.cpp",
+	MAME_DIR .. "src/mame/atari/avalnche.cpp",
+	MAME_DIR .. "src/mame/atari/avalnche.h",
+	MAME_DIR .. "src/mame/atari/avalnche_a.cpp",
+	MAME_DIR .. "src/mame/atari/badlands.cpp",
+	MAME_DIR .. "src/mame/atari/badlands.h",
+	MAME_DIR .. "src/mame/atari/badlands_m.cpp",
+	MAME_DIR .. "src/mame/atari/badlands_ms.cpp",
+	MAME_DIR .. "src/mame/atari/badlands_v.cpp",
+	MAME_DIR .. "src/mame/atari/badlandsbl.cpp",
+	MAME_DIR .. "src/mame/atari/bartop52.cpp",
+	MAME_DIR .. "src/mame/atari/batman.cpp",
+	MAME_DIR .. "src/mame/atari/beathead.cpp",
+	MAME_DIR .. "src/mame/atari/blstroid.cpp",
+	MAME_DIR .. "src/mame/atari/boxer.cpp",
+	MAME_DIR .. "src/mame/atari/bsktball.cpp",
+	MAME_DIR .. "src/mame/atari/bsktball.h",
+	MAME_DIR .. "src/mame/atari/bsktball_a.cpp",
+	MAME_DIR .. "src/mame/atari/bsktball_m.cpp",
+	MAME_DIR .. "src/mame/atari/bsktball_v.cpp",
+	MAME_DIR .. "src/mame/atari/bwidow.cpp",
+	MAME_DIR .. "src/mame/atari/bwidow.h",
+	MAME_DIR .. "src/mame/atari/bwidow_a.cpp",
+	MAME_DIR .. "src/mame/atari/bzone.cpp",
+	MAME_DIR .. "src/mame/atari/bzone.h",
+	MAME_DIR .. "src/mame/atari/bzone_a.cpp",
+	MAME_DIR .. "src/mame/atari/canyon.cpp",
+	MAME_DIR .. "src/mame/atari/canyon_a.cpp",
+	MAME_DIR .. "src/mame/atari/canyon_a.h",
+	MAME_DIR .. "src/mame/atari/cball.cpp",
+	MAME_DIR .. "src/mame/atari/ccastles.cpp",
+	MAME_DIR .. "src/mame/atari/centiped.cpp",
+	MAME_DIR .. "src/mame/atari/centiped.h",
+	MAME_DIR .. "src/mame/atari/centiped_v.cpp",
+	MAME_DIR .. "src/mame/atari/cloak.cpp",
+	MAME_DIR .. "src/mame/atari/cloud9.cpp",
+	MAME_DIR .. "src/mame/atari/cmmb.cpp",
+	MAME_DIR .. "src/mame/atari/cops.cpp",
+	MAME_DIR .. "src/mame/atari/copsnrob.cpp",
+	MAME_DIR .. "src/mame/atari/copsnrob_a.cpp",
+	MAME_DIR .. "src/mame/atari/copsnrob_a.h",
+	MAME_DIR .. "src/mame/atari/cyberbal.cpp",
+	MAME_DIR .. "src/mame/atari/cybstorm.cpp",
+	MAME_DIR .. "src/mame/atari/destroyr.cpp",
+	MAME_DIR .. "src/mame/atari/dragrace.cpp",
+	MAME_DIR .. "src/mame/atari/dragrace_a.cpp",
+	MAME_DIR .. "src/mame/atari/dragrace_a.h",
+	MAME_DIR .. "src/mame/atari/eprom.cpp",
+	MAME_DIR .. "src/mame/atari/firefox.cpp",
+	MAME_DIR .. "src/mame/atari/firetrk.cpp",
+	MAME_DIR .. "src/mame/atari/firetrk_a.cpp",
+	MAME_DIR .. "src/mame/atari/firetrk_a.h",
+	MAME_DIR .. "src/mame/atari/flyball.cpp",
+	MAME_DIR .. "src/mame/atari/foodf.cpp",
+	MAME_DIR .. "src/mame/atari/gauntlet.cpp",
+	MAME_DIR .. "src/mame/atari/gtia.cpp",
+	MAME_DIR .. "src/mame/atari/gtia.h",
+	MAME_DIR .. "src/mame/atari/gumrally.cpp",
+	MAME_DIR .. "src/mame/atari/harddriv.cpp",
+	MAME_DIR .. "src/mame/atari/harddriv.h",
+	MAME_DIR .. "src/mame/atari/harddriv_a.cpp",
+	MAME_DIR .. "src/mame/atari/harddriv_m.cpp",
+	MAME_DIR .. "src/mame/atari/harddriv_v.cpp",
+	MAME_DIR .. "src/mame/atari/hitparade.cpp",
+	MAME_DIR .. "src/mame/atari/irobot.cpp",
+	MAME_DIR .. "src/mame/atari/irobot.h",
+	MAME_DIR .. "src/mame/atari/irobot_m.cpp",
+	MAME_DIR .. "src/mame/atari/irobot_v.cpp",
+	MAME_DIR .. "src/mame/atari/jag_blitter.cpp",
+	MAME_DIR .. "src/mame/atari/jag_blitter.h",
+	MAME_DIR .. "src/mame/atari/jagblit.h",
+	MAME_DIR .. "src/mame/atari/jagblit.ipp",
+	MAME_DIR .. "src/mame/atari/jagobj.ipp",
+	MAME_DIR .. "src/mame/atari/jaguar.cpp",
+	MAME_DIR .. "src/mame/atari/jaguar.h",
+	MAME_DIR .. "src/mame/atari/jaguar_a.cpp",
+	MAME_DIR .. "src/mame/atari/jaguar_v.cpp",
+	MAME_DIR .. "src/mame/atari/jedi.cpp",
+	MAME_DIR .. "src/mame/atari/klax.cpp",
+	MAME_DIR .. "src/mame/atari/liberatr.cpp",
+	MAME_DIR .. "src/mame/atari/lynx.cpp",
+	MAME_DIR .. "src/mame/atari/lynx.h",
+	MAME_DIR .. "src/mame/atari/lynx_m.cpp",
+	MAME_DIR .. "src/mame/atari/marblmd2.cpp",
+	MAME_DIR .. "src/mame/atari/maria.cpp",
+	MAME_DIR .. "src/mame/atari/maria.h",
+	MAME_DIR .. "src/mame/atari/mathbox.cpp",
+	MAME_DIR .. "src/mame/atari/mathbox.h",
+	MAME_DIR .. "src/mame/atari/maxaflex.cpp",
+	MAME_DIR .. "src/mame/atari/mediagx.cpp",
+	MAME_DIR .. "src/mame/atari/metalmx.cpp",
+	MAME_DIR .. "src/mame/atari/mgolf.cpp",
+	MAME_DIR .. "src/mame/atari/mhavoc.cpp",
+	MAME_DIR .. "src/mame/atari/missile.cpp",
+	MAME_DIR .. "src/mame/atari/nitedrvr.cpp",
+	MAME_DIR .. "src/mame/atari/nitedrvr_a.cpp",
+	MAME_DIR .. "src/mame/atari/nitedrvr_a.h",
+	MAME_DIR .. "src/mame/atari/nl_breakout.cpp",
+	MAME_DIR .. "src/mame/atari/nl_breakout.h",
+	MAME_DIR .. "src/mame/atari/nl_destroyr.cpp",
+	MAME_DIR .. "src/mame/atari/nl_destroyr.h",
+	MAME_DIR .. "src/mame/atari/nl_flyball.cpp",
+	MAME_DIR .. "src/mame/atari/nl_flyball.h",
+	MAME_DIR .. "src/mame/atari/nl_gtrak10.cpp",
+	MAME_DIR .. "src/mame/atari/nl_gtrak10.h",
+	MAME_DIR .. "src/mame/atari/nl_pong.cpp",
+	MAME_DIR .. "src/mame/atari/nl_pong.h",
+	MAME_DIR .. "src/mame/atari/nl_pongdoubles.cpp",
+	MAME_DIR .. "src/mame/atari/nl_pongdoubles.h",
+	MAME_DIR .. "src/mame/atari/nl_rebound.cpp",
+	MAME_DIR .. "src/mame/atari/nl_rebound.h",
+	MAME_DIR .. "src/mame/atari/nl_stuntcyc.cpp",
+	MAME_DIR .. "src/mame/atari/nl_stuntcyc.h",
+	MAME_DIR .. "src/mame/atari/nl_tank.cpp",
+	MAME_DIR .. "src/mame/atari/nl_tank.h",
+	MAME_DIR .. "src/mame/atari/offtwall.cpp",
+	MAME_DIR .. "src/mame/atari/orbit.cpp",
+	MAME_DIR .. "src/mame/atari/orbit_a.cpp",
+	MAME_DIR .. "src/mame/atari/orbit_a.h",
+	MAME_DIR .. "src/mame/atari/pofo.cpp",
+	MAME_DIR .. "src/mame/atari/pofo_kbd.cpp",
+	MAME_DIR .. "src/mame/atari/pofo_kbd.h",
+	MAME_DIR .. "src/mame/atari/pong.cpp",
+	MAME_DIR .. "src/mame/atari/poolshrk.cpp",
+	MAME_DIR .. "src/mame/atari/poolshrk_a.cpp",
+	MAME_DIR .. "src/mame/atari/poolshrk_a.h",
+	MAME_DIR .. "src/mame/atari/quantum.cpp",
+	MAME_DIR .. "src/mame/atari/quizshow.cpp",
+	MAME_DIR .. "src/mame/atari/rampart.cpp",
+	MAME_DIR .. "src/mame/atari/redbaron.cpp",
+	MAME_DIR .. "src/mame/atari/redbaron.h",
+	MAME_DIR .. "src/mame/atari/relief.cpp",
+	MAME_DIR .. "src/mame/atari/runaway.cpp",
+	MAME_DIR .. "src/mame/atari/sbrkout.cpp",
+	MAME_DIR .. "src/mame/atari/shuuz.cpp",
+	MAME_DIR .. "src/mame/atari/skullxbo.cpp",
+	MAME_DIR .. "src/mame/atari/skydiver.cpp",
+	MAME_DIR .. "src/mame/atari/skydiver_a.cpp",
+	MAME_DIR .. "src/mame/atari/skydiver_a.h",
+	MAME_DIR .. "src/mame/atari/skyraid.cpp",
+	MAME_DIR .. "src/mame/atari/skyraid_a.cpp",
+	MAME_DIR .. "src/mame/atari/skyraid_a.h",
+	MAME_DIR .. "src/mame/atari/slapstic.cpp",
+	MAME_DIR .. "src/mame/atari/slapstic.h",
+	MAME_DIR .. "src/mame/atari/sprint2.cpp",
+	MAME_DIR .. "src/mame/atari/sprint2_a.cpp",
+	MAME_DIR .. "src/mame/atari/sprint2_a.h",
+	MAME_DIR .. "src/mame/atari/sprint4.cpp",
+	MAME_DIR .. "src/mame/atari/sprint4_a.cpp",
+	MAME_DIR .. "src/mame/atari/sprint4_a.h",
+	MAME_DIR .. "src/mame/atari/sprint8.cpp",
+	MAME_DIR .. "src/mame/atari/sprint8_a.cpp",
+	MAME_DIR .. "src/mame/atari/sprint8_a.h",
+	MAME_DIR .. "src/mame/atari/starshp1.cpp",
+	MAME_DIR .. "src/mame/atari/starshp1_a.cpp",
+	MAME_DIR .. "src/mame/atari/starshp1_a.h",
+	MAME_DIR .. "src/mame/atari/starwars.cpp",
+	MAME_DIR .. "src/mame/atari/starwars.h",
+	MAME_DIR .. "src/mame/atari/starwars_m.cpp",
+	MAME_DIR .. "src/mame/atari/stkbd.cpp",
+	MAME_DIR .. "src/mame/atari/stkbd.h",
+	MAME_DIR .. "src/mame/atari/stmmu.cpp",
+	MAME_DIR .. "src/mame/atari/stmmu.h",
+	MAME_DIR .. "src/mame/atari/stvideo.cpp",
+	MAME_DIR .. "src/mame/atari/stvideo.h",
+	MAME_DIR .. "src/mame/atari/subs.cpp",
+	MAME_DIR .. "src/mame/atari/subs_a.cpp",
+	MAME_DIR .. "src/mame/atari/subs_a.h",
+	MAME_DIR .. "src/mame/atari/tank8.cpp",
+	MAME_DIR .. "src/mame/atari/tank8_a.cpp",
+	MAME_DIR .. "src/mame/atari/tank8_a.h",
+	MAME_DIR .. "src/mame/atari/tempest.cpp",
+	MAME_DIR .. "src/mame/atari/thunderj.cpp",
+	MAME_DIR .. "src/mame/atari/tia.cpp",
+	MAME_DIR .. "src/mame/atari/tia.h",
+	MAME_DIR .. "src/mame/atari/tomcat.cpp",
+	MAME_DIR .. "src/mame/atari/toobin.cpp",
+	MAME_DIR .. "src/mame/atari/tourtabl.cpp",
+	MAME_DIR .. "src/mame/atari/triplhnt.cpp",
+	MAME_DIR .. "src/mame/atari/triplhnt_a.cpp",
+	MAME_DIR .. "src/mame/atari/triplhnt_a.h",
+	MAME_DIR .. "src/mame/atari/tunhunt.cpp",
+	MAME_DIR .. "src/mame/atari/ultratnk.cpp",
+	MAME_DIR .. "src/mame/atari/videopin.cpp",
+	MAME_DIR .. "src/mame/atari/videopin_a.cpp",
+	MAME_DIR .. "src/mame/atari/videopin_a.h",
+	MAME_DIR .. "src/mame/atari/vindictr.cpp",
+	MAME_DIR .. "src/mame/atari/wolfpack.cpp",
+	MAME_DIR .. "src/mame/atari/xybots.cpp",
+	MAME_DIR .. "src/mame/capcom/1942.cpp",
+	MAME_DIR .. "src/mame/capcom/1942.h",
+	MAME_DIR .. "src/mame/capcom/1942_v.cpp",
+	MAME_DIR .. "src/mame/capcom/1943.cpp",
+	MAME_DIR .. "src/mame/capcom/1943.h",
+	MAME_DIR .. "src/mame/capcom/1943_v.cpp",
+	MAME_DIR .. "src/mame/capcom/alien.cpp",
+	MAME_DIR .. "src/mame/capcom/bionicc.cpp",
+	MAME_DIR .. "src/mame/capcom/blktiger.cpp",
+	MAME_DIR .. "src/mame/capcom/blktiger_ms.cpp",
+	MAME_DIR .. "src/mame/capcom/cbasebal.cpp",
+	MAME_DIR .. "src/mame/capcom/chakumelo.cpp",
+	MAME_DIR .. "src/mame/capcom/commando.cpp",
+	MAME_DIR .. "src/mame/capcom/cps1.cpp",
+	MAME_DIR .. "src/mame/capcom/cps1.h",
+	MAME_DIR .. "src/mame/capcom/cps1_v.cpp",
+	MAME_DIR .. "src/mame/capcom/cps1bl_5205.cpp",
+	MAME_DIR .. "src/mame/capcom/cps1bl_pic.cpp",
+	MAME_DIR .. "src/mame/capcom/cps2.cpp",
+	MAME_DIR .. "src/mame/capcom/cps2comm.cpp",
+	MAME_DIR .. "src/mame/capcom/cps2comm.h",
+	MAME_DIR .. "src/mame/capcom/cps2crypt.cpp",
+	MAME_DIR .. "src/mame/capcom/cps2crypt.h",
+	MAME_DIR .. "src/mame/capcom/cps3.cpp",
+	MAME_DIR .. "src/mame/capcom/cps3.h",
+	MAME_DIR .. "src/mame/capcom/cps3_a.cpp",
+	MAME_DIR .. "src/mame/capcom/cps3_a.h",
+	MAME_DIR .. "src/mame/capcom/egghunt.cpp",
+	MAME_DIR .. "src/mame/capcom/exedexes.cpp",
+	MAME_DIR .. "src/mame/capcom/fcrash.cpp",
+	MAME_DIR .. "src/mame/capcom/fcrash.h",
+	MAME_DIR .. "src/mame/capcom/gng.cpp",
+	MAME_DIR .. "src/mame/capcom/gunsmoke.cpp",
+	MAME_DIR .. "src/mame/capcom/higemaru.cpp",
+	MAME_DIR .. "src/mame/capcom/instantm.cpp",
+	MAME_DIR .. "src/mame/capcom/kabuki.cpp",
+	MAME_DIR .. "src/mame/capcom/kabuki.h",
+	MAME_DIR .. "src/mame/capcom/kenseim.cpp",
+	MAME_DIR .. "src/mame/capcom/lastduel.cpp",
+	MAME_DIR .. "src/mame/capcom/lastduel_ms.cpp",
+	MAME_DIR .. "src/mame/capcom/lwings.cpp",
+	MAME_DIR .. "src/mame/capcom/mitchell.cpp",
+	MAME_DIR .. "src/mame/capcom/miteshin.cpp",
+	MAME_DIR .. "src/mame/capcom/nl_1942.cpp",
+	MAME_DIR .. "src/mame/capcom/nl_1942.h",
+	MAME_DIR .. "src/mame/capcom/psrockman.cpp",
+	MAME_DIR .. "src/mame/capcom/sf.cpp",
+	MAME_DIR .. "src/mame/capcom/sidearms.cpp",
+	MAME_DIR .. "src/mame/capcom/sidearms.h",
+	MAME_DIR .. "src/mame/capcom/sidearms_v.cpp",
+	MAME_DIR .. "src/mame/capcom/sonson.cpp",
+	MAME_DIR .. "src/mame/capcom/srumbler.cpp",
+	MAME_DIR .. "src/mame/capcom/supduck.cpp",
+	MAME_DIR .. "src/mame/capcom/tigeroad.cpp",
+	MAME_DIR .. "src/mame/capcom/tigeroad.h",
+	MAME_DIR .. "src/mame/capcom/tigeroad_m.cpp",
+	MAME_DIR .. "src/mame/capcom/tigeroad_spr.cpp",
+	MAME_DIR .. "src/mame/capcom/tigeroad_spr.h",
+	MAME_DIR .. "src/mame/capcom/tigeroad_v.cpp",
+	MAME_DIR .. "src/mame/capcom/tvcapcom.cpp",
+	MAME_DIR .. "src/mame/capcom/vulgus.cpp",
+	MAME_DIR .. "src/mame/galaxian/119.cpp",
+	MAME_DIR .. "src/mame/galaxian/dambustr.cpp",
+	MAME_DIR .. "src/mame/galaxian/fastfred.cpp",
+	MAME_DIR .. "src/mame/galaxian/fastfred.h",
+	MAME_DIR .. "src/mame/galaxian/fastfred_v.cpp",
+	MAME_DIR .. "src/mame/galaxian/galaxian.cpp",
+	MAME_DIR .. "src/mame/galaxian/galaxian.h",
+	MAME_DIR .. "src/mame/galaxian/galaxian_a.cpp",
+	MAME_DIR .. "src/mame/galaxian/galaxian_a.h",
+	MAME_DIR .. "src/mame/galaxian/galaxian_rockclim.cpp",
+	MAME_DIR .. "src/mame/galaxian/galaxian_v.cpp",
+	MAME_DIR .. "src/mame/galaxian/galaxold.cpp",
+	MAME_DIR .. "src/mame/galaxian/galaxold.h",
+	MAME_DIR .. "src/mame/galaxian/galaxold_m.cpp",
+	MAME_DIR .. "src/mame/galaxian/galaxold_v.cpp",
+	MAME_DIR .. "src/mame/galaxian/nl_konami.cpp",
+	MAME_DIR .. "src/mame/galaxian/nl_konami.h",
+	MAME_DIR .. "src/mame/galaxian/scobra.cpp",
+	MAME_DIR .. "src/mame/galaxian/scramble.cpp",
+	MAME_DIR .. "src/mame/galaxian/scramble.h",
+	MAME_DIR .. "src/mame/galaxian/scramble_a.cpp",
+	MAME_DIR .. "src/mame/galaxian/scramble_m.cpp",
+	MAME_DIR .. "src/mame/konami/3dom2.cpp",
+	MAME_DIR .. "src/mame/konami/3dom2.h",
+	MAME_DIR .. "src/mame/konami/3dom2_te.cpp",
+	MAME_DIR .. "src/mame/konami/3dom2_te.h",
+	MAME_DIR .. "src/mame/konami/88games.cpp",
+	MAME_DIR .. "src/mame/konami/ajax.cpp",
+	MAME_DIR .. "src/mame/konami/aliens.cpp",
+	MAME_DIR .. "src/mame/konami/asterix.cpp",
+	MAME_DIR .. "src/mame/konami/battlnts.cpp",
+	MAME_DIR .. "src/mame/konami/bishi.cpp",
+	MAME_DIR .. "src/mame/konami/bladestl.cpp",
+	MAME_DIR .. "src/mame/konami/blockhl.cpp",
+	MAME_DIR .. "src/mame/konami/bottom9.cpp",
+	MAME_DIR .. "src/mame/konami/chqflag.cpp",
+	MAME_DIR .. "src/mame/konami/circusc.cpp",
+	MAME_DIR .. "src/mame/konami/cobra.cpp",
+	MAME_DIR .. "src/mame/konami/combatsc.cpp",
+	MAME_DIR .. "src/mame/konami/combatsc.h",
+	MAME_DIR .. "src/mame/konami/combatsc_v.cpp",
+	MAME_DIR .. "src/mame/konami/contra.cpp",
+	MAME_DIR .. "src/mame/konami/cougar.cpp",
+	MAME_DIR .. "src/mame/konami/crimfght.cpp",
+	MAME_DIR .. "src/mame/konami/dbz.cpp",
+	MAME_DIR .. "src/mame/konami/ddribble.cpp",
+	MAME_DIR .. "src/mame/konami/divebomb.cpp",
+	MAME_DIR .. "src/mame/konami/djmain.cpp",
+	MAME_DIR .. "src/mame/konami/fastlane.cpp",
+	MAME_DIR .. "src/mame/konami/finalizr.cpp",
+	MAME_DIR .. "src/mame/konami/firebeat.cpp",
+	MAME_DIR .. "src/mame/konami/flkatck.cpp",
+	MAME_DIR .. "src/mame/konami/gberet.cpp",
+	MAME_DIR .. "src/mame/konami/giclassic.cpp",
+	MAME_DIR .. "src/mame/konami/gijoe.cpp",
+	MAME_DIR .. "src/mame/konami/goldenregion.cpp",
+	MAME_DIR .. "src/mame/konami/gradius3.cpp",
+	MAME_DIR .. "src/mame/konami/gryzor_ms.cpp",
+	MAME_DIR .. "src/mame/konami/gticlub.cpp",
+	MAME_DIR .. "src/mame/konami/gyruss.cpp",
+	MAME_DIR .. "src/mame/konami/hcastle.cpp",
+	MAME_DIR .. "src/mame/konami/hexion.cpp",
+	MAME_DIR .. "src/mame/konami/hornet.cpp",
+	MAME_DIR .. "src/mame/konami/hyperspt.cpp",
+	MAME_DIR .. "src/mame/konami/hyprolyb.cpp",
+	MAME_DIR .. "src/mame/konami/hyprolyb.h",
+	MAME_DIR .. "src/mame/konami/ironhors.cpp",
+	MAME_DIR .. "src/mame/konami/jackal.cpp",
+	MAME_DIR .. "src/mame/konami/jailbrek.cpp",
+	MAME_DIR .. "src/mame/konami/junofrst.cpp",
+	MAME_DIR .. "src/mame/konami/k001005.cpp",
+	MAME_DIR .. "src/mame/konami/k001005.h",
+	MAME_DIR .. "src/mame/konami/k001006.cpp",
+	MAME_DIR .. "src/mame/konami/k001006.h",
+	MAME_DIR .. "src/mame/konami/k001604.cpp",
+	MAME_DIR .. "src/mame/konami/k001604.h",
+	MAME_DIR .. "src/mame/konami/k005849.cpp",
+	MAME_DIR .. "src/mame/konami/k005849.h",
+	MAME_DIR .. "src/mame/konami/k007121.cpp",
+	MAME_DIR .. "src/mame/konami/k007121.h",
+	MAME_DIR .. "src/mame/konami/k007342.cpp",
+	MAME_DIR .. "src/mame/konami/k007342.h",
+	MAME_DIR .. "src/mame/konami/k007420.cpp",
+	MAME_DIR .. "src/mame/konami/k007420.h",
+	MAME_DIR .. "src/mame/konami/k007452.cpp",
+	MAME_DIR .. "src/mame/konami/k007452.h",
+	MAME_DIR .. "src/mame/konami/k037122.cpp",
+	MAME_DIR .. "src/mame/konami/k037122.h",
+	MAME_DIR .. "src/mame/konami/k051733.cpp",
+	MAME_DIR .. "src/mame/konami/k051733.h",
+	MAME_DIR .. "src/mame/konami/k051960.cpp",
+	MAME_DIR .. "src/mame/konami/k051960.h",
+	MAME_DIR .. "src/mame/konami/k052109.cpp",
+	MAME_DIR .. "src/mame/konami/k052109.h",
+	MAME_DIR .. "src/mame/konami/k053244_k053245.cpp",
+	MAME_DIR .. "src/mame/konami/k053244_k053245.h",
+	MAME_DIR .. "src/mame/konami/k053246_k053247_k055673.cpp",
+	MAME_DIR .. "src/mame/konami/k053246_k053247_k055673.h",
+	MAME_DIR .. "src/mame/konami/k053250.cpp",
+	MAME_DIR .. "src/mame/konami/k053250.h",
+	MAME_DIR .. "src/mame/konami/k053250_ps.cpp",
+	MAME_DIR .. "src/mame/konami/k053250_ps.h",
+	MAME_DIR .. "src/mame/konami/k053251.cpp",
+	MAME_DIR .. "src/mame/konami/k053251.h",
+	MAME_DIR .. "src/mame/konami/k054000.cpp",
+	MAME_DIR .. "src/mame/konami/k054000.h",
+	MAME_DIR .. "src/mame/konami/k054156_k054157_k056832.cpp",
+	MAME_DIR .. "src/mame/konami/k054156_k054157_k056832.h",
+	MAME_DIR .. "src/mame/konami/k054338.cpp",
+	MAME_DIR .. "src/mame/konami/k054338.h",
+	MAME_DIR .. "src/mame/konami/k055555.cpp",
+	MAME_DIR .. "src/mame/konami/k055555.h",
+	MAME_DIR .. "src/mame/konami/k057714.cpp",
+	MAME_DIR .. "src/mame/konami/k057714.h",
+	MAME_DIR .. "src/mame/konami/k573cass.cpp",
+	MAME_DIR .. "src/mame/konami/k573cass.h",
+	MAME_DIR .. "src/mame/konami/k573dio.cpp",
+	MAME_DIR .. "src/mame/konami/k573dio.h",
+	MAME_DIR .. "src/mame/konami/k573fpga.cpp",
+	MAME_DIR .. "src/mame/konami/k573fpga.h",
+	MAME_DIR .. "src/mame/konami/k573kara.cpp",
+	MAME_DIR .. "src/mame/konami/k573kara.h",
+	MAME_DIR .. "src/mame/konami/k573mcal.cpp",
+	MAME_DIR .. "src/mame/konami/k573mcal.h",
+	MAME_DIR .. "src/mame/konami/k573mcr.cpp",
+	MAME_DIR .. "src/mame/konami/k573mcr.h",
+	MAME_DIR .. "src/mame/konami/k573msu.cpp",
+	MAME_DIR .. "src/mame/konami/k573msu.h",
+	MAME_DIR .. "src/mame/konami/konami1.cpp",
+	MAME_DIR .. "src/mame/konami/konami1.h",
+	MAME_DIR .. "src/mame/konami/konami_gn676_lan.cpp",
+	MAME_DIR .. "src/mame/konami/konami_gn676_lan.h",
+	MAME_DIR .. "src/mame/konami/konami_helper.cpp",
+	MAME_DIR .. "src/mame/konami/konami_helper.h",
+	MAME_DIR .. "src/mame/konami/konamigq.cpp",
+	MAME_DIR .. "src/mame/konami/konamigs.cpp",
+	MAME_DIR .. "src/mame/konami/konamigv.cpp",
+	MAME_DIR .. "src/mame/konami/konamigx.cpp",
+	MAME_DIR .. "src/mame/konami/konamigx.h",
+	MAME_DIR .. "src/mame/konami/konamigx_m.cpp",
+	MAME_DIR .. "src/mame/konami/konamigx_v.cpp",
+	MAME_DIR .. "src/mame/konami/konamim2.cpp",
+	MAME_DIR .. "src/mame/konami/konamipt.h",
+	MAME_DIR .. "src/mame/konami/konblands.cpp",
+	MAME_DIR .. "src/mame/konami/konendev.cpp",
+	MAME_DIR .. "src/mame/konami/kongs470.cpp",
+	MAME_DIR .. "src/mame/konami/konmedal.cpp",
+	MAME_DIR .. "src/mame/konami/konmedal020.cpp",
+	MAME_DIR .. "src/mame/konami/konmedal68k.cpp",
+	MAME_DIR .. "src/mame/konami/konmedalppc.cpp",
+	MAME_DIR .. "src/mame/konami/konppc.cpp",
+	MAME_DIR .. "src/mame/konami/konppc.h",
+	MAME_DIR .. "src/mame/konami/konppc_jvshost.cpp",
+	MAME_DIR .. "src/mame/konami/konppc_jvshost.h",
+	MAME_DIR .. "src/mame/konami/kontest.cpp",
+	MAME_DIR .. "src/mame/konami/kpontoon.cpp",
+	MAME_DIR .. "src/mame/konami/kpython.cpp",
+	MAME_DIR .. "src/mame/konami/kpython2.cpp",
+	MAME_DIR .. "src/mame/konami/ksys573.cpp",
+	MAME_DIR .. "src/mame/konami/labyrunr.cpp",
+	MAME_DIR .. "src/mame/konami/lethal.cpp",
+	MAME_DIR .. "src/mame/konami/mainevt.cpp",
+	MAME_DIR .. "src/mame/konami/megazone.cpp",
+	MAME_DIR .. "src/mame/konami/midikbd.cpp",
+	MAME_DIR .. "src/mame/konami/midikbd.h",
+	MAME_DIR .. "src/mame/konami/mikie.cpp",
+	MAME_DIR .. "src/mame/konami/mogura.cpp",
+	MAME_DIR .. "src/mame/konami/moo.cpp",
+	MAME_DIR .. "src/mame/konami/mystwarr.cpp",
+	MAME_DIR .. "src/mame/konami/mystwarr.h",
+	MAME_DIR .. "src/mame/konami/mystwarr_v.cpp",
+	MAME_DIR .. "src/mame/konami/nemesis.cpp",
+	MAME_DIR .. "src/mame/konami/nemesis.h",
+	MAME_DIR .. "src/mame/konami/nemesis_v.cpp",
+	MAME_DIR .. "src/mame/konami/nwk-tr.cpp",
+	MAME_DIR .. "src/mame/konami/otomedius.cpp",
+	MAME_DIR .. "src/mame/konami/overdriv.cpp",
+	MAME_DIR .. "src/mame/konami/pandoras.cpp",
+	MAME_DIR .. "src/mame/konami/parodius.cpp",
+	MAME_DIR .. "src/mame/konami/pingpong.cpp",
+	MAME_DIR .. "src/mame/konami/piratesh.cpp",
+	MAME_DIR .. "src/mame/konami/plygonet.cpp",
+	MAME_DIR .. "src/mame/konami/pooyan.cpp",
+	MAME_DIR .. "src/mame/konami/qdrmfgp.cpp",
+	MAME_DIR .. "src/mame/konami/quickpick5.cpp",
+	MAME_DIR .. "src/mame/konami/rockrage.cpp",
+	MAME_DIR .. "src/mame/konami/rocnrope.cpp",
+	MAME_DIR .. "src/mame/konami/rollerg.cpp",
+	MAME_DIR .. "src/mame/konami/rungun.cpp",
+	MAME_DIR .. "src/mame/konami/sbasketb.cpp",
+	MAME_DIR .. "src/mame/konami/scotrsht.cpp",
+	MAME_DIR .. "src/mame/konami/shaolins.cpp",
+	MAME_DIR .. "src/mame/konami/simpsons.cpp",
+	MAME_DIR .. "src/mame/konami/spy.cpp",
+	MAME_DIR .. "src/mame/konami/stingnet.cpp",
+	MAME_DIR .. "src/mame/konami/surpratk.cpp",
+	MAME_DIR .. "src/mame/konami/tasman.cpp",
+	MAME_DIR .. "src/mame/konami/tgtpanic.cpp",
+	MAME_DIR .. "src/mame/konami/thunderx.cpp",
+	MAME_DIR .. "src/mame/konami/timeplt.cpp",
+	MAME_DIR .. "src/mame/konami/tmnt.cpp",
+	MAME_DIR .. "src/mame/konami/tmnt2.cpp",
+	MAME_DIR .. "src/mame/konami/tp84.cpp",
+	MAME_DIR .. "src/mame/konami/trackfld.cpp",
+	MAME_DIR .. "src/mame/konami/trackfld_a.cpp",
+	MAME_DIR .. "src/mame/konami/trackfld_a.h",
+	MAME_DIR .. "src/mame/konami/tutankhm.cpp",
+	MAME_DIR .. "src/mame/konami/tutankhm.h",
+	MAME_DIR .. "src/mame/konami/tutankhm_v.cpp",
+	MAME_DIR .. "src/mame/konami/twin16.cpp",
+	MAME_DIR .. "src/mame/konami/twin16_v.cpp",
+	MAME_DIR .. "src/mame/konami/twin16_v.h",
+	MAME_DIR .. "src/mame/konami/twinkle.cpp",
+	MAME_DIR .. "src/mame/konami/ultraman.cpp",
+	MAME_DIR .. "src/mame/konami/ultrsprt.cpp",
+	MAME_DIR .. "src/mame/konami/vendetta.cpp",
+	MAME_DIR .. "src/mame/konami/viper.cpp",
+	MAME_DIR .. "src/mame/konami/wecleman.cpp",
+	MAME_DIR .. "src/mame/konami/wecleman.h",
+	MAME_DIR .. "src/mame/konami/wecleman_v.cpp",
+	MAME_DIR .. "src/mame/konami/windy2.cpp",
+	MAME_DIR .. "src/mame/konami/windy2.h",
+	MAME_DIR .. "src/mame/konami/xexex.cpp",
+	MAME_DIR .. "src/mame/konami/xmen.cpp",
+	MAME_DIR .. "src/mame/konami/yiear.cpp",
+	MAME_DIR .. "src/mame/konami/zr107.cpp",
+	MAME_DIR .. "src/mame/konami/zs01.cpp",
+	MAME_DIR .. "src/mame/konami/zs01.h",
+	MAME_DIR .. "src/mame/midway/astrocde.cpp",
+	MAME_DIR .. "src/mame/midway/astrocde.h",
+	MAME_DIR .. "src/mame/midway/astrocde_v.cpp",
+	MAME_DIR .. "src/mame/midway/astrohome.cpp",
+	MAME_DIR .. "src/mame/midway/atlantis.cpp",
+	MAME_DIR .. "src/mame/midway/balsente.cpp",
+	MAME_DIR .. "src/mame/midway/balsente.h",
+	MAME_DIR .. "src/mame/midway/balsente_m.cpp",
+	MAME_DIR .. "src/mame/midway/balsente_v.cpp",
+	MAME_DIR .. "src/mame/midway/cashline.cpp",
+	MAME_DIR .. "src/mame/midway/csd.cpp",
+	MAME_DIR .. "src/mame/midway/csd.h",
+	MAME_DIR .. "src/mame/midway/gridlee.cpp",
+	MAME_DIR .. "src/mame/midway/gridlee.h",
+	MAME_DIR .. "src/mame/midway/gridlee_a.cpp",
+	MAME_DIR .. "src/mame/midway/gridlee_v.cpp",
+	MAME_DIR .. "src/mame/midway/mcr.cpp",
+	MAME_DIR .. "src/mame/midway/mcr.h",
+	MAME_DIR .. "src/mame/midway/mcr3.cpp",
+	MAME_DIR .. "src/mame/midway/mcr3.h",
+	MAME_DIR .. "src/mame/midway/mcr3_v.cpp",
+	MAME_DIR .. "src/mame/midway/mcr68.cpp",
+	MAME_DIR .. "src/mame/midway/mcr_m.cpp",
+	MAME_DIR .. "src/mame/midway/mcr_v.cpp",
+	MAME_DIR .. "src/mame/midway/midqslvr.cpp",
+	MAME_DIR .. "src/mame/midway/midtunit.cpp",
+	MAME_DIR .. "src/mame/midway/midtunit.h",
+	MAME_DIR .. "src/mame/midway/midtunit_m.cpp",
+	MAME_DIR .. "src/mame/midway/midtunit_v.cpp",
+	MAME_DIR .. "src/mame/midway/midtunit_v.h",
+	MAME_DIR .. "src/mame/midway/midtunit_v.ipp",
+	MAME_DIR .. "src/mame/midway/midtview.ipp",
+	MAME_DIR .. "src/mame/midway/midvunit.cpp",
+	MAME_DIR .. "src/mame/midway/midvunit.h",
+	MAME_DIR .. "src/mame/midway/midvunit_v.cpp",
+	MAME_DIR .. "src/mame/midway/midway.cpp",
+	MAME_DIR .. "src/mame/midway/midway.h",
+	MAME_DIR .. "src/mame/midway/midwayic.cpp",
+	MAME_DIR .. "src/mame/midway/midwayic.h",
+	MAME_DIR .. "src/mame/midway/midwayttl.cpp",
+	MAME_DIR .. "src/mame/midway/midwunit.cpp",
+	MAME_DIR .. "src/mame/midway/midwunit.h",
+	MAME_DIR .. "src/mame/midway/midwunit_m.cpp",
+	MAME_DIR .. "src/mame/midway/midxunit.cpp",
+	MAME_DIR .. "src/mame/midway/midyunit.cpp",
+	MAME_DIR .. "src/mame/midway/midyunit.h",
+	MAME_DIR .. "src/mame/midway/midyunit_m.cpp",
+	MAME_DIR .. "src/mame/midway/midyunit_v.cpp",
+	MAME_DIR .. "src/mame/midway/midzeus.cpp",
+	MAME_DIR .. "src/mame/midway/midzeus.h",
+	MAME_DIR .. "src/mame/midway/midzeus_v.cpp",
+	MAME_DIR .. "src/mame/midway/mw18w.cpp",
+	MAME_DIR .. "src/mame/midway/mwsub.cpp",
+	MAME_DIR .. "src/mame/midway/omegrace.cpp",
+	MAME_DIR .. "src/mame/midway/pinball2k.cpp",
+	MAME_DIR .. "src/mame/midway/seattle.cpp",
+	MAME_DIR .. "src/mame/midway/sente6vb.cpp",
+	MAME_DIR .. "src/mame/midway/sente6vb.h",
+	MAME_DIR .. "src/mame/midway/spyhuntertec.cpp",
+	MAME_DIR .. "src/mame/midway/starrider.cpp",
+	MAME_DIR .. "src/mame/midway/tmaster.cpp",
+	MAME_DIR .. "src/mame/midway/vegas.cpp",
+	MAME_DIR .. "src/mame/midway/williams.cpp",
+	MAME_DIR .. "src/mame/midway/williams.h",
+	MAME_DIR .. "src/mame/midway/williams_m.cpp",
+	MAME_DIR .. "src/mame/midway/williams_v.cpp",
+	MAME_DIR .. "src/mame/midway/williamsblitter.cpp",
+	MAME_DIR .. "src/mame/midway/williamsblitter.h",
+	MAME_DIR .. "src/mame/midway/wmg.cpp",
+	MAME_DIR .. "src/mame/midway/zwackery.cpp",
+	MAME_DIR .. "src/mame/namco/20pacgal.cpp",
+	MAME_DIR .. "src/mame/namco/20pacgal.h",
+	MAME_DIR .. "src/mame/namco/20pacgal_v.cpp",
+	MAME_DIR .. "src/mame/namco/30test.cpp",
+	MAME_DIR .. "src/mame/namco/baraduke.cpp",
+	MAME_DIR .. "src/mame/namco/bosco.cpp",
+	MAME_DIR .. "src/mame/namco/bosco.h",
+	MAME_DIR .. "src/mame/namco/c117.cpp",
+	MAME_DIR .. "src/mame/namco/c117.h",
+	MAME_DIR .. "src/mame/namco/cgang.cpp",
+	MAME_DIR .. "src/mame/namco/cswat.cpp",
+	MAME_DIR .. "src/mame/namco/dangbar.cpp",
+	MAME_DIR .. "src/mame/namco/digdug.cpp",
+	MAME_DIR .. "src/mame/namco/digdug.h",
+	MAME_DIR .. "src/mame/namco/dkmb.cpp",
+	MAME_DIR .. "src/mame/namco/ds5000.cpp",
+	MAME_DIR .. "src/mame/namco/ds6000.cpp",
+	MAME_DIR .. "src/mame/namco/funcube.cpp",
+	MAME_DIR .. "src/mame/namco/funcube_touchscreen.cpp",
+	MAME_DIR .. "src/mame/namco/funcube_touchscreen.h",
+	MAME_DIR .. "src/mame/namco/gal3.cpp",
+	MAME_DIR .. "src/mame/namco/galaga.cpp",
+	MAME_DIR .. "src/mame/namco/galaga.h",
+	MAME_DIR .. "src/mame/namco/galaga_a.cpp",
+	MAME_DIR .. "src/mame/namco/galaga_v.cpp",
+	MAME_DIR .. "src/mame/namco/gaplus.cpp",
+	MAME_DIR .. "src/mame/namco/gaplus.h",
+	MAME_DIR .. "src/mame/namco/gaplus_m.cpp",
+	MAME_DIR .. "src/mame/namco/gaplus_v.cpp",
+	MAME_DIR .. "src/mame/namco/geebee.cpp",
+	MAME_DIR .. "src/mame/namco/geebee.h",
+	MAME_DIR .. "src/mame/namco/kungfur.cpp",
+	MAME_DIR .. "src/mame/namco/mappy.cpp",
+	MAME_DIR .. "src/mame/namco/mappy.h",
+	MAME_DIR .. "src/mame/namco/mappy_v.cpp",
+	MAME_DIR .. "src/mame/namco/md8412b_s23.cpp",
+	MAME_DIR .. "src/mame/namco/md8412b_s23.h",
+	MAME_DIR .. "src/mame/namco/namco06.cpp",
+	MAME_DIR .. "src/mame/namco/namco06.h",
+	MAME_DIR .. "src/mame/namco/namco50.cpp",
+	MAME_DIR .. "src/mame/namco/namco50.h",
+	MAME_DIR .. "src/mame/namco/namco51.cpp",
+	MAME_DIR .. "src/mame/namco/namco51.h",
+	MAME_DIR .. "src/mame/namco/namco52.cpp",
+	MAME_DIR .. "src/mame/namco/namco52.h",
+	MAME_DIR .. "src/mame/namco/namco53.cpp",
+	MAME_DIR .. "src/mame/namco/namco53.h",
+	MAME_DIR .. "src/mame/namco/namco54.cpp",
+	MAME_DIR .. "src/mame/namco/namco54.h",
+	MAME_DIR .. "src/mame/namco/namco62.cpp",
+	MAME_DIR .. "src/mame/namco/namco62.h",
+	MAME_DIR .. "src/mame/namco/namco65.cpp",
+	MAME_DIR .. "src/mame/namco/namco65.h",
+	MAME_DIR .. "src/mame/namco/namco68.cpp",
+	MAME_DIR .. "src/mame/namco/namco68.h",
+	MAME_DIR .. "src/mame/namco/namco_c116.cpp",
+	MAME_DIR .. "src/mame/namco/namco_c116.h",
+	MAME_DIR .. "src/mame/namco/namco_c123tmap.cpp",
+	MAME_DIR .. "src/mame/namco/namco_c123tmap.h",
+	MAME_DIR .. "src/mame/namco/namco_c139.cpp",
+	MAME_DIR .. "src/mame/namco/namco_c139.h",
+	MAME_DIR .. "src/mame/namco/namco_c148.cpp",
+	MAME_DIR .. "src/mame/namco/namco_c148.h",
+	MAME_DIR .. "src/mame/namco/namco_c169roz.cpp",
+	MAME_DIR .. "src/mame/namco/namco_c169roz.h",
+	MAME_DIR .. "src/mame/namco/namco_c45road.cpp",
+	MAME_DIR .. "src/mame/namco/namco_c45road.h",
+	MAME_DIR .. "src/mame/namco/namco_cus4xtmap.cpp",
+	MAME_DIR .. "src/mame/namco/namco_cus4xtmap.h",
+	MAME_DIR .. "src/mame/namco/namco_dsp.cpp",
+	MAME_DIR .. "src/mame/namco/namco_dsp.h",
+	MAME_DIR .. "src/mame/namco/namco_settings.cpp",
+	MAME_DIR .. "src/mame/namco/namco_settings.h",
+	MAME_DIR .. "src/mame/namco/namcoeva.cpp",
+	MAME_DIR .. "src/mame/namco/namcofl.cpp",
+	MAME_DIR .. "src/mame/namco/namcoio.cpp",
+	MAME_DIR .. "src/mame/namco/namcoio.h",
+	MAME_DIR .. "src/mame/namco/namcoio_gearbox.cpp",
+	MAME_DIR .. "src/mame/namco/namcoio_gearbox.h",
+	MAME_DIR .. "src/mame/namco/namcomcu.cpp",
+	MAME_DIR .. "src/mame/namco/namcomcu.h",
+	MAME_DIR .. "src/mame/namco/namcona1.cpp",
+	MAME_DIR .. "src/mame/namco/namcona1.h",
+	MAME_DIR .. "src/mame/namco/namcona1_v.cpp",
+	MAME_DIR .. "src/mame/namco/namconb1.cpp",
+	MAME_DIR .. "src/mame/namco/namconb1.h",
+	MAME_DIR .. "src/mame/namco/namconb1_v.cpp",
+	MAME_DIR .. "src/mame/namco/namcond1.cpp",
+	MAME_DIR .. "src/mame/namco/namcops2.cpp",
+	MAME_DIR .. "src/mame/namco/namcos1.cpp",
+	MAME_DIR .. "src/mame/namco/namcos1.h",
+	MAME_DIR .. "src/mame/namco/namcos10.cpp",
+	MAME_DIR .. "src/mame/namco/namcos10_exio.cpp",
+	MAME_DIR .. "src/mame/namco/namcos10_exio.h",
+	MAME_DIR .. "src/mame/namco/namcos11.cpp",
+	MAME_DIR .. "src/mame/namco/namcos12.cpp",
+	MAME_DIR .. "src/mame/namco/namcos12_cdxa.cpp",
+	MAME_DIR .. "src/mame/namco/namcos12_cdxa.h",
+	MAME_DIR .. "src/mame/namco/namcos14x.cpp",
+	MAME_DIR .. "src/mame/namco/namcos1_m.cpp",
+	MAME_DIR .. "src/mame/namco/namcos1_sprite.cpp",
+	MAME_DIR .. "src/mame/namco/namcos1_sprite.h",
+	MAME_DIR .. "src/mame/namco/namcos1_v.cpp",
+	MAME_DIR .. "src/mame/namco/namcos1b.cpp",
+	MAME_DIR .. "src/mame/namco/namcos2.cpp",
+	MAME_DIR .. "src/mame/namco/namcos2.h",
+	MAME_DIR .. "src/mame/namco/namcos21.cpp",
+	MAME_DIR .. "src/mame/namco/namcos21_3d.cpp",
+	MAME_DIR .. "src/mame/namco/namcos21_3d.h",
+	MAME_DIR .. "src/mame/namco/namcos21_c67.cpp",
+	MAME_DIR .. "src/mame/namco/namcos21_de.cpp",
+	MAME_DIR .. "src/mame/namco/namcos21_dsp.cpp",
+	MAME_DIR .. "src/mame/namco/namcos21_dsp.h",
+	MAME_DIR .. "src/mame/namco/namcos21_dsp_c67.cpp",
+	MAME_DIR .. "src/mame/namco/namcos21_dsp_c67.h",
+	MAME_DIR .. "src/mame/namco/namcos22.cpp",
+	MAME_DIR .. "src/mame/namco/namcos22.h",
+	MAME_DIR .. "src/mame/namco/namcos22_v.cpp",
+	MAME_DIR .. "src/mame/namco/namcos23.cpp",
+	MAME_DIR .. "src/mame/namco/namcos2_m.cpp",
+	MAME_DIR .. "src/mame/namco/namcos2_roz.cpp",
+	MAME_DIR .. "src/mame/namco/namcos2_roz.h",
+	MAME_DIR .. "src/mame/namco/namcos2_sprite.cpp",
+	MAME_DIR .. "src/mame/namco/namcos2_sprite.h",
+	MAME_DIR .. "src/mame/namco/namcos2_v.cpp",
+	MAME_DIR .. "src/mame/namco/namcos6.cpp",
+	MAME_DIR .. "src/mame/namco/namcos86.cpp",
+	MAME_DIR .. "src/mame/namco/namcos86.h",
+	MAME_DIR .. "src/mame/namco/namcos86_v.cpp",
+	MAME_DIR .. "src/mame/namco/nl_tankbatt.cpp",
+	MAME_DIR .. "src/mame/namco/nl_tankbatt.h",
+	MAME_DIR .. "src/mame/namco/ns10crypt.cpp",
+	MAME_DIR .. "src/mame/namco/ns10crypt.h",
+	MAME_DIR .. "src/mame/namco/ns11prot.cpp",
+	MAME_DIR .. "src/mame/namco/ns11prot.h",
+	MAME_DIR .. "src/mame/namco/pacland.cpp",
+	MAME_DIR .. "src/mame/namco/polepos.cpp",
+	MAME_DIR .. "src/mame/namco/polepos.h",
+	MAME_DIR .. "src/mame/namco/polepos_a.cpp",
+	MAME_DIR .. "src/mame/namco/polepos_a.h",
+	MAME_DIR .. "src/mame/namco/polepos_v.cpp",
+	MAME_DIR .. "src/mame/namco/quickncrash.cpp",
+	MAME_DIR .. "src/mame/namco/rallyx.cpp",
+	MAME_DIR .. "src/mame/namco/rallyx.h",
+	MAME_DIR .. "src/mame/namco/rallyx_v.cpp",
+	MAME_DIR .. "src/mame/namco/rbowlorama.cpp",
+	MAME_DIR .. "src/mame/namco/sg_vga.cpp",
+	MAME_DIR .. "src/mame/namco/shootaway2.cpp",
+	MAME_DIR .. "src/mame/namco/skykid.cpp",
+	MAME_DIR .. "src/mame/namco/starfield_05xx.cpp",
+	MAME_DIR .. "src/mame/namco/starfield_05xx.h",
+	MAME_DIR .. "src/mame/namco/sweetland.cpp",
+	MAME_DIR .. "src/mame/namco/sweetland4.cpp",
+	MAME_DIR .. "src/mame/namco/tankbatt.cpp",
+	MAME_DIR .. "src/mame/namco/tceptor.cpp",
+	MAME_DIR .. "src/mame/namco/tceptor.h",
+	MAME_DIR .. "src/mame/namco/tceptor_v.cpp",
+	MAME_DIR .. "src/mame/namco/toypop.cpp",
+	MAME_DIR .. "src/mame/namco/turrett.cpp",
+	MAME_DIR .. "src/mame/namco/turrett.h",
+	MAME_DIR .. "src/mame/namco/turrett_a.cpp",
+	MAME_DIR .. "src/mame/namco/turrett_v.cpp",
+	MAME_DIR .. "src/mame/namco/vpx3220a.cpp",
+	MAME_DIR .. "src/mame/namco/vpx3220a.h",
+	MAME_DIR .. "src/mame/namco/wacky_gator.cpp",
+	MAME_DIR .. "src/mame/namco/warpwarp.cpp",
+	MAME_DIR .. "src/mame/namco/warpwarp.h",
+	MAME_DIR .. "src/mame/namco/warpwarp_a.cpp",
+	MAME_DIR .. "src/mame/namco/warpwarp_a.h",
+	MAME_DIR .. "src/mame/namco/warpwarp_v.cpp",
+	MAME_DIR .. "src/mame/namco/xevious.cpp",
+	MAME_DIR .. "src/mame/namco/xevious.h",
+	MAME_DIR .. "src/mame/namco/xevious_m.cpp",
+	MAME_DIR .. "src/mame/namco/ygv608.cpp",
+	MAME_DIR .. "src/mame/namco/ygv608.h",
+	MAME_DIR .. "src/mame/neogeo/midas.cpp",
+	MAME_DIR .. "src/mame/neogeo/neogeo.cpp",
+	MAME_DIR .. "src/mame/neogeo/neogeo.h",
+	MAME_DIR .. "src/mame/neogeo/neogeo_spr.cpp",
+	MAME_DIR .. "src/mame/neogeo/neogeo_spr.h",
+	MAME_DIR .. "src/mame/neogeo/neogeo_v.cpp",
+	MAME_DIR .. "src/mame/neogeo/neogeocd.cpp",
+	MAME_DIR .. "src/mame/neogeo/neopcb.cpp",
+	MAME_DIR .. "src/mame/neogeo/ng_memcard.cpp",
+	MAME_DIR .. "src/mame/neogeo/ng_memcard.h",
+	MAME_DIR .. "src/mame/nintendo/aleck64.cpp",
+	MAME_DIR .. "src/mame/nintendo/blockfvr.cpp",
+	MAME_DIR .. "src/mame/nintendo/cham24.cpp",
+	MAME_DIR .. "src/mame/nintendo/compmahj.cpp",
+	MAME_DIR .. "src/mame/nintendo/cothello.cpp",
+	MAME_DIR .. "src/mame/nintendo/cx4data.ipp",
+	MAME_DIR .. "src/mame/nintendo/cx4fn.ipp",
+	MAME_DIR .. "src/mame/nintendo/cx4oam.ipp",
+	MAME_DIR .. "src/mame/nintendo/cx4ops.ipp",
+	MAME_DIR .. "src/mame/nintendo/dkong.cpp",
+	MAME_DIR .. "src/mame/nintendo/dkong.h",
+	MAME_DIR .. "src/mame/nintendo/dkong_a.cpp",
+	MAME_DIR .. "src/mame/nintendo/dkong_v.cpp",
+	MAME_DIR .. "src/mame/nintendo/famibox.cpp",
+	MAME_DIR .. "src/mame/nintendo/gamecube.cpp",
+	MAME_DIR .. "src/mame/nintendo/gb.cpp",
+	MAME_DIR .. "src/mame/nintendo/gba.cpp",
+	MAME_DIR .. "src/mame/nintendo/gba.h",
+	MAME_DIR .. "src/mame/nintendo/m6502_swap_op_d2_d7.cpp",
+	MAME_DIR .. "src/mame/nintendo/m6502_swap_op_d2_d7.h",
+	MAME_DIR .. "src/mame/nintendo/m6502_swap_op_d5_d6.cpp",
+	MAME_DIR .. "src/mame/nintendo/m6502_swap_op_d5_d6.h",
+	MAME_DIR .. "src/mame/nintendo/mario.cpp",
+	MAME_DIR .. "src/mame/nintendo/mmagic.cpp",
+	MAME_DIR .. "src/mame/nintendo/multigam.cpp",
+	MAME_DIR .. "src/mame/nintendo/n64.cpp",
+	MAME_DIR .. "src/mame/nintendo/n64.h",
+	MAME_DIR .. "src/mame/nintendo/n64_gateway.cpp",
+	MAME_DIR .. "src/mame/nintendo/n64_m.cpp",
+	MAME_DIR .. "src/mame/nintendo/n64_v.cpp",
+	MAME_DIR .. "src/mame/nintendo/n64_v.h",
+	MAME_DIR .. "src/mame/nintendo/n64types.h",
+	MAME_DIR .. "src/mame/nintendo/n8080.cpp",
+	MAME_DIR .. "src/mame/nintendo/n8080_a.cpp",
+	MAME_DIR .. "src/mame/nintendo/n8080_a.h",
+	MAME_DIR .. "src/mame/nintendo/nds.cpp",
+	MAME_DIR .. "src/mame/nintendo/nds.h",
+	MAME_DIR .. "src/mame/nintendo/nes.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_arcade_bl.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_clone.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_m8.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_m82.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_sh6578.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt02_vt03.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt09.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt09_soc.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt09_soc.h",
+	MAME_DIR .. "src/mame/nintendo/nes_vt32.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt32_soc.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt32_soc.h",
+	MAME_DIR .. "src/mame/nintendo/nes_vt369_vtunknown.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt369_vtunknown_soc.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt369_vtunknown_soc.h",
+	MAME_DIR .. "src/mame/nintendo/nes_vt42xx.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt42xx_soc.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt42xx_soc.h",
+	MAME_DIR .. "src/mame/nintendo/nes_vt_soc.cpp",
+	MAME_DIR .. "src/mame/nintendo/nes_vt_soc.h",
+	MAME_DIR .. "src/mame/nintendo/nl_mario.cpp",
+	MAME_DIR .. "src/mame/nintendo/nl_mario.h",
+	MAME_DIR .. "src/mame/nintendo/nl_popeye.cpp",
+	MAME_DIR .. "src/mame/nintendo/nl_popeye.h",
+	MAME_DIR .. "src/mame/nintendo/nss.cpp",
+	MAME_DIR .. "src/mame/nintendo/pin64.cpp",
+	MAME_DIR .. "src/mame/nintendo/pin64.h",
+	MAME_DIR .. "src/mame/nintendo/playch10.cpp",
+	MAME_DIR .. "src/mame/nintendo/pokemini.cpp",
+	MAME_DIR .. "src/mame/nintendo/popeye.cpp",
+	MAME_DIR .. "src/mame/nintendo/popeye.h",
+	MAME_DIR .. "src/mame/nintendo/popeye_v.cpp",
+	MAME_DIR .. "src/mame/nintendo/punchout.cpp",
+	MAME_DIR .. "src/mame/nintendo/punchout.h",
+	MAME_DIR .. "src/mame/nintendo/punchout_v.cpp",
+	MAME_DIR .. "src/mame/nintendo/rdpblend.cpp",
+	MAME_DIR .. "src/mame/nintendo/rdpblend.h",
+	MAME_DIR .. "src/mame/nintendo/rdpfiltr.ipp",
+	MAME_DIR .. "src/mame/nintendo/rdptpipe.cpp",
+	MAME_DIR .. "src/mame/nintendo/rdptpipe.h",
+	MAME_DIR .. "src/mame/nintendo/rp2a03_vtscr.cpp",
+	MAME_DIR .. "src/mame/nintendo/rp2a03_vtscr.h",
+	MAME_DIR .. "src/mame/nintendo/sfcbox.cpp",
+	MAME_DIR .. "src/mame/nintendo/snes.cpp",
+	MAME_DIR .. "src/mame/nintendo/snes.h",
+	MAME_DIR .. "src/mame/nintendo/snes_m.cpp",
+	MAME_DIR .. "src/mame/nintendo/snesb.cpp",
+	MAME_DIR .. "src/mame/nintendo/snesb51.cpp",
+	MAME_DIR .. "src/mame/nintendo/snescx4.cpp",
+	MAME_DIR .. "src/mame/nintendo/snescx4.h",
+	MAME_DIR .. "src/mame/nintendo/spacefb.cpp",
+	MAME_DIR .. "src/mame/nintendo/vboy.cpp",
+	MAME_DIR .. "src/mame/nintendo/vsnes.cpp",
+	MAME_DIR .. "src/mame/nintendo/vt1682.cpp",
+	MAME_DIR .. "src/mame/nintendo/vt1682_alu.cpp",
+	MAME_DIR .. "src/mame/nintendo/vt1682_alu.h",
+	MAME_DIR .. "src/mame/nintendo/vt1682_io.cpp",
+	MAME_DIR .. "src/mame/nintendo/vt1682_io.h",
+	MAME_DIR .. "src/mame/nintendo/vt1682_timer.cpp",
+	MAME_DIR .. "src/mame/nintendo/vt1682_timer.h",
+	MAME_DIR .. "src/mame/nintendo/vt1682_uio.cpp",
+	MAME_DIR .. "src/mame/nintendo/vt1682_uio.h",
+	MAME_DIR .. "src/mame/nintendo/vt369_adpcm.cpp",
+	MAME_DIR .. "src/mame/nintendo/vt369_adpcm.h",
+	MAME_DIR .. "src/mame/pacman/jrpacman.cpp",
+	MAME_DIR .. "src/mame/pacman/jumpshot.cpp",
+	MAME_DIR .. "src/mame/pacman/jumpshot.h",
+	MAME_DIR .. "src/mame/pacman/pacman.cpp",
+	MAME_DIR .. "src/mame/pacman/pacman.h",
+	MAME_DIR .. "src/mame/pacman/pacman_m.cpp",
+	MAME_DIR .. "src/mame/pacman/pacman_v.cpp",
+	MAME_DIR .. "src/mame/pacman/pacplus.cpp",
+	MAME_DIR .. "src/mame/pacman/pacplus.h",
+	MAME_DIR .. "src/mame/pacman/pengo.cpp",
+	MAME_DIR .. "src/mame/pacman/schick.cpp",
+	MAME_DIR .. "src/mame/sega/315-5838_317-0229_comp.cpp",
+	MAME_DIR .. "src/mame/sega/315-5838_317-0229_comp.h",
+	MAME_DIR .. "src/mame/sega/315-5881_crypt.cpp",
+	MAME_DIR .. "src/mame/sega/315-5881_crypt.h",
+	MAME_DIR .. "src/mame/sega/315-6154.cpp",
+	MAME_DIR .. "src/mame/sega/315-6154.h",
+	MAME_DIR .. "src/mame/sega/315_5195.cpp",
+	MAME_DIR .. "src/mame/sega/315_5195.h",
+	MAME_DIR .. "src/mame/sega/315_5296.cpp",
+	MAME_DIR .. "src/mame/sega/315_5296.h",
+	MAME_DIR .. "src/mame/sega/315_5338a.cpp",
+	MAME_DIR .. "src/mame/sega/315_5338a.h",
+	MAME_DIR .. "src/mame/sega/315_5649.cpp",
+	MAME_DIR .. "src/mame/sega/315_5649.h",
+	MAME_DIR .. "src/mame/sega/9h0-0008_card.cpp",
+	MAME_DIR .. "src/mame/sega/9h0-0008_card.h",
+	MAME_DIR .. "src/mame/sega/9h0-0008_card_reader.cpp",
+	MAME_DIR .. "src/mame/sega/9h0-0008_card_reader.h",
+	MAME_DIR .. "src/mame/sega/9h0-0008_iox.cpp",
+	MAME_DIR .. "src/mame/sega/9h0-0008_iox.h",
+	MAME_DIR .. "src/mame/sega/angelkds.cpp",
+	MAME_DIR .. "src/mame/sega/anyworks.cpp",
+	MAME_DIR .. "src/mame/sega/awboard.cpp",
+	MAME_DIR .. "src/mame/sega/awboard.h",
+	MAME_DIR .. "src/mame/sega/bingoc.cpp",
+	MAME_DIR .. "src/mame/sega/bingoct.cpp",
+	MAME_DIR .. "src/mame/sega/bingoct.h",
+	MAME_DIR .. "src/mame/sega/blockade.cpp",
+	MAME_DIR .. "src/mame/sega/calcune.cpp",
+	MAME_DIR .. "src/mame/sega/chihiro.cpp",
+	MAME_DIR .. "src/mame/sega/coolridr.cpp",
+	MAME_DIR .. "src/mame/sega/dc-ctrl.cpp",
+	MAME_DIR .. "src/mame/sega/dc-ctrl.h",
+	MAME_DIR .. "src/mame/sega/dc.cpp",
+	MAME_DIR .. "src/mame/sega/dc.h",
+	MAME_DIR .. "src/mame/sega/dc_atomiswave.cpp",
+	MAME_DIR .. "src/mame/sega/dc_atomiswave.h",
+	MAME_DIR .. "src/mame/sega/dc_g2if.cpp",
+	MAME_DIR .. "src/mame/sega/dc_g2if.h",
+	MAME_DIR .. "src/mame/sega/dcchk.cpp",
+	MAME_DIR .. "src/mame/sega/dccons.cpp",
+	MAME_DIR .. "src/mame/sega/dccons.h",
+	MAME_DIR .. "src/mame/sega/dccons_m.cpp",
+	MAME_DIR .. "src/mame/sega/deniam.cpp",
+	MAME_DIR .. "src/mame/sega/digamart.cpp",
+	MAME_DIR .. "src/mame/sega/dotrikun.cpp",
+	MAME_DIR .. "src/mame/sega/dsb2.cpp",
+	MAME_DIR .. "src/mame/sega/dsb2.h",
+	MAME_DIR .. "src/mame/sega/dsbz80.cpp",
+	MAME_DIR .. "src/mame/sega/dsbz80.h",
+	MAME_DIR .. "src/mame/sega/eshockey.cpp",
+	MAME_DIR .. "src/mame/sega/fd1089.cpp",
+	MAME_DIR .. "src/mame/sega/fd1089.h",
+	MAME_DIR .. "src/mame/sega/fd1094.cpp",
+	MAME_DIR .. "src/mame/sega/fd1094.h",
+	MAME_DIR .. "src/mame/sega/flashbeats.cpp",
+	MAME_DIR .. "src/mame/sega/fwheel.cpp",
+	MAME_DIR .. "src/mame/sega/gpworld.cpp",
+	MAME_DIR .. "src/mame/sega/gunsense.cpp",
+	MAME_DIR .. "src/mame/sega/gunsense.h",
+	MAME_DIR .. "src/mame/sega/hikaru.cpp",
+	MAME_DIR .. "src/mame/sega/hshavoc.cpp",
+	MAME_DIR .. "src/mame/sega/jvs13551.cpp",
+	MAME_DIR .. "src/mame/sega/jvs13551.h",
+	MAME_DIR .. "src/mame/sega/kopunch.cpp",
+	MAME_DIR .. "src/mame/sega/lindbergh.cpp",
+	MAME_DIR .. "src/mame/sega/m1comm.cpp",
+	MAME_DIR .. "src/mame/sega/m1comm.h",
+	MAME_DIR .. "src/mame/sega/m2comm.cpp",
+	MAME_DIR .. "src/mame/sega/m2comm.h",
+	MAME_DIR .. "src/mame/sega/m3comm.cpp",
+	MAME_DIR .. "src/mame/sega/m3comm.h",
+	MAME_DIR .. "src/mame/sega/m50dass.cpp",
+	MAME_DIR .. "src/mame/sega/m50dass.h",
+	MAME_DIR .. "src/mame/sega/magistr16.cpp",
+	MAME_DIR .. "src/mame/sega/maple-dc.cpp",
+	MAME_DIR .. "src/mame/sega/maple-dc.h",
+	MAME_DIR .. "src/mame/sega/mapledev.cpp",
+	MAME_DIR .. "src/mame/sega/mapledev.h",
+	MAME_DIR .. "src/mame/sega/mdconsole.cpp",
+	MAME_DIR .. "src/mame/sega/mdconsole.h",
+	MAME_DIR .. "src/mame/sega/megacd.cpp",
+	MAME_DIR .. "src/mame/sega/megacd.h",
+	MAME_DIR .. "src/mame/sega/megadriv.cpp",
+	MAME_DIR .. "src/mame/sega/megadriv.h",
+	MAME_DIR .. "src/mame/sega/megadriv_acbl.cpp",
+	MAME_DIR .. "src/mame/sega/megadriv_firecore.cpp",
+	MAME_DIR .. "src/mame/sega/megadriv_rad.cpp",
+	MAME_DIR .. "src/mame/sega/megadriv_sunmix.cpp",
+	MAME_DIR .. "src/mame/sega/megadriv_unksoc.cpp",
+	MAME_DIR .. "src/mame/sega/megadriv_ybox.cpp",
+	MAME_DIR .. "src/mame/sega/megaplay.cpp",
+	MAME_DIR .. "src/mame/sega/megatech.cpp",
+	MAME_DIR .. "src/mame/sega/mie.cpp",
+	MAME_DIR .. "src/mame/sega/mie.h",
+	MAME_DIR .. "src/mame/sega/model1.cpp",
+	MAME_DIR .. "src/mame/sega/model1.h",
+	MAME_DIR .. "src/mame/sega/model1_m.cpp",
+	MAME_DIR .. "src/mame/sega/model1_v.cpp",
+	MAME_DIR .. "src/mame/sega/model1io.cpp",
+	MAME_DIR .. "src/mame/sega/model1io.h",
+	MAME_DIR .. "src/mame/sega/model1io2.cpp",
+	MAME_DIR .. "src/mame/sega/model1io2.h",
+	MAME_DIR .. "src/mame/sega/model2.cpp",
+	MAME_DIR .. "src/mame/sega/model2.h",
+	MAME_DIR .. "src/mame/sega/model2_m.cpp",
+	MAME_DIR .. "src/mame/sega/model2_v.cpp",
+	MAME_DIR .. "src/mame/sega/model2rd.ipp",
+	MAME_DIR .. "src/mame/sega/model3.cpp",
+	MAME_DIR .. "src/mame/sega/model3.h",
+	MAME_DIR .. "src/mame/sega/model3_m.cpp",
+	MAME_DIR .. "src/mame/sega/model3_v.cpp",
+	MAME_DIR .. "src/mame/sega/monacogp.cpp",
+	MAME_DIR .. "src/mame/sega/naomi.cpp",
+	MAME_DIR .. "src/mame/sega/naomi.h",
+	MAME_DIR .. "src/mame/sega/naomibd.cpp",
+	MAME_DIR .. "src/mame/sega/naomibd.h",
+	MAME_DIR .. "src/mame/sega/naomig1.cpp",
+	MAME_DIR .. "src/mame/sega/naomig1.h",
+	MAME_DIR .. "src/mame/sega/naomigd.cpp",
+	MAME_DIR .. "src/mame/sega/naomigd.h",
+	MAME_DIR .. "src/mame/sega/naomim1.cpp",
+	MAME_DIR .. "src/mame/sega/naomim1.h",
+	MAME_DIR .. "src/mame/sega/naomim2.cpp",
+	MAME_DIR .. "src/mame/sega/naomim2.h",
+	MAME_DIR .. "src/mame/sega/naomim4.cpp",
+	MAME_DIR .. "src/mame/sega/naomim4.h",
+	MAME_DIR .. "src/mame/sega/naomirom.cpp",
+	MAME_DIR .. "src/mame/sega/naomirom.h",
+	MAME_DIR .. "src/mame/sega/nl_astrob.cpp",
+	MAME_DIR .. "src/mame/sega/nl_astrob.h",
+	MAME_DIR .. "src/mame/sega/nl_brdrline.cpp",
+	MAME_DIR .. "src/mame/sega/nl_brdrline.h",
+	MAME_DIR .. "src/mame/sega/nl_elim.cpp",
+	MAME_DIR .. "src/mame/sega/nl_elim.h",
+	MAME_DIR .. "src/mame/sega/nl_frogs.cpp",
+	MAME_DIR .. "src/mame/sega/nl_frogs.h",
+	MAME_DIR .. "src/mame/sega/nl_segas16b.cpp",
+	MAME_DIR .. "src/mame/sega/nl_segas16b.h",
+	MAME_DIR .. "src/mame/sega/nl_segaspeech.cpp",
+	MAME_DIR .. "src/mame/sega/nl_segaspeech.h",
+	MAME_DIR .. "src/mame/sega/nl_segausb.cpp",
+	MAME_DIR .. "src/mame/sega/nl_segausb.h",
+	MAME_DIR .. "src/mame/sega/nl_spacfury.cpp",
+	MAME_DIR .. "src/mame/sega/nl_spacfury.h",
+	MAME_DIR .. "src/mame/sega/powervr2.cpp",
+	MAME_DIR .. "src/mame/sega/powervr2.h",
+	MAME_DIR .. "src/mame/sega/s32comm.cpp",
+	MAME_DIR .. "src/mame/sega/s32comm.h",
+	MAME_DIR .. "src/mame/sega/saturn.cpp",
+	MAME_DIR .. "src/mame/sega/saturn.h",
+	MAME_DIR .. "src/mame/sega/saturn_cd_hle.cpp",
+	MAME_DIR .. "src/mame/sega/saturn_cd_hle.h",
+	MAME_DIR .. "src/mame/sega/saturn_cdb.cpp",
+	MAME_DIR .. "src/mame/sega/saturn_cdb.h",
+	MAME_DIR .. "src/mame/sega/saturn_m.cpp",
+	MAME_DIR .. "src/mame/sega/saturn_scu.cpp",
+	MAME_DIR .. "src/mame/sega/saturn_scu.h",
+	MAME_DIR .. "src/mame/sega/saturn_v.cpp",
+	MAME_DIR .. "src/mame/sega/sderby2.cpp",
+	MAME_DIR .. "src/mame/sega/sega16sp.cpp",
+	MAME_DIR .. "src/mame/sega/sega16sp.h",
+	MAME_DIR .. "src/mame/sega/sega_beena.cpp",
+	MAME_DIR .. "src/mame/sega/sega_ferie.cpp",
+	MAME_DIR .. "src/mame/sega/sega_sawatte.cpp",
+	MAME_DIR .. "src/mame/sega/segaai.cpp",
+	MAME_DIR .. "src/mame/sega/segaatom.cpp",
+	MAME_DIR .. "src/mame/sega/segabb.cpp",
+	MAME_DIR .. "src/mame/sega/segabb.h",
+	MAME_DIR .. "src/mame/sega/segabill.cpp",
+	MAME_DIR .. "src/mame/sega/segabill.h",
+	MAME_DIR .. "src/mame/sega/segac2.cpp",
+	MAME_DIR .. "src/mame/sega/segacoin.cpp",
+	MAME_DIR .. "src/mame/sega/segae.cpp",
+	MAME_DIR .. "src/mame/sega/segafruit.cpp",
+	MAME_DIR .. "src/mame/sega/segag80.cpp",
+	MAME_DIR .. "src/mame/sega/segag80.h",
+	MAME_DIR .. "src/mame/sega/segag80_m.cpp",
+	MAME_DIR .. "src/mame/sega/segag80_m.h",
+	MAME_DIR .. "src/mame/sega/segag80r.cpp",
+	MAME_DIR .. "src/mame/sega/segag80r.h",
+	MAME_DIR .. "src/mame/sega/segag80r_a.cpp",
+	MAME_DIR .. "src/mame/sega/segag80r_a.h",
+	MAME_DIR .. "src/mame/sega/segag80r_v.cpp",
+	MAME_DIR .. "src/mame/sega/segag80v.cpp",
+	MAME_DIR .. "src/mame/sega/segag80v.h",
+	MAME_DIR .. "src/mame/sega/segag80v_v.cpp",
+	MAME_DIR .. "src/mame/sega/segahang.cpp",
+	MAME_DIR .. "src/mame/sega/segaic16.cpp",
+	MAME_DIR .. "src/mame/sega/segaic16.h",
+	MAME_DIR .. "src/mame/sega/segaic16_m.cpp",
+	MAME_DIR .. "src/mame/sega/segaic16_m.h",
+	MAME_DIR .. "src/mame/sega/segaic16_road.cpp",
+	MAME_DIR .. "src/mame/sega/segaic16_road.h",
+	MAME_DIR .. "src/mame/sega/segaic24.cpp",
+	MAME_DIR .. "src/mame/sega/segaic24.h",
+	MAME_DIR .. "src/mame/sega/segaipt.h",
+	MAME_DIR .. "src/mame/sega/segajw.cpp",
+	MAME_DIR .. "src/mame/sega/segald.cpp",
+	MAME_DIR .. "src/mame/sega/segaorun.cpp",
+	MAME_DIR .. "src/mame/sega/segapico.cpp",
+	MAME_DIR .. "src/mame/sega/segapm.cpp",
+	MAME_DIR .. "src/mame/sega/segas16a.cpp",
+	MAME_DIR .. "src/mame/sega/segas16b.cpp",
+	MAME_DIR .. "src/mame/sega/segas16b.h",
+	MAME_DIR .. "src/mame/sega/segas16b_isgsm.cpp",
+	MAME_DIR .. "src/mame/sega/segas16b_v.cpp",
+	MAME_DIR .. "src/mame/sega/segas18.cpp",
+	MAME_DIR .. "src/mame/sega/segas18.h",
+	MAME_DIR .. "src/mame/sega/segas18_astormbl.cpp",
+	MAME_DIR .. "src/mame/sega/segas18_v.cpp",
+	MAME_DIR .. "src/mame/sega/segas24.cpp",
+	MAME_DIR .. "src/mame/sega/segas32.cpp",
+	MAME_DIR .. "src/mame/sega/segas32.h",
+	MAME_DIR .. "src/mame/sega/segas32_m.cpp",
+	MAME_DIR .. "src/mame/sega/segas32_v.cpp",
+	MAME_DIR .. "src/mame/sega/segashiobd.cpp",
+	MAME_DIR .. "src/mame/sega/segashiobd.h",
+	MAME_DIR .. "src/mame/sega/segasm1.cpp",
+	MAME_DIR .. "src/mame/sega/segasp.cpp",
+	MAME_DIR .. "src/mame/sega/segaspeech.cpp",
+	MAME_DIR .. "src/mame/sega/segaspeech.h",
+	MAME_DIR .. "src/mame/sega/segattl.cpp",
+	MAME_DIR .. "src/mame/sega/segaufo.cpp",
+	MAME_DIR .. "src/mame/sega/segaufoh8.cpp",
+	MAME_DIR .. "src/mame/sega/segausb.cpp",
+	MAME_DIR .. "src/mame/sega/segausb.h",
+	MAME_DIR .. "src/mame/sega/segaxbd.cpp",
+	MAME_DIR .. "src/mame/sega/segaxbd.h",
+	MAME_DIR .. "src/mame/sega/segaybd.cpp",
+	MAME_DIR .. "src/mame/sega/sg1000.cpp",
+	MAME_DIR .. "src/mame/sega/sg1000a.cpp",
+	MAME_DIR .. "src/mame/sega/shtzone.cpp",
+	MAME_DIR .. "src/mame/sega/smpc.cpp",
+	MAME_DIR .. "src/mame/sega/smpc.h",
+	MAME_DIR .. "src/mame/sega/sms.cpp",
+	MAME_DIR .. "src/mame/sega/sms.h",
+	MAME_DIR .. "src/mame/sega/sms_bootleg.cpp",
+	MAME_DIR .. "src/mame/sega/sms_m.cpp",
+	MAME_DIR .. "src/mame/sega/speedbsk.cpp",
+	MAME_DIR .. "src/mame/sega/stactics.cpp",
+	MAME_DIR .. "src/mame/sega/stv.cpp",
+	MAME_DIR .. "src/mame/sega/stv.h",
+	MAME_DIR .. "src/mame/sega/stvdev.cpp",
+	MAME_DIR .. "src/mame/sega/suprloco.cpp",
+	MAME_DIR .. "src/mame/sega/svmu.cpp",
+	MAME_DIR .. "src/mame/sega/system1.cpp",
+	MAME_DIR .. "src/mame/sega/system1.h",
+	MAME_DIR .. "src/mame/sega/system16.cpp",
+	MAME_DIR .. "src/mame/sega/system16.h",
+	MAME_DIR .. "src/mame/sega/system16_v.cpp",
+	MAME_DIR .. "src/mame/sega/system1_v.cpp",
+	MAME_DIR .. "src/mame/sega/timetrv.cpp",
+	MAME_DIR .. "src/mame/sega/triforce.cpp",
+	MAME_DIR .. "src/mame/sega/turbo.cpp",
+	MAME_DIR .. "src/mame/sega/turbo.h",
+	MAME_DIR .. "src/mame/sega/turbo_a.cpp",
+	MAME_DIR .. "src/mame/sega/turbo_v.cpp",
+	MAME_DIR .. "src/mame/sega/unkhockey.cpp",
+	MAME_DIR .. "src/mame/sega/vicdual-97269pb.cpp",
+	MAME_DIR .. "src/mame/sega/vicdual-97269pb.h",
+	MAME_DIR .. "src/mame/sega/vicdual-97271p.cpp",
+	MAME_DIR .. "src/mame/sega/vicdual-97271p.h",
+	MAME_DIR .. "src/mame/sega/vicdual.cpp",
+	MAME_DIR .. "src/mame/sega/vicdual.h",
+	MAME_DIR .. "src/mame/sega/vicdual_a.cpp",
+	MAME_DIR .. "src/mame/sega/vicdual_a.h",
+	MAME_DIR .. "src/mame/sega/vicdual_v.cpp",
+	MAME_DIR .. "src/mame/sega/winclub.cpp",
+	MAME_DIR .. "src/mame/sega/y2.cpp",
+	MAME_DIR .. "src/mame/sega/zaxxon.cpp",
+	MAME_DIR .. "src/mame/sega/zaxxon.h",
+	MAME_DIR .. "src/mame/sega/zaxxon_a.cpp",
+	MAME_DIR .. "src/mame/sega/zaxxon_v.cpp",
+	MAME_DIR .. "src/mame/shared/alpha68k_palette.cpp",
+	MAME_DIR .. "src/mame/shared/alpha68k_palette.h",
+	MAME_DIR .. "src/mame/shared/alpha68k_spr.cpp",
+	MAME_DIR .. "src/mame/shared/alpha68k_spr.h",
+	MAME_DIR .. "src/mame/shared/awpvid.cpp",
+	MAME_DIR .. "src/mame/shared/awpvid.h",
+	MAME_DIR .. "src/mame/shared/ballysound.cpp",
+	MAME_DIR .. "src/mame/shared/ballysound.h",
+	MAME_DIR .. "src/mame/shared/cage.cpp",
+	MAME_DIR .. "src/mame/shared/cage.h",
+	MAME_DIR .. "src/mame/shared/cclimber_a.cpp",
+	MAME_DIR .. "src/mame/shared/cclimber_a.h",
+	MAME_DIR .. "src/mame/shared/cedar_magnet_board.cpp",
+	MAME_DIR .. "src/mame/shared/cedar_magnet_board.h",
+	MAME_DIR .. "src/mame/shared/dcs.cpp",
+	MAME_DIR .. "src/mame/shared/dcs.h",
+	MAME_DIR .. "src/mame/shared/decobsmt.cpp",
+	MAME_DIR .. "src/mame/shared/decobsmt.h",
+	MAME_DIR .. "src/mame/shared/decospr.cpp",
+	MAME_DIR .. "src/mame/shared/decospr.h",
+	MAME_DIR .. "src/mame/shared/efo_sound3.cpp",
+	MAME_DIR .. "src/mame/shared/efo_sound3.h",
+	MAME_DIR .. "src/mame/shared/efo_zsu.cpp",
+	MAME_DIR .. "src/mame/shared/efo_zsu.h",
+	MAME_DIR .. "src/mame/shared/exidysound.cpp",
+	MAME_DIR .. "src/mame/shared/exidysound.h",
+	MAME_DIR .. "src/mame/shared/fruitsamples.cpp",
+	MAME_DIR .. "src/mame/shared/fruitsamples.h",
+	MAME_DIR .. "src/mame/shared/gottlieb_a.cpp",
+	MAME_DIR .. "src/mame/shared/gottlieb_a.h",
+	MAME_DIR .. "src/mame/shared/inder_vid.cpp",
+	MAME_DIR .. "src/mame/shared/inder_vid.h",
+	MAME_DIR .. "src/mame/shared/isbc_215g.cpp",
+	MAME_DIR .. "src/mame/shared/isbc_215g.h",
+	MAME_DIR .. "src/mame/shared/mahjong.cpp",
+	MAME_DIR .. "src/mame/shared/mahjong.h",
+	MAME_DIR .. "src/mame/shared/mega32x.cpp",
+	MAME_DIR .. "src/mame/shared/mega32x.h",
+	MAME_DIR .. "src/mame/shared/megacdcd.cpp",
+	MAME_DIR .. "src/mame/shared/megacdcd.h",
+	MAME_DIR .. "src/mame/shared/microtouchlayout.cpp",
+	MAME_DIR .. "src/mame/shared/microtouchlayout.h",
+	MAME_DIR .. "src/mame/shared/mitcrt.cpp",
+	MAME_DIR .. "src/mame/shared/mitcrt.h",
+	MAME_DIR .. "src/mame/shared/ms7004.cpp",
+	MAME_DIR .. "src/mame/shared/ms7004.h",
+	MAME_DIR .. "src/mame/shared/namco_c355spr.cpp",
+	MAME_DIR .. "src/mame/shared/namco_c355spr.h",
+	MAME_DIR .. "src/mame/shared/pcshare.cpp",
+	MAME_DIR .. "src/mame/shared/pcshare.h",
+	MAME_DIR .. "src/mame/shared/pk8000_v.cpp",
+	MAME_DIR .. "src/mame/shared/pk8000_v.h",
+	MAME_DIR .. "src/mame/shared/rax.cpp",
+	MAME_DIR .. "src/mame/shared/rax.h",
+	MAME_DIR .. "src/mame/shared/s11c_bg.cpp",
+	MAME_DIR .. "src/mame/shared/s11c_bg.h",
+	MAME_DIR .. "src/mame/shared/sec.cpp",
+	MAME_DIR .. "src/mame/shared/sec.h",
+	MAME_DIR .. "src/mame/shared/segam1audio.cpp",
+	MAME_DIR .. "src/mame/shared/segam1audio.h",
+	MAME_DIR .. "src/mame/shared/seibusound.cpp",
+	MAME_DIR .. "src/mame/shared/seibusound.h",
+	MAME_DIR .. "src/mame/shared/taito68705.cpp",
+	MAME_DIR .. "src/mame/shared/taito68705.h",
+	MAME_DIR .. "src/mame/shared/taitosnd.cpp",
+	MAME_DIR .. "src/mame/shared/taitosnd.h",
+	MAME_DIR .. "src/mame/shared/tecmo_spr.cpp",
+	MAME_DIR .. "src/mame/shared/tecmo_spr.h",
+	MAME_DIR .. "src/mame/shared/teleprinter.cpp",
+	MAME_DIR .. "src/mame/shared/teleprinter.h",
+	MAME_DIR .. "src/mame/shared/timeplt_a.cpp",
+	MAME_DIR .. "src/mame/shared/timeplt_a.h",
+	MAME_DIR .. "src/mame/shared/vboysound.cpp",
+	MAME_DIR .. "src/mame/shared/vboysound.h",
+	MAME_DIR .. "src/mame/shared/vt100_kbd.cpp",
+	MAME_DIR .. "src/mame/shared/vt100_kbd.h",
+	MAME_DIR .. "src/mame/shared/williamssound.cpp",
+	MAME_DIR .. "src/mame/shared/williamssound.h",
+	MAME_DIR .. "src/mame/shared/wswansound.cpp",
+	MAME_DIR .. "src/mame/shared/wswansound.h",
+	MAME_DIR .. "src/mame/shared/xbox.cpp",
+	MAME_DIR .. "src/mame/shared/xbox.h",
+	MAME_DIR .. "src/mame/shared/xbox_nv2a.cpp",
+	MAME_DIR .. "src/mame/shared/xbox_nv2a.h",
+	MAME_DIR .. "src/mame/shared/xbox_pci.cpp",
+	MAME_DIR .. "src/mame/shared/xbox_pci.h",
+	MAME_DIR .. "src/mame/shared/xbox_usb.cpp",
+	MAME_DIR .. "src/mame/shared/xbox_usb.h",
+	MAME_DIR .. "src/mame/shared/z80bin.cpp",
+	MAME_DIR .. "src/mame/shared/z80bin.h",
+}
+end
+
+function linkProjects_mame_custom(_target, _subtarget)
+	links {
+		"mame_custom",
+	}
+end

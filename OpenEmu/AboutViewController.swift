@@ -81,7 +81,7 @@ final class AboutViewController: NSViewController {
     }
     
     @objc dynamic lazy var specialThanks: NSAttributedString = {
-        let msg = NSLocalizedString("Special thanks to everyone that made\nBit possible. To find out more\nabout our contributors, emulator cores,\ndocumentation, licenses and to issue\nbugs please visit us on our GitHub.", comment: "Special thanks message (about window).")
+        let msg = NSLocalizedString("Special thanks to everyone that made\nBit possible. Including the original devs of openemu, bazley82, and pystIC. To find out more\nabout our contributors, emulator cores,\ndocumentation, licenses and to issue\nbugs please visit us on our GitHub.", comment: "Special thanks message (about window).")
         let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
         paragraphStyle.alignment = .center
         paragraphStyle.lineHeightMultiple = 1.225
