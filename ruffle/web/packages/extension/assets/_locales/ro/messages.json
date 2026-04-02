@@ -1,0 +1,131 @@
+{
+    "settings_ruffle_enable": {
+        "message": "Redă conținut Flash în Ruffle"
+    },
+    "settings_ignore_optout": {
+        "message": "Redă conținut Flash chiar și pe site-urile care nu permit Ruffle"
+    },
+    "settings_show_swf_download": {
+        "message": "Afișează descărcarea de SWF-uri în meniul contextual"
+    },
+    "settings_autostart": {
+        "message": "Redă automat conținut Flash (dă clic pentru a dezmuți)"
+    },
+    "settings_swf_takeover": {
+        "message": "Redați fișiere SWF în browser în loc să le descărcați"
+    },
+    "settings_log_level": {
+        "message": "Nivel pentru jurnale"
+    },
+    "settings_log_level_error": {
+        "message": "Erori"
+    },
+    "settings_log_level_warn": {
+        "message": "Avertismente"
+    },
+    "settings_log_level_info": {
+        "message": "Informații"
+    },
+    "settings_log_level_debug": {
+        "message": "Depanare"
+    },
+    "settings_log_level_trace": {
+        "message": "Urmărire"
+    },
+    "settings_max_execution_duration": {
+        "message": "Durată maximă permisă de execuție pentru ActionScript (în secunde)"
+    },
+    "settings_player_version": {
+        "message": "Numărul versiunii Flash Player de emulat (interval 1-32)"
+    },
+    "settings_preferred_renderer": {
+        "message": "Renderer preferat"
+    },
+    "settings_preferred_renderer_auto": {
+        "message": "Automat"
+    },
+    "settings_device_font_renderer": {
+        "message": "Randator de font de dispozitiv"
+    },
+    "device_font_renderer_embedded": {
+        "message": "Încorporat"
+    },
+    "settings_advanced_options": {
+        "message": "Opțiuni avansate"
+    },
+    "settings_reset": {
+        "message": "Resetează setările"
+    },
+    "settings_reset_confirm": {
+        "message": "Sigur vrei să restaurezi setările Ruffle la valorile implicite inițiale?"
+    },
+    "status_init": {
+        "message": "Se citește fila actuală…"
+    },
+    "status_no_tabs": {
+        "message": "Nu există nicio filă activă."
+    },
+    "status_tabs_error": {
+        "message": "A apărut o eroare la găsirea filei actuale."
+    },
+    "status_message_init": {
+        "message": "Se verifică starea Ruffle în fila actuală…"
+    },
+    "status_result_running": {
+        "message": "Ruffle este pregătit să ruleze conținut Flash în fila actuală."
+    },
+    "status_result_running_protected": {
+        "message": "Ruffle este gata să ruleze conținutul Flash pe care îl solicitați."
+    },
+    "status_result_optout": {
+        "message": "Ruffle nu se poate încărca deoarece pagina actuală s-a marcat ca fiind incompatibilă."
+    },
+    "status_result_disabled": {
+        "message": "Ruffle este dezactivat."
+    },
+    "status_result_error": {
+        "message": "A apărut o eroare la interogarea instanței Ruffle din fila actuală."
+    },
+    "status_result_protected": {
+        "message": "Ruffle nu se poate încărca pe paginile protejate ale browserului."
+    },
+    "action_reload": {
+        "message": "Reîncarcă fila pentru a aplica modificările"
+    },
+    "open_player_page": {
+        "message": "Deschideți playerul SWF"
+    },
+    "open_settings_page": {
+        "message": "Deschide pagina cu setări"
+    },
+    "settings_page": {
+        "message": "Pagina cu setări"
+    },
+    "description": {
+        "message": "Pune Flash înapoi pe web unde îi este locul."
+    },
+    "save_settings": {
+        "message": "Salvează setările"
+    },
+    "settings_saved": {
+        "message": "Setări salvate"
+    },
+    "onboarding_page": {
+        "message": "Pagina de integrare"
+    },
+    "permissions_grant": {
+        "message": "Îi acord lui Ruffle permisiunea de a accesa datele mele pe toate site-urile"
+    },
+    "permissions_not_granted": {
+        "message": "Va trebui să dați clic pe pictograma Ruffle pe fiecare site pe care doriți să utilizați Ruffle"
+    },
+    "grant_single_site_permission": {
+        "message": "Activați permanent pentru acest site"
+    },
+    "permissions_explanation": {
+        "message": "Extensia Ruffle funcționează cel mai bine când are posibilitatea să acceseze datele de pe toate site-urile web. Acest lucru îi permite să ruleze atunci când se încarcă pentru prima dată un site web, deoarece a convins site-urile web care detectează Flash Player să permită imediat rularea conținutului Flash. De asemenea, îi oferă posibilitatea de a încărca fișiere SWF în pagina internă a playerului din alte locații de pe web și îi permite să încarce automat link-uri SWF directe în pagina respectivă. Dacă nu acordați această permisiune, va trebui să activați Ruffle manual pe fiecare site web pe care doriți să îl utilizați, făcând clic pe pictograma extensiei și activând-o pentru site-ul web respectiv."
+    },
+    "swf_player_permissions": {
+        "message": "Trebuie să acordați permisiunea acestei origini URL pentru a încărca fișiere SWF de la aceasta."
+    }
+}

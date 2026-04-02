@@ -1,0 +1,123 @@
+name: Nexus (Development)
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - 'release/**'
+      - 'hotfix/**'
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    container:
+      image: electronuserland/builder:18-wine
+        
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: actions/cache@v3
+      id: cache
+      with:
+        path: | 
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('package.json') }}
+    - name: Fix git perms issue
+      run: git config --global --add safe.directory /__w/launcher/launcher
+    - name: Install Dependencies
+      run: npm install
+      if: steps.cache.outputs.cache-hit != 'true'
+      env:
+        CI: true
+    - name: Build
+      env:
+        NODE_ENV: "production"
+        PACK_ARCH: "ia32"
+        PACK_PLATFORM: "win32"
+      run: npm run build
+    - name: Create wine prefix folder
+      run: mkdir /__w/launcher/launcher/wine
+    - name: Pack
+      env:
+        WINEPREFIX: "/__w/launcher/launcher/wine"
+      run: npm run nexusPack
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Flashpoint-Launcher
+        path: dist/Flashpoint.zip
+    - name: Generate Metadata
+      run: |
+        apt-get update
+        apt-get install libarchive-zip-perl p7zip-full jq -y
+        jq --null-input \
+          --arg name     "Launcher" \
+          --arg desc     "Launcher for browsing and running games" \
+          --arg date     $(date +%s) \
+          --arg download $(du -b dist/Flashpoint.zip | awk '{print $1}') \
+          --arg install  $(7z l dist/Flashpoint.zip | tail -n 1 | awk '{print $3}') \
+          --arg path     "Launcher" \
+          --arg depends  "core-logos core-credits core-database core-server-gamezip core-server-legacy" \
+          --arg hash     $(crc32 dist/Flashpoint.zip) \
+          '{ 
+            "title": $name,
+            "description": $desc,
+            "date-modified": $date,
+            "download-size": $download,
+            "install-size": $install,
+            "path": $path,
+            "depends": $depends,
+            "crc32": $hash 
+          }' > metadata.json
+        ls -la
+        cat metadata.json
+    - name: Deploy to Nexus
+      uses: sonatype-nexus-community/nexus-repo-github-action@master
+      with:
+        serverUrl: https://nexus-dev.unstable.life
+        username: github
+        password: ${{ secrets.NEXUS_PASSWORD }}
+        format: raw
+        repository: components
+        coordinates: directory=/
+        assets: filename=core-launcher.zip
+        filename: dist/Flashpoint.zip
+    - name: Deploy Metadata to Nexus
+      uses: sonatype-nexus-community/nexus-repo-github-action@master
+      with:
+        serverUrl: https://nexus-dev.unstable.life
+        username: github
+        password: ${{ secrets.NEXUS_PASSWORD }}
+        format: raw
+        repository: components
+        coordinates: directory=/
+        assets: filename=core-launcher.json
+        filename: metadata.json
+    - name: Generate components.xml
+      run: |
+        git clone https://gitlab.unstable.life/flashpoint/docker/nexus-deploy-action.git nexus
+        cd nexus
+        python3 ./merge-metadata.py "https://nexus-dev.unstable.life/service/rest/v1/search?repository=development&name=*.json" components.xml "https://nexus-dev.unstable.life/repository/development/"
+    - name: Deploy components.xml to Nexus
+      uses: sonatype-nexus-community/nexus-repo-github-action@master
+      with:
+        serverUrl: https://nexus-dev.unstable.life
+        username: github
+        password: ${{ secrets.NEXUS_PASSWORD }}
+        format: raw
+        repository: components
+        coordinates: directory=/
+        assets: filename=components.xml
+        filename: ./nexus/components.xml
+    - name: Discord Webhook Action
+      uses: tsickert/discord-webhook@v6.0.0
+      with:
+        webhook-url: ${{ secrets.WEBHOOK_URL }}
+        embed-title: Launcher Dev build deployed
+        embed-url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        embed-description: "${{ github.event.head_commit.message }}"
+        embed-thumbnail-url: "https://github.com/FlashpointProject/launcher/blob/master/icons/icon.png?raw=true"
+

@@ -1,0 +1,9 @@
+num_frames = 1
+
+[image_comparisons.output]
+tolerance = 12
+
+[player_options]
+with_renderer = { quality = "low" }
+# TODO Fix this test. It shouldn't depend on the default font.
+with_default_font = true

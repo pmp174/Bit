@@ -31,6 +31,9 @@ class BlankSlateView: NSView {
     enum Mode {
         case homebrewLoading
         case homebrewError(Error?)
+        case flashpointLoading
+        case flashpointError(Error?)
+        case flashpointNotConfigured
     }
     
     private enum Layout {
@@ -320,6 +323,24 @@ class BlankSlateView: NSView {
                 
                 headline = NSLocalizedString("Homebrew Games", comment: "")
                 informationalText = error?.localizedDescription ?? ""
+            case .flashpointLoading:
+                isLoading = true
+                boxText = NSLocalizedString("Loading Flash Games…", comment: "Flashpoint Blank Slate View Loading Info")
+                
+                headline = NSLocalizedString("Flashpoint Games", comment: "")
+                informationalText = NSLocalizedString("Fetching games from the Flashpoint archive.", comment: "")
+            case let .flashpointError(error):
+                boxImage = NSImage(named: "blank_slate_warning")
+                boxText = NSLocalizedString("Could Not Load Database", comment: "Flashpoint Blank Slate View Error Info")
+                
+                headline = NSLocalizedString("Flashpoint Games", comment: "")
+                informationalText = error?.localizedDescription ?? ""
+            case .flashpointNotConfigured:
+                boxImage = NSImage(named: "blank_slate_arrow")
+                boxText = NSLocalizedString("Drag & Drop Flash Games Here", comment: "Flashpoint Blank Slate View Not Configured")
+                
+                headline = NSLocalizedString("Flash Games", comment: "")
+                informationalText = NSLocalizedString("Add .swf files to your Flash game library using the + button or by dragging them here. Use the search field to browse the Flashpoint game archive.", comment: "")
             }
         }
         else {

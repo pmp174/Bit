@@ -1,0 +1,2 @@
+num_ticks = 1
+ignore = true # Test crashes due to stack overflow when serializing recursive object

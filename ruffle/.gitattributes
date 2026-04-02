@@ -1,0 +1,18 @@
+# Enforce LF line endings for text files
+*      text=auto eol=lf
+
+# Set *.as files as ActionScript, vs. GitHub's guess of AngelScript
+*.as   linguist-language=ActionScript
+
+# Properly detect files as GLSL on Github
+*.frag			linguist-language=GLSL
+*.vert			linguist-language=GLSL
+
+# Binary files
+*.png  binary
+*.fla  binary
+*.swf  binary
+*.swc  binary
+
+# Ignore test files from GitHub's language stats
+tests/tests/swfs/** linguist-vendored

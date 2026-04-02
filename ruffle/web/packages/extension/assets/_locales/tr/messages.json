@@ -1,0 +1,131 @@
+{
+    "settings_ruffle_enable": {
+        "message": "Flash içeriğini Ruffle'da oynat"
+    },
+    "settings_ignore_optout": {
+        "message": "Ruffle'a izin vermeyen sitelerde bile Flash içeriği oynat"
+    },
+    "settings_show_swf_download": {
+        "message": "Bağlam menüsünde SWF indirmesini göster"
+    },
+    "settings_autostart": {
+        "message": "Açılış ekranı olmadan otomatik olarak oynat (sonrasında sesi açmak için tıkla)"
+    },
+    "settings_swf_takeover": {
+        "message": "SWF dosyalarını indirmek yerine tarayıcıda oynat"
+    },
+    "settings_log_level": {
+        "message": "Kayıt düzeyi"
+    },
+    "settings_log_level_error": {
+        "message": "Hatalar"
+    },
+    "settings_log_level_warn": {
+        "message": "Uyarılar"
+    },
+    "settings_log_level_info": {
+        "message": "Bilgi"
+    },
+    "settings_log_level_debug": {
+        "message": "Hata ayıklama"
+    },
+    "settings_log_level_trace": {
+        "message": "İzle"
+    },
+    "settings_max_execution_duration": {
+        "message": "İzin verilen maksimum ActionScript yürütme süresi (saniye olarak)"
+    },
+    "settings_player_version": {
+        "message": "Benzetilecek Flash oynatıcı sürüm numarası (aralık 1-32)"
+    },
+    "settings_preferred_renderer": {
+        "message": "Tercih edilen işleyici"
+    },
+    "settings_preferred_renderer_auto": {
+        "message": "Otomatik"
+    },
+    "settings_device_font_renderer": {
+        "message": "Cihaz yazı tipi oluşturucusu"
+    },
+    "device_font_renderer_embedded": {
+        "message": "Gömülü"
+    },
+    "settings_advanced_options": {
+        "message": "Gelişmiş seçenekler"
+    },
+    "settings_reset": {
+        "message": "Ayarları sıfırla"
+    },
+    "settings_reset_confirm": {
+        "message": "Ruffle seçeneklerini orijinal varsayılanlarına geri yüklemek istediğinize emin misiniz?"
+    },
+    "status_init": {
+        "message": "Geçerli sekme okunuyor…"
+    },
+    "status_no_tabs": {
+        "message": "Aktif sekme yok."
+    },
+    "status_tabs_error": {
+        "message": "Geçerli sekme aranırken bir hata oluştu."
+    },
+    "status_message_init": {
+        "message": "Mevcut sekmede Ruffle'ın durumu kontrol ediliyor…"
+    },
+    "status_result_running": {
+        "message": "Ruffle yüklendi ve mevcut sekmede Flash içeriğini çalıştırmaya hazır."
+    },
+    "status_result_running_protected": {
+        "message": "Ruffle yüklendi ve istediğiniz Flash içeriğini çalıştırıyor."
+    },
+    "status_result_optout": {
+        "message": "Geçerli sayfa kendisini uyumsuz olarak işaretlediğinden Ruffle yüklenmedi."
+    },
+    "status_result_disabled": {
+        "message": "Ruffle devre dışı olduğu için yüklenmedi."
+    },
+    "status_result_error": {
+        "message": "Geçerli sekmenin Ruffle örneği sorgulanırken bir hata oluştu."
+    },
+    "status_result_protected": {
+        "message": "Ruffle korumalı tarayıcı sayfalarına yüklenemez."
+    },
+    "action_reload": {
+        "message": "Değişiklikleri uygulamak için sekmeyi yenile"
+    },
+    "open_player_page": {
+        "message": "SWF oynatıcıyı aç"
+    },
+    "open_settings_page": {
+        "message": "Ayarlar sayfasını aç"
+    },
+    "settings_page": {
+        "message": "Ayarlar sayfası"
+    },
+    "description": {
+        "message": "Flash'ı ağda ait olduğu yere geri koyar."
+    },
+    "save_settings": {
+        "message": "Ayarları kaydet"
+    },
+    "settings_saved": {
+        "message": "Ayarlar kaydedildi"
+    },
+    "onboarding_page": {
+        "message": "Karşılama sayfası"
+    },
+    "permissions_grant": {
+        "message": "Ruffle'a verilerime tüm sitelerde erişmesine izin ver"
+    },
+    "permissions_not_granted": {
+        "message": "Ruffle'ı kullanmak istediğiniz her site için Ruffle simgesine tıklamanız gerekecek"
+    },
+    "grant_single_site_permission": {
+        "message": "Bu site için kalıcı olarak aktif et"
+    },
+    "permissions_explanation": {
+        "message": "Ruffle uzantısı, tüm web sitelerinde veri erişimine izin verildiğinde en iyi şekilde çalışır. Bu, herhangi bir web sitesi ilk yüklendiğinde çalışmasına ve Flash Player algılama yapan web sitelerini hemen Flash içeriğinin çalışmasına izin vermelerine olanak tanır. Ayrıca, web üzerindeki diğer konumlardan SWF dosyalarını dahili oynatıcı sayfasına yükleyebilme özelliğine sahiptir. Bu izni vermezseniz, Ruffle'ı kullanmak istediğiniz her web sitesinde manuel olarak etkinleştirmeniz gerekecektir; bunun için uzantı simgesine tıklayarak ilgili web sitesi için etkinleştirmeniz gerekir."
+    },
+    "swf_player_permissions": {
+        "message": "SWF'leri indirmek için bu URL kaynağına izin vermeniz gerekir."
+    }
+}

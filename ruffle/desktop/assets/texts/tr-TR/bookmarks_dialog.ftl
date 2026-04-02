@@ -1,0 +1,6 @@
+bookmarks-dialog = Yer işaretlerini yönet
+bookmark-dialog-add = Yer işareti ekle
+bookmarks-dialog-name = Ad
+bookmarks-dialog-location = Konum
+bookmarks-dialog-no-bookmarks = Şu anda hiçbir yer işareti yok
+bookmarks-dialog-not-selected = Gösterilecek bir şey yok

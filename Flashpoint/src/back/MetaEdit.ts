@@ -1,0 +1,385 @@
+import { ImportMetaEditResult, MetaEditGameNotFound } from '@shared/back/types';
+import { ChangedMeta, MetaChange, MetaChangeBase, MetaEditFile, MetaEditMeta, MetaEditMetaMap, stringifyMetaValue } from '@shared/MetaEdit';
+import { readJsonFile, shallowStrictEquals } from '@shared/Util';
+import * as Coerce from '@shared/utils/Coerce';
+import { IObjectParserProp, ObjectParser } from '@shared/utils/ObjectParser';
+import * as fs from 'fs';
+import * as path from 'path';
+import { BackState, ShowMessageBoxFunc } from './types';
+import { awaitDialog } from './util/dialog';
+import { copyError } from './util/misc';
+import { fpDatabase } from '.';
+import { Game, Tag } from 'flashpoint-launcher';
+
+const { str } = Coerce;
+
+export function parseMetaEdit(data: any, onError?: (error: string) => void): MetaEditFile {
+  const parser = new ObjectParser({
+    input: data,
+    onError: onError && ((e) => { onError(`Error while parsing Exec Mappings: ${e.toString()}`); })
+  });
+
+  const parsed: MetaEditFile = {
+    metas: [],
+    launcherVersion: '',
+  };
+
+  parser.prop('metas').array(v => parsed.metas.push(parseMetaEditMeta(v)));
+  parser.prop('launcherVersion', v => parsed.launcherVersion = str(v));
+
+  return parsed;
+}
+
+function parseMetaEditMeta(parser: IObjectParserProp<any>) : MetaEditMeta {
+  const parsed: MetaEditMeta = {
+    id: '',
+  };
+
+  parser.prop('id',                  v => parsed.id                  = str(v));
+  parser.prop('title',               v => parsed.title               = str(v), true);
+  parser.prop('alternateTitles',     v => parsed.alternateTitles     = str(v), true);
+  parser.prop('series',              v => parsed.series              = str(v), true);
+  parser.prop('developer',           v => parsed.developer           = str(v), true);
+  parser.prop('publisher',           v => parsed.publisher           = str(v), true);
+  parser.prop('playMode',            v => parsed.playMode            = str(v), true);
+  parser.prop('status',              v => parsed.status              = str(v), true);
+  parser.prop('notes',               v => parsed.notes               = str(v), true);
+  parser.prop('source',              v => parsed.source              = str(v), true);
+  parser.prop('releaseDate',         v => parsed.releaseDate         = str(v), true);
+  parser.prop('version',             v => parsed.version             = str(v), true);
+  parser.prop('originalDescription', v => parsed.originalDescription = str(v), true);
+  parser.prop('language',            v => parsed.language            = str(v), true);
+  parser.prop('library',             v => parsed.library             = str(v), true);
+  parser.prop('platform',            v => parsed.platforms?.push(str(v)));
+
+  parser.prop('platforms', v => parsed.platforms = (v !== undefined) ? [] : undefined, true).arrayRaw(v => {
+    if (!parsed.platforms) { throw new Error('"parsed.tags" is missing (bug)'); }
+    parsed.platforms.push(str(v));
+  });
+  parser.prop('tags', v => parsed.tags = (v !== undefined) ? [] : undefined, true).arrayRaw(v => {
+    if (!parsed.tags) { throw new Error('"parsed.tags" is missing (bug)'); }
+    parsed.tags.push(str(v));
+  });
+
+  return parsed;
+}
+
+type LoadedMetaEditFile = {
+  filename: string;
+  mtime: number;
+  content: MetaEditFile;
+}
+
+/** Collection of combined metas (one per game). */
+type CombinedMetaRecord = {
+  [game_id in string]?: CombinedMetas;
+}
+
+/** Combination of all changes made to a single game from multiple meta edits. */
+type CombinedMetas = {
+  [property_name in keyof MetaEditMetaMap]?: MetaChangeBase<property_name>[];
+}
+
+/**
+ * Import all meta edits from a folder.
+ *
+ * @param fullMetaEditsFolderPath Path to load meta edit files from.
+ * @param openDialog Function used to open a message box for prompting on collisions
+ * @param state Back State
+ */
+export async function importAllMetaEdits(fullMetaEditsFolderPath: string, openDialog: ShowMessageBoxFunc, state: BackState): Promise<ImportMetaEditResult> {
+  const errors: Error[] = [];
+
+  // Load all meta edit files
+  const files: LoadedMetaEditFile[] = [];
+  try {
+    const filenames = await fs.promises.readdir(fullMetaEditsFolderPath);
+
+    for (const filename of filenames) {
+      try {
+        const fullFilename = path.join(fullMetaEditsFolderPath, filename);
+
+        const stats = await fs.promises.stat(fullFilename);
+
+        const raw = await readJsonFile(fullFilename);
+        const parsed = parseMetaEdit(raw);
+
+        files.push({
+          filename: filename,
+          mtime: stats.mtimeMs,
+          content: parsed,
+        });
+      } catch (error: any) { errors.push(error); }
+    }
+  } catch (error: any) { errors.push(error); }
+
+  // Abort if any file failed to load
+  if (errors.length > 0) {
+    return {
+      aborted: true,
+      errors: errors,
+    };
+  }
+
+  // Order meta edits
+  files.sort((a, b) => a.mtime - b.mtime); // Oldest first
+
+  // Combine edits from all meta edits
+  const combinedMetas: CombinedMetaRecord = {};
+  for (const file of files) {
+    for (const meta of file.content.metas) {
+      let combined = combinedMetas[meta.id];
+      if (!combined) {
+        combined = combinedMetas[meta.id] = {};
+      }
+
+      const keys = Object.keys(meta) as (keyof typeof meta)[];
+      for (const key of keys) {
+        if (key !== 'id') { // (ID is for identification, not to be modified)
+          // TODO: Fix values typing later
+          let values: any = combined[key];
+          if (!values) {
+            values = combined[key] = [];
+          }
+
+          const metaValue = meta[key];
+          const isDuplicate = values.some((val: MetaChangeBase<keyof MetaEditMetaMap>) => (
+            (val.value === metaValue) ||
+            (Array.isArray(val.value) && Array.isArray(metaValue) && shallowStrictEquals(val.value, metaValue)) // tags
+          ));
+
+          if (!isDuplicate) { // Only store unique values
+            values.push({
+              filename: file.filename,
+              value: meta[key] as any, // Good luck getting this typesafe
+            });
+          }
+        }
+      }
+    }
+  }
+  const combinedMetasKeys = Object.keys(combinedMetas);
+
+  // Find games (& check for missing games)
+  const games: Partial<Record<string, Game>> = {};
+  const notFound: MetaEditGameNotFound[] = [];
+  for (const id of combinedMetasKeys) {
+    const game = await fpDatabase.findGame(id);
+
+    if (game) {
+      games[id] = game;
+    } else { // Game not found
+      const combined = combinedMetas[id];
+      if (!combined) { throw new Error(`Failed to check for collisions. "combined meta" is missing (id: "${id}") (bug)`); }
+
+      // List all filenames that edits the game
+      const filenames: string[] = [];
+      const keys = Object.keys(combined) as (keyof typeof combined)[];
+      for (const property of keys) {
+        const values = combined[property];
+        if (!values || !values[0]) { throw new Error(`Failed to note missing game. "values" is missing (id: "${id}", property: "${property}") (bug)`); }
+
+        for (const edit of values) {
+          if (filenames.indexOf(edit.filename) === -1) {
+            filenames.push(edit.filename);
+          }
+        }
+      }
+
+      notFound.push({
+        filenames: filenames,
+        id: id,
+      });
+    }
+  }
+
+  // Check for collisions
+  // (Remove all duplicate values for each property of each game)
+  for (const id of combinedMetasKeys) {
+    const combined = combinedMetas[id];
+    if (!combined) { throw new Error(`Failed to check for collisions. "combined meta" is missing (id: "${id}") (bug)`); }
+
+    const game = games[id];
+    if (!game) { continue; } // Skip missing games
+
+    const keys = Object.keys(combined) as (keyof typeof combined)[];
+    for (const property of keys) {
+      const values = combined[property];
+      if (!values) { throw new Error(`Failed to check for collisions. "values" is missing (id: "${id}", property: "${property}") (bug)`); }
+
+      if (values.length > 1) { // Collision
+        const dialogId = await openDialog({
+          message: `${values.length} meta edits wants to change the same property.\n`+
+            `Title: ${game.title}\n`+
+            `ID: ${id}\n\n`+
+            `Property: ${property}\n`+
+            `Current Value: ${`${stringifyMetaValue(game[property])}`}\n\n`+
+            'Select the value to apply:',
+          buttons: [
+            ...(values as MetaChangeBase<keyof MetaEditMetaMap>[]).map(v => stringifyMetaValue(v.value)),
+            'Abort Import',
+          ],
+          cancelId: values.length,
+        });
+        const buttonIndex = (await awaitDialog(state, dialogId)).buttonIdx;
+
+        if (buttonIndex === values.length) { // Abort clicked
+          return { aborted: true };
+        } else { // Value selected
+          // Swap the place of the selected and the first item
+          const selectedValue = values[buttonIndex];
+          const firstValue = values[0];
+          values[buttonIndex] = firstValue;
+          values[0] = selectedValue;
+        }
+      }
+    }
+  }
+
+  // Discard all values that are identical to the current values
+  const changedMetas: ChangedMeta[] = [];
+  for (const id of combinedMetasKeys) {
+    const combined = combinedMetas[id];
+    if (!combined) { throw new Error(`Failed to GIDDY UP PARTNER. "combined meta" is missing (id: "${id}") (bug)`); }
+
+    const game = games[id];
+    if (!game) { continue; } // Skip missing games
+
+    const changedMeta: ChangedMeta = {
+      id: id,
+      title: game.title,
+      apply: [],
+      discard: [],
+    };
+    changedMetas.push(changedMeta);
+
+    const keys = Object.keys(combined) as (keyof typeof combined)[];
+    for (const property of keys) {
+      const values = combined[property];
+      if (!values || !values[0]) { throw new Error(`Failed to GIDDY UP PARTNER. "values" is missing (id: "${id}", property: "${property}") (bug)`); }
+
+      let prevValue;
+      switch (property) {
+        default:
+          prevValue = game[property];
+      }
+      // First value
+      const change: MetaChange<typeof property> = {
+        ...values[0],
+        property,
+        prevValue
+      };
+
+      if (property === 'tags') {
+        const tags = values[0].value;
+        if (!Array.isArray(tags)) { throw new Error(`Failed to GIDDY UP PARTNER. "tags" is not an array (id: "${id}", value: "${tags}") (bug)`); }
+
+        if ((game.tags.length === tags.length) && game.tags.every((tag, i) => tag === tags[i])) {
+          changedMeta.discard.push(change);
+        } else {
+          changedMeta.apply.push(change);
+        }
+      } else {
+        if (game[property] === values[0].value) {
+          changedMeta.discard.push(change);
+        } else {
+          changedMeta.apply.push(change);
+        }
+      }
+
+      // All other values (rejected configs)
+      for (let i = 1; i < values.length; i++) {
+        if (property === 'tags') {
+          if (!Array.isArray(values[i].value)) { throw new Error(`Failed to GIDDY UP PARTNER. "tags" is not an array (id: "${id}", value: "${values[i].value}") (bug)`); }
+        }
+
+        let prevValue;
+        switch (property) {
+          default:
+            prevValue = game[property];
+        }
+        changedMeta.discard.push({
+          ...values[i],
+          property,
+          prevValue
+        });
+      }
+    }
+  }
+
+  // Apply changes
+  for (const changedMeta of changedMetas) {
+    const game = games[changedMeta.id];
+    if (!game) { throw new Error(`Failed to apply change. Game is not found (id: "${changedMeta.id}") (bug)`); }
+
+    for (const change of changedMeta.apply) {
+      if (change.property === 'tags') {
+        const tags = change.value;
+        if (!Array.isArray(tags)) { throw new Error(`Failed to apply change. Tags is not an array (id: "${changedMeta.id}", typeof tags: "${typeof tags}") (bug)`); }
+
+        // Replace all tags of the game
+        const newTags: Tag[] = [];
+        for (const tagName of tags) {
+          let tag = await fpDatabase.findTag(tagName);
+          if (!tag) { tag = await fpDatabase.createTag(tagName); }
+          if (!tag) { throw new Error(`Failed to apply change. Failed to find and create tag for game (tag: "${tagName}").`); }
+          newTags.push(tag);
+        }
+        game.tags = newTags.map(t => t.name);
+      } else {
+        try {
+          paranoidSetGameProperty(game, change.property, change.value);
+        } catch (error) {
+          const e = copyError(error);
+          e.message = e.message + ` (id: ${changedMeta.id}) (bug)`;
+          errors.push(e);
+        }
+      }
+    }
+
+    await fpDatabase.saveGame(game);
+  }
+
+  return {
+    aborted: false,
+    changedMetas: changedMetas,
+    gameNotFound: notFound,
+    errors: errors,
+  };
+}
+
+/**
+ * Set the value of a games property (only some properties are supported).
+ * Throws an error if the property is not allowed or the value is of the incorrect type.
+ *
+ * @param game Game to set property for
+ * @param property Name of property to set
+ * @param value Value to set property to
+ */
+function paranoidSetGameProperty(game: Game, property: unknown, value: unknown): void {
+  const errorPrefix = 'Failed to set game property.';
+
+  if (typeof property !== 'string') { throw new Error(`${errorPrefix} Property is not a string (typeof property: ${typeof property}).`); }
+
+  switch (property) {
+    case 'title':
+    case 'alternateTitles':
+    case 'series':
+    case 'developer':
+    case 'publisher':
+    case 'playMode':
+    case 'status':
+    case 'notes':
+    case 'source':
+    case 'releaseDate':
+    case 'version':
+    case 'originalDescription':
+    case 'language':
+    case 'library':
+      if (typeof value !== 'string') { throw new Error(`${errorPrefix} Value is not a string (typeof value: "${typeof value}", property: "${property}").`); }
+      game[property] = value;
+      break;
+    default:
+      throw new Error(`${errorPrefix} Property "${property}" is not allowed.`);
+  }
+}

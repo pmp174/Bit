@@ -1,0 +1,3725 @@
+/* ====== CORE ======
+ *
+ * Contains all styles that are necessary for the application to be used.
+ * This includes styles that set things like position, size, "user-select" etc.
+ *
+ * The application should be completely usable with this style-sheet only.
+ *
+ */
+
+/* ------ General ------ */
+* {
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  height: 100%;
+}
+*:focus {
+  outline: none;
+}
+*:visited {
+  color: inherit;
+}
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+:root {
+  /* Root font size (Scales most stuff) */
+  font-size: 1em;
+  font-weight: 100;
+}
+
+body {
+  overflow: hidden;
+}
+
+/* Measure elements by the outline of their border instead of by their content */
+:root {
+  box-sizing: border-box;
+}
+*, ::before, ::after {
+  box-sizing: inherit;
+}
+
+/* ------ Icons ------ */
+.icon {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ------ Generic & Re-usable ------ */
+/* Simple Center */
+.simple-center {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.simple-center__inner {
+  display: inline-block;
+  text-align: center;
+}
+.simple-center__vertical-inner {
+  display: inline-block;
+  margin: 0 0.1em; /* This should be removed and applied separately (not all centered things needs a margin!) */
+}
+/* Simple Button */
+.simple-button {
+  min-height: 1.4em;
+  padding: 0 0.4em;
+  font-size: 0.875em;
+  border: 1px solid;
+  user-select: none;
+}
+/* Simple Selector */
+.simple-selector {
+  margin-right: 0.5em;
+  font-size: 1em;
+  font-weight: 100;
+  border: 1px solid;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-selector {
+  font-size: 1em;
+  font-weight: 100;
+  border: 1px solid;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Hidden Slider */
+.hidden-slider {
+  -webkit-appearance: none;
+  font-size: 1em;
+  --slider-size: 1em;
+}
+.hidden-slider::-webkit-slider-runnable-track {
+  height: 100%;
+  cursor: pointer;
+}
+.hidden-slider::-webkit-slider-thumb {
+  width: var(--slider-size);
+  height: var(--slider-size);
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+/* Simple Vertical Shake */
+.simple-vertical-shake {
+  animation: simple-vertical-shake 0.7s ease-in-out both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  --vertical-shake-amount: 0.125rem;
+}
+@keyframes simple-vertical-shake {
+  20% {
+    transform: translate3d(0, -calc(3 * var(--vertical-shake-amount)), 0);
+  }
+  40% {
+    transform: translate3d(0, calc(1 * var(--vertical-shake-amount)), 0);
+  }
+  60% {
+    transform: translate3d(0, -calc(1 * var(--vertical-shake-amount)), 0);
+  }
+  80% {
+    transform: translate3d(0, calc(1 * var(--vertical-shake-amount)), 0);
+  }
+}
+/* Simple Scroll(bar) */
+.simple-scroll {
+  --scrollbar-size: 0.85rem;
+}
+.simple-scroll::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+.simple-scroll::-webkit-scrollbar-corner {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+/* Simple Input (Input text field) */
+.simple-input {
+  padding-left: 0.2em;
+  border: none;
+}
+/* Simple Disabled Text */
+.simple-disabled-text {
+  cursor: default;
+  user-select: none;
+  font-style: italic;
+}
+/* Input Field */
+.input-field {
+  font-size: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+}
+.input-field--edit {
+  width: 100%;
+}
+.input-field.input-field--multiline {
+  display: block;
+  font-size: 0.9em;
+  width: 100%;
+  min-height: 1rem;
+  resize: vertical;
+  white-space: pre-wrap;
+}
+.input-field--multiline.input-field--edit {
+  height: 10em;
+}
+/* Simple Dropdown */
+.simple-dropdown {
+  --width: 11rem;
+  width: var(--width);
+  position: relative;
+}
+.simple-dropdown__select-box {
+  display: flex;
+  width: 100%;
+  cursor: default;
+  border: 1px solid;
+  padding: 1px; /* This makes it have the same size as <select> elements. Maybe it offsets the border? */
+  overflow: hidden;
+}
+.simple-dropdown__select-text {
+  padding-left: 0.2em;
+  flex: 1 0 auto;
+}
+.simple-dropdown__select-icon {
+  width: 1.25em;
+  align-self: center;
+  flex: 0 0 auto;
+  margin-top: -0.125em;
+}
+.simple-dropdown__select-icon:before {
+  content: "▾";
+}
+.simple-dropdown__content {
+  z-index: 10;
+  width: 100%;
+  display: block;
+  position: absolute;
+  /* Pimp */
+  border: 1px solid;
+}
+.simple-dropdown__content--hidden {
+  display: none;
+}
+.simple-dropdown-button {
+  font-style: normal;
+}
+.simple-dropdown-form__select-icon {
+  font-style: normal;
+}
+
+/* Input Dropdown */
+.input-dropdown {
+  position: relative;
+  height: 100%;
+}
+.input-dropdown__input-field {
+  position: relative;
+  display: flex;
+  width: 100%;
+  border: none !important;
+  /*padding: 0 0.1rem;*/
+}
+.input-dropdown__input-field__back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  user-select: none;
+  border: none;
+}
+.input-dropdown__input-field__input {
+  position: relative;
+  flex: 1 1 auto;
+}
+.input-dropdown__input-field__input__inner {
+  background: none;
+}
+.input-dropdown__input-field__button:before {
+  content: "▾";
+}
+.input-dropdown__input-field__button {
+  position: relative;
+  width: 1.25em;
+  flex: 0 0 auto;
+  text-align: center;
+  font-size: 0.75rem;
+  align-self: center;
+}
+.input-dropdown__content {
+  width: 100%;
+  display: block;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 2; /* Kind of a hacky fix - makes the drop-down selection not appear underneath the drop-downs that come after this */
+  /* Pimp */
+  border: 1px solid;
+}
+.input-dropdown__content--hidden {
+  display: none;
+}
+.input-dropdown__content label {
+  display: flex;
+}
+.input-dropdown__content label p {
+  display: inline-block;
+  overflow: hidden;
+}
+.tag-input-dropdown__suggestion {
+  display: flex;
+}
+.tag-input-dropdown__content {
+  display: flex;
+  flex-direction: column;
+}
+.tag-icon-image {
+  width: 1rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.tag-icon {
+  margin-right: 0.2em;
+  flex: none;
+}
+.tag-suggestion-label {
+  width: 100%;
+}
+.tag-label {
+  flex-grow: 1;
+  vertical-align: top;
+  text-align: left;
+}
+.tag-alias-label {
+  vertical-align: top;
+}
+.tag-inner {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.tag-count {
+  text-align: right;
+  flex-shrink: 0;
+}
+.tag-delete-icon {
+  margin-right: 0.5rem;
+}
+
+/* Log */
+.log {
+  height: 100%;
+  overflow: scroll;
+}
+/* Simple Columns */
+.simple-columns {
+  /*--columns: <Number of columns>;*/
+  /*--column-width: <Width of each column>;*/
+  /*--column-gutter: <Margin on the left and right side of each column>;*/
+  max-width: calc(var(--columns) * (var(--column-width) + var(--column-gutter)));
+  text-align: center;
+}
+.simple-columns__column {
+  display: inline-block;
+  width: var(--column-width);
+  margin: 0 calc(var(--column-gutter) * 0.5);
+  vertical-align: top;
+  text-align: initial;
+}
+
+
+/* ------ Search & SearchTag Components ------ */
+.search {
+  display: inline-flex;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0.25em;
+}
+.search__input, .search__input:active {
+  width: 0;
+  flex: 1;
+}
+.search__tag {
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
+  flex: 0 1 auto;
+  margin-right: 0.5em;
+  padding: 0.15em 0.25em;
+}
+.search__tag__text,
+.search__tag__text:active {
+  display: inline-block;
+  white-space: nowrap;
+}
+.search__tag__remove {
+  display: inline-block;
+  text-align: center;
+  width: 0.5em;
+  height: 0.5em;
+  margin-left: 0.25em;
+}
+.search__tag__remove__inner {
+  /* Pimp */
+  user-select: none;
+}
+
+/* ------ Image Preview ------ */
+.image-preview {
+  /* Fill entire screen */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  /* Pimp */
+  padding: 2rem;
+  z-index: 2;
+}
+.image-preview * {
+  user-select: none;
+}
+.image-preview__border {
+  width: 100%;
+  height: 100%;
+}
+.image-preview__image--fill {
+  cursor: zoom-out;
+}
+.image-preview__image--fit {
+  cursor: zoom-in;
+}
+
+
+/* ------ Meta Edit Exporter ------ */
+.meta-edit-exporter {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+.meta-edit-exporter * {
+  user-select: none;
+}
+.meta-edit-exporter__outer {
+  width: 100%;
+  height: 100%;
+}
+.meta-edit-exporter__inner {
+  width: fit-content;
+  margin: auto;
+  padding: 1rem;
+  overflow: auto;
+}
+.meta-edit-exporter__title {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+.meta-edit-exporter__rows {
+  width: fit-content;
+  margin: 0.5rem auto;
+  text-align: left;
+}
+.meta-edit-exporter__row-checkbox {
+  margin-right: 0.45rem;
+  vertical-align: middle;
+}
+.meta-edit-exporter__row-title {
+  display: inline;
+}
+
+
+/* ------ Main Layout ------ */
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.main {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+}
+
+
+/* ------ TitleBar ------ */
+.title-bar {
+  padding: 4px 0 0 4px;
+  -webkit-user-select: none; /* Disable text selection */
+  z-index: 1001; /* Hacky way of displaying it in from of the splash screen. */
+}
+.title-bar__inner {
+  display: flex;
+  flex: 0 0 auto;
+  height: 18px;
+  -webkit-app-region: drag; /* Dragging this moves the window */
+}
+.title-bar__build {
+  font-size: 0.85rem;
+  align-self: center;
+  margin-right: 0.5rem;
+}
+/* Title */
+.title-bar__title {
+  display: inline;
+  flex: 1;
+  position: relative;
+  top: -2px;
+  padding-left: 2px;
+  overflow: hidden;
+  /* Text */
+  font-size: 16px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* Button Bar */
+.title-bar__button-bar {
+  height: 22px;
+  flex: 0 1 auto;
+  display: block;
+  float: right;
+  position: relative;
+  top: -4px;
+}
+/* Button Bar Buttons */
+.title-bar__button-bar__min,
+.title-bar__button-bar__max,
+.title-bar__button-bar__cross {
+  height: 100%;
+  width: 28px;
+  float: left;
+  -webkit-app-region: no-drag;
+  /* Pimp */
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.3;
+}
+.title-bar__button-bar__min:hover,
+.title-bar__button-bar__max:hover,
+.title-bar__button-bar__cross:hover {
+  opacity: 1;
+}
+
+
+/* ------ Header ------ */
+.header {
+  --header-padding: 0.3em;
+  display: inline-flex;
+  flex-flow: wrap;
+  font-size: 0.75em;
+  padding: var(--header-padding);
+  padding-bottom: 0.4em;
+}
+.header__wrap {
+  min-height: 2rem;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.header__wrap--width-restricted {
+  max-width: calc(100vw - var(--header-padding));
+}
+.header__right {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+}
+.header__right > :first-child {
+  margin-left: auto;
+}
+.header__right > div > :not(:first-child) {
+  margin-right: 0.75rem;
+}
+.header-user-box {
+  display: flex;
+  flex-direction: row;
+  margin-right: 0.2rem;
+}
+.header-user-icon {
+  height: 1.7rem;
+  width: 1.7rem;
+  margin-right: 0.3rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.header-user-name {
+  align-self: center;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+/* Header Menu */
+.header__menu {
+  padding: 0.3em 0;
+  margin-right: 1em;
+  /* Pimp */
+  user-select: none;
+}
+.header__menu__item {
+  display: inline-block;
+  user-select: none;
+}
+.header__menu__item__icon {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.header__menu__item > .icon {
+  vertical-align: bottom;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.header__menu__item__link {
+  display: inline-block;
+  padding: 0.3em 0.7em;
+  border: 1px solid rgba(0,0,0,0);
+}
+/* Header Search */
+.header__search__wrap {
+  width: 13rem;
+  margin-right: 0.5em;
+}
+.header__search {
+  display: flex;
+  padding: 0rem 0.1rem 0rem 0.1rem;
+  overflow: hidden;
+}
+.header__search__left {
+  flex: 1 1 auto;
+}
+/** TODO - Stop this being so awful to look at */
+.header__search__left > .input-dropdown {
+  width: 12rem;
+}
+.header__search__left > .input-dropdown > .input-dropdown__content {
+  position: fixed;
+  width: 20rem;
+}
+.header__search__right {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.header__search__right__inner {
+  width: fit-content;
+  display: inline-flex;
+  margin: 0 auto;
+}
+.header__search__icon {
+  width: 0.9em;
+  height: 0.9em;
+}
+.header__search__icon.icon--magnifying-glass {
+  opacity: 0.4;
+}
+.header__search__input,
+.header__search__input:active {
+  font-size: 1em;
+  width: 100%;
+  background: none;
+  padding: 0.1rem;
+}
+/* Header Toggle-Sidebar */
+.header__toggle-sidebar {
+  float: right;
+  margin-right: 0.4rem;
+}
+.header__toggle-sidebar:hover {
+  cursor: pointer;
+}
+
+
+/* ------ Footer ------ */
+.footer {
+  display: inline-flex;
+  flex-flow: wrap;
+  /* Pimp */
+  user-select: none;
+  z-index: 1;
+}
+.footer__wrap {
+  align-self: center;
+  padding: 0.025rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.footer__left {
+  flex-grow: 1;
+}
+.footer__right {
+  margin-right: 0.3rem;
+  flex-grow: 0;
+}
+.footer__right__inner {
+  display: flex;
+  float: right;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.footer__left__inner {
+  display: flex;
+  float: left;
+  width: 100%;
+  flex-wrap: wrap;
+}
+/* Game Count */
+.footer__game-count {
+  margin-left: 0.3rem;
+  font-size: 0.9rem;
+  cursor: default;
+  align-self: center;
+}
+.footer__game-count p {
+  display: inline-block;
+}
+.footer__game-count p:not(:last-child) {
+  padding-right: 0.3rem;
+}
+/* Scale New-Game */
+.footer__new-game {
+  font-size: 0.8rem;
+}
+/* Layout Selector */
+.footer__layout-selector {
+  display: inline-block;
+  margin: 0 0.3em;
+  font-size: 0.8em;
+}
+/* Scale Slider */
+.footer__scale-slider {
+  flex: 1 1 auto;
+  min-width: 10rem;
+}
+.footer__scale-slider__inner {
+  --slider-size: 1em;
+  display: inline-block;
+  position: relative;
+  height: var(--slider-size);
+  cursor: pointer;
+  max-width: 10rem;
+}
+.footer__scale-slider__icon {
+  position: absolute;
+  height: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2em;
+}
+.footer__scale-slider__icon--left {
+  left: 0.25rem;
+}
+.footer__scale-slider__icon--center {
+  left: 50%;
+  width: 1px;
+  height: 60%;
+}
+.footer__scale-slider__icon--right {
+  right: 0.25rem;
+}
+.footer__scale-slider__input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.footer__scale-percent {
+  display: block;
+  width: 2.3em;
+}
+.footer__scale-percent p {
+  float: right;
+}
+/* Update Panel */
+.footer__update-panel {
+  border: 0px;
+  border-radius: 0px;
+  padding: 0.2rem 0.3rem 0.2rem 0.3rem;
+  padding-left: 0.3rem;
+  height: 100%;
+}
+
+/* ----- IFrame ----- */
+.iframe-page {
+  width: 100%;
+  height: 100%;
+}
+.iframe-page-inner {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ------ Home ------ */
+.home-page {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: auto;
+}
+.home-page__inner {
+  min-width: 40em;
+  overflow: visible;
+}
+/* Logo */
+.home-page__logo {
+  --size: 5rem;
+  margin: 0.5rem auto 1rem;
+  /* Keep the mask's aspect ratio */
+  width: var(--size);
+  height: calc(var(--size) * 0.9);
+}
+/* HomePage Box */
+.home-page__box {
+  display: block;
+  margin: 0 auto 1em;
+  width: 36em;
+  line-height: 1.3;
+  border: 1px solid;
+  user-select: none;
+}
+.home-page__box-head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid;
+  font-weight: bold;
+  text-align: left;
+}
+.home-page__box-head--title {
+  padding: 0.15rem 0.3rem;
+}
+.home-page__box-head--minimize {
+  width: 2rem;
+  border-left: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.home-page__box-body {
+  padding: 0.3rem;
+  text-align: center;
+}
+.home-page__box-item {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+.home-page__box-item:not(:last-child) {
+  margin-bottom: 0.1rem;
+}
+.home-page__box-item-icon {
+  display: flex;
+  margin: auto 0.35rem auto 0;
+}
+/* GOTD Box */
+.home-page__box-item--gotd {
+  flex-direction: row;
+  display: flex;
+}
+.home-page__box-item--gotd-left {
+  width: var(--width);
+  padding-left: 0.3rem;
+  padding-right: 0.6rem;
+  border-right: 1px solid;
+}
+.home-page__box-item--gotd-right {
+  margin-left: 0.6rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.home-page__box-item--gotd-author {
+  font-size: 1.25em;
+}
+.home-page__box-item--gotd-desc {
+  flex-grow: 1;
+}
+.home-page__box-item--gotd-date {
+  text-align: right;
+  margin-left: auto;
+}
+/* HomePage Box - Upgrades */
+.home-page__box--upgrades b,
+.home-page__box--upgrades i {
+  display: block;
+  text-align: center;
+  white-space: pre-line;
+}
+.home-page__box--updateFeed {
+  padding: unset;
+}
+/* HomePage Box Item - Platforms */
+.home-page__box-item--platforms {
+  padding: 0 1rem;
+  text-align: center;
+}
+/* HomePage Progress Components */
+.home-page__progress-wrapper {
+  font-size: 0.8em !important;
+  margin: 0 5%;
+}
+/* Update */
+.home-page__update-box {
+  text-align: center;
+}
+/* Random Games */
+.home-page__random-games {
+  text-align: center;
+}
+.home-page__random-games__inner {
+  display: inline-block;
+  margin: 0 auto;
+}
+.home-page__random-games__title {
+  margin: 0.2em 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.home-page__random-games__loading {
+  display: block;
+  text-align: center;
+}
+.home-page__platform-entry {
+  display: flex;
+  align-items: center;
+  width: 25%;
+  min-height: 2rem;
+  margin-bottom: 0.1rem;
+}
+.home-page__platform-entry__logo {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: auto;
+}
+.home-page__platform-entry__text {
+  flex-grow: 1;
+  text-align: left;
+  padding-left: 0.1rem;
+}
+.home-page__platform-box {
+  width: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+.home-page__update-button-container {
+  position: fixed;
+  left: 0;
+  margin: 0 0 0 0.5rem;
+}
+.home-page__update-button-container .simple-button {
+  font-size: 1.75em;
+  height: 1.5em;
+}
+.random-games {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ------ Page-Not-Found (404) ------ */
+.page-not-found {
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.page-not-found__error-number {
+  font-size: 8em;
+}
+.page-not-found__title {
+  font-size: 2em;
+  padding-bottom: 0.5em;
+}
+
+
+/* ------ About ------ */
+.about-page {
+  --columns: 2;
+  --column-width: 40em;
+  --column-gutter: 2em;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.about-page__inner {
+  display: flex;
+  flex-direction: column;
+  min-width: var(--column-width);
+  height: 100%;
+}
+.about-page__top {
+  flex: 1 0 auto;
+}
+.about-page__bottom {
+  flex: 0 0 auto;
+  padding: 0.5rem;
+  padding-bottom: 1rem;
+  text-align: center;
+}
+.about-page__bottom__inner {
+  display: inline-block;
+  text-align: left;
+  margin: auto;
+}
+.about-page__bottom__quote {
+  font-style: italic;
+  user-select: none;
+}
+.about-page__bottom__author {
+  user-select: none;
+}
+.about-page__title {
+  font-size: 2.5em;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  user-select: none;
+}
+.about-page__columns {
+  margin: auto;
+}
+.about-page__columns__left {
+  margin-top: 2rem;
+}
+.about-page__columns__right {
+}
+.about-page__section {
+  margin-bottom: 2rem;
+  user-select: none;
+}
+.about-page__section__title {
+  font-size: 1.4rem;
+  padding-left: 0.4rem;
+}
+.about-page__section__content {
+  padding-left: 0.4rem;
+}
+.about-page__section__content__description {
+  margin-bottom: 0.26rem;
+}
+.about-page__section__links * {
+  display: inline-block;
+  margin-top: 0.2rem;
+}
+.about-page__section__links :not(:last-child) {
+  margin-right: 1rem;
+}
+/* Credits */
+.about-page__credits {
+}
+.about-page__credits__title {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+  user-select: none;
+}
+.about-page__credits__role {
+  display: flex;
+  align-items: baseline;
+}
+.about-page__credits__role-name {
+  font-size: 1.25em;
+  margin: 0.25rem 0rem 0.25rem 0rem;
+  user-select: none;
+}
+.about-page__credits__role-description {
+  font-size: 0.85em;
+  margin: 0.25rem 0rem 0.25rem 0.5rem;
+  user-select: none;
+}
+.about-page__credits__profiles {}
+.about-page__credits__profile {
+  --size: 3rem;
+  width: var(--size);
+  height: var(--size);
+  margin: 0.25rem;
+  margin-top: 0;
+  clip-path: circle();
+  display: inline-block;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.about-page__credits__tooltip {
+  max-width: 20rem;
+  padding: 0.5rem;
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  border: 1px solid;
+  user-select: none;
+}
+.about-page__credits__tooltip__roles {
+  margin-left: 1em;
+}
+.about-page__credits__tooltip__roles p {
+  text-indent: -0.375em;
+}
+.about-page__section__changelog-preview {
+  height: unset !important;
+  padding: 0.4rem !important;
+  width: 100%;
+  margin-top: 0.4rem;
+  font-size: 1.1em !important;
+}
+
+/* ------ Curate ------ */
+.curate-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.curate-page__left {
+  --image-size: 1.45rem;
+  --image-padding: 0.15rem;
+  width: 16rem;
+  flex: 0 0 auto;
+  overflow: auto;
+}
+.curate-page__center {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.curate-page__header-text {
+  margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+  font-size: 2em;
+}
+.curate-page__right {
+  width: 16rem;
+  flex: 0 0 auto;
+  flex-direction: column;
+  overflow: auto;
+}
+.curate-page__right--header {
+  text-align: center;
+  font-size: 1.25em;
+}
+.curate-page__right--section {
+  margin: 1% 5%;
+}
+.curate-page__right--button {
+  width: 100%;
+  margin-bottom: 0.2rem;
+}
+.curate-page__right--checkbox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+.curate-page__right-dropdown-content {
+  display: flex;
+}
+.curate-page__right-dropdown-content-icon {
+  width: 1.5rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.curate-page .input-field--multiline.input-field--edit {
+  height: 5em;
+}
+
+.curate-page-keybinds {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+}
+.curate-page-keybinds:hover .curate-page-keybinds-box {
+  display: initial;
+}
+.curate-page-keybinds-box {
+  z-index: 10;
+  display: none;
+  position: absolute;
+  white-space: nowrap;
+  margin-left: 1.5rem;
+  padding: 0.5rem;
+}
+.curate-page-keybinds-box-combo {
+  display: inline-table;
+  margin-right: 0.2rem;
+}
+
+/* Curate Box */
+.curate-box {
+  min-height: 100%;
+  padding: 0.5rem 0;
+  --columns: 2;
+  --column-width: 40em;
+  --column-gutter: 2em;
+}
+.curate-box .input-dropdown__content {
+  max-height: 20rem;
+}
+.curate-box__columns {
+  margin: auto;
+  --column-gutter: 0.1rem;
+}
+.curate-box__images {
+  position: relative;
+  height: 10rem;
+  display: flex;
+}
+.curate-page__left-sidebar-item {
+  display: flex;
+  height: 10rem;
+  margin: 0.35rem 0;
+}
+.curate-page__left-sidebar__sort-button {
+  width: 100%;
+}
+
+
+.curate-box__placeholder {
+  text-align: center;
+  font-weight: bold;
+  font-size: 3em;
+}
+.curate-box__image {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.curate-box-content__depth {
+  border-left: 1px dotted;
+}
+.curate-box-content__entry {
+  display: flex;
+}
+.curate-box-content__entry-icon {
+  height: 1em;
+}
+.curate-box-content__entry-icon--collapse {
+  cursor: pointer;
+}
+/* Curate Box Image Titles */
+.curate-box-image-titles {
+  display: flex;
+  text-align: center;
+}
+.curate-box-image-titles__title {
+  display: inline-block;
+  flex: 1 1 auto;
+}
+/* Curate Box Image Footer */
+.curate-box-images-footer {
+  color: var(--layout__disabled-text-color);
+  font-style: italic;
+  text-align: center;
+  user-select: none;
+}
+/* Curate Box Images */
+.curate-box-images {
+  position: relative;
+  display: flex;
+  height: 10rem;
+  margin: 0.35rem 0;
+}
+.curate-box-images__placeholder {
+  display: flex;
+}
+.curate-box-images__image {
+  flex: 1 1 auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.curate-box-images__footer {
+  position: absolute;
+}
+/* Curate Box Divider */
+.curate-box-divider {
+  margin: 0.4rem 0;
+  border-width: 1px;
+}
+/* Curate Box Table */
+.curate-box-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0.2rem;
+}
+/* Curate Box Row */
+.curate-box-row__title {
+  padding-right: 0.4em;
+  user-select: none;
+  text-align: right;
+  white-space: nowrap;
+}
+.curate-box-row__content {
+  width: 100%;
+}
+/* Curate Box Add-App */
+.curate-box-add-apps {
+  margin: 0.5rem 0;
+  padding: 0.4rem;
+}
+/* Curate Box Files */
+.curate-box-files {
+  margin-bottom: 0.2rem;
+}
+.curate-box-files__head {
+  user-select: none;
+}
+.curate-box-files__body {
+  min-height: 10rem;
+  max-height: 40rem;
+  overflow: auto;
+}
+/* Curate Box Warnings */
+.curate-box-warnings {
+  margin-bottom: 0.2rem;
+}
+.curate-box-warnings--empty {
+  display: none;
+}
+.curate-box-warnings__head {
+  user-select: none;
+}
+/* Curate Box Buttons */
+.curate-box-buttons {
+  justify-content: space-between;
+  display: flex;
+  margin-top: 0.3rem;
+}
+.curate-box-buttons__button {
+  margin: 0 0.2rem;
+}
+.curate-box-buttons__left {
+  text-align: left;
+}
+.curate-box-buttons__right {
+  text-align: right;
+}
+.curate-box-buttons__button:last-child {
+  margin-right: 0;
+}
+/* Curate List Item */
+.curate-list-item {
+  display: flex;
+  width: 100%;
+  height: 1.3rem;
+  padding: 0.1rem;
+  user-select: none;
+}
+.curate-list-item:nth-child(n+2) { /* All but first */
+  border-top: solid 1px;
+}
+.curate-list-group__header {
+  margin: 0.2rem 0.2rem 0 0.2rem;
+  padding: 0.2rem;
+  font-weight: bold;
+  display: flex;
+}
+.curate-list-group__header-text {
+  display: flex;
+  flex-grow: 1;
+}
+.curate-list-group__header-text--name {
+  flex-grow: 1;
+}
+.curate-list-group__header-text--counter {
+  flex-grow: 0;
+}
+.curate-list-group__header-caret {
+  padding: 0 0.2rem;
+}
+.curate-list-group__header-pin {
+  padding: 0 0.2rem;
+}
+.curate-list-item__icon {
+  flex: 0 0 auto;
+  width: 1rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.curate-list-item__title {
+  flex: 1 1 auto;
+  padding-left: 0.2rem;
+  /* Truncates the overflowing text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-self: self-start;
+}
+/* Curate Tag (Game tag for the curate page) */
+.curate-tag {
+  display: inline-flex;
+  align-items: baseline;
+  margin-right: 0.5rem;
+  user-select: none;
+  vertical-align: sub;
+}
+.curate-tag-inner {
+  padding: 0 0.25rem;
+}
+.curate-tag-primary-icon {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  display: flex;
+  align-self: center;
+}
+.platform-tag__icon {
+  display: inline-flex;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.2rem;
+}
+.curate-tag__icon {
+  display: inline-flex;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.2rem;
+  transform: translateY(0.1rem);
+}
+.curate-tag__text {
+  vertical-align: top;
+}
+
+/* Tag Dropdown Item */
+.tag-dropdown-item {
+
+}
+
+
+/* ------ Log ------ */
+.log-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+/* Log-Page Bar */
+.log-page__bar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  flex-flow: wrap;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.85rem;
+  user-select: none;
+}
+.log-page__bar__wrap {
+  padding: 0.025rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.log-page__bar__row {
+  display: flex;
+}
+.log-page__bar__row .simple-dropdown {
+  margin-right: 0.5rem;
+}
+.log-page__bar__right {
+  flex-grow: 1;
+}
+.log-page__bar__right__inner {
+  display: flex;
+  float: right;
+  width: auto;
+  flex-wrap: wrap;
+}
+.log-page__bar__right__inner > *:not(:last-child) {
+  margin-right: 0.3rem;
+}
+/* Dropdown */
+.log-page__dropdown-item {
+  display: flex;
+}
+.log-page__dropdown-item input[type="checkbox"] {
+  margin-right: 0.1em;
+}
+.log-page__dropdown-item-text {
+  display: inline-block;
+  overflow: hidden;
+}
+/* Log-Page Content */
+.log-page__content {
+  flex: 1 1 auto;
+}
+
+
+/* ------ Browse ------ */
+.game-browser,
+.tags-browser {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+/* Center */
+.tags-browser__center {
+  flex: 1 0 auto;
+}
+.game-browser__center {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.game-browser__center-results-container {
+  flex-grow: 1;
+}
+.game-browser__center-inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+/* Loading */
+.game-browser__loading {
+  display: flex;
+  flex-direction: column;
+  font-size: 3em;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+/* Sidebar */
+.game-browser__sidebar {
+  z-index: 1;
+  --divider-width: 6px;
+  display: flex;
+  flex: 0 0 auto;
+  min-width: var(--divider-width);
+  max-width: 100%;
+}
+.game-browser__sidebar--hidden {
+  min-width: 0px !important;
+  width: 0px !important;
+}
+.game-browser__sidebar--animated {
+  transition: 0.2s;
+}
+.game-browser__sidebar__inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.game-browser__sidebar__content {
+  flex: 1 1 auto;
+  width: calc(100% - var(--divider-width));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.game-browser__sidebar__divider {
+  width: var(--divider-width);
+  flex: 0 0 auto;
+  user-select: none;
+  cursor: ew-resize;
+  transition: 0s background-color;
+}
+.game-browser__sidebar__divider--animated {
+  transition: 0.3s background-color;
+}
+.game-browser__sidebar__divider:hover {
+  transition-delay: 0.3s;
+}
+/* Right Sidebar */
+.game-browser__right p {
+  display: inline;
+}
+/* Browse-Left-Sidebar */
+.browse-left-sidebar > .playlist-list {
+  width: 100%;
+}
+/* Browse-Right-Sidebar */
+.browse-right-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  font-size: 0.9rem;
+}
+/* Browse-Right-Sidebar Section */
+.browse-right-sidebar__section {
+  margin-bottom: 1em;
+}
+.browse-right-sidebar__section:last-child {
+  margin-bottom: 0;
+}
+.browse-right-sidebar__section--below-gap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+.browse-right-sidebar__top {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 0.5rem 0.8rem 0 0.8rem;
+}
+.browse-right-sidebar__middle {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-grow: 1;
+  min-height: 40%;
+  flex-direction: column;
+  padding: 0 0.8rem;
+}
+.browse-right-sidebar__super-bottom {
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0.8rem 0.5rem 0.8rem;
+}
+.browse-right-sidebar__bottom {
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  max-height: 30%;
+  flex-direction: column;
+  padding: 0 0.8rem 0 0.8rem;
+}
+.browse-right-sidebar__bottom > .browse-right-sidebar__section {
+  height: 100%;
+}
+.browse-right-sidebar__bottom > .browse-right-sidebar__section > .browse-right-sidebar__row__screenshot-container {
+  height: 100%;
+}
+.browse-right-sidebar__bottom > .browse-right-sidebar__section > .browse-right-sidebar__row__screenshot-container > .browse-right-sidebar__row__screenshot {
+  height: 100%;
+}
+.browse-right-sidebar__bottom > .browse-right-sidebar__section > .browse-right-sidebar__row__screenshot-container > .browse-right-sidebar__row__screenshot> img {
+  height: 100%;
+}
+.browse-right-sidebar-floating-icon {
+  margin-left: 0.4rem;
+}
+
+/* Browse game stats */
+.browse-right-sidebar__stats {
+  display: flex;
+  flex-flow: wrap;
+  flex-direction: row;
+  margin-bottom: 0.5rem;
+}
+.browse-right-sidebar__stats-row-top,
+.browse-right-sidebar__stats-row-bottom,
+.browse-right-sidebar__stats-row {
+  width: 100%;
+  display: inline-flex;
+}
+.browse-right-sidebar__stats-row-top {
+  width: 100%;
+  font-weight: bold;
+}
+.browse-right-sidebar__stats-cell {
+  width: 100%;
+  white-space: nowrap;
+  text-align: center;
+}
+.browse-right-sidebar__stats-box {
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  flex-direction: column;
+  flex-grow: 1;
+  display: flex;
+}
+/** @TODO: Remove awful workaround */
+.browse-right-sidebar__stats-cell-placeholder {
+  font-style: unset !important;
+}
+
+
+
+/* Browse-Right-Sidebar Play Button */
+.browse-right-sidebar__play-button,
+.browse-right-sidebar__play-button--busy,
+.browse-right-sidebar__play-button--running,
+.browse-right-sidebar__play-button--download {
+  width: 100%;
+  font-size: 2.5em;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 0.2rem;
+  user-select: none;
+  cursor: pointer;
+  max-height: 3.2rem;
+}
+.browse-right-sidebar__play-button {
+  display: flex;
+  height: 100%;
+}
+.browse-right-sidebar__play-button--text {
+  text-align: center;
+  flex-grow: 1;
+}
+.browse-right-sidebar__play-button--dropdown {
+  min-width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Browse-Right-Sidebar Additional-Application */
+.browse-right-sidebar__additional-application {
+  padding: 0.5rem;
+}
+.browse-right-sidebar__additional-application__delete-button {
+  float: right;
+}
+/* Browse-Right-Sidebar Row */
+.browse-right-sidebar__row {
+  margin-bottom: 0.2rem;
+}
+.browse-right-sidebar__row:last-child {
+  margin-bottom: 0;
+}
+.browse-right-sidebar__row p {
+  display: inline;
+  cursor: default;
+}
+.browse-right-sidebar--edit-enabled {
+  user-select: none; /* Can not select text while editing is enabled */
+}
+.browse-right-sidebar__row--one-line {
+  display: flex;
+}
+.browse-right-sidebar__row--one-line > :first-child {
+  flex: 0 0 auto;
+  white-space: pre;
+}
+.browse-right-sidebar--edit-disabled .browse-right-sidebar__row--one-line > :last-child {
+  flex: 1 1 auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.browse-right-sidebar__row--one-line > .input-dropdown {
+  width: 100%;
+}
+.browse-right-sidebar__row--one-line .input-dropdown__content {
+  max-height: 25rem;
+}
+.browse-right-sidebar__row--additional-applications-header > :not(:first-child) {
+  float: right;
+}
+.browse-right-sidebar__row--additional-applications-name {
+  display: flex;
+}
+.browse-right-sidebar--edit-disabled .browse-right-sidebar__row--additional-applications-name > :first-child {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
+}
+.browse-right-sidebar__row--additional-applications-name > :last-child {
+  flex: 0 0 auto;
+}
+/* BrowseSidebar Title-Row */
+.browse-right-sidebar__title-row {
+  display: flex;
+  margin-bottom: 0;
+}
+.browse-right-sidebar__title-row__title {
+  flex: 1 1 auto;
+  overflow: hidden;
+  height: 1.6rem;
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+.browse-right-sidebar__title-row__title > p {
+  display: block;
+  overflow-y: visible;
+}
+.browse-right-sidebar--edit-disabled .browse-right-sidebar__title-row__title > * {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* BrowseSidebar Title-Row Buttons */
+.browse-right-sidebar__title-row__buttons {
+  flex: 0 0 auto;
+  display: flex;
+  margin-left: 0.3rem;
+  user-select: none;
+}
+.browse-right-sidebar__title-row__buttons > *:not(:first-child) {
+  margin-left: 0.6rem;
+}
+.browse-right-sidebar__title-row__buttons > * {
+  height: 0.9rem;
+  width: 0.9rem;
+}
+/* Browse-Right-Sidebar Row - Sub Elements */
+.browse-right-sidebar__row__check-box-wrapper {
+  display: contents;
+}
+.browse-right-sidebar__row__check-box {
+  vertical-align: middle;
+}
+.browse-right-sidebar__row__spacer {
+  flex: 1 0 auto;
+}
+.browse-right-sidebar__row__game-id {
+  user-select: text;
+  padding-left: 0.25rem;
+}
+.browse-right-sidebar__row__date-added {
+  user-select: text;
+  padding-left: 0.25rem;
+}
+/* Browse-Right-Sidebar Row - Screenshot */
+.browse-right-sidebar__row__screenshot {
+  width: 100%;
+}
+.browse-right-sidebar__row__screenshot-image {
+  width: 100%;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+.browse-right-sidebar__row__screenshot-image--hidden {
+  width: 100%;
+  min-height: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.browse-right-sidebar__row__screenshot-image--hidden-text {
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+}
+.browse-right-sidebar__row__screenshot__placeholder {
+  width: 100%;
+  height: 15rem;
+  overflow: hidden;
+  border: 2px dashed;
+  user-select: none;
+  position: relative;
+}
+.browse-right-sidebar__row__screenshot__placeholder__back {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.browse-right-sidebar__row__screenshot__placeholder__front {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 0;
+}
+.browse-right-sidebar__row__screenshot__placeholder__front > :not(:last-child) {
+  margin-bottom: 0.15rem;
+}
+.browse-right-sidebar__row__screenshot__placeholder h1 {
+  font-size: 1.15rem;
+}
+.browse-right-sidebar__row__screenshot__placeholder p {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+.browse-right-sidebar__locked {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 2em;
+  font-style: bold;
+}
+.browse-right-sidebar__mini-download-info {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+.browse-right-sidebar__game-config-row {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.25rem;
+}
+.browse-right-sidebar__game-config-label {
+  margin-right: 0.5rem;
+}
+.browse-right-sidebar__game-config-dropdown {
+  flex-grow: 1;
+}
+.browse-right-sidebar__game-config-cog {
+  margin-left: 0.5rem;
+  align-self: center;
+}
+/* GameImageSplit */
+.game-image-split {
+  flex: 1 1 auto;
+  width: 50%;
+  text-align: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.game-image-split p {
+  color: var(--layout__disabled-text-color);
+  font-style: italic;
+}
+.game-image-split:first-child {
+  border-right: 1px dashed;
+  margin-bottom: -1px;
+}
+.game-image-split:last-child {
+  border-left: 1px dashed;
+  margin: -1px;
+}
+.game-image-split__buttons {
+  top: 0;
+}
+.game-image-split__buttons > * {
+  float: right;
+}
+.game-image-split__buttons > p {
+  float: left;
+  padding: 0.5rem;
+  pointer-events: none;
+}
+.game-image-split__buttons__remove-image {
+  padding: 0.5rem;
+}
+.game-image-split__not-found {
+  display: inline-block;
+  margin-left: 0.1rem;
+  user-select: none;
+}
+/* Browse Right Sidebar Empty (when no game is selected) */
+.browse-right-sidebar-empty {
+  padding: 1em 0;
+  text-align: center;
+  text-align: center;
+  user-select: none;
+}
+.browse-right-sidebar-empty h1 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding-bottom: 0.2rem;
+}
+.browse-right-sidebar-empty p {
+  font-size: 1rem;
+}
+
+
+/* GameList Wrapper */
+.game-list-wrapper,
+.tags-list-wrapper {
+  /* --height | Height of list items (in pixels) */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+/** TODO: Figure out why AutoSizer isn't working */
+.game-list > div[class='ReactVirtualized__Grid__innerScrollContainer'] {
+  width: 100% !important;
+}
+/* GameList */
+.game-list,
+.tag {
+  display: flex;
+}
+.tag-list {}
+/* GameList Item */
+.game-list-item,
+.tag-list-item {
+  display: flex;
+}
+.game-list-item:hover,
+.tag-list-item:hover {
+  cursor: pointer;
+}
+.game-list-item--dragged {
+  opacity: 0.4;
+}
+.game-list-item *,
+.tag-list-item * {
+  user-select: none;
+}
+.game-list-item__icon,
+.tag-list-icon {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: calc(0.8px * var(--height));
+  height: calc(0.8px * var(--height));
+  margin: calc(0.09px * var(--height)) calc(0.2px * var(--height)) 0 calc(0.1px * var(--height));
+}
+.game-list-item__right,
+.tag-list-item__right {
+  flex: 1;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+.game-list-item__field,
+.tag-list-item__field {
+  display: inline-block;
+  width: 100%;
+  font-size: calc(0.8px * var(--height));
+  vertical-align: top;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/* GameList NoGames */
+.game-list__no-games {
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  text-align: center;
+  user-select: none;
+}
+.game-list__no-games__title {
+  font-size: 1.5rem;
+}
+/* GameList Header */
+.game-list-header,
+.tag-list-header {
+  display: flex;
+  width: 100%;
+}
+.game-list-header__right,
+.tag-list-header__right {
+  display: flex;
+  width: 100%;
+}
+.game-list-header__scroll-fill,
+.tag-list-header__scroll-fill {
+  width: 1rem;
+}
+/* GameList Header Column */
+.game-list-header-column,
+.tag-list-header-column {
+  display: inline-flex;
+  width: 100%;
+}
+.game-list-header-column__title,
+.tag-list-header-column__title {
+  flex: 1 1 auto;
+  overflow: hidden;
+  user-select: none;
+  font-size: calc(0.8px * var(--height));
+  padding: 0.2rem;
+  cursor: pointer;
+}
+.game-list-header-column__title {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 1rem 0.2rem 0.2rem;
+}
+.game-list-header-column__sort-icon-wrapper {
+  margin-left: auto;
+}
+.game-list-header-column__sort-icon {
+  width: .65rem;
+  height: .65rem;
+}
+.game-list-header-column__divider,
+.tag-list-header-column__divider {
+  display: none; /* Hidden because Wumbo think they are ugly :( */
+  width: 2px;
+  height: auto;
+}
+/* GameList Item & GameList Header Column (Size) */
+.game-list-header-column--icon,
+.tag-list-header-column--icon {
+  flex: 1 0 auto;
+  width: calc(1px * var(--height));
+}
+.game-list-header-column--title,
+.game-list-item__field--title {
+  max-width: 40%;
+}
+.game-list-header-column--developer,
+.game-list-item__field--developer {
+  max-width: 30%;
+}
+.game-list-header-column--publisher,
+.game-list-item__field--publisher {
+  max-width: 30%;
+}
+/*.game-list-header-column--tagsStr,
+.game-list-item__field--tagsStr {
+  max-width: 30%;
+} */
+
+/* GameGrid */
+.game-grid {
+  /* --width | Width of grid items (in pixels) */
+  /* --height | Height of grid items (in pixels) */
+}
+/* GameGrid Item */
+.game-grid-item {
+  width: calc(1px * var(--width));
+  height: calc(1px * var(--height));
+  list-style: none;
+}
+.game-grid-item:hover {
+  cursor: pointer;
+}
+.game-grid-item--dragged {
+  opacity: 0.4;
+}
+/* GameGrid Item Thumb */
+.game-grid-item__thumb {
+  padding: calc(var(--width) * 0.0025rem);
+  width: calc(var(--width) * 1px);
+  height: calc(var(--width) * 1px);
+}
+.game-grid-item__thumb__image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid;
+}
+.game-grid-item__thumb__icons {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: right;
+  padding: calc(0.001rem * var(--width));
+  position: absolute;
+  bottom: 0;
+}
+.game-grid-item__thumb__icons--upper {
+  display: flex;
+  width: 100%;
+  padding: calc(0.001rem * var(--width));
+  position: absolute;
+  top: 0;
+}
+.game-grid-item__thumb__icons__icon {
+  margin-left: 2px;
+  width: calc(0.144px * var(--width));
+  height: calc(0.144px * var(--width));
+  float: right;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+/* GameGrid Item Title */
+.game-grid-item__title {
+  padding: calc(var(--width) * 0.001rem);
+  height: calc((var(--height) - var(--width)) * 0.001rem);
+  text-align: center;
+}
+.game-grid-item__title__text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: calc((16 / 188) * var(--height) * 1px);
+  line-height: 1.2;
+  word-break: break-word;
+  /* Pimp */
+  font-weight: bold;
+  user-select: none;
+}
+/* GameGrid NoGames */
+.game-grid__no-games {
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  text-align: center;
+}
+.game-grid__no-games__title {
+  font-size: 2em;
+}
+/* GameGrid ReactVirtualized-Grid */
+.game-grid .ReactVirtualized__Grid__innerScrollContainer {
+  margin: 0 auto;
+}
+
+
+/* ------ Playlist ------ */
+.playlist-list__message {
+  padding: 1rem;
+  text-align: center;
+}
+.playlist-list__message h2 {
+  margin-bottom: 0.2rem;
+}
+
+/* PlaylistList */
+.playlist-list {
+  --image-size: 1.45rem; /* Width & Height of the icon in the playlist item head */
+  --image-padding: 0.15rem; /* Padding of the playlist item head */
+}
+/* Playlist-List-Item */
+.playlist-list-item--editing p {
+  user-select: none; /* Can not select text while editing is enabled */
+}
+.playlist-list-item--drag-over {
+  position: relative;
+}
+.playlist-list-item--drag-over .playlist-list-item__drag-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  border: 2px dashed;
+}
+/* Playlist-List-Item Head */
+.playlist-list-item__head {
+  display: flex;
+  height: calc(var(--image-size) + var(--image-padding) * 2);
+  padding: var(--image-padding);
+  padding-left: 0.3rem;
+  cursor: pointer;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.playlist-list-item--editing .playlist-list-item__head {
+  cursor: default;
+}
+.playlist-list-item__head > * {
+  user-select: none;
+}
+.playlist-list-item__icon {
+  flex: 0 0 auto;
+  width: var(--image-size);
+  height: var(--image-size);
+}
+.playlist-list-item__icon-image {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.playlist-list-item__icon-placeholder {
+  height: 65%;
+}
+.playlist-list-item__icon-placeholder-inner {
+  width: 100%;
+  height: 100%;
+}
+.playlist-list-item__title {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-weight: bold;
+  padding-left: 0.5rem;
+}
+.playlist-list-item__divider {
+  flex: 0 0 auto;
+  padding: 0 0.2rem;
+  font-size: 0.9em;
+}
+.playlist-list-item__author {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: 0.9em;
+  font-style: italic;
+}
+.playlist-list-item__author > p {
+  padding-right: 0.2em; /* Give it some extra space since its in italics */
+}
+.playlist-list-item__text-field {
+  /* Truncates the overflowing text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.playlist-list-item--editing .playlist-list-item__title,
+.playlist-list-item--editing .playlist-list-item__author {
+  flex: 1 1 auto;
+}
+.playlist-list-item--editing .playlist-list-item__title,
+.playlist-list-item--editing .playlist-list-item__author,
+.playlist-list-item--editing .playlist-list-item__icon {
+  cursor: pointer;
+}
+/* Playlist-List-Item Content */
+.playlist-list-content {
+  overflow: hidden;
+}
+.playlist-list-content__inner {
+  padding: 0.4rem;
+}
+.playlist-list-content__edit {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0.15rem;
+}
+.playlist-list-content__id {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  font-size: 0.7rem;
+  opacity: 0.3;
+  white-space: pre;
+}
+.playlist-list-content__id-pre {
+  flex: 0 0 auto;
+  user-select: none;
+}
+.playlist-list-content__id-text {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.playlist-list-content__id-text p {
+  user-select: text;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.playlist-list-content__buttons {
+  flex: 0 0 auto;
+  display: flex;
+  font-size: 0.85rem;
+}
+.playlist-list-content__button {
+  margin-left: 0.3rem;
+}
+.playlist-list-content__description {
+  width: 100%;
+  min-height: 5rem;
+  resize: vertical;
+  white-space: pre-wrap;
+  user-select: none;
+}
+.playlist-list-content__extreme {
+  user-select: none;
+}
+.playlist-list-content__extreme span {
+  vertical-align: middle;
+}
+.playlist-list-content__extreme input[type="checkbox"] {
+  vertical-align: middle;
+  margin-right: 0.3rem;
+}
+/* Playlist-List-Fake-Item */
+.playlist-list-fake-item {
+  display: flex;
+  overflow: hidden;
+  height: calc(var(--image-size) + var(--image-padding) * 2);
+  padding: var(--image-padding);
+  padding-left: 0.5rem;
+  flex-grow: 1;
+}
+.playlist-list-fake-item-buttons {
+  display: flex;
+  overflow: hidden;
+  height: calc(var(--image-size) + var(--image-padding) * 2);
+}
+.playlist-list-fake-item,
+.playlist-list-fake-item * {
+  cursor: pointer;
+  user-select: none;
+}
+.playlist-list-fake-item__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.playlist-list-fake-item__inner > * {
+  display: inline-block;
+}
+.playlist-list-fake-item__inner .icon {
+  --icon-size: calc(var(--image-size) * 0.65);
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+.playlist-list-fake-item__inner__title {
+  font-size: 1.1rem;
+  padding-left: 0.5rem;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+
+/** ------ Developer ------ */
+.developer-page {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.developer-page__inner {
+  padding: 0.1rem 0.5rem;
+  min-width: 30em;
+  text-align: center;
+  overflow: visible;
+}
+.developer-page__title {
+  font-size: 2.5em;
+  user-select: none;
+}
+.developer-page__description {
+  user-select: none;
+}
+.developer-page__buttons > * {
+  margin: 0.2rem;
+}
+.developer-page__log {
+  flex: 1 1 auto;
+  height: 35rem;
+  border: 1px solid;
+  border-radius: 0.5rem;
+  text-align: left;
+}
+.developer-page__services-title {
+  flex: 0 1 auto;
+  font-size: 2em;
+  font-weight: bold;
+  user-select: none;
+}
+/* Service Box */
+.service-box {
+  margin: 0.5rem 1.8rem 1rem;
+  padding: 0.5rem;
+  text-align: initial;
+}
+.service-box__head-top {
+  display: flex;
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+.service-box__title {
+  flex: 1 1 auto;
+  user-select: none;
+}
+.service-box__status {
+  flex: 0 1 auto;
+  float: right;
+  user-select: none;
+}
+.service-box__head-bottom {
+  display: flex;
+}
+.service-box__buttons {
+  flex: 1 1 auto;
+}
+.service-box__button {
+  padding: 0.1rem;
+  margin-right: 0.5rem;
+  min-width: 5rem;
+}
+.service-box__uptime {
+  flex: 0 1 auto;
+  float: right;
+  user-select: none;
+}
+.service-box__log {
+  margin-top: 0.4rem;
+  height: 20rem;
+  text-align: left;
+  flex: 1 1 auto;
+}
+
+
+/** ------ Config ------ */
+.config-page {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.config-page__inner {
+  padding: 0.1rem 0.5rem;
+  min-width: 30em;
+  text-align: center;
+  overflow: visible;
+}
+.config-page__title {
+  font-size: 2.5em;
+  user-select: none;
+}
+.config-page__description {
+  font-style: italic;
+  user-select: none;
+}
+/* ... */
+.config-page p {
+  display: inline-block;
+}
+.config-page input[type="checkbox"] {
+  vertical-align: middle;
+  transform: scale(1.25);
+}
+/* SaveAndRestart */
+.config-page input[type="button"].save-and-restart {
+  font-size: 1.075em;
+  margin: 0 auto;
+  height: 1.4em;
+}
+.config-page label {
+  padding-left: 0.15em;
+}
+.config-page__logo-row {
+  width: 100%;
+  display: flex;
+  margin-top: 0.5rem;
+}
+.config-page__logo-row__logo {
+  width: 2rem;
+  height: 2rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  margin: auto;
+}
+.config-page__tfg-extreme-logo {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: 0.5rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  flex-shrink: 0;
+}
+/* Setting */
+.setting {
+  margin: 0 auto;
+  margin-top: 1em;
+  max-width: 40em;
+}
+.setting > :first-child {
+  border-top: 0;
+}
+.setting__title {
+  margin: 0.2em 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  user-select: none;
+}
+.setting__body {
+  /* Pimp */
+  border-radius: 0.2em;
+  border: 1px solid;
+}
+/* Setting Row */
+.setting__row {
+  padding: 0.75em;
+}
+.setting__inner__row {
+  text-align: left;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.setting__inner__row:first-child {
+  margin-top: 1rem;
+}
+.setting__inner__row:not(:first-child) {
+  margin-top: 0.5rem;
+}
+.setting__row:not(:first-child) {
+  border-top: 1px solid;
+}
+.setting__row__top {
+  display: flex;
+}
+.setting__row__top--swapchildren {
+  display: block;
+}
+.setting__row__top--swapchildren > .setting__row__title {
+  width: 100%;
+  text-align: left;
+}
+.setting__row__description {
+  padding: 0;
+  border-top: 0;
+  font-size: 0.8em;
+  font-style: italic;
+  text-align: left;
+  user-select: none;
+  width: 100%;
+}
+.setting__row__title {
+  flex: 0 1 auto;
+  font-size: 1.15em;
+  font-weight: bold;
+  user-select: none;
+}
+.setting__row__title__inner {
+  font-size: 1em !important;
+}
+.setting__row__title--flex {
+  display: flex;
+}
+.setting__row__title--align-left {
+  text-align: left;
+}
+.setting__row__content {
+  flex: 1 1 auto;
+}
+.setting__row__content--bottom-margin {
+  margin-bottom: 0.5rem;
+}
+.setting__row__content--right-align {
+  text-align: right;
+}
+.setting__row__content .simple-selector {
+  margin-right: 0;
+}
+/* Setting Row Content - FilePoint Path */
+.setting__row__content--filepath-path {
+  display: flex;
+  height: fit-content;
+  margin-left: 0.5rem;
+}
+.setting__row__content--filepath-path .flashpoint-path__input {
+  flex: 1;
+  margin-right: 0.5rem;
+  padding: 0.05rem 0 0 0.2rem;
+}
+.setting__row__content--filepath-path .flashpoint-path__input input[type="text"] {
+  width: 100%;
+  font-size: 1em;
+  background: none;
+  border: none;
+  outline: none;
+}
+/* Setting Row Content - Toggle */
+.setting__row__content--toggle > div {
+  float: right;
+}
+.setting__row__content--button > div {
+  float: right;
+}
+/* Setting Row Content - Redirector */
+.setting__row__content--redirector {
+  text-align: right;
+}
+.setting__row__content--redirector > div {
+  display: inline;
+}
+.setting__row__content--redirector > div:not(:last-child) {
+  margin-right: 1rem;
+}
+.setting__row__content--redirector input {
+  margin-right: 0.2rem;
+}
+/* Setting Row Content - Input Field */
+.setting__row__content--input-field {
+  display: flex;
+  height: fit-content;
+  margin-left: 0.5rem;
+}
+.setting__row__content--input-field > :first-child {
+  width: 100%;
+}
+.setting__row__content--input-field .input-dropdown__input-field,
+.setting__row__content--input-field .input-dropdown__content {
+  border: 0px;
+}
+.setting__row__content--override-row {
+  display: flex;
+  margin-bottom: 0.35rem;
+  flex: auto;
+  align-items: center;
+}
+.setting__row__content--override-row__seperator {
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  font-weight: bold;
+  font-size: 1.2em;
+  flex-shrink: 0;
+}
+.setting__row__content--override-row__delete {
+  margin-left: 0.3rem;
+  flex-shrink: 0;
+}
+.setting__row__content--override-row__edit {
+  margin-left: 0.3rem;
+  flex-shrink: 0;
+}
+.setting__row__content--override-row__new {
+  text-align: right;
+}
+.setting__row__ext-icon {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 4rem;
+  margin-right: 0.5rem;
+}
+.setting__row__content--source-row {
+  display: flex;
+  width: 100%;
+}
+.setting__row__content--source-row__name {
+  flex-grow: 1;
+  text-align: left;
+}
+.setting__row__content--source-row__count {
+  font-style: italic;
+  margin-right: 0.5rem;
+}
+.setting__row__content--tag-filter-text {
+  flex-grow: 1;
+  margin-left: 0.1rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+.setting__row__content--tag-filter-count {
+  white-space: nowrap;
+}
+.setting__row__content--tag-filter-title {
+  font-weight: bold;
+}
+.setting__row__content--tag-filter-description {
+  font-size: 0.9em;
+  margin-left: 0.5rem;
+}
+.setting__row__content--tag-filter-eye {
+  flex-shrink: 0;
+  user-select: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+.setting__row__content--tag-filter-eye .svg-inline--fa {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.setting__row__content--tag-filter-eye--hidden {
+  opacity: 40%;
+}
+.setting__row__button {
+  font-size: 1em !important;
+}
+
+
+/** ----- Progress Components ------ **/
+/* Wrapper (all components) */
+.progress-component__wrapper {
+  position: relative;
+  height: 100%;
+  top: 0;
+  left: 0;
+  /* Font Size acts to scale child component */
+  font-size: 1rem;
+}
+/* Status Bar */
+.status-bar__top-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 3em;
+}
+.status-bar__bottom-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2em;
+}
+/* Progress Bar */
+.progress-bar__top-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2em;
+}
+.progress-bar__bottom-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.progress-bar__bar {
+  align-self: center;
+  height: 5em;
+  padding: 0.5rem;
+}
+.progress-bar__bar__inner {
+  height: 100%;
+}
+
+/* ------ FP Logo ------ */
+.fp-logo-box {
+  /* --size: 1rem; */
+  /* Keep the mask's aspect ratio */
+  --zoom: 1800%;
+  width: var(--size);
+  height: var(--size);
+  margin-bottom: 2rem;
+}
+.fp-logo {
+  width: 100%;
+  height: 100%;
+}
+
+/* ------ Splash Screen ------ */
+.splash-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  /* Position relative to the window - not the parent */
+  position: fixed;
+  top: 0;
+  z-index: 9999999999;
+}
+.splash-screen--fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+.splash-screen__logo {
+  --size: 16rem;
+}
+.splash-screen__status-block {
+  font-size: 1.5rem;
+  text-align: center;
+  height: 0; /* "Hack" to make content not move the logo. */
+}
+.splash-screen__status-header {
+  font-size: 2.5rem;
+}
+
+/* Tags Page */
+.tags-page {
+  width: 100%;
+  height: 100%;
+}
+.tags-page__browser {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Tag List Wrapper */
+.tags-list-wrapper {
+  /* --height | Height of list items (in pixels) */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.tag-browser__center-inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.tag-primary {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.tag-alias {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.tag-alias-wrapper {
+  display: flex;
+}
+/* TagList Item */
+
+.tag-alias__buttons {
+  display: flex;
+}
+.tag-alias__buttons * {
+  margin-left: 0.3rem;
+}
+.tag-list-header-column--name,
+.tag-list-item__field--name {
+  max-width: 50%;
+}
+.tag-list-header-column--aliases,
+.tag-list-item__field--aliases {
+  max-width: 35%;
+}
+.tag-list-header-column--category,
+.tag-list-item__field--category {
+  max-width: 15%;
+}
+.tag-categories__color-preview {
+  text-align: center;
+  height: 2.8rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  -webkit-text-stroke-color: black;
+  -webkit-text-stroke-width: 2px;
+}
+.tag-category__new-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 0.5rem;
+}
+
+/** Confirm Dialog */
+.confirm-dialog {
+  font-size: 2rem;
+}
+
+.confirm-dialog__buttons {
+  margin-top: 0.4rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.confirm-dialog__buttons > .simple-button {
+  font-size: 1.4rem;
+}
+
+/** Floating Containers */
+.floating-container__wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.floating-container {
+  list-style-position: inside;
+  text-align: center;
+  padding: 1rem;
+  border: 1px solid;
+  overflow: auto;
+  max-height: 90%;
+  max-width: 90%;
+}
+
+.floating-container li {
+  margin-left: 10px;
+}
+
+.page-wrap {
+  width: 100%;
+  height: 100%;
+}
+
+/** Game Data Browser */
+.game-data-browser {
+  font-size: 1.5rem;
+}
+
+.game-data-info {
+  padding: 0.1rem;
+  margin-top: 0.5rem;
+  border: 1px solid;
+}
+
+.game-data-info__table {
+  border-top: 1px solid;
+}
+
+.game-data-info__top {
+  display: flex;
+  align-items: center;
+}
+
+.game-data-info__top-buttons {
+  display: flex;
+}
+
+.game-data-info__top-buttons > input[type='checkbox'] {
+  margin-left: 0.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.game-data-info__title {
+  font-size: 2em;
+  text-align: left;
+  padding-left: 0.2rem;
+  flex-grow: 1;
+}
+
+.game-data-browser__cross {
+  width: 100%;
+  text-align: right;
+}
+
+.game-data-browser__buttons {
+  margin-top: 0.4rem;
+}
+
+/** PLACEHOLDER */
+.placeholder-download-bar--title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+.placeholder-download-bar__wrapper {
+  min-width: 25rem;
+}
+
+/** Tag Filter Editor */
+.tag-filter-editor__header {
+  font-size: 2em;
+  margin-bottom: 1rem;
+}
+
+.tag-filter-editor__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tag-filter-editor__content {
+  width: 100%;
+  display: flex;
+}
+
+.tag-filter-editor__content-section {
+  text-align: left;
+  flex-grow: 1;
+  margin-right: 0.25rem;
+}
+
+.tag-filter-editor__list-entry {
+  display: flex;
+  width: 100%;
+}
+
+.tag-filter-editor__list-entry > :first-child {
+  flex-grow: 1;
+}
+
+.tag-filter-editor__content-section > .input-dropdown {
+  height: initial;
+}
+
+.tag-filter-editor__wrapper {
+  height: 50%;
+}
+
+/** TODO - Stop this being so awful to look at */
+.tag-filter-editor__content-section > .input-dropdown {
+  width: 24rem;
+}
+.tag-filter-editor__content-section > .input-dropdown > .input-dropdown__content {
+  position: fixed;
+  width: inherit;
+}
+.tag-filter-editor__content-header {
+  width:100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.tag-filter-editor__icon {
+  display: flex;
+  justify-content: center;
+}
+
+/** Checkboxes */
+.checkbox {
+  width: 3rem;
+  min-width: 3rem; /** Prevents stretching / compression */
+  height: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.checkbox--icon-check {
+  height: 100%;
+  width: 80%;
+}
+
+.checkbox--icon-cross {
+  height: 100%;
+  width: 75%;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0.05rem;
+  background-color: #ccc;
+  border-radius: 1rem;
+}
+
+.slider--animated {
+  transition: .2s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 80%;
+  width: 40%;
+  left: 0.2rem;
+  bottom: 11.25%;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.slider--animated:before {
+  transition: .2s;
+}
+
+.slider-checked:before {
+  transform: translateX(1.4rem);
+}
+
+.checkbox__wrapper {
+  width: 3rem;
+}
+
+.checkbox__text {
+  font-size: 0.6rem;
+  text-align: center;
+}
+
+/** Tasks */
+
+.task-bar--header {
+  width: 100%;
+  height: 1rem;
+}
+
+.task-bar--header-chevron {
+  height: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.task-bar {
+  width: 100%;
+  height: 10%;
+  overflow-y: auto;
+}
+
+.task-bar-empty {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.task {
+  width: 100%;
+  margin-bottom: 0.25rem;
+  padding: 0 0.5rem;
+}
+
+.task--upper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.task--lower {
+  width: 100%;
+}
+
+.task-name {
+  flex: 0 0 35%;
+}
+
+.task-progress-bar {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  width: 100%;
+  display: flex;
+}
+
+.task-progress-bar--fill-animated {
+  transition: .2s;
+}
+
+.task-status {
+  font-size: 0.8em;
+}
+
+.main-output-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.main-output-content {
+  margin: 0.2rem;
+  padding: 0.1rem;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow: auto;
+  height: 45vh;
+  max-width: 80vw;
+}
+
+.main-output-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tag-nuke-box {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 2rem;
+}
+
+/** Dialogs */
+
+.dialog-message, .dialog-field-message {
+  white-space: pre-wrap;
+}
+
+.dialog-message--large {
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+.dialog-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 0.7rem;
+}
+
+.dialog-buttons-container .simple-button {
+  font-size: 1.75rem;
+  font-weight: bold;
+  height: 2rem;
+}
+
+.dialog-buttons-container > :not(:first-child) {
+  margin-left: 0.5rem;
+}
+
+.cancel-download-button {
+  margin-top: 1rem;
+}
+
+.fpfss-edit-container {
+  width: 80%
+}
+
+.update-metadata-box {
+  position: fixed;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  text-align: center;
+}
+
+.update-metadata-button-inner {
+  width: 100%;
+  font-weight: bold;
+  font-size: 2.2em !important;
+}
+
+.update-metadata-name {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.browse-right-sidebar__title-row__buttons__promote-button {
+  font-weight: bold;
+  margin-right: 0.3rem;
+}
+
+/** Game Config Dialog */
+.game-config-dialog-container {
+  width: 75%;
+  height: 85%;
+}
+
+.game-config-dialog {
+  text-align: left;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.game-config-dialog-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-config-dialog-header-title {
+  flex-grow: 1;
+}
+
+.game-config-dialog-header-close {
+  width: 2rem;
+  height: 2rem;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-config-dialog-content {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.game-config-dialog-content > :not(:first-child) {
+  margin-top: 1rem;
+}
+
+.game-config-dialog__config {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1.4em;
+  margin-bottom: 1rem;
+}
+
+.game-config-dialog__config-new {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.4em;
+  justify-content: right;
+}
+
+.game-config-dialog__config-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.game-config-dialog__config-left {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.game-config-dialog__config-right {
+  right: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.game-config-dialog__config-source-label {
+  margin-right: 0.2rem;
+}
+
+.game-config-dialog__config-middlewares {
+  display: inline-block;
+}
+
+.game-config-dialog__config-buttons > * {
+  margin-left: 0.5rem;
+  font-size: 1.1em !important;
+}
+
+.game-config-dialog__config-title {
+  align-self: center;
+  font-size: 1.4em;
+  margin-right: 0.5rem;
+}
+
+.game-config-dialog__config-title-prefix {
+  align-self: center;
+  font-style: italic;
+  font-size: 1.1em;
+  margin-right: 1rem;
+}
+
+.game-config-dialog__config-version {
+  align-self: center;
+}
+
+.game-config-dialog__config-chevron-expansion {
+  margin-left: 0.5rem;
+  align-self: center;
+  height: 100%;
+  width: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/** Game Config Dialog editor */
+.game-config-dialog-input-row {
+  display: inline-block;
+}
+
+.game-config-dialog-input-title {
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+.game-config-dialog-label-title {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.game-config-dialog-inputs {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.4em;
+}
+
+.game-config-dialog-inputs > .game-config-dialog-label-row:not(:first-child) {
+  border-top: 1px solid;
+  padding-top: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.game-config-dialog-input-row > *:not(:first-child) {
+  margin-top: 0.5rem;
+}
+
+.game-config-dialog-inputs > *:not(:first-child) {
+  margin-top: 1rem;
+}
+
+.game-config-dialog-new-middleware {
+  margin-bottom: 1rem;
+  font-size: 1.4em;
+}
+
+.game-config-dialog-new-middleware > .game-config-dialog__config-row {
+  align-items: center;
+}
+
+.game-config-dialog-footer {
+  margin-top: 1rem;
+  font-size: 1.4em;
+}
+
+.game-config-dialog-footer > .game-config-dialog__config-row {
+  align-items: center;
+}
+
+.game-config-dialog__config-name-row {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  font-size: 1.4rem;
+  align-items: center;
+}
+
+.game-config-dialog__config-name-label {
+  margin-right: 1rem;
+}
+
+.game-config-dialog__config-name-input {
+  flex-grow: 1;
+}
+
+.game-config-dialog__set-version {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-config-dialog__set-version > *:not(:first-child) {
+  margin-top: 0.5rem;
+}
+
+/** Form Styles */
+
+.input-field-large-text {
+  font-size: 1.4em;
+}
+
+.input-field-form {
+  border: 1px solid;
+  padding: 1.2rem !important;
+}
+
+.simple-dropdown-form {
+  --width: 11rem;
+  width: var(--width);
+  position: relative;
+}
+.simple-dropdown-form__select-box {
+  display: flex;
+  width: 100%;
+  cursor: default;
+  border: 1px solid;
+  padding: 1px; /* This makes it have the same size as <select> elements. Maybe it offsets the border? */
+  overflow: hidden;
+}
+.simple-dropdown-form__select-text {
+  padding: 0.4em;
+  flex: 1 0 auto;
+}
+.simple-dropdown-form__select-icon {
+  width: 1.25em;
+  flex: 0 0 auto;
+  align-self: center;
+  text-align: center;
+}
+.simple-dropdown-form__select-icon:before {
+  content: "▾";
+}
+.simple-dropdown-form__content {
+  z-index: 10;
+  width: 100%;
+  display: block;
+  z-index: 9999;
+  /* Pimp */
+  border: 1px solid;
+  position: absolute;
+  overflow-y: auto;
+}
+.simple-dropdown-form__content--hidden {
+  display: none;
+}
+
+/** --- Search bar --- */
+
+.search-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 2.5rem;
+}
+
+.search-bar-wrapper--expanded-simple {
+  height: auto;
+}
+
+.search-bar-wrapper--expanded-advanced {
+  height: 100%;
+}
+
+.search-bar {
+  width: 100%;
+  height: 2.3rem;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.search-bar > :not(:first-child) {
+  margin-left: 0.5rem;
+}
+
+.search-bar-icon {
+  padding: 0.1rem;
+}
+
+.search-bar-icon .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.search-bar-text-input-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.search-bar-text-input {
+  flex-grow: 1;
+  font-size: medium;
+}
+
+.search-bar-text-input-icon {
+  filter: brightness(90%);
+  padding-top: 0.2rem;
+  padding-right: 0.3rem;
+  padding-bottom: 0.3rem;
+  flex-grow: 0;
+  cursor: pointer;
+}
+
+
+
+.search-bar-text-input-icon .icon {
+  width: unset;
+  height: 100%;
+}
+
+.search-bar-expansion {
+  margin-right: 0.4rem;
+  flex-grow: 1;
+}
+
+.search-bar-expansion-simple {
+  padding-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-bar-simple-box {
+  cursor: pointer;
+  user-select: none;
+  margin-left: 0.3rem;
+  margin-bottom: 0.3rem;
+  align-items: center;
+  padding: 0.3rem;
+  font-size: 0.9em;
+  display: flex;
+  flex-direction: row;
+}
+
+.search-bar-simple-box > :not(:first-child) {
+  margin-left: 0.3rem;
+}
+
+.three-state-checkbox {
+  cursor: pointer;
+  display: inline-flex;
+  padding: 0.1rem;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.three-state-checkbox > .icon {
+  height: 100%;
+  width: 100%;
+}
+
+/** --- Searchable select -- */
+.searchable-select {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.searchable-select-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.searchable-select-header > :not(:first-child) {
+  margin-left: 0.2rem;
+}
+
+.searchable-select-title {
+  font-weight: bold;
+}
+
+.searchable-select-number {
+  font-weight: bold;
+  font-size: 0.9em;
+  padding-top: 0.05em;
+  padding-top: 0.05em;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
+
+.searchable-select-chevron {
+  width: 0.9rem;
+  height: 0.9rem;
+  align-self: center;
+}
+
+.searchable-select-dropdown-item-marked > .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.searchable-select-chevron > .icon {
+  width: auto;
+  height: auto;
+}
+
+.searchable-select-dropdown-search-bar {
+  width: 100%;
+}
+
+.searchable-select-dropdown {
+  position: absolute;
+  z-index: 9999999;
+  top: 100%;
+  margin-top: 0.3rem;
+  margin-left: -0.3rem;
+  padding: 0.3rem;
+}
+
+.searchable-select-dropdown-upper {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.3rem;
+}
+
+.searchable-select-dropdown-toggle {
+  margin-left: 0.3rem;
+  width: 3.5em;
+  height: unset !important;
+  font-weight: bold;
+}
+
+.searchable-select-dropdown-item--selected {
+  font-weight: bold;
+}
+
+.searchable-select-dropdown-results {
+  height: 45vh;
+  width: 22vw;
+  overflow: hidden;
+}
+
+.searchable-select-dropdown-item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.searchable-select-dropdown-item-title {
+  flex-grow: 1;
+}
+
+.searchable-select-dropdown-item-marked {
+  height: 80%;
+  margin-right: 0.3rem;
+}
+
+.dropdown-icon {
+  height: 1rem;
+  width: 1rem;
+  flex: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.platform-label-row {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.platform-label-row > :not(:first-child) {
+  margin-left: 0.3rem;
+}
+
+/* Downloads page */
+
+.downloads-page {
+  width: 100%;
+  height: 100%;
+}
+
+.downloads-page__upper {
+  margin: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.downloads-page__workers {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.downloads-page__workers-worker {
+
+}

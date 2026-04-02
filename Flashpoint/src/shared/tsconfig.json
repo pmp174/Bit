@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "../../build"
+  },
+  "extends": "../../tsconfig.json",
+  "include": [
+    "../../typings/**/*",
+    "./**/*", "../database/entity/Game.ts", "../database/entity/AdditionalApp.ts"
+, "../renderer/util/curate.ts", "../renderer/changelog.ts"  ]
+}

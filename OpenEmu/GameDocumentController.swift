@@ -169,7 +169,51 @@ class GameDocumentController: NSDocumentController {
         }
     }
     
+    // MARK: - Ruffle (Flash) Support
+    
+    private var ruffleLauncher: RuffleLauncher?
+    
+    private func launchFlashGame(_ game: OEDBGame, completionHandler: @escaping (OEGameDocument?, Error?) -> Void) {
+        guard let rom = game.defaultROM, let romURL = rom.url else {
+            completionHandler(nil, NSError(
+                domain: "org.openemu.GameDocumentController",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Flash game ROM file not found."]
+            ))
+            return
+        }
+        
+        let isReachable = (try? romURL.checkResourceIsReachable()) ?? false
+        guard isReachable else {
+            completionHandler(nil, NSError(
+                domain: "org.openemu.GameDocumentController",
+                code: 2,
+                userInfo: [NSLocalizedDescriptionKey: "Flash game file is not accessible: \(romURL.path)"]
+            ))
+            return
+        }
+        
+        let launcher = RuffleLauncher()
+        do {
+            try launcher.launch(swfURL: romURL) { [weak self] exitStatus in
+                self?.ruffleLauncher = nil
+                NSLog("[GameDocumentController] Ruffle exited with status: %d", exitStatus)
+            }
+            self.ruffleLauncher = launcher
+            // Return nil document — library stays visible while Ruffle runs in a separate window
+            completionHandler(nil, nil)
+        } catch {
+            completionHandler(nil, error)
+        }
+    }
+    
     override func openGameDocument(with game: OEDBGame, display displayDocument: Bool, fullScreen: Bool, completionHandler: @escaping (OEGameDocument?, Error?) -> Void) {
+        // Intercept Flash games — launch via Ruffle instead of OEGameDocument
+        if game.system?.systemIdentifier == "openemu.system.flash" {
+            launchFlashGame(game, completionHandler: completionHandler)
+            return
+        }
+        
         do {
             let document = try OEGameDocument(game: game, core: nil)
             setUpGameDocument(document, display: displayDocument, fullScreen: fullScreen, completionHandler: completionHandler)
@@ -179,6 +223,14 @@ class GameDocumentController: NSDocumentController {
     }
     
     override func openGameDocument(with rom: OEDBRom, display displayDocument: Bool, fullScreen: Bool, completionHandler: @escaping (OEGameDocument?, Error?) -> Void) {
+        // Intercept Flash ROMs — launch via Ruffle instead of OEGameDocument
+        if rom.game?.system?.systemIdentifier == "openemu.system.flash" {
+            if let game = rom.game {
+                launchFlashGame(game, completionHandler: completionHandler)
+                return
+            }
+        }
+        
         do {
             let document = try OEGameDocument(rom: rom, core: nil)
             setUpGameDocument(document, display: displayDocument, fullScreen: fullScreen, completionHandler: completionHandler)

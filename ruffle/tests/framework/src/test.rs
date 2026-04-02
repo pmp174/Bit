@@ -1,0 +1,160 @@
+use std::collections::HashMap;
+
+use crate::environment::Environment;
+use crate::options::TestOptions;
+use crate::options::known_failure::KnownFailure;
+use crate::runner::TestRunner;
+use crate::util::read_bytes;
+use anyhow::{Result, anyhow};
+use ruffle_core::font::{FontQuery, FontType};
+use ruffle_core::tag_utils::SwfMovie;
+use ruffle_input_format::InputInjector;
+use ruffle_socket_format::SocketEvent;
+use vfs::VfsPath;
+
+pub struct Font {
+    pub bytes: Vec<u8>,
+    pub family: String,
+    pub bold: bool,
+    pub italic: bool,
+}
+
+pub struct Test {
+    pub options: TestOptions,
+    pub swf_path: VfsPath,
+    pub input_path: VfsPath,
+    pub socket_path: VfsPath,
+    pub output_path: VfsPath,
+    pub root_path: VfsPath,
+    pub name: String,
+}
+
+impl Test {
+    pub fn from_options(options: TestOptions, test_dir: VfsPath, name: String) -> Result<Self> {
+        let swf_path = test_dir.join("test.swf")?;
+        let input_path = test_dir.join("input.json")?;
+        let socket_path = test_dir.join("socket.json")?;
+        let output_path = options.output_path(&test_dir)?;
+
+        Ok(Self {
+            options,
+            swf_path,
+            input_path,
+            socket_path,
+            output_path,
+            root_path: test_dir,
+            name,
+        })
+    }
+
+    pub fn create_test_runner(&self, environment: &impl Environment) -> Result<TestRunner> {
+        let movie = self.movie()?;
+        let viewport_dimensions = self.options.player_options.viewport_dimensions(&movie);
+        let renderer = self
+            .options
+            .player_options
+            .create_renderer(environment, viewport_dimensions);
+
+        let injector = self.input_injector()?;
+        let socket_events = self.socket_events()?;
+        let runner = TestRunner::new(
+            self,
+            movie,
+            injector,
+            socket_events,
+            renderer,
+            viewport_dimensions,
+        )?;
+        Ok(runner)
+    }
+
+    pub fn movie(&self) -> Result<SwfMovie> {
+        let data = read_bytes(&self.swf_path)?;
+        let movie = SwfMovie::from_data(&data, format!("file://{}", self.swf_path.as_str()), None)
+            .map_err(|e| anyhow!(e.to_string()))?;
+        Ok(movie)
+    }
+
+    fn socket_events(&self) -> Result<Option<Vec<SocketEvent>>> {
+        Ok(if self.socket_path.is_file()? {
+            Some(
+                SocketEvent::from_reader(&read_bytes(&self.socket_path)?[..])
+                    .map_err(|e| anyhow!("Error reading {}: {e}", self.socket_path.as_str()))?,
+            )
+        } else {
+            None
+        })
+    }
+
+    fn input_injector(&self) -> Result<InputInjector> {
+        Ok(if self.input_path.is_file()? {
+            InputInjector::from_reader(&read_bytes(&self.input_path)?[..])
+                .map_err(|e| anyhow!("Error reading {}: {e}", self.input_path.as_str()))?
+        } else {
+            InputInjector::empty()
+        })
+    }
+
+    pub fn fonts(&self) -> Result<HashMap<FontQuery, Font>> {
+        self.options
+            .fonts
+            .values()
+            .map(|font| {
+                Ok((
+                    font.to_font_query(),
+                    Font {
+                        bytes: read_bytes(&self.root_path.join(&font.path)?)?.to_vec(),
+                        family: font.family.to_owned(),
+                        bold: font.bold,
+                        italic: font.italic,
+                    },
+                ))
+            })
+            .collect()
+    }
+
+    pub fn font_sorts(&self) -> HashMap<FontQuery, Vec<FontQuery>> {
+        self.options
+            .font_sorts
+            .values()
+            .map(|font_sort| {
+                let query = FontQuery::new(
+                    FontType::Device,
+                    font_sort.family.clone(),
+                    font_sort.bold,
+                    font_sort.italic,
+                );
+                let sort = font_sort
+                    .sort
+                    .iter()
+                    .filter_map(|name| Some(self.options.fonts.get(name)?.to_font_query()))
+                    .collect();
+                (query, sort)
+            })
+            .collect()
+    }
+
+    pub fn should_run(
+        &self,
+        ignore_known_failures: bool,
+        check_renderer: bool,
+        environment: &impl Environment,
+    ) -> bool {
+        if self.options.ignore {
+            return false;
+        }
+        if ignore_known_failures && self.options.has_known_failure() {
+            return false;
+        }
+
+        // Panicky tests may expect to hit a debug assertion, so don't run them
+        // if assertions are disabled.
+        if !cfg!(debug_assertions)
+            && matches!(self.options.known_failure, KnownFailure::Panic { .. })
+        {
+            return false;
+        }
+
+        self.options.can_run(check_renderer, environment)
+    }
+}

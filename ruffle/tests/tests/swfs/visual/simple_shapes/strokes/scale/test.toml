@@ -1,0 +1,8 @@
+num_frames = 1
+
+[image_comparisons.output]
+known_failure = true
+tolerance = 0
+
+[player_options]
+with_renderer = { optional = true, quality = "low" }

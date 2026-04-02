@@ -1,0 +1,20 @@
+[package]
+name = "ruffle_openemu"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+ruffle_core = { path = "../core", features = ["audio", "mp3", "nellymoser", "default_font"] }
+ruffle_render = { path = "../render" }
+ruffle_render_wgpu = { path = "../render/wgpu" }
+ruffle_video = { path = "../video" }
+ruffle_video_software = { path = "../video/software" }
+ruffle_frontend_utils = { path = "../frontend-utils" }
+wgpu = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+futures = { workspace = true }
+url = { workspace = true }

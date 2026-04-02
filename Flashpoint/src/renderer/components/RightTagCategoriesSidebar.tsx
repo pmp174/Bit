@@ -1,0 +1,199 @@
+import { LangContainer } from '@shared/lang';
+import * as React from 'react';
+import { ColorResult, SketchPicker } from 'react-color';
+import { WithPreferencesProps } from '../containers/withPreferences';
+import { LangContext } from '../util/lang';
+import { ConfirmElement, ConfirmElementArgs } from './ConfirmElement';
+import { InputElement, InputField } from './InputField';
+import { OpenIcon } from './OpenIcon';
+import { TagCategory } from 'flashpoint-launcher';
+
+type OwnProps = {
+  /** Currently selected tag category (if any) */
+  currentCategory?: TagCategory;
+  /** If the "edit mode" is currently enabled */
+  isEditing: boolean;
+
+  onEditClick: () => void;
+  onDiscardClick: () => void;
+  onSaveCategory: () => void;
+  onDeleteCategory: () => void;
+
+  onEditCategory: (tag: Partial<TagCategory>) => void;
+};
+
+export type RightTagCategoriesSidebarProps = OwnProps & WithPreferencesProps;
+
+type RRightTagCategoriesSidebarState = {
+};
+
+/** Sidebar on the right side of BrowsePage. */
+export class RightTagCategoriesSidebar extends React.Component<RightTagCategoriesSidebarProps, RRightTagCategoriesSidebarState> {
+  static contextType = LangContext;
+  declare context: React.ContextType<typeof LangContext>;
+
+  launchCommandRef: React.RefObject<HTMLInputElement> = React.createRef();
+
+  constructor(props: RightTagCategoriesSidebarProps) {
+    super(props);
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onGlobalKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onGlobalKeyDown);
+  }
+
+  render() {
+    const allStrings = this.context;
+    const strings = this.context.tags;
+    const category: TagCategory | undefined = this.props.currentCategory;
+    if (category) {
+      const { isEditing, preferencesData } = this.props;
+      const editDisabled = !preferencesData.enableEditing;
+      const editable = !editDisabled && isEditing;
+      return (
+        <div
+          className={'browse-right-sidebar ' + (editable ? 'browse-right-sidebar--edit-enabled' : 'browse-right-sidebar--edit-disabled')}
+          onKeyDown={this.onLocalKeyDown}>
+          {/* -- Title & Developer(s) -- */}
+          <div className='browse-right-sidebar__section'>
+            <div className='browse-right-sidebar__row'>
+              <div className='browse-right-sidebar__title-row'>
+                <div className='browse-right-sidebar__title-row__title'>
+                  <InputField
+                    text={category.name}
+                    editable={editable}
+                    onChange={this.onNameChange}
+                    placeholder={strings.noName} />
+                </div>
+                <div className='browse-right-sidebar__title-row__buttons'>
+                  { editDisabled ? undefined : (
+                    <>
+                      { isEditing ? ( /* While Editing */
+                        <>
+                          {/* "Save" Button */}
+                          <div
+                            className='browse-right-sidebar__title-row__buttons__save-button'
+                            title={allStrings.browse.saveChanges}
+                            onClick={this.props.onSaveCategory}>
+                            <OpenIcon icon='check' />
+                          </div>
+                          {/* "Discard" Button */}
+                          <div
+                            className='browse-right-sidebar__title-row__buttons__discard-button'
+                            title={allStrings.browse.discardChanges}
+                            onClick={this.props.onDiscardClick}>
+                            <OpenIcon icon='x' />
+                          </div>
+                        </>
+                      ) : ( /* While NOT Editing */
+                        <>
+                          {/* "Edit" Button */}
+                          <div
+                            className='browse-right-sidebar__title-row__buttons__edit-button'
+                            title={strings.editTag}
+                            onClick={this.props.onEditClick}>
+                            <OpenIcon icon='pencil' />
+                          </div>
+                          <ConfirmElement
+                            message={allStrings.dialog.deleteTagCategory}
+                            onConfirm={this.onDeleteCategoryClick}
+                            render={this.renderDeleteCategoryButton}
+                            extra={allStrings.tags} />
+                        </>
+                      ) }
+                    </>
+                  ) }
+                </div>
+              </div>
+            </div>
+            <div className='browse-right-sidebar__section'>
+              <div className='browse-right-sidebar__row browse-right-sidebar__row--one-line'>
+                <p>{strings.description}: </p>
+                <InputField
+                  text={category.description || ''}
+                  placeholder={strings.noDescription}
+                  onChange={this.onDescriptionChange}
+                  editable={editable} />
+              </div>
+              <div className='browse-right-sidebar__row browse-right-sidebar__row--one-line'>
+                <p>{strings.color}: </p>
+                { editable ? (
+                  <SketchPicker
+                    color={category.color}
+                    onChange={this.onColorChange}/>
+                ) : (
+                  <div className='tag-categories__color-preview'
+                    style={{ backgroundColor: category.color }}>
+                    {category.color.toUpperCase()}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className='browse-right-sidebar-empty'>
+          <h1>{strings.noTagSelected}</h1>
+          <p>{strings.clickToSelectTag}</p>
+        </div>
+      );
+    }
+  }
+
+  renderDeleteCategoryButton({ confirm, extra }: ConfirmElementArgs<LangContainer['tags']>): JSX.Element {
+    const className = 'tag-category__buttons-delete';
+    return (
+      <div
+        className={className}
+        title={extra.deleteTagCategory}
+        onClick={confirm} >
+        <OpenIcon icon='trash' />
+      </div>
+    );
+  }
+
+  // When a key is pressed down "globally" (and this component is present)
+  onGlobalKeyDown = (event: KeyboardEvent) => {
+    // Start editing
+    if (event.ctrlKey && event.code === 'KeyE' && // (CTRL + E ...
+        !this.props.isEditing && this.props.currentCategory) { // ... while not editing, and a game is selected
+      this.props.onEditClick();
+      if (this.launchCommandRef.current) { this.launchCommandRef.current.focus(); }
+      event.preventDefault();
+    }
+  };
+
+  onLocalKeyDown = (event: React.KeyboardEvent) => {
+    // Save changes
+    if (event.ctrlKey && event.key === 's' && // (CTRL + S ...
+        this.props.isEditing && this.props.currentCategory) { // ... while editing, and a game is selected
+      this.props.onSaveCategory();
+      event.preventDefault();
+    }
+  };
+
+  onNameChange = (event: React.ChangeEvent<InputElement>) => {
+    this.props.onEditCategory({ name: event.currentTarget.value });
+  };
+
+  onDescriptionChange = (event: React.ChangeEvent<InputElement>) => {
+    this.props.onEditCategory({ description: event.currentTarget.value });
+  };
+
+  onColorChange = (color: ColorResult) => {
+    this.props.onEditCategory({ color: color.hex });
+  };
+
+  onDeleteCategoryClick = (): void => {
+    console.log('called');
+    if (this.props.onDeleteCategory) {
+      this.props.onDeleteCategory();
+    }
+  };
+}

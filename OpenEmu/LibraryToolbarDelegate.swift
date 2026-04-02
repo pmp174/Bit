@@ -180,7 +180,8 @@ final class LibraryToolbarDelegate: NSObject, NSToolbarDelegate {
         let titles = [NSLocalizedString("Toolbar: Library", value: "Library", comment: "toolbar, category label"),
                       NSLocalizedString("Toolbar: Save States", value: "Save States", comment: "toolbar, category label"),
                       NSLocalizedString("Toolbar: Screenshots", value: "Screenshots", comment: "toolbar, category label"),
-                      NSLocalizedString("Toolbar: Homebrew", value: "Homebrew", comment: "toolbar, category label")]
+                      NSLocalizedString("Toolbar: Homebrew", value: "Homebrew", comment: "toolbar, category label"),
+                      NSLocalizedString("Toolbar: Flashpoint", value: "Flashpoint", comment: "toolbar, category label")]
         
         let segmControl = NSSegmentedControl(labels: titles, trackingMode: .selectOne, target: toolbarOwner, action: #selector(LibraryController.switchCategory(_:)))
         
@@ -215,8 +216,13 @@ final class LibraryToolbarDelegate: NSObject, NSToolbarDelegate {
         homebrew.tag = 103
         homebrew.action = #selector(LibraryController.switchCategoryFromMenu(_:))
         
+        let flashpoint = NSMenuItem()
+        flashpoint.title = NSLocalizedString("Toolbar: Flashpoint", value: "Flashpoint", comment: "")
+        flashpoint.tag = 104
+        flashpoint.action = #selector(LibraryController.switchCategoryFromMenu(_:))
+        
         let menu = NSMenu()
-        menu.items = [library, savesStates, screenshots, homebrew]
+        menu.items = [library, savesStates, screenshots, homebrew, flashpoint]
         
         let categoryMenu = NSMenuItem()
         categoryMenu.title = NSLocalizedString("Category", comment:"")

@@ -1,0 +1,27 @@
+[package]
+name = "ruffle_render_canvas"
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+js-sys = { workspace = true }
+log = { workspace = true }
+ruffle_web_common = { path = "../../web/common" }
+wasm-bindgen = { workspace = true }
+ruffle_render = { path = "..", features = ["web"] }
+swf = { path = "../../swf" }
+
+[dependencies.web-sys]
+workspace = true
+features = [
+    "CanvasGradient", "CanvasPattern", "CanvasRenderingContext2d", "CanvasWindingRule", "CssStyleDeclaration",
+    "Document", "DomMatrix", "Element", "HtmlCanvasElement", "ImageData", "Navigator", "Path2d", "SvgMatrix",
+    "Window",
+]

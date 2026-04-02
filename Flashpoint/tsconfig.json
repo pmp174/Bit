@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "outDir": "build",
+    "baseUrl": "./src",
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": true,
+    "paths": {
+      "@shared/*": ["./shared/*"],
+      "@main/*": ["./main/*"],
+      "@back/*": ["./back/*"],
+      "@renderer/*": ["./renderer/*"]
+    },
+    "plugins": [
+      {
+        "name": "empty",
+        "transform": "ts-transform-paths"
+      }
+    ]
+  },
+  "exclude": ["node_modules", "dist", "build", "./src/shared"],
+  "include": ["./typings/**/*", "./src", "./tests"]
+}

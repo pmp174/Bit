@@ -1,0 +1,27 @@
+[package]
+name = "exporter"
+authors = ["Nathan Adams <dinnerbone@dinnerbone.com>"]
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+clap = { workspace = true }
+futures = { workspace = true }
+ruffle_core = { path = "../core", features = ["deterministic", "default_font"] }
+ruffle_render_wgpu = { path = "../render/wgpu", features = ["clap"] }
+image = { workspace = true, features = ["png"] }
+walkdir = { workspace = true }
+indicatif = { workspace = true }
+rayon = { workspace = true }
+anyhow = { workspace = true }
+
+[features]
+avm_debug = ["ruffle_core/avm_debug"]
+render_debug_labels = ["ruffle_render_wgpu/render_debug_labels"]
+lzma = ["ruffle_core/lzma"]

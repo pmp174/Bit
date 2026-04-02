@@ -185,7 +185,11 @@ static NSMapTable<NSString *, OESystemController *> *_registeredSystemController
 
 - (NSDictionary<NSString *, id> *)OE_defaultControllerPreferences;
 {
-    return [NSPropertyListSerialization propertyListWithData:[NSData dataWithContentsOfURL:[_bundle URLForResource:@"Controller-Preferences" withExtension:@"plist"]] options:NSPropertyListImmutable format:NULL error:NULL];
+    NSURL *url = [_bundle URLForResource:@"Controller-Preferences" withExtension:@"plist"];
+    if (url == nil) return nil;
+    NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:NULL];
+    if (data == nil) return nil;
+    return [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
 }
 
 - (NSDictionary<NSString *, id> *)OE_localizedControllerPreferences;

@@ -327,6 +327,16 @@
 		6376EB1E2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */; };
 		63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87FBC06D1BFC70FE00AECF5A /* Commodore 64.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63C7E2672F7CA1A900E472F1 /* Arcade.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 945E42FB1517F2B500057D08 /* Arcade.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		63C7E2752F7CD21D00E472F1 /* RuffleLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E2742F7CD21D00E472F1 /* RuffleLauncher.swift */; };
+		63C7E2782F7CD28D00E472F1 /* FlashpointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E2772F7CD28D00E472F1 /* FlashpointViewController.swift */; };
+		63C7E27A2F7CD7E100E472F1 /* ruffle_desktop in Resources */ = {isa = PBXBuildFile; fileRef = 63C7E2792F7CD7E100E472F1 /* ruffle_desktop */; };
+		63C7E27B2F7CD81100E472F1 /* ruffle_desktop in Copy Auxilliary Executables */ = {isa = PBXBuildFile; fileRef = 63C7E2792F7CD7E100E472F1 /* ruffle_desktop */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		63C7E28C2F7D171500E472F1 /* Flash.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 63C7E2882F7D150200E472F1 /* Flash.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		63C7E28D2F7D17DE00E472F1 /* OEFlashSystemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E26C2F7CCF8800E472F1 /* OEFlashSystemController.swift */; };
+		63C7E28E2F7D182300E472F1 /* OEFlashSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E26F2F7CCF8C00E472F1 /* OEFlashSystemResponder.m */; };
+		63C7E28F2F7D1A4A00E472F1 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
+		63C7E2962F7D20FB00E472F1 /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63C7E2952F7D20FB00E472F1 /* Keyboard-Mappings.plist */; };
+		63C7E2982F7D212100E472F1 /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63C7E2972F7D212100E472F1 /* Controller-Mappings.plist */; };
 		63CF88602F7776E000F574F3 /* PrefDeveloperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CF885F2F7776E000F574F3 /* PrefDeveloperController.swift */; };
 		8227756B1489471A00B19E27 /* OEGGSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8227755C1489471A00B19E27 /* OEGGSystemResponder.m */; };
 		82C2909114840024007C0214 /* OENGPSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 820EB7571483F9D3008EC398 /* OENGPSystemResponder.m */; };
@@ -1201,6 +1211,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				63C7E27B2F7CD81100E472F1 /* ruffle_desktop in Copy Auxilliary Executables */,
 				0547FDDC24E86166005C1FFC /* OpenEmuHelperApp in Copy Auxilliary Executables */,
 			);
 			name = "Copy Auxilliary Executables";
@@ -1269,6 +1280,7 @@
 			dstPath = Systems;
 			dstSubfolderSpec = 13;
 			files = (
+				63C7E28C2F7D171500E472F1 /* Flash.oesystemplugin in Copy System Plugins to App Plugins */,
 				63C7E2672F7CA1A900E472F1 /* Arcade.oesystemplugin in Copy System Plugins to App Plugins */,
 				63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */,
 				632C6DE02F6851F80083E29D /* Supervision.oesystemplugin in Copy System Plugins to App Plugins */,
@@ -1579,6 +1591,20 @@
 		6376EB1B2F72E2B100F07E39 /* OEAtomiswaveSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEAtomiswaveSystemResponderClient.h; sourceTree = "<group>"; };
 		6376EB1C2F72E2B200F07E39 /* OEAtomiswaveSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEAtomiswaveSystemResponder.h; sourceTree = "<group>"; };
 		6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OEAtomiswaveSystemResponder.m; sourceTree = "<group>"; };
+		63C7E26C2F7CCF8800E472F1 /* OEFlashSystemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEFlashSystemController.swift; sourceTree = "<group>"; };
+		63C7E26D2F7CCF8900E472F1 /* OEFlashSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEFlashSystemResponderClient.h; sourceTree = "<group>"; };
+		63C7E26E2F7CCF8A00E472F1 /* OEFlashSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEFlashSystemResponder.h; sourceTree = "<group>"; };
+		63C7E26F2F7CCF8C00E472F1 /* OEFlashSystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OEFlashSystemResponder.m; sourceTree = "<group>"; };
+		63C7E2702F7CCF9A00E472F1 /* Flash-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Flash-Info.plist"; sourceTree = "<group>"; };
+		63C7E2712F7CCF9B00E472F1 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		63C7E2722F7CCF9D00E472F1 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
+		63C7E2742F7CD21D00E472F1 /* RuffleLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuffleLauncher.swift; sourceTree = "<group>"; };
+		63C7E2772F7CD28D00E472F1 /* FlashpointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashpointViewController.swift; sourceTree = "<group>"; };
+		63C7E2792F7CD7E100E472F1 /* ruffle_desktop */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ruffle_desktop; sourceTree = "<group>"; };
+		63C7E2882F7D150200E472F1 /* Flash.oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Flash.oesystemplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		63C7E2952F7D20FB00E472F1 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Keyboard-Mappings.plist"; path = "SystemPlugins/Flash/Supporting Files/Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		63C7E2972F7D212100E472F1 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Controller-Mappings.plist"; path = "SystemPlugins/Flash/Supporting Files/Controller-Mappings.plist"; sourceTree = "<group>"; };
+		63C7E2992F7D22A700E472F1 /* Controller-Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
 		63CF885F2F7776E000F574F3 /* PrefDeveloperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefDeveloperController.swift; sourceTree = "<group>"; };
 		7699EC921D6303EB005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7699EC931D6303EC005BC437 /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2280,6 +2306,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		63C7E2852F7D150200E472F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63C7E28F2F7D1A4A00E472F1 /* OpenEmuSystem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		820EB7401483F9A2008EC398 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2939,6 +2973,7 @@
 				B77C065670002BBB00000002 /* Naomi 2.oesystemplugin */,
 				C88D176780003CCC00000002 /* Atomiswave.oesystemplugin */,
 				D99E287890004DDD00000002 /* .oesystemplugin */,
+				63C7E2882F7D150200E472F1 /* Flash.oesystemplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3050,6 +3085,9 @@
 		2A37F4AAFDCFA73011CA2CEA /* OpenEmu */ = {
 			isa = PBXGroup;
 			children = (
+				63C7E2972F7D212100E472F1 /* Controller-Mappings.plist */,
+				63C7E2952F7D20FB00E472F1 /* Keyboard-Mappings.plist */,
+				63C7E2792F7CD7E100E472F1 /* ruffle_desktop */,
 				5AECA14A1BE1D26700C3B4E2 /* Swift Bridging Header */,
 				2A37F4ABFDCFA73011CA2CEA /* Sources */,
 				C67118201363687A0034379A /* System Plugins */,
@@ -3093,6 +3131,7 @@
 				1BEF34751168F88A0090F72B /* Additions */,
 				630A9A832F68D5BD00384730 /* Cloud Storage */,
 				63195AAA2F70627100E25883 /* ControllerNavigationManager.swift */,
+				63C7E2732F7CCFA800E472F1 /* Emulation */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -3361,6 +3400,45 @@
 			path = Providers;
 			sourceTree = "<group>";
 		};
+		63C7E26A2F7CCF6E00E472F1 /* Flash */ = {
+			isa = PBXGroup;
+			children = (
+				63C7E26B2F7CCF7200E472F1 /* Supporting Files */,
+				63C7E26C2F7CCF8800E472F1 /* OEFlashSystemController.swift */,
+				63C7E26D2F7CCF8900E472F1 /* OEFlashSystemResponderClient.h */,
+				63C7E26E2F7CCF8A00E472F1 /* OEFlashSystemResponder.h */,
+				63C7E26F2F7CCF8C00E472F1 /* OEFlashSystemResponder.m */,
+			);
+			path = Flash;
+			sourceTree = "<group>";
+		};
+		63C7E26B2F7CCF7200E472F1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				63C7E2702F7CCF9A00E472F1 /* Flash-Info.plist */,
+				63C7E2712F7CCF9B00E472F1 /* Keyboard-Mappings.plist */,
+				63C7E2722F7CCF9D00E472F1 /* Controller-Mappings.plist */,
+				63C7E2992F7D22A700E472F1 /* Controller-Preferences.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		63C7E2732F7CCFA800E472F1 /* Emulation */ = {
+			isa = PBXGroup;
+			children = (
+				63C7E2742F7CD21D00E472F1 /* RuffleLauncher.swift */,
+			);
+			path = Emulation;
+			sourceTree = "<group>";
+		};
+		63C7E2762F7CD25800E472F1 /* Flashpoint */ = {
+			isa = PBXGroup;
+			children = (
+				63C7E2772F7CD28D00E472F1 /* FlashpointViewController.swift */,
+			);
+			path = Flashpoint;
+			sourceTree = "<group>";
+		};
 		820EB74D1483F9D3008EC398 /* NeoGeoPocket */ = {
 			isa = PBXGroup;
 			children = (
@@ -3436,6 +3514,7 @@
 				012FE6581CE51D4100716960 /* LibraryToolbarDelegate.swift */,
 				8F65E76426F3988500471DC4 /* GridSizeSlider.swift */,
 				8F3062DA251A897E00BDFF1F /* OESearchField.swift */,
+				63C7E2762F7CD25800E472F1 /* Flashpoint */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -4527,6 +4606,7 @@
 				B77C065670002BBB00000004 /* Naomi 2 */,
 				C88D176780003CCC00000004 /* Atomiswave */,
 				D99E287890004DDD00000004 /* Wii */,
+				63C7E26A2F7CCF6E00E472F1 /* Flash */,
 			);
 			name = "System Plugins";
 			path = SystemPlugins;
@@ -4875,6 +4955,25 @@
 			name = "PlayStation 2";
 			productName = PlayStation;
 			productReference = 3DB744BA1BD8BA9E00C23E74 /* PlayStation 2.oesystemplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+		63C7E2872F7D150200E472F1 /* Flash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63C7E2892F7D150200E472F1 /* Build configuration list for PBXNativeTarget "Flash" */;
+			buildPhases = (
+				63C7E2842F7D150200E472F1 /* Sources */,
+				63C7E2852F7D150200E472F1 /* Frameworks */,
+				63C7E2862F7D150200E472F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Flash;
+			packageProductDependencies = (
+			);
+			productName = Flash;
+			productReference = 63C7E2882F7D150200E472F1 /* Flash.oesystemplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 		820EB7391483F9A2008EC398 /* NeoGeoPocket */ = {
@@ -5713,6 +5812,9 @@
 					1BEF2A9311682A530090F72B = {
 						LastSwiftMigration = 1300;
 					};
+					63C7E2872F7D150200E472F1 = {
+						CreatedOnToolsVersion = 26.4;
+					};
 					8D15AC270486D014006FF6A4 = {
 						LastSwiftMigration = 1020;
 					};
@@ -5824,6 +5926,7 @@
 				05DB72A02532681B0098459D /* OpenEmuTests */,
 				012148042537C6D6007F3C84 /* OESystemPluginPostInstall */,
 				8F7C2947288A2A2200A16C09 /* OECoreListUpdater */,
+				63C7E2872F7D150200E472F1 /* Flash */,
 			);
 		};
 /* End PBXProject section */
@@ -5900,6 +6003,15 @@
 				3DB744C51BD8BACD00C23E74 /* Controller-Mappings.plist in Resources */,
 				3DB744C61BD8BACD00C23E74 /* Controller-Preferences.plist in Resources */,
 				3DB744C71BD8BACD00C23E74 /* Keyboard-Mappings.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63C7E2862F7D150200E472F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63C7E2982F7D212100E472F1 /* Controller-Mappings.plist in Resources */,
+				63C7E2962F7D20FB00E472F1 /* Keyboard-Mappings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5994,6 +6106,7 @@
 				0544B69F23D16D3100F63D61 /* CollectionViewItem.xib in Resources */,
 				0544B69523D16D0C00F63D61 /* ImageCollectionViewController.xib in Resources */,
 				83FE9646196859D300DD8DB9 /* PrefGameplayController.xib in Resources */,
+				63C7E27A2F7CD7E100E472F1 /* ruffle_desktop in Resources */,
 				0544B69323D16D0C00F63D61 /* ImageCollectionHeaderView.xib in Resources */,
 				05B753A023330EB60063BD73 /* Main.storyboard in Resources */,
 				010EDCA31CE628490020417C /* LibraryController.xib in Resources */,
@@ -6691,6 +6804,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		63C7E2842F7D150200E472F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63C7E28E2F7D182300E472F1 /* OEFlashSystemResponder.m in Sources */,
+				63C7E28D2F7D17DE00E472F1 /* OEFlashSystemController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		820EB73C1483F9A2008EC398 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6747,6 +6869,7 @@
 				C6252DC814E7A38000350A13 /* ControlsButtonSetupView.swift in Sources */,
 				0586AB22231A1E9A00BCDA6B /* OEGameLayerNotificationView.swift in Sources */,
 				0544B69923D16D0C00F63D61 /* ImageCollectionHeaderView.swift in Sources */,
+				63C7E2752F7CD21D00E472F1 /* RuffleLauncher.swift in Sources */,
 				0544B69423D16D0C00F63D61 /* ImageCollectionViewItem.swift in Sources */,
 				C69DCD010FE994A5009AE5A6 /* PluginDocument.swift in Sources */,
 				05A002D423DE1006007F0DB7 /* UserDefaults+OEAdditions.swift in Sources */,
@@ -6775,6 +6898,7 @@
 				8FDCCAD8270632AC00CBF2E3 /* OEGridViewFieldEditor.swift in Sources */,
 				630D27EE2F738EB2005FBEAD /* AchievementNotificationView.swift in Sources */,
 				53439AAB13B92CE6005C0CC8 /* OECollectionViewController.m in Sources */,
+				63C7E2782F7CD28D00E472F1 /* FlashpointViewController.swift in Sources */,
 				8F7AE88A2546802A00B837A8 /* InsetScrollView.swift in Sources */,
 				53439AE313B92E59005C0CC8 /* RatingCell.swift in Sources */,
 				05A002D623DE5389007F0DB7 /* SidebarHeaderView.swift in Sources */,
@@ -8176,6 +8300,77 @@
 			};
 			name = Release;
 		};
+		63C7E28A2F7D150200E472F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VD338C6859;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "SystemPlugins/Flash/Supporting Files/Flash-info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Flash;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Debug;
+		};
+		63C7E28B2F7D150200E472F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VD338C6859;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "SystemPlugins/Flash/Supporting Files/Flash-info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Flash;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Release;
+		};
 		820EB7481483F9A2008EC398 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -9014,7 +9209,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.teambit.--PRODUCT-NAME-identifier-";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.bit.--PRODUCT-NAME-identifier-";
 				PRODUCT_NAME = Bit;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
@@ -9058,7 +9253,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.teambit.--PRODUCT-NAME-identifier-";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.bit.--PRODUCT-NAME-identifier-";
 				PRODUCT_NAME = Bit;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "OpenEmu-Bridging-Header.h";
@@ -9507,6 +9702,15 @@
 			buildConfigurations = (
 				3DB744B81BD8BA9E00C23E74 /* Debug */,
 				3DB744B91BD8BA9E00C23E74 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63C7E2892F7D150200E472F1 /* Build configuration list for PBXNativeTarget "Flash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63C7E28A2F7D150200E472F1 /* Debug */,
+				63C7E28B2F7D150200E472F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

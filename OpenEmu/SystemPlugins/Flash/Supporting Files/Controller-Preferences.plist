@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OEControllerKeyPositionKey</key>
+	<dict>
+		<key>OEFlashButtonUp</key>
+		<string>{100, 50}</string>
+		<key>OEFlashButtonDown</key>
+		<string>{100, 150}</string>
+		<key>OEFlashButtonLeft</key>
+		<string>{50, 100}</string>
+		<key>OEFlashButtonRight</key>
+		<string>{150, 100}</string>
+		<key>OEFlashButtonSpace</key>
+		<string>{250, 200}</string>
+		<key>OEFlashButtonEnter</key>
+		<string>{350, 200}</string>
+		<key>OEFlashButtonEscape</key>
+		<string>{450, 200}</string>
+		<key>OEFlashButtonShift</key>
+		<string>{250, 250}</string>
+		<key>OEFlashButtonControl</key>
+		<string>{350, 250}</string>
+		<key>OEFlashButtonTab</key>
+		<string>{450, 250}</string>
+	</dict>
+</dict>
+</plist>
