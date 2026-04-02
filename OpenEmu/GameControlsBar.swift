@@ -49,6 +49,13 @@ final class GameControlsBar: NSWindow {
     var controlsView: GameControlsBarView!
     weak var gameViewController: GameViewController!
     private var lastGameWindowFrame = NSRect.zero
+    /// Systems where mouse is used for gameplay (Flash, DS touch, Wii pointer)
+    private var usesMouseForGameplay = false
+    private(set) var isCollapsed = false
+    private var isAnimating = false
+    private var collapsedWindow: NSWindow?
+    private var expandedBarSize = NSSize.zero
+    private static let collapsedSize: CGFloat = 36
     private var lastMouseMovement: Date! {
         willSet {
             if fadeTimer == nil {
@@ -86,68 +93,125 @@ final class GameControlsBar: NSWindow {
     }
     
     init(gameViewController controller: GameViewController) {
-        let useNew = OEAppearance.hudBar == .vibrant
-        
+        let mouseGameplaySystems = [
+            "openemu.system.flash",
+            "openemu.system.nds",
+            "openemu.system.wii"
+        ]
+        let mouseMode = mouseGameplaySystems.contains(controller.systemIdentifier)
+        let barWidth: CGFloat
         var barRect: NSRect
-        if useNew {
-            barRect = NSRect(x: 0, y: 0, width: 442, height: 42)
+
+        if #available(macOS 26, *) {
+            barWidth = 444
+            barRect = NSRect(x: 0, y: 0, width: barWidth, height: 42)
+            super.init(contentRect: barRect, styleMask: .borderless, backing: .buffered, defer: true)
         } else {
-            barRect = NSRect(x: 0, y: 0, width: 442, height: 45)
+            barWidth = 490
+            let useNew = OEAppearance.hudBar == .vibrant
+            barRect = NSRect(x: 0, y: 0, width: barWidth, height: useNew ? 42 : 45)
+            super.init(contentRect: barRect, styleMask: useNew ? .titled : .borderless, backing: .buffered, defer: true)
         }
-        
-        super.init(contentRect: barRect, styleMask: useNew ? .titled : .borderless, backing: .buffered, defer: true)
-        
+
         isMovableByWindowBackground = true
         animationBehavior = .none
-        
+
         gameViewController = controller
-        
-        if useNew {
-            titlebarAppearsTransparent = true
-            titleVisibility = .hidden
-            styleMask.insert(.fullSizeContentView)
-            appearance = NSAppearance(named: .vibrantDark)
-            
-            let veView = NSVisualEffectView()
-            veView.material = .hudWindow
-            veView.state = .active
-            contentView = veView
-        } else {
+        usesMouseForGameplay = mouseMode
+        expandedBarSize = barRect.size
+
+        if #available(macOS 26, *) {
             backgroundColor = .clear
+            isOpaque = false
+            hasShadow = false
+
+            let glassView = NSGlassEffectView(frame: barRect)
+            glassView.style = .clear
+            glassView.cornerRadius = 21
+            glassView.tintColor = .clear
+            contentView = glassView
+
+            let barView = GameControlsBarView(frame: barRect)
+            controlsView = barView
+            glassView.contentView = barView
+        } else {
+            let useNew = OEAppearance.hudBar == .vibrant
+            if useNew {
+                titlebarAppearsTransparent = true
+                titleVisibility = .hidden
+                styleMask.insert(.fullSizeContentView)
+                appearance = NSAppearance(named: .vibrantDark)
+
+                let veView = NSVisualEffectView()
+                veView.material = .hudWindow
+                veView.state = .active
+                contentView = veView
+            } else {
+                backgroundColor = .clear
+            }
+
+            let barView = GameControlsBarView(frame: barRect)
+            contentView?.addSubview(barView)
+            controlsView = barView
         }
+
         alphaValue = 0
-        
-        let barView = GameControlsBarView(frame: barRect)
-        contentView?.addSubview(barView)
-        controlsView = barView
-        
+
+        controlsView.onCollapse = { [weak self] in self?.collapse() }
+        setupCollapsedWindow()
+
         eventMonitor = NSEvent.addLocalMonitorForEvents(matching: .mouseMoved) { [weak self] event in
             if NSApp.isActive, let self = self, let gameWindow = self.gameWindow, gameWindow.isMainWindow {
                 self.performSelector(onMainThread: #selector(self.mouseMoved(with:)), with: event, waitUntilDone: false)
             }
             return event
         }
-        
-        NSCursor.setHiddenUntilMouseMoves(true)
-        
+
+        if !usesMouseForGameplay {
+            NSCursor.setHiddenUntilMouseMoves(true)
+        }
+
         let nc = NotificationCenter.default
         // Show HUD when switching back from other applications
         nc.addObserver(self, selector: #selector(mouseMoved(with:)), name: NSApplication.didBecomeActiveNotification, object: nil)
         nc.addObserver(self, selector: #selector(willMove(_:)), name: NSWindow.willMoveNotification, object: self)
         nc.addObserver(self, selector: #selector(didMove(_:)), name: NSWindow.didMoveNotification, object: self)
-        
+
         Self.initializeDefaults
     }
     
+    /// Immediately hide and detach all windows (bar + collapsed circle).
+    /// Called during game close to prevent orphaned windows.
+    func tearDown() {
+        fadeTimer?.invalidate()
+        fadeTimer = nil
+
+        // Hide and detach the collapsed circle window
+        if let cw = collapsedWindow {
+            cw.parent?.removeChildWindow(cw)
+            cw.orderOut(nil)
+        }
+
+        // Hide the main bar
+        alphaValue = 0
+        isCollapsed = false
+    }
+
     deinit {
         fadeTimer?.invalidate()
         fadeTimer = nil
         gameViewController = nil
-        
+
         if let eventMonitor = eventMonitor {
             NSEvent.removeMonitor(eventMonitor)
         }
-        
+
+        if let cw = collapsedWindow {
+            cw.parent?.removeChildWindow(cw)
+            cw.orderOut(nil)
+            collapsedWindow = nil
+        }
+
         gameWindow = nil
     }
     
@@ -168,6 +232,10 @@ final class GameControlsBar: NSWindow {
     // MARK: - Manage Visibility
     
     func show() {
+        if isCollapsed {
+            expand()
+            return
+        }
         if canShow {
             animator().alphaValue = 1
         }
@@ -188,21 +256,14 @@ final class GameControlsBar: NSWindow {
     }
 
     func hide(animated: Bool = true, hideCursor: Bool = true) {
-        NSCursor.setHiddenUntilMouseMoves(hideCursor)
-        
-        // only hide if 'docked' to game window (aka on the same screen)
-        if parent != nil {
-            if animated {
-                DispatchQueue.main.async {
-                    self.animator().alphaValue = 0
-                }
-            } else {
-                alphaValue = 0
-            }
-        }
-        
+        // All cores collapse into circle button instead of fading away
+        collapse()
         fadeTimer?.invalidate()
         fadeTimer = nil
+
+        if !usesMouseForGameplay {
+            NSCursor.setHiddenUntilMouseMoves(hideCursor)
+        }
     }
     
     override func mouseMoved(with event: NSEvent) {
@@ -211,21 +272,32 @@ final class GameControlsBar: NSWindow {
     
     private func performMouseMoved() {
         guard let gameWindow = gameWindow else { return }
-        
+
+        // In Flash mode, don't auto-expand from collapsed state on mouse movement
+        // since Flash games use the mouse for gameplay input
+        if usesMouseForGameplay && isCollapsed {
+            return
+        }
+
         let gameView = gameViewController.view
         let viewFrame = gameView.frame
         let mouseLoc = NSEvent.mouseLocation
-        
+
         let viewFrameOnScreen = gameWindow.convertToScreen(viewFrame)
         if !viewFrameOnScreen.contains(mouseLoc) {
             return
         }
-        
+
+        // For non-Flash cores, auto-expand from collapsed state on mouse movement
+        if !usesMouseForGameplay && isCollapsed {
+            expand()
+        }
+
         if alphaValue == 0 {
             lastMouseMovement = Date()
             show()
         }
-        
+
         lastMouseMovement = Date()
     }
     
@@ -256,7 +328,21 @@ final class GameControlsBar: NSWindow {
     
     func repositionOnGameWindow() {
         guard let gameWindow = gameWindow, parent != nil else { return }
-        
+
+        if isCollapsed {
+            let margin: CGFloat = 19
+            let size = Self.collapsedSize
+            let gameViewFrame = gameViewController.view.frame
+            let gameViewFrameInWindow = gameViewController.view.convert(gameViewFrame, to: nil)
+            let screenOrigin = gameWindow.convertToScreen(gameViewFrameInWindow).origin
+            let origin = NSPoint(
+                x: screenOrigin.x + gameViewFrame.width - size - margin,
+                y: screenOrigin.y + margin
+            )
+            collapsedWindow?.setFrameOrigin(origin)
+            return
+        }
+
         let controlsMargin: CGFloat = 19
         let gameView = gameViewController.view
         let gameViewFrame = gameView.frame
@@ -281,8 +367,191 @@ final class GameControlsBar: NSWindow {
         setFrameOrigin(origin)
     }
     
+    // MARK: - Collapsible Bar (Flash Mode)
+
+    private func setupCollapsedWindow() {
+        let size = Self.collapsedSize
+        let rect = NSRect(x: 0, y: 0, width: size, height: size)
+
+        let win = NSWindow(contentRect: rect, styleMask: .borderless, backing: .buffered, defer: true)
+        win.backgroundColor = .clear
+        win.isOpaque = false
+        win.hasShadow = false
+        win.animationBehavior = .none
+        win.level = level
+        win.isMovableByWindowBackground = false
+
+        let clickView = CollapsedClickView(frame: rect)
+        clickView.onClick = { [weak self] in self?.expand() }
+
+        if #available(macOS 26, *) {
+            let glassView = NSGlassEffectView(frame: rect)
+            glassView.style = .clear
+            glassView.cornerRadius = size / 2
+            glassView.tintColor = .clear
+
+            let iconView = NSImageView(frame: rect.insetBy(dx: 6, dy: 6))
+            iconView.image = NSImage(systemSymbolName: "gamecontroller.fill", accessibilityDescription: "Show Controls")
+            iconView.contentTintColor = .white
+            iconView.imageAlignment = .alignCenter
+            iconView.imageScaling = .scaleProportionallyDown
+            clickView.addSubview(iconView)
+
+            glassView.contentView = clickView
+            win.contentView = glassView
+        } else {
+            clickView.wantsLayer = true
+            clickView.layer?.cornerRadius = size / 2
+            clickView.layer?.masksToBounds = true
+            clickView.layer?.backgroundColor = NSColor(white: 0.15, alpha: 0.85).cgColor
+            clickView.layer?.borderColor = NSColor.white.withAlphaComponent(0.2).cgColor
+            clickView.layer?.borderWidth = 1
+
+            let iconView = NSImageView(frame: rect.insetBy(dx: 6, dy: 6))
+            iconView.image = NSImage(systemSymbolName: "gamecontroller.fill", accessibilityDescription: "Show Controls")
+            iconView.contentTintColor = .white
+            iconView.imageAlignment = .alignCenter
+            iconView.imageScaling = .scaleProportionallyDown
+            clickView.addSubview(iconView)
+
+            win.contentView = clickView
+        }
+
+        collapsedWindow = win
+    }
+
+    func collapse() {
+        guard !isCollapsed, !isAnimating else { return }
+        isCollapsed = true
+        isAnimating = true
+
+        guard let gameWindow = gameWindow, let cw = collapsedWindow else {
+            isAnimating = false
+            return
+        }
+
+        let size = Self.collapsedSize
+        let margin: CGFloat = 19
+        let gameViewFrame = gameViewController.view.frame
+        let gameViewFrameInWindow = gameViewController.view.convert(gameViewFrame, to: nil)
+        let screenOrigin = gameWindow.convertToScreen(gameViewFrameInWindow).origin
+        let targetOrigin = NSPoint(
+            x: screenOrigin.x + gameViewFrame.width - size - margin,
+            y: screenOrigin.y + margin
+        )
+
+        if #available(macOS 26, *), let glassView = contentView as? NSGlassEffectView {
+            // Liquid glass morph: shrink bar into circle
+            controlsView.isHidden = true
+            let targetFrame = NSRect(origin: targetOrigin, size: NSSize(width: size, height: size))
+
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.2
+                context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+                self.animator().setFrame(targetFrame, display: true)
+                glassView.animator().cornerRadius = size / 2
+            }, completionHandler: { [weak self] in
+                guard let self = self else { return }
+                self.alphaValue = 0
+                // Reset bar to expanded state for later use
+                self.setFrame(NSRect(origin: self.frame.origin, size: self.expandedBarSize), display: false)
+                glassView.cornerRadius = 21
+                self.controlsView.isHidden = false
+
+                cw.setFrameOrigin(targetOrigin)
+                cw.alphaValue = 1
+                gameWindow.addChildWindow(cw, ordered: .above)
+                cw.orderFront(nil)
+                self.isAnimating = false
+            })
+        } else {
+            cw.setFrameOrigin(targetOrigin)
+            cw.alphaValue = 0
+            gameWindow.addChildWindow(cw, ordered: .above)
+            cw.orderFront(nil)
+
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.15
+                self.animator().alphaValue = 0
+                cw.animator().alphaValue = 0.7
+            }, completionHandler: { [weak self] in
+                self?.isAnimating = false
+            })
+        }
+
+        fadeTimer?.invalidate()
+        fadeTimer = nil
+    }
+
+    func expand() {
+        guard isCollapsed, !isAnimating else { return }
+        isCollapsed = false
+        isAnimating = true
+
+        if #available(macOS 26, *), let glassView = contentView as? NSGlassEffectView,
+           let gameWindow = gameWindow {
+            let size = Self.collapsedSize
+            let collapsedFrame = collapsedWindow?.frame ?? NSRect(origin: frame.origin, size: NSSize(width: size, height: size))
+
+            // Calculate expanded position
+            let controlsMargin: CGFloat = 19
+            let gameViewFrame = gameViewController.view.frame
+            let gameViewFrameInWindow = gameViewController.view.convert(gameViewFrame, to: nil)
+            var expandedOrigin = gameWindow.convertToScreen(gameViewFrameInWindow).origin
+            expandedOrigin.x += (gameViewFrame.width - expandedBarSize.width) / 2
+            if gameViewFrame.width >= expandedBarSize.width {
+                expandedOrigin.y += controlsMargin
+            } else {
+                expandedOrigin.y -= (expandedBarSize.height + controlsMargin)
+                if expandedOrigin.y < gameWindow.screen?.visibleFrame.minY ?? 0 {
+                    expandedOrigin.y = gameWindow.frame.maxY + controlsMargin
+                }
+            }
+            let expandedFrame = NSRect(origin: expandedOrigin, size: expandedBarSize)
+
+            // Start at collapsed state (still invisible)
+            setFrame(collapsedFrame, display: false)
+            glassView.cornerRadius = size / 2
+            controlsView.isHidden = true
+            alphaValue = 1
+
+            // Remove collapsed window (main bar is now visible in its place)
+            if let cw = collapsedWindow {
+                gameWindow.removeChildWindow(cw)
+                cw.orderOut(nil)
+            }
+
+            // Liquid glass morph: grow circle into bar
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.2
+                context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+                self.animator().setFrame(expandedFrame, display: true)
+                glassView.animator().cornerRadius = 21
+            }, completionHandler: { [weak self] in
+                self?.controlsView.isHidden = false
+                self?.isAnimating = false
+            })
+        } else {
+            if let cw = collapsedWindow {
+                gameWindow?.removeChildWindow(cw)
+                cw.orderOut(nil)
+            }
+
+            repositionOnGameWindow()
+
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.15
+                self.animator().alphaValue = 1
+            }, completionHandler: { [weak self] in
+                self?.isAnimating = false
+            })
+        }
+
+        lastMouseMovement = Date()
+    }
+
     // MARK: -
-    
+
     @objc private func willMove(_ notification: Notification) {
         if let parentWindow = parent {
             lastGameWindowFrame = parentWindow.frame
@@ -812,5 +1081,21 @@ final class GameControlsBar: NSWindow {
         }
         
         return menu
+    }
+}
+
+// MARK: - Collapsed Click View
+
+private class CollapsedClickView: NSView {
+    var onClick: (() -> Void)?
+
+    override var acceptsFirstResponder: Bool { true }
+
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+        return true
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        onClick?()
     }
 }

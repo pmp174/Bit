@@ -22,7 +22,96 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		00BA7D19307CFBF83F21ABDA /* Transport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A92A1E2EC85E1A00F90519 /* Transport.cpp */; };
 		025229EF0AF27E740024DAB3 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025229EE0AF27E740024DAB3 /* CoreAudio.framework */; };
+		02BB34162642C7830FD20929 /* SubComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500EA6C524B09037009AA7D7 /* SubComponent.cpp */; };
+		02F8541E056FA1572C27EB58 /* ImageError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A72F436A2B0016265E /* ImageError.cpp */; };
+		054F7152CC3EE43588E6334B /* ControlPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C433E24AF29AC00E69CAE /* ControlPort.cpp */; };
+		06936E4A87BD49DCF90E3C5F /* FSDescriptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27282F436A2B0016265E /* FSDescriptor.cpp */; };
+		06A1E232186F5B3C6132259F /* FSTraits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27542F436A2B0016265E /* FSTraits.cpp */; };
+		06EA40A82EDCCAABE744451F /* CartridgeRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C224AF29AB00E69CAE /* CartridgeRom.cpp */; };
+		07E187A408D9804C37C830BA /* StdioTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5008784A2ECB68040077F45F /* StdioTransport.cpp */; };
+		07F300CE48F0AEB8C2E242AC /* FSAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27402F436A2B0016265E /* FSAllocator.cpp */; };
+		07F723DF88CE00F1AB243B12 /* FSError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC275B2F436A2B0016265E /* FSError.cpp */; };
+		098AEC028B6BE2F5C92E0F46 /* FSObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27302F436A2B0016265E /* FSObjects.cpp */; };
+		0AE9B471A2EE53B7557C2F6A /* DiskAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AB70742721B8EE004ABB2B /* DiskAnalyzer.cpp */; };
+		0E3CFC13E4C9C941D4CDC644 /* Compressible.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25732F41A8760016265E /* Compressible.cpp */; };
+		1067EB9192300D50809B48BC /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50650F452DF23C8A008AD660 /* Texture.cpp */; };
+		107FFE99D046C472905A5335 /* FileSystemLayer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273D2F436A2B0016265E /* FileSystemLayer2.cpp */; };
+		10F63F30489B01E72D793486 /* C64Key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AEEE7126305625001DED20 /* C64Key.cpp */; };
+		11B96DDD19DD712E0CD5990F /* Peddle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AA48B0292F8EC30084401D /* Peddle.cpp */; };
+		123B83DD419C62A40EE50D6B /* Reportable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25782F41A8760016265E /* Reportable.cpp */; };
+		126DE0950B1E76B3E686F085 /* HardDiskImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A52F436A2B0016265E /* HardDiskImage.cpp */; };
+		13A07B787D5BE33FFC96DF22 /* Ocean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429124AF29AB00E69CAE /* Ocean.cpp */; };
+		152830AB670755E9798E6B1E /* ReSID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C433124AF29AC00E69CAE /* ReSID.cpp */; };
+		15712D757B55BBFD3987A07D /* SerialPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C433C24AF29AC00E69CAE /* SerialPort.cpp */; };
+		1639FF06BAB6DF227E2C3641 /* Paddle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E6B2C0C58FF0097473C /* Paddle.cpp */; };
+		1688A7C65DBE36E6A2BA8893 /* PeddleDebugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50995F2824DBCDE400F40713 /* PeddleDebugger.cpp */; };
+		16B22CB1DE10B634E6BAB30D /* PosixView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC275D2F436A2B0016265E /* PosixView.cpp */; };
+		1945B832F3F529F3C3B92FBD /* DeviceDescriptors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC270C2F436A2B0016265E /* DeviceDescriptors.cpp */; };
+		19DFAA132D70158BC89CC1CA /* Expert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A424AF29AB00E69CAE /* Expert.cpp */; };
+		1A4EFB4DDBCD034590A269B7 /* VirtualC64GameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1796762630CEAB783B4FA224 /* VirtualC64GameCore.mm */; };
+		1AFCEEECE921E9F6B1951E95 /* AnyFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42D624AF29AB00E69CAE /* AnyFile.cpp */; };
+		1B397ECE9939C6D9276E6A6A /* TrackDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27132F436A2B0016265E /* TrackDevice.cpp */; };
+		1B580523A7ACB5D9A7980EB7 /* pot.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431824AF29AC00E69CAE /* pot.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		1C3A4AD58C84E46B242130A6 /* NeosMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FD24AF29AB00E69CAE /* NeosMouse.cpp */; };
+		1C7373F21F9BFAFA572CC0B4 /* TcpTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A92A262EC85E3C00F90519 /* TcpTransport.cpp */; };
+		1DEB3F42A5456691A3AF108C /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5055D5B32615886E005D3DA6 /* Error.cpp */; };
+		1EF3393C0162804F0D910E02 /* G64File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42D224AF29AB00E69CAE /* G64File.cpp */; };
+		1F337368AFF7A7F205F37C24 /* Files.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25852F41A8760016265E /* Files.cpp */; };
+		202ABFB20DFCDCABE785B274 /* VideoPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64082C01FADC007CD347 /* VideoPort.cpp */; };
+		210EB68526542D53CEF43888 /* DebuggerConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50726F2A295B61C50031F2F5 /* DebuggerConsole.cpp */; };
+		21B23445BCE4C5ABAAA681CF /* EasyFlash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429724AF29AB00E69CAE /* EasyFlash.cpp */; };
+		23004CB2FC19FA19979A6968 /* voice.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431C24AF29AC00E69CAE /* voice.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		235A867D8F09A1D2BD35EBAA /* AudioStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50316E4B2E9A41CC00BDF90F /* AudioStream.cpp */; };
+		23937A19AC4C3C720E88D1D0 /* PowerPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64182C0373F9007CD347 /* PowerPortBase.cpp */; };
+		252394E97EA650EE2FCDA3EB /* CoreObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42ED24AF29AB00E69CAE /* CoreObject.cpp */; };
+		26978ABD88D2ABCDD80AC458 /* FileSystemLayer3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273E2F436A2B0016265E /* FileSystemLayer3.cpp */; };
+		27FFD7B95054E321119B1D7B /* LinearDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27112F436A2B0016265E /* LinearDevice.cpp */; };
+		286D90BCEC5202AB2537D988 /* VICIICycles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50D20B742508F6D70088E8F2 /* VICIICycles.cpp */; };
+		29AEC5BF2B50892A98FBF6E5 /* GameKiller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F0EB7825CC33B3002D0D72 /* GameKiller.cpp */; };
+		2A0614720FA814FB2988392E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 50650F412DF0C7A5008AD660 /* libz.tbd */; };
+		2B5D551792E35AB4307DB916 /* EADFFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27722F436A2B0016265E /* EADFFile.cpp */; };
+		2B92EF59306AE3FA32F80299 /* RS232.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 505A13312C35551D00FF8D2C /* RS232.cpp */; };
+		2BDA4899EC5F58812094BDF2 /* DOSDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27812F436A2B0016265E /* DOSDecoder.cpp */; };
+		2DE40D30488636A01312E581 /* RegressionTesterBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50B064EE2C888F2C0080FCA0 /* RegressionTesterBase.cpp */; };
+		2E8282817495F6B588785659 /* MsgQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42F124AF29AB00E69CAE /* MsgQueue.cpp */; };
+		309710D90EA7D0EB1B23DA11 /* Dumpable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25742F41A8760016265E /* Dumpable.cpp */; };
+		32035D6EEA7283CAB4505057 /* envelope.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431724AF29AC00E69CAE /* envelope.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		3383BE6053EA1452821AA1D7 /* ActionReplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42AD24AF29AB00E69CAE /* ActionReplay.cpp */; };
+		33B04BDC6D37C6B8D6BE689A /* AnyImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC279E2F436A2B0016265E /* AnyImage.cpp */; };
+		3408E1BA78B8DDD5C145A6E6 /* TAPFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42DB24AF29AB00E69CAE /* TAPFile.cpp */; };
+		347E10DE53084F3310000F22 /* C64Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500375052C23F26000979A1B /* C64Base.cpp */; };
+		36ADCF23AB80CA418B4A7C6E /* DriveMemoryBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E5F2C0B4A6A0097473C /* DriveMemoryBase.cpp */; };
+		36C172308082C6641AE8EA60 /* WarpSpeed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429224AF29AB00E69CAE /* WarpSpeed.cpp */; };
+		372CB497E73B6DD378802F54 /* Kingsoft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A224AF29AB00E69CAE /* Kingsoft.cpp */; };
+		381B2D526726E087BDF811AE /* FileSystemLayer1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273C2F436A2B0016265E /* FileSystemLayer1.cpp */; };
+		38A810174DDE8C552FAA369D /* Formatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257E2F41A8760016265E /* Formatter.cpp */; };
+		391DBB13A3511A73D1EBA8E2 /* T64File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42CC24AF29AB00E69CAE /* T64File.cpp */; };
+		39B85E0827DDF586824156A1 /* CmdQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BB3E932B7A426800B2D87B /* CmdQueue.cpp */; };
+		3A2354228FB913DE381501FB /* FSCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27242F436A2B0016265E /* FSCache.cpp */; };
+		3B6AA301FE9BDB4686D94907 /* PRGFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42CD24AF29AB00E69CAE /* PRGFile.cpp */; };
+		3BD1FE9742F14F671DE66F2B /* UserPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 505A13292C3503B400FF8D2C /* UserPort.cpp */; };
+		3EC91628DAB1A1A325D3F5CC /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25B82F4221770016265E /* debug.cpp */; };
+		3EDB06C9B60D1F9079056BCE /* FSContract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27262F436A2B0016265E /* FSContract.cpp */; };
+		3F5618568354E045B1DA1C80 /* Host.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F5B6A02959C44E000457A0 /* Host.cpp */; };
+		3F5C0DEE3EF2A90DB43D1BA3 /* Buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25822F41A8760016265E /* Buffer.cpp */; };
+		3F86E2FFC97F6FB5F257DFFC /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50461BBC26B522450019CEDF /* Thread.cpp */; };
+		40086CD5D0AAC5EB0501D55B /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A5B7CB2C74E44C00D6DDAD /* Socket.cpp */; };
+		41B69C3539062C530D4B6DAA /* FlashRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C324AF29AB00E69CAE /* FlashRom.cpp */; };
+		4287A298F1410D676EE16F02 /* SIDBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194982BDA82720046849E /* SIDBase.cpp */; };
+		4337281A426E351B72EADE09 /* PeddleDisassembler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500C1C772965E7D300071AF3 /* PeddleDisassembler.cpp */; };
+		44DCCF4273F9C5CDFA0AFCBF /* FSDirEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27482F436A2B0016265E /* FSDirEntry.cpp */; };
+		4514A83D76BC4C43C774B0E2 /* VICIITable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5003382A266F7F3C00D5456E /* VICIITable.cpp */; };
+		4699F3F9923BC2229E8D4760 /* DiskImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A12F436A2B0016265E /* DiskImage.cpp */; };
+		46B6470E577ECD49538B7B07 /* Mouse1351.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FF24AF29AB00E69CAE /* Mouse1351.cpp */; };
+		4857C5D46AB24074C1AFC772 /* Comal80.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BE24AF29AB00E69CAE /* Comal80.cpp */; };
+		48826F9D5631715C4D43BB9F /* DapServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506E28382EB3346C003FF0D3 /* DapServer.cpp */; };
+		49707074C91045761733D3A4 /* UserPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 505A132D2C3503EB00FF8D2C /* UserPortBase.cpp */; };
+		4A2300D8C7BB4535F89DE84B /* FreezeFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42B124AF29AB00E69CAE /* FreezeFrame.cpp */; };
+		4A379346AED27AFE49FF2321 /* u_medium.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28482F446B2D0016265E /* u_medium.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		4CA3E5D52E51244649ECBEC6 /* u_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28462F446B2D0016265E /* u_init.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		4E8DAAAA24D73EAB76B0E19E /* RshServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A5B7C92C74E44C00D6DDAD /* RshServer.cpp */; };
 		5003382B266F7F3C00D5456E /* VICIITable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5003382A266F7F3C00D5456E /* VICIITable.cpp */; };
 		500375062C23F26000979A1B /* C64Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500375052C23F26000979A1B /* C64Base.cpp */; };
 		500375072C23F26000979A1B /* C64Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500375052C23F26000979A1B /* C64Base.cpp */; };
@@ -724,295 +813,201 @@
 		50FE5B382039B3C5006CE7C7 /* C64Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FE5B372039B3C5006CE7C7 /* C64Key.swift */; };
 		50FF1FCB26BAB3DA0061E5CE /* DropZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF1FCA26BAB3DA0061E5CE /* DropZone.swift */; };
 		50FF818F1F88D9100004548A /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF818E1F88D9100004548A /* GamePad.swift */; };
-		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
-		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		06EA40A82EDCCAABE744451F /* CartridgeRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C224AF29AB00E69CAE /* CartridgeRom.cpp */; };
-		AE0C7B4B900118DE5338C486 /* CRTFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42DA24AF29AB00E69CAE /* CRTFile.cpp */; };
-		6906D9B6F9091CF0F15D3529 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5036E0AF261AEF000048E66A /* Console.cpp */; };
-		D510EBEF909180BE64BC123C /* CoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42EE24AF29AB00E69CAE /* CoreComponent.cpp */; };
-		880F809BDDCBBED612939965 /* MemoryBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A1949E2BDA84710046849E /* MemoryBase.cpp */; };
-		946D42365ADD3FA241819E86 /* D64File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42D824AF29AB00E69CAE /* D64File.cpp */; };
-		054F7152CC3EE43588E6334B /* ControlPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C433E24AF29AC00E69CAE /* ControlPort.cpp */; };
-		49707074C91045761733D3A4 /* UserPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 505A132D2C3503EB00FF8D2C /* UserPortBase.cpp */; };
-		C49CCC4C8CA97F0041AAF196 /* Monitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E5BF712BA81E710004712B /* Monitor.cpp */; };
-		4514A83D76BC4C43C774B0E2 /* VICIITable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5003382A266F7F3C00D5456E /* VICIITable.cpp */; };
-		D77FE2822EA1A8A2ACD9FBF7 /* MikroAss.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42B624AF29AB00E69CAE /* MikroAss.cpp */; };
-		EE8C74CAC90BCD520A46169C /* Joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5085D89B25B848940043B15C /* Joystick.cpp */; };
-		13A07B787D5BE33FFC96DF22 /* Ocean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429124AF29AB00E69CAE /* Ocean.cpp */; };
-		804AC8DE5C96753D66D8A947 /* StarDos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429324AF29AB00E69CAE /* StarDos.cpp */; };
-		10F63F30489B01E72D793486 /* C64Key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AEEE7126305625001DED20 /* C64Key.cpp */; };
-		68FC3D19898F566A0432344E /* GeoRam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A124AF29AB00E69CAE /* GeoRam.cpp */; };
-		F3C06A98D9094E7E6B0DA48F /* RSCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5036E0B2261AEF000048E66A /* RSCommand.cpp */; };
-		2DE40D30488636A01312E581 /* RegressionTesterBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50B064EE2C888F2C0080FCA0 /* RegressionTesterBase.cpp */; };
-		36ADCF23AB80CA418B4A7C6E /* DriveMemoryBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E5F2C0B4A6A0097473C /* DriveMemoryBase.cpp */; };
-		8953B19551D460D54B3267F3 /* TOD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C435524AF29AC00E69CAE /* TOD.cpp */; };
-		79AA18C6AA1E8B50C6176D9A /* Dinamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508081E725110FFE0084B060 /* Dinamic.cpp */; };
-		DDC299436C516BC4826FC9BE /* TextStorage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50B7E26A2813F8C400A405A3 /* TextStorage.cpp */; };
-		4287A298F1410D676EE16F02 /* SIDBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194982BDA82720046849E /* SIDBase.cpp */; };
-		BB4BAEFEE1A1A429F89F02B5 /* AudioPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50549B47257D288E006FE39C /* AudioPort.cpp */; };
-		A369CEDF6E7EE2784BD3C4B5 /* PageFox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A086250DE90900723D32 /* PageFox.cpp */; };
-		9920CBDAFDEDEE1542F522A8 /* Snapshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42D524AF29AB00E69CAE /* Snapshot.cpp */; };
-		11B96DDD19DD712E0CD5990F /* Peddle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AA48B0292F8EC30084401D /* Peddle.cpp */; };
-		5BD6B0F8228170A596068355 /* VICIISprites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50891C002652380A0004AC1B /* VICIISprites.cpp */; };
-		210EB68526542D53CEF43888 /* DebuggerConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50726F2A295B61C50031F2F5 /* DebuggerConsole.cpp */; };
-		DCD9758CE849FFB852CF0317 /* StrWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 501C46BD2965C54200C4B27B /* StrWriter.cpp */; };
-		F49C11C33D947E77F7CCC5E5 /* VICIIBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194892BDA5EED0046849E /* VICIIBase.cpp */; };
-		B33CA30B350708612389E702 /* Cartridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C024AF29AB00E69CAE /* Cartridge.cpp */; };
-		FBA6FA33B7BE4B1C4A1A7622 /* VirtualC64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506F30462B7692180083EAEA /* VirtualC64.cpp */; };
-		1688A7C65DBE36E6A2BA8893 /* PeddleDebugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50995F2824DBCDE400F40713 /* PeddleDebugger.cpp */; };
-		1DEB3F42A5456691A3AF108C /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5055D5B32615886E005D3DA6 /* Error.cpp */; };
-		3F86E2FFC97F6FB5F257DFFC /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50461BBC26B522450019CEDF /* Thread.cpp */; };
-		5CB4CE201EE0DBEC46446D50 /* Rex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BC24AF29AB00E69CAE /* Rex.cpp */; };
-		F65FFE6BD4FB0A414CD2FF8B /* Isepic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BA24AF29AB00E69CAE /* Isepic.cpp */; };
-		77A0644EE2FF74055D50B417 /* HDZFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27932F436A2B0016265E /* HDZFile.cpp */; };
-		FE1E851228B329E82736578B /* IMGFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27972F436A2B0016265E /* IMGFile.cpp */; };
-		DE4A5ADD7D1BAE3A9CF1732E /* HDFFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC278F2F436A2B0016265E /* HDFFile.cpp */; };
-		BB6BC5C9C09BD454AFEC9F58 /* EXEFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC278B2F436A2B0016265E /* EXEFile.cpp */; };
-		3408E1BA78B8DDD5C145A6E6 /* TAPFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42DB24AF29AB00E69CAE /* TAPFile.cpp */; };
-		8A4EC48F661AC6E4849F7E34 /* CIA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C435824AF29AC00E69CAE /* CIA.cpp */; };
-		152830AB670755E9798E6B1E /* ReSID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C433124AF29AC00E69CAE /* ReSID.cpp */; };
-		711CB69DE5CE8E4B82F61DAA /* VICIIMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C430B24AF29AC00E69CAE /* VICIIMemory.cpp */; };
-		C5A6C0C24F2505CFB6182800 /* Mouse1350.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FE24AF29AB00E69CAE /* Mouse1350.cpp */; };
-		E980C9DF5D931CB4CE0A5C51 /* Script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AE19372632B787005A5898 /* Script.cpp */; };
-		D42619F760ADE1CBAC32A0C2 /* VICIIInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194862BDA5D4D0046849E /* VICIIInfo.cpp */; };
-		F85691C60E6487C9CA892F27 /* MonitorBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E652C0B5F770097473C /* MonitorBase.cpp */; };
-		3EC91628DAB1A1A325D3F5CC /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25B82F4221770016265E /* debug.cpp */; };
-		AB0BA3BE9088D9D0F78B865A /* Codecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC286C2F44AA030016265E /* Codecs.cpp */; };
-		D36D2550E1C0989E2D7DE963 /* CoreError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25BE2F4257970016265E /* CoreError.cpp */; };
-		68DB470DFE7870326B6FABD3 /* Colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F420C8250BA3460043DE56 /* Colors.cpp */; };
 		523FAD30BD26693425E2E1A5 /* VICIIDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C430524AF29AB00E69CAE /* VICIIDraw.cpp */; };
-		D85BCE5513B63818DB0E39CC /* PaddleBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E712C0C59A20097473C /* PaddleBase.cpp */; };
-		B353E0FD77F8EDF25E7812B9 /* AnyCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E2D9AA25991E4B009A986B /* AnyCollection.cpp */; };
-		F84DB38E1095FA4DC7F4B9D2 /* DOSEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27832F436A2B0016265E /* DOSEncoder.cpp */; };
-		6F5ACBA0D94295786950CCF8 /* GCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27852F436A2B0016265E /* GCR.cpp */; };
-		2BDA4899EC5F58812094BDF2 /* DOSDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27812F436A2B0016265E /* DOSDecoder.cpp */; };
-		B1E37869A6AE5E48159C375F /* C64Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC277B2F436A2B0016265E /* C64Encoder.cpp */; };
-		EDCA4B353FB7ED754542FB67 /* DiskDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC277E2F436A2B0016265E /* DiskDecoder.cpp */; };
-		B0CEEEA7A136B7B2E1D13A76 /* C64Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27792F436A2B0016265E /* C64Decoder.cpp */; };
-		77BE6CE7A6F40CA8E9C0F738 /* AmigaDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27752F436A2B0016265E /* AmigaDecoder.cpp */; };
-		7C1B24F6DF241C754B9CFFE9 /* AmigaEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27772F436A2B0016265E /* AmigaEncoder.cpp */; };
-		B33B6A09F33C0587C53F0641 /* MFM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27872F436A2B0016265E /* MFM.cpp */; };
-		90173A625A9C8393198D1197 /* CPUBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194922BDA709D0046849E /* CPUBase.cpp */; };
-		15712D757B55BBFD3987A07D /* SerialPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C433C24AF29AC00E69CAE /* SerialPort.cpp */; };
-		3383BE6053EA1452821AA1D7 /* ActionReplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42AD24AF29AB00E69CAE /* ActionReplay.cpp */; };
+		52740A453183B8332EC40360 /* STFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC279B2F436A2B0016265E /* STFile.cpp */; };
+		52E108045524B6B0FEF14BB8 /* FSImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274E2F436A2B0016265E /* FSImporter.cpp */; };
+		537BB16CB8E0242F5101E962 /* Workspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508AB17C2EA37F7E00E226DE /* Workspace.cpp */; };
+		53B9C49B32D562B594ADD9E0 /* Datasette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C430F24AF29AC00E69CAE /* Datasette.cpp */; };
+		54AD97497333A481BC861C6D /* VICII.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C430724AF29AC00E69CAE /* VICII.cpp */; };
+		55ABF132AD27796A8BEEA52B /* FSTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27342F436A2B0016265E /* FSTree.cpp */; };
+		568969C2FE1F6F626CBAE97C /* CIABase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A1947D2BDA597A0046849E /* CIABase.cpp */; };
+		571E99E72435175FA13E8D8A /* FSBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27422F436A2B0016265E /* FSBlock.cpp */; };
+		57D379E30BAFDE8D4D48BDBB /* CPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42E924AF29AB00E69CAE /* CPU.cpp */; };
 		5BC59880FB1D85AC7620EF04 /* RetroShell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5036E0B3261AEF000048E66A /* RetroShell.cpp */; };
-		6C0938F4AF3AF56C690BED24 /* wave.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432D24AF29AC00E69CAE /* wave.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		D167095BEE713E5E3EA3422D /* SymbolTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E99FE02EBE1F9800633978 /* SymbolTable.cpp */; };
+		5BD6B0F8228170A596068355 /* VICIISprites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50891C002652380A0004AC1B /* VICIISprites.cpp */; };
+		5CB4CE201EE0DBEC46446D50 /* Rex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BC24AF29AB00E69CAE /* Rex.cpp */; };
+		5D3601B60A367A2B70CEF0AD /* AudioPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50B98B492BFDF5FC00FA1EC6 /* AudioPortBase.cpp */; };
+		5F25D79DA4889A9CFCC2A856 /* JoystickBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E742C0C59BA0097473C /* JoystickBase.cpp */; };
+		616317D66782A713A47AECB6 /* DapAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506E28442EB746C6003FF0D3 /* DapAdapter.cpp */; };
+		61E1A5FFA3A67A93981EEA40 /* DmaDebuggerBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E5C2C0B31320097473C /* DmaDebuggerBase.cpp */; };
+		6303EFCA7880E1A9F1614AC8 /* FSExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274C2F436A2B0016265E /* FSExporter.cpp */; };
+		64F84561716ED849266B3B96 /* CIARegs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BE4B7124E81266008F39C9 /* CIARegs.cpp */; };
+		6565CF5BB3D9520C9E7755F4 /* FileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273B2F436A2B0016265E /* FileSystem.cpp */; };
+		67BFEDD762364B3DB1E93264 /* VIA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434A24AF29AC00E69CAE /* VIA.cpp */; };
+		68704C6185C47E7F9E55F350 /* extfilt.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432B24AF29AC00E69CAE /* extfilt.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		68DB470DFE7870326B6FABD3 /* Colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F420C8250BA3460043DE56 /* Colors.cpp */; };
+		68E172295DCE1A8D29789E0C /* FileSystemLayer1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271A2F436A2B0016265E /* FileSystemLayer1.cpp */; };
+		68FC3D19898F566A0432344E /* GeoRam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A124AF29AB00E69CAE /* GeoRam.cpp */; };
+		6906D9B6F9091CF0F15D3529 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5036E0AF261AEF000048E66A /* Console.cpp */; };
+		6A1BC6569B3CB8120ABA8D5C /* Defaults.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CD369A2817D69000E40BFC /* Defaults.cpp */; };
 		6A568BE97E72DE71EE226F01 /* DmaDebugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB3CF2641101E006F45E6 /* DmaDebugger.cpp */; };
 		6BB6F6BF7D8F0AFCA9830369 /* Funplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A624AF29AB00E69CAE /* Funplay.cpp */; };
-		32035D6EEA7283CAB4505057 /* envelope.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431724AF29AC00E69CAE /* envelope.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		C13DFC12C773DEE240BCC6B3 /* StrWriter.h in Sources */ = {isa = PBXBuildFile; fileRef = 501C46BC2965C54200C4B27B /* StrWriter.h */; };
-		347E10DE53084F3310000F22 /* C64Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500375052C23F26000979A1B /* C64Base.cpp */; };
-		755B9AF20C49263EC5FE84B2 /* KeyboardBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E622C0B5EE80097473C /* KeyboardBase.cpp */; };
-		C35E4736A3057A75716043FC /* MagicDesk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42AC24AF29AB00E69CAE /* MagicDesk.cpp */; };
-		838CA8B6A5487B87807D51F4 /* MediaError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25C22F425DD10016265E /* MediaError.cpp */; };
-		B36CE4051F92FC4612D5E81B /* Mach5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429D24AF29AB00E69CAE /* Mach5.cpp */; };
-		19DFAA132D70158BC89CC1CA /* Expert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A424AF29AB00E69CAE /* Expert.cpp */; };
-		B3F059D3802A87E590D616FA /* DMSFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC276E2F436A2B0016265E /* DMSFile.cpp */; };
-		C57B9B7F141A3C06BD90FDC4 /* version.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432F24AF29AC00E69CAE /* version.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		5F25D79DA4889A9CFCC2A856 /* JoystickBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E742C0C59BA0097473C /* JoystickBase.cpp */; };
-		C67324CD61C2E19B63B5854B /* MemoryDebugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5095C81A2BA08B0A00A83825 /* MemoryDebugger.cpp */; };
-		7CB69A2B0A4D71AA2108C24E /* PowerPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ACF4D9256EB43B003B5690 /* PowerPort.cpp */; };
-		2B92EF59306AE3FA32F80299 /* RS232.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 505A13312C35551D00FF8D2C /* RS232.cpp */; };
-		A244CCFAB2534C5728450ADB /* ExpansionPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434524AF29AC00E69CAE /* ExpansionPort.cpp */; };
-		F85326E2061CBCD654A2A444 /* Zaxxon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42B024AF29AB00E69CAE /* Zaxxon.cpp */; };
-		3F5618568354E045B1DA1C80 /* Host.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F5B6A02959C44E000457A0 /* Host.cpp */; };
-		A7C6E9BB76FC864A1972A197 /* StructuredBasic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508081EA2511206D0084B060 /* StructuredBasic.cpp */; };
-		53B9C49B32D562B594ADD9E0 /* Datasette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C430F24AF29AC00E69CAE /* Datasette.cpp */; };
-		E70D51B8F248804B4583F42B /* Configurable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506A8A862B88D00200B95383 /* Configurable.cpp */; };
-		9A0F5B0B0771E13B7BF798B1 /* Emulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506F30382B729CE80083EAEA /* Emulator.cpp */; };
+		6C0938F4AF3AF56C690BED24 /* wave.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432D24AF29AC00E69CAE /* wave.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		6D054A2C75C7E5C16BF94D22 /* RemoteServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A5B7C62C74E44C00D6DDAD /* RemoteServer.cpp */; };
+		6EB0E18DEF878E6ABE147B57 /* FileSystemLayer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271B2F436A2B0016265E /* FileSystemLayer2.cpp */; };
+		6F5ACBA0D94295786950CCF8 /* GCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27852F436A2B0016265E /* GCR.cpp */; };
+		6F767B1C94A9BFCF88B27350 /* SimonsBasic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A024AF29AB00E69CAE /* SimonsBasic.cpp */; };
 		6FB25F7E7A6888ADD22E2DA4 /* DeviceError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC270E2F436A2B0016265E /* DeviceError.cpp */; };
-		E41EA2CC7892CDC483AAEF18 /* Volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27152F436A2B0016265E /* Volume.cpp */; };
-		E9B24BB44F70CF7266757A2F /* BlockDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27092F436A2B0016265E /* BlockDevice.cpp */; };
-		1B397ECE9939C6D9276E6A6A /* TrackDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27132F436A2B0016265E /* TrackDevice.cpp */; };
-		27FFD7B95054E321119B1D7B /* LinearDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27112F436A2B0016265E /* LinearDevice.cpp */; };
-		1945B832F3F529F3C3B92FBD /* DeviceDescriptors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC270C2F436A2B0016265E /* DeviceDescriptors.cpp */; };
-		A01AC279A85B54D3EA615B0D /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257C2F41A8760016265E /* Time.cpp */; };
-		0E3CFC13E4C9C941D4CDC644 /* Compressible.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25732F41A8760016265E /* Compressible.cpp */; };
-		1F337368AFF7A7F205F37C24 /* Files.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25852F41A8760016265E /* Files.cpp */; };
-		309710D90EA7D0EB1B23DA11 /* Dumpable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25742F41A8760016265E /* Dumpable.cpp */; };
-		B8D73D3EB736D7B54BB676D0 /* Hashable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25752F41A8760016265E /* Hashable.cpp */; };
-		874EB2C4046D6217046216E1 /* Reflectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25772F41A8760016265E /* Reflectable.cpp */; };
-		8A42F145ED0295EF050AD033 /* Wakeable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25792F41A8760016265E /* Wakeable.cpp */; };
-		123B83DD419C62A40EE50D6B /* Reportable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25782F41A8760016265E /* Reportable.cpp */; };
-		847BECEE811C035060A489C0 /* Clock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257B2F41A8760016265E /* Clock.cpp */; };
-		CD46734BF6F3B7D08718B99C /* Loggable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25762F41A8760016265E /* Loggable.cpp */; };
-		3F5C0DEE3EF2A90DB43D1BA3 /* Buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25822F41A8760016265E /* Buffer.cpp */; };
-		9D4CE0BD98FADC6FDF55B73A /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257F2F41A8760016265E /* Parser.cpp */; };
-		C9005D371FCDF19DEBE8DE4C /* lz4.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC258B2F41A8760016265E /* lz4.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		9D66EF0EAEE6C7E721C0652D /* Streams.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25802F41A8760016265E /* Streams.cpp */; };
+		711CB69DE5CE8E4B82F61DAA /* VICIIMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C430B24AF29AC00E69CAE /* VICIIMemory.cpp */; };
+		716000778D16B7A9E5728618 /* FSAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271E2F436A2B0016265E /* FSAllocator.cpp */; };
 		72A736CB2827F5325AF13368 /* ADFFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27612F436A2B0016265E /* ADFFile.cpp */; };
 		74B4FB6B9CB05AFDA4D8D654 /* Strings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25862F41A8760016265E /* Strings.cpp */; };
-		EEA599B219AC01B97E9D5126 /* Bits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25842F41A8760016265E /* Bits.cpp */; };
-		38A810174DDE8C552FAA369D /* Formatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257E2F41A8760016265E /* Formatter.cpp */; };
-		C37C819ED8D779F5520DE28B /* filter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432024AF29AC00E69CAE /* filter.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		DFCE49FF46E5AC826A4CB154 /* CommanderConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5036E0B5261AEF000048E66A /* CommanderConsole.cpp */; };
-		02F8541E056FA1572C27EB58 /* ImageError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A72F436A2B0016265E /* ImageError.cpp */; };
-		9EF144BFF428D0D06402D308 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434424AF29AC00E69CAE /* Keyboard.cpp */; };
-		33B04BDC6D37C6B8D6BE689A /* AnyImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC279E2F436A2B0016265E /* AnyImage.cpp */; };
-		4699F3F9923BC2229E8D4760 /* DiskImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A12F436A2B0016265E /* DiskImage.cpp */; };
-		39B85E0827DDF586824156A1 /* CmdQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BB3E932B7A426800B2D87B /* CmdQueue.cpp */; };
-		9C43F4EB899C36B8957A5DE6 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42E124AF29AB00E69CAE /* Memory.cpp */; };
-		391DBB13A3511A73D1EBA8E2 /* T64File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42CC24AF29AB00E69CAE /* T64File.cpp */; };
-		4857C5D46AB24074C1AFC772 /* Comal80.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BE24AF29AB00E69CAE /* Comal80.cpp */; };
-		9E306AD19775180863427D08 /* SID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506A8A8A2B89DAF800B95383 /* SID.cpp */; };
-		7BFB34D7558B6213EEC2710B /* Heatmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD641B2C04C05A007CD347 /* Heatmap.cpp */; };
-		54AD97497333A481BC861C6D /* VICII.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C430724AF29AC00E69CAE /* VICII.cpp */; };
-		E92FAC2374BBCD89781EB36E /* ExpansionPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E552C0B20760097473C /* ExpansionPortBase.cpp */; };
-		84528AA273BF1D930FBB91A4 /* Reu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5016F02629574FDF00F2063B /* Reu.cpp */; };
-		2E8282817495F6B588785659 /* MsgQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42F124AF29AB00E69CAE /* MsgQueue.cpp */; };
-		BAB1243204B26ABDB167F838 /* DatasetteBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500634612C0EF1A400D60D96 /* DatasetteBase.cpp */; };
-		AD0C48DF88246F43AE03D966 /* MediaFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CCC7FF2C117ACF0047ED17 /* MediaFile.cpp */; };
-		41B69C3539062C530D4B6DAA /* FlashRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C324AF29AB00E69CAE /* FlashRom.cpp */; };
-		F428343D78E84B279B0509E4 /* PIA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AF2F8026AFFE9A002DC43B /* PIA.cpp */; };
-		BD174A5F31A279E0DEDF7CE1 /* Inspectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BB3E8F2B7A232800B2D87B /* Inspectable.cpp */; };
-		B90DD6244D04CD658A5597D7 /* getbits.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC283A2F446B2D0016265E /* getbits.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		E9D4DD5FFDD6D0C7980D3725 /* maketbl.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC283C2F446B2D0016265E /* maketbl.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		DE958830850AB5ACB9D8B703 /* tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28402F446B2D0016265E /* tables.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		E71DB26CE3D1409080BD1DA8 /* u_deep.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28422F446B2D0016265E /* u_deep.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		B10822CFE9A7F25C7B7F3C45 /* u_heavy.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28442F446B2D0016265E /* u_heavy.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		7EA260597035E84376353936 /* _old_pfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28342F446B2D0016265E /* _old_pfile.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		E54769316815DCAAE2613CF0 /* xdms.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC284D2F446B2D0016265E /* xdms.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		F7EBBAA1503CFD5EE9B560DA /* u_rle.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC284C2F446B2D0016265E /* u_rle.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		C2884054741180371D05B725 /* crc_csum.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28382F446B2D0016265E /* crc_csum.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		CC9EB04D3A36EA96CD159992 /* u_quick.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC284A2F446B2D0016265E /* u_quick.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		4CA3E5D52E51244649ECBEC6 /* u_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28462F446B2D0016265E /* u_init.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		D097B3038F6F6AC9EADB3C20 /* pfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC283E2F446B2D0016265E /* pfile.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		4A379346AED27AFE49FF2321 /* u_medium.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28482F446B2D0016265E /* u_medium.c */; settings = {COMPILER_FLAGS = "-w";}; };
-		D9A4868E715C61EC752088FE /* CartridgeBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E682C0C507D0097473C /* CartridgeBase.cpp */; };
-		23004CB2FC19FA19979A6968 /* voice.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431C24AF29AC00E69CAE /* voice.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		716000778D16B7A9E5728618 /* FSAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27402F436A2B0016265E /* FSAllocator.cpp */; };
-		A7F3483DA26D99D0B4A7C51E /* FileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273B2F436A2B0016265E /* FileSystem.cpp */; };
-		3EDB06C9B60D1F9079056BCE /* FSContract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27462F436A2B0016265E /* FSContract.cpp */; };
-		DB4F94E5E9BD388D5D779518 /* FileSystemLayer3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273E2F436A2B0016265E /* FileSystemLayer3.cpp */; };
-		B0E9CAAE5BC30D5761CE48F9 /* FSService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27522F436A2B0016265E /* FSService.cpp */; };
-		EEB060D6F5D39E1292D057E8 /* FSTraits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27542F436A2B0016265E /* FSTraits.cpp */; };
-		3A2354228FB913DE381501FB /* FSCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27442F436A2B0016265E /* FSCache.cpp */; };
-		C34C23AD7B98CEA5C3EFB4CF /* PosixAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27572F436A2B0016265E /* PosixAdapter.cpp */; };
-		098AEC028B6BE2F5C92E0F46 /* FSObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27502F436A2B0016265E /* FSObjects.cpp */; };
-		F4F5262EE0AF8E287421D460 /* FSExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274C2F436A2B0016265E /* FSExporter.cpp */; };
-		6EB0E18DEF878E6ABE147B57 /* FileSystemLayer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273D2F436A2B0016265E /* FileSystemLayer2.cpp */; };
-		853EE60E4C1E95BA97E8342D /* FSBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27422F436A2B0016265E /* FSBlock.cpp */; };
-		9FD13CA38B248BA5B5A7EBF1 /* FSDirEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27482F436A2B0016265E /* FSDirEntry.cpp */; };
-		68E172295DCE1A8D29789E0C /* FileSystemLayer1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273C2F436A2B0016265E /* FileSystemLayer1.cpp */; };
-		F9C2821F3246D45DBAE314EB /* FSImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274E2F436A2B0016265E /* FSImporter.cpp */; };
-		7EEB6377F67D7D64CCF2A679 /* FSDoctor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274A2F436A2B0016265E /* FSDoctor.cpp */; };
-		16B22CB1DE10B634E6BAB30D /* PosixView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC275D2F436A2B0016265E /* PosixView.cpp */; };
-		07F723DF88CE00F1AB243B12 /* FSError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC275B2F436A2B0016265E /* FSError.cpp */; };
-		126DE0950B1E76B3E686F085 /* HardDiskImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A52F436A2B0016265E /* HardDiskImage.cpp */; };
-		568969C2FE1F6F626CBAE97C /* CIABase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A1947D2BDA597A0046849E /* CIABase.cpp */; };
-		1C3A4AD58C84E46B242130A6 /* NeosMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FD24AF29AB00E69CAE /* NeosMouse.cpp */; };
-		286D90BCEC5202AB2537D988 /* VICIICycles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50D20B742508F6D70088E8F2 /* VICIICycles.cpp */; };
-		1EF3393C0162804F0D910E02 /* G64File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42D224AF29AB00E69CAE /* G64File.cpp */; };
-		FA3F4ED9132211B5105F264D /* dac.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432224AF29AC00E69CAE /* dac.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		E6BA0560F21B7EB81949463F /* SampleRateDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50316E4F2E9A425200BDF90F /* SampleRateDetector.cpp */; };
-		C3FD1AC07603C4579B46DA35 /* SIDBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C431224AF29AC00E69CAE /* SIDBridge.cpp */; };
-		52740A453183B8332EC40360 /* STFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC279B2F436A2B0016265E /* STFile.cpp */; };
-		FEC00DC61C147290A757E564 /* SuperGames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429B24AF29AB00E69CAE /* SuperGames.cpp */; };
-		B057B5D094D01CEF0E24DDB4 /* DriveBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64102C03396D007CD347 /* DriveBase.cpp */; };
-		5D3601B60A367A2B70CEF0AD /* AudioPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50B98B492BFDF5FC00FA1EC6 /* AudioPortBase.cpp */; };
-		E35202385EBA1020D524A00B /* Gmod2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64132C035682007CD347 /* Gmod2.cpp */; };
-		4A2300D8C7BB4535F89DE84B /* FreezeFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42B124AF29AB00E69CAE /* FreezeFrame.cpp */; };
-		8DA7AF2CDCFA47E4110D9EB1 /* RomFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C724AF29AB00E69CAE /* RomFile.cpp */; };
-		64F84561716ED849266B3B96 /* CIARegs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BE4B7124E81266008F39C9 /* CIARegs.cpp */; };
-		372CB497E73B6DD378802F54 /* Kingsoft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A224AF29AB00E69CAE /* Kingsoft.cpp */; };
-		67BFEDD762364B3DB1E93264 /* VIA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434A24AF29AC00E69CAE /* VIA.cpp */; };
-		74D570AD896D5E40FE37D801 /* FloppyDisk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434824AF29AC00E69CAE /* FloppyDisk.cpp */; };
-		BACA444026B9075551E044AB /* RegressionTester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AE193A2633E9B0005A5898 /* RegressionTester.cpp */; };
-		235A867D8F09A1D2BD35EBAA /* AudioStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50316E4B2E9A41CC00BDF90F /* AudioStream.cpp */; };
-		9F637EE6AE7F9916BFD4D9E2 /* Option.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E17E1F2B8B26AC0029747D /* Option.cpp */; };
-		46B6470E577ECD49538B7B07 /* Mouse1351.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FF24AF29AB00E69CAE /* Mouse1351.cpp */; };
-		EC05CD38210E5EBFBE4B4606 /* FinalIII.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429824AF29AB00E69CAE /* FinalIII.cpp */; };
-		6A1BC6569B3CB8120ABA8D5C /* Defaults.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CD369A2817D69000E40BFC /* Defaults.cpp */; };
-		DC0E6FCEEB75A249EBB89D8B /* sid.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431F24AF29AC00E69CAE /* sid.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		0AE9B471A2EE53B7557C2F6A /* DiskAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AB70742721B8EE004ABB2B /* DiskAnalyzer.cpp */; };
-		A63F5F1D0DE4E6EF79456A5A /* RSError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25B42F420CF50016265E /* RSError.cpp */; };
-		E873D2B4EBF0FAA5E286F494 /* Drive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434D24AF29AC00E69CAE /* Drive.cpp */; };
-		29AEC5BF2B50892A98FBF6E5 /* GameKiller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F0EB7825CC33B3002D0D72 /* GameKiller.cpp */; };
-		3BD1FE9742F14F671DE66F2B /* UserPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 505A13292C3503B400FF8D2C /* UserPort.cpp */; };
-		759A43121A7878EA0A86CC71 /* P00File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42CF24AF29AB00E69CAE /* P00File.cpp */; };
-		92FCF1C0869710B755F41B70 /* ControlPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E522C0B20610097473C /* ControlPortBase.cpp */; };
-		F1B35F96166C19CB15572962 /* DriveMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434B24AF29AC00E69CAE /* DriveMemory.cpp */; };
-		098AEC028B6BE2F5C92E0F46 /* FSObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27302F436A2B0016265E /* FSObjects.cpp */; };
-		7EEB6377F67D7D64CCF2A679 /* FSDoctor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC272A2F436A2B0016265E /* FSDoctor.cpp */; };
-		06936E4A87BD49DCF90E3C5F /* FSDescriptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27282F436A2B0016265E /* FSDescriptor.cpp */; };
-		2B5D551792E35AB4307DB916 /* EADFFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27722F436A2B0016265E /* EADFFile.cpp */; };
-		946D42365ADD3FA241819E86 /* D64File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC276A2F436A2B0016265E /* D64File.cpp */; };
-		86239D8E88CAD7B70858507F /* ADZFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27652F436A2B0016265E /* ADZFile.cpp */; };
-		716000778D16B7A9E5728618 /* FSAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271E2F436A2B0016265E /* FSAllocator.cpp */; };
-		F4F5262EE0AF8E287421D460 /* FSExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC272C2F436A2B0016265E /* FSExporter.cpp */; };
-		F9C2821F3246D45DBAE314EB /* FSImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC272E2F436A2B0016265E /* FSImporter.cpp */; };
-		55ABF132AD27796A8BEEA52B /* FSTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27342F436A2B0016265E /* FSTree.cpp */; };
-		A64E27F44296A5ABCA4EF7C9 /* FSBootBlockImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27222F436A2B0016265E /* FSBootBlockImage.cpp */; };
-		68E172295DCE1A8D29789E0C /* FileSystemLayer1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271A2F436A2B0016265E /* FileSystemLayer1.cpp */; };
-		6EB0E18DEF878E6ABE147B57 /* FileSystemLayer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271B2F436A2B0016265E /* FileSystemLayer2.cpp */; };
-		A7F3483DA26D99D0B4A7C51E /* FileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27192F436A2B0016265E /* FileSystem.cpp */; };
-		B0E9CAAE5BC30D5761CE48F9 /* FSService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27322F436A2B0016265E /* FSService.cpp */; };
-		853EE60E4C1E95BA97E8342D /* FSBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27202F436A2B0016265E /* FSBlock.cpp */; };
-		3A2354228FB913DE381501FB /* FSCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27242F436A2B0016265E /* FSCache.cpp */; };
-		C34C23AD7B98CEA5C3EFB4CF /* PosixAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27372F436A2B0016265E /* PosixAdapter.cpp */; };
-		DB4F94E5E9BD388D5D779518 /* FileSystemLayer3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271C2F436A2B0016265E /* FileSystemLayer3.cpp */; };
-		3EDB06C9B60D1F9079056BCE /* FSContract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27262F436A2B0016265E /* FSContract.cpp */; };
-		C4A9E0EB4B0816FF688236ED /* ParallelCable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5007E1E626A70170000E7344 /* ParallelCable.cpp */; };
-		61E1A5FFA3A67A93981EEA40 /* DmaDebuggerBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E5C2C0B31320097473C /* DmaDebuggerBase.cpp */; };
-		57D379E30BAFDE8D4D48BDBB /* CPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42E924AF29AB00E69CAE /* CPU.cpp */; };
-		23937A19AC4C3C720E88D1D0 /* PowerPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64182C0373F9007CD347 /* PowerPortBase.cpp */; };
-		36C172308082C6641AE8EA60 /* WarpSpeed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429224AF29AB00E69CAE /* WarpSpeed.cpp */; };
-		537BB16CB8E0242F5101E962 /* Workspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508AB17C2EA37F7E00E226DE /* Workspace.cpp */; };
-		02BB34162642C7830FD20929 /* SubComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500EA6C524B09037009AA7D7 /* SubComponent.cpp */; };
-		BD7FF36661198B10F789A0E8 /* FloppyDiskImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A32F436A2B0016265E /* FloppyDiskImage.cpp */; };
-		1B580523A7ACB5D9A7980EB7 /* pot.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431824AF29AC00E69CAE /* pot.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		1AFCEEECE921E9F6B1951E95 /* AnyFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42D624AF29AB00E69CAE /* AnyFile.cpp */; };
-		4337281A426E351B72EADE09 /* PeddleDisassembler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500C1C772965E7D300071AF3 /* PeddleDisassembler.cpp */; };
-		AE38FDB1EF5AC76174FA632D /* Epyx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BD24AF29AB00E69CAE /* Epyx.cpp */; };
-		252394E97EA650EE2FCDA3EB /* CoreObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42ED24AF29AB00E69CAE /* CoreObject.cpp */; };
-		C0A81591794CD4488ED2C995 /* C64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42F724AF29AB00E69CAE /* C64.cpp */; };
-		21B23445BCE4C5ABAAA681CF /* EasyFlash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429724AF29AB00E69CAE /* EasyFlash.cpp */; };
-		1067EB9192300D50809B48BC /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50650F452DF23C8A008AD660 /* Texture.cpp */; };
-		202ABFB20DFCDCABE785B274 /* VideoPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64082C01FADC007CD347 /* VideoPort.cpp */; };
-		F4E3B132FF79F3DA06BAEC73 /* Westermann.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429524AF29AB00E69CAE /* Westermann.cpp */; };
-		68704C6185C47E7F9E55F350 /* extfilt.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432B24AF29AC00E69CAE /* extfilt.cc */; settings = {COMPILER_FLAGS = "-w";}; };
-		7A6670D591DFB84DBC442BE2 /* Kcs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A924AF29AB00E69CAE /* Kcs.cpp */; };
-		B01EBD657BE27B36F0BECDE6 /* TODBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194832BDA5CD40046849E /* TODBase.cpp */; };
-		1639FF06BAB6DF227E2C3641 /* Paddle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E6B2C0C58FF0097473C /* Paddle.cpp */; };
-		AEE7719771083A13A2EDC91A /* SerialPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E582C0B20EE0097473C /* SerialPortBase.cpp */; };
-		8D8401342F3155D855D9BEFA /* PeddleUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 509280CD2930A1B6006E1966 /* PeddleUtils.cpp */; };
-		3B6AA301FE9BDB4686D94907 /* PRGFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42CD24AF29AB00E69CAE /* PRGFile.cpp */; };
-		CD6D78DF2CB05DC73F3C132D /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FC24AF29AB00E69CAE /* Mouse.cpp */; };
-		6F767B1C94A9BFCF88B27350 /* SimonsBasic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A024AF29AB00E69CAE /* SimonsBasic.cpp */; };
-		1A4EFB4DDBCD034590A269B7 /* VirtualC64GameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1796762630CEAB783B4FA224 /* VirtualC64GameCore.mm */; };
-		8FB426D065F613F80F0C8440 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDBB5E182079B1D288228307 /* OpenEmuBase.framework */; };
-		2A0614720FA814FB2988392E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 50650F412DF0C7A5008AD660 /* libz.tbd */; };
-		6565CF5BB3D9520C9E7755F4 /* FileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273B2F436A2B0016265E /* FileSystem.cpp */; };
-		381B2D526726E087BDF811AE /* FileSystemLayer1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273C2F436A2B0016265E /* FileSystemLayer1.cpp */; };
-		107FFE99D046C472905A5335 /* FileSystemLayer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273D2F436A2B0016265E /* FileSystemLayer2.cpp */; };
-		26978ABD88D2ABCDD80AC458 /* FileSystemLayer3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC273E2F436A2B0016265E /* FileSystemLayer3.cpp */; };
-		07F300CE48F0AEB8C2E242AC /* FSAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27402F436A2B0016265E /* FSAllocator.cpp */; };
-		571E99E72435175FA13E8D8A /* FSBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27422F436A2B0016265E /* FSBlock.cpp */; };
-		F8DBD1753E5C4C91C4E4A0A6 /* FSCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27442F436A2B0016265E /* FSCache.cpp */; };
-		A3468AB3798ACCCB10A503C1 /* FSContract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27462F436A2B0016265E /* FSContract.cpp */; };
-		44DCCF4273F9C5CDFA0AFCBF /* FSDirEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27482F436A2B0016265E /* FSDirEntry.cpp */; };
-		A20F3043AB65C10B9A4393EF /* FSDoctor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274A2F436A2B0016265E /* FSDoctor.cpp */; };
-		6303EFCA7880E1A9F1614AC8 /* FSExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274C2F436A2B0016265E /* FSExporter.cpp */; };
-		52E108045524B6B0FEF14BB8 /* FSImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274E2F436A2B0016265E /* FSImporter.cpp */; };
-		C84084E911B34AC61FF336AF /* FSObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27502F436A2B0016265E /* FSObjects.cpp */; };
-		D00E0CAFC63F94D82B2CCABA /* FSService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27522F436A2B0016265E /* FSService.cpp */; };
-		06A1E232186F5B3C6132259F /* FSTraits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27542F436A2B0016265E /* FSTraits.cpp */; };
-		FED6E0DE618EAC6D3C154759 /* PosixAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27572F436A2B0016265E /* PosixAdapter.cpp */; };
 		74C0EA8027183914823FA4B5 /* RemoteManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A5B7C32C74E44C00D6DDAD /* RemoteManager.cpp */; };
-		6D054A2C75C7E5C16BF94D22 /* RemoteServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A5B7C62C74E44C00D6DDAD /* RemoteServer.cpp */; };
-		A56E0AA00C2A797F0EE5EEB0 /* RpcServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E99FE52EBF872500633978 /* RpcServer.cpp */; };
-		BD99BC859F301439CDAF9875 /* RpcHttpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A92A1A2EC753EF00F90519 /* RpcHttpServer.cpp */; };
-		4E8DAAAA24D73EAB76B0E19E /* RshServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A5B7C92C74E44C00D6DDAD /* RshServer.cpp */; };
+		74D570AD896D5E40FE37D801 /* FloppyDisk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434824AF29AC00E69CAE /* FloppyDisk.cpp */; };
+		755B9AF20C49263EC5FE84B2 /* KeyboardBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E622C0B5EE80097473C /* KeyboardBase.cpp */; };
+		759A43121A7878EA0A86CC71 /* P00File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42CF24AF29AB00E69CAE /* P00File.cpp */; };
+		77A0644EE2FF74055D50B417 /* HDZFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27932F436A2B0016265E /* HDZFile.cpp */; };
+		77BE6CE7A6F40CA8E9C0F738 /* AmigaDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27752F436A2B0016265E /* AmigaDecoder.cpp */; };
+		79AA18C6AA1E8B50C6176D9A /* Dinamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508081E725110FFE0084B060 /* Dinamic.cpp */; };
+		7A6670D591DFB84DBC442BE2 /* Kcs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42A924AF29AB00E69CAE /* Kcs.cpp */; };
+		7BFB34D7558B6213EEC2710B /* Heatmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD641B2C04C05A007CD347 /* Heatmap.cpp */; };
+		7C1B24F6DF241C754B9CFFE9 /* AmigaEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27772F436A2B0016265E /* AmigaEncoder.cpp */; };
+		7CB69A2B0A4D71AA2108C24E /* PowerPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ACF4D9256EB43B003B5690 /* PowerPort.cpp */; };
+		7EA260597035E84376353936 /* _old_pfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28342F446B2D0016265E /* _old_pfile.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		7EEB6377F67D7D64CCF2A679 /* FSDoctor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC272A2F436A2B0016265E /* FSDoctor.cpp */; };
+		804AC8DE5C96753D66D8A947 /* StarDos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429324AF29AB00E69CAE /* StarDos.cpp */; };
+		838CA8B6A5487B87807D51F4 /* MediaError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25C22F425DD10016265E /* MediaError.cpp */; };
+		84528AA273BF1D930FBB91A4 /* Reu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5016F02629574FDF00F2063B /* Reu.cpp */; };
+		847BECEE811C035060A489C0 /* Clock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257B2F41A8760016265E /* Clock.cpp */; };
+		853EE60E4C1E95BA97E8342D /* FSBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27202F436A2B0016265E /* FSBlock.cpp */; };
+		86239D8E88CAD7B70858507F /* ADZFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27652F436A2B0016265E /* ADZFile.cpp */; };
+		874EB2C4046D6217046216E1 /* Reflectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25772F41A8760016265E /* Reflectable.cpp */; };
+		880F809BDDCBBED612939965 /* MemoryBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A1949E2BDA84710046849E /* MemoryBase.cpp */; };
+		8953B19551D460D54B3267F3 /* TOD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C435524AF29AC00E69CAE /* TOD.cpp */; };
+		8A42F145ED0295EF050AD033 /* Wakeable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25792F41A8760016265E /* Wakeable.cpp */; };
+		8A4EC48F661AC6E4849F7E34 /* CIA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C435824AF29AC00E69CAE /* CIA.cpp */; };
+		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
+		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		8D8401342F3155D855D9BEFA /* PeddleUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 509280CD2930A1B6006E1966 /* PeddleUtils.cpp */; };
+		8DA7AF2CDCFA47E4110D9EB1 /* RomFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C724AF29AB00E69CAE /* RomFile.cpp */; };
+		8FB426D065F613F80F0C8440 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDBB5E182079B1D288228307 /* OpenEmuBase.framework */; };
+		90173A625A9C8393198D1197 /* CPUBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194922BDA709D0046849E /* CPUBase.cpp */; };
+		92FCF1C0869710B755F41B70 /* ControlPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E522C0B20610097473C /* ControlPortBase.cpp */; };
+		946D42365ADD3FA241819E86 /* D64File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC276A2F436A2B0016265E /* D64File.cpp */; };
+		9920CBDAFDEDEE1542F522A8 /* Snapshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42D524AF29AB00E69CAE /* Snapshot.cpp */; };
+		9A0F5B0B0771E13B7BF798B1 /* Emulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506F30382B729CE80083EAEA /* Emulator.cpp */; };
+		9C43F4EB899C36B8957A5DE6 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42E124AF29AB00E69CAE /* Memory.cpp */; };
+		9D4CE0BD98FADC6FDF55B73A /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257F2F41A8760016265E /* Parser.cpp */; };
+		9D66EF0EAEE6C7E721C0652D /* Streams.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25802F41A8760016265E /* Streams.cpp */; };
+		9E306AD19775180863427D08 /* SID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506A8A8A2B89DAF800B95383 /* SID.cpp */; };
+		9EF144BFF428D0D06402D308 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434424AF29AC00E69CAE /* Keyboard.cpp */; };
+		9F637EE6AE7F9916BFD4D9E2 /* Option.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E17E1F2B8B26AC0029747D /* Option.cpp */; };
+		9FD13CA38B248BA5B5A7EBF1 /* FSDirEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27482F436A2B0016265E /* FSDirEntry.cpp */; };
+		A01AC279A85B54D3EA615B0D /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC257C2F41A8760016265E /* Time.cpp */; };
+		A20F3043AB65C10B9A4393EF /* FSDoctor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC274A2F436A2B0016265E /* FSDoctor.cpp */; };
+		A244CCFAB2534C5728450ADB /* ExpansionPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434524AF29AC00E69CAE /* ExpansionPort.cpp */; };
 		A30F6C397BE3BC4FB2023470 /* PromServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F0C2462EADFB0F00BCC7BB /* PromServer.cpp */; };
-		48826F9D5631715C4D43BB9F /* DapServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506E28382EB3346C003FF0D3 /* DapServer.cpp */; };
-		616317D66782A713A47AECB6 /* DapAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506E28442EB746C6003FF0D3 /* DapAdapter.cpp */; };
-		00BA7D19307CFBF83F21ABDA /* Transport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A92A1E2EC85E1A00F90519 /* Transport.cpp */; };
-		07E187A408D9804C37C830BA /* StdioTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5008784A2ECB68040077F45F /* StdioTransport.cpp */; };
-		1C7373F21F9BFAFA572CC0B4 /* TcpTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A92A262EC85E3C00F90519 /* TcpTransport.cpp */; };
+		A3468AB3798ACCCB10A503C1 /* FSContract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27462F436A2B0016265E /* FSContract.cpp */; };
+		A369CEDF6E7EE2784BD3C4B5 /* PageFox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A086250DE90900723D32 /* PageFox.cpp */; };
+		A56E0AA00C2A797F0EE5EEB0 /* RpcServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E99FE52EBF872500633978 /* RpcServer.cpp */; };
+		A63F5F1D0DE4E6EF79456A5A /* RSError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25B42F420CF50016265E /* RSError.cpp */; };
+		A64E27F44296A5ABCA4EF7C9 /* FSBootBlockImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27222F436A2B0016265E /* FSBootBlockImage.cpp */; };
+		A7C6E9BB76FC864A1972A197 /* StructuredBasic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508081EA2511206D0084B060 /* StructuredBasic.cpp */; };
+		A7F3483DA26D99D0B4A7C51E /* FileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27192F436A2B0016265E /* FileSystem.cpp */; };
 		AA8EB50A038447E92F687660 /* HttpTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A92A222EC85E2A00F90519 /* HttpTransport.cpp */; };
-		40086CD5D0AAC5EB0501D55B /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A5B7CB2C74E44C00D6DDAD /* Socket.cpp */; };
+		AB0BA3BE9088D9D0F78B865A /* Codecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC286C2F44AA030016265E /* Codecs.cpp */; };
+		AD0C48DF88246F43AE03D966 /* MediaFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CCC7FF2C117ACF0047ED17 /* MediaFile.cpp */; };
+		AE0C7B4B900118DE5338C486 /* CRTFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42DA24AF29AB00E69CAE /* CRTFile.cpp */; };
+		AE38FDB1EF5AC76174FA632D /* Epyx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BD24AF29AB00E69CAE /* Epyx.cpp */; };
+		AEE7719771083A13A2EDC91A /* SerialPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E582C0B20EE0097473C /* SerialPortBase.cpp */; };
+		B01EBD657BE27B36F0BECDE6 /* TODBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194832BDA5CD40046849E /* TODBase.cpp */; };
+		B057B5D094D01CEF0E24DDB4 /* DriveBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64102C03396D007CD347 /* DriveBase.cpp */; };
+		B0CEEEA7A136B7B2E1D13A76 /* C64Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27792F436A2B0016265E /* C64Decoder.cpp */; };
+		B0E9CAAE5BC30D5761CE48F9 /* FSService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27322F436A2B0016265E /* FSService.cpp */; };
+		B10822CFE9A7F25C7B7F3C45 /* u_heavy.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28442F446B2D0016265E /* u_heavy.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		B1E37869A6AE5E48159C375F /* C64Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC277B2F436A2B0016265E /* C64Encoder.cpp */; };
+		B33B6A09F33C0587C53F0641 /* MFM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27872F436A2B0016265E /* MFM.cpp */; };
+		B33CA30B350708612389E702 /* Cartridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42C024AF29AB00E69CAE /* Cartridge.cpp */; };
+		B353E0FD77F8EDF25E7812B9 /* AnyCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E2D9AA25991E4B009A986B /* AnyCollection.cpp */; };
+		B36CE4051F92FC4612D5E81B /* Mach5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429D24AF29AB00E69CAE /* Mach5.cpp */; };
+		B3F059D3802A87E590D616FA /* DMSFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC276E2F436A2B0016265E /* DMSFile.cpp */; };
+		B8D73D3EB736D7B54BB676D0 /* Hashable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25752F41A8760016265E /* Hashable.cpp */; };
+		B90DD6244D04CD658A5597D7 /* getbits.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC283A2F446B2D0016265E /* getbits.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		BAB1243204B26ABDB167F838 /* DatasetteBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 500634612C0EF1A400D60D96 /* DatasetteBase.cpp */; };
+		BACA444026B9075551E044AB /* RegressionTester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AE193A2633E9B0005A5898 /* RegressionTester.cpp */; };
+		BB4BAEFEE1A1A429F89F02B5 /* AudioPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50549B47257D288E006FE39C /* AudioPort.cpp */; };
+		BB6BC5C9C09BD454AFEC9F58 /* EXEFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC278B2F436A2B0016265E /* EXEFile.cpp */; };
+		BD174A5F31A279E0DEDF7CE1 /* Inspectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BB3E8F2B7A232800B2D87B /* Inspectable.cpp */; };
+		BD7FF36661198B10F789A0E8 /* FloppyDiskImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27A32F436A2B0016265E /* FloppyDiskImage.cpp */; };
+		BD99BC859F301439CDAF9875 /* RpcHttpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A92A1A2EC753EF00F90519 /* RpcHttpServer.cpp */; };
+		C0A81591794CD4488ED2C995 /* C64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42F724AF29AB00E69CAE /* C64.cpp */; };
+		C13DFC12C773DEE240BCC6B3 /* StrWriter.h in Sources */ = {isa = PBXBuildFile; fileRef = 501C46BC2965C54200C4B27B /* StrWriter.h */; };
+		C2884054741180371D05B725 /* crc_csum.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28382F446B2D0016265E /* crc_csum.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		C34C23AD7B98CEA5C3EFB4CF /* PosixAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27372F436A2B0016265E /* PosixAdapter.cpp */; };
+		C35E4736A3057A75716043FC /* MagicDesk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42AC24AF29AB00E69CAE /* MagicDesk.cpp */; };
+		C37C819ED8D779F5520DE28B /* filter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432024AF29AC00E69CAE /* filter.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		C3FD1AC07603C4579B46DA35 /* SIDBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C431224AF29AC00E69CAE /* SIDBridge.cpp */; };
+		C49CCC4C8CA97F0041AAF196 /* Monitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E5BF712BA81E710004712B /* Monitor.cpp */; };
+		C4A9E0EB4B0816FF688236ED /* ParallelCable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5007E1E626A70170000E7344 /* ParallelCable.cpp */; };
+		C57B9B7F141A3C06BD90FDC4 /* version.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432F24AF29AC00E69CAE /* version.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		C5A6C0C24F2505CFB6182800 /* Mouse1350.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FE24AF29AB00E69CAE /* Mouse1350.cpp */; };
+		C67324CD61C2E19B63B5854B /* MemoryDebugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5095C81A2BA08B0A00A83825 /* MemoryDebugger.cpp */; };
+		C84084E911B34AC61FF336AF /* FSObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27502F436A2B0016265E /* FSObjects.cpp */; };
+		C9005D371FCDF19DEBE8DE4C /* lz4.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC258B2F41A8760016265E /* lz4.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		CC9EB04D3A36EA96CD159992 /* u_quick.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC284A2F446B2D0016265E /* u_quick.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		CD46734BF6F3B7D08718B99C /* Loggable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25762F41A8760016265E /* Loggable.cpp */; };
+		CD6D78DF2CB05DC73F3C132D /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42FC24AF29AB00E69CAE /* Mouse.cpp */; };
+		D00E0CAFC63F94D82B2CCABA /* FSService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27522F436A2B0016265E /* FSService.cpp */; };
+		D097B3038F6F6AC9EADB3C20 /* pfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC283E2F446B2D0016265E /* pfile.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		D167095BEE713E5E3EA3422D /* SymbolTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E99FE02EBE1F9800633978 /* SymbolTable.cpp */; };
+		D36D2550E1C0989E2D7DE963 /* CoreError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25BE2F4257970016265E /* CoreError.cpp */; };
+		D42619F760ADE1CBAC32A0C2 /* VICIIInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194862BDA5D4D0046849E /* VICIIInfo.cpp */; };
+		D510EBEF909180BE64BC123C /* CoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42EE24AF29AB00E69CAE /* CoreComponent.cpp */; };
+		D77FE2822EA1A8A2ACD9FBF7 /* MikroAss.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42B624AF29AB00E69CAE /* MikroAss.cpp */; };
+		D85BCE5513B63818DB0E39CC /* PaddleBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E712C0C59A20097473C /* PaddleBase.cpp */; };
+		D9A4868E715C61EC752088FE /* CartridgeBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E682C0C507D0097473C /* CartridgeBase.cpp */; };
+		DB4F94E5E9BD388D5D779518 /* FileSystemLayer3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC271C2F436A2B0016265E /* FileSystemLayer3.cpp */; };
+		DC0E6FCEEB75A249EBB89D8B /* sid.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C431F24AF29AC00E69CAE /* sid.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		DCD9758CE849FFB852CF0317 /* StrWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 501C46BD2965C54200C4B27B /* StrWriter.cpp */; };
+		DDC299436C516BC4826FC9BE /* TextStorage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50B7E26A2813F8C400A405A3 /* TextStorage.cpp */; };
+		DE4A5ADD7D1BAE3A9CF1732E /* HDFFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC278F2F436A2B0016265E /* HDFFile.cpp */; };
+		DE958830850AB5ACB9D8B703 /* tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28402F446B2D0016265E /* tables.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		DFCE49FF46E5AC826A4CB154 /* CommanderConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5036E0B5261AEF000048E66A /* CommanderConsole.cpp */; };
+		E35202385EBA1020D524A00B /* Gmod2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50BD64132C035682007CD347 /* Gmod2.cpp */; };
+		E41EA2CC7892CDC483AAEF18 /* Volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27152F436A2B0016265E /* Volume.cpp */; };
+		E54769316815DCAAE2613CF0 /* xdms.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC284D2F446B2D0016265E /* xdms.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		E6BA0560F21B7EB81949463F /* SampleRateDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50316E4F2E9A425200BDF90F /* SampleRateDetector.cpp */; };
+		E70D51B8F248804B4583F42B /* Configurable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506A8A862B88D00200B95383 /* Configurable.cpp */; };
+		E71DB26CE3D1409080BD1DA8 /* u_deep.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC28422F446B2D0016265E /* u_deep.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		E873D2B4EBF0FAA5E286F494 /* Drive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434D24AF29AC00E69CAE /* Drive.cpp */; };
+		E92FAC2374BBCD89781EB36E /* ExpansionPortBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E552C0B20760097473C /* ExpansionPortBase.cpp */; };
+		E980C9DF5D931CB4CE0A5C51 /* Script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AE19372632B787005A5898 /* Script.cpp */; };
+		E9B24BB44F70CF7266757A2F /* BlockDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27092F436A2B0016265E /* BlockDevice.cpp */; };
+		E9D4DD5FFDD6D0C7980D3725 /* maketbl.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC283C2F446B2D0016265E /* maketbl.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		EC05CD38210E5EBFBE4B4606 /* FinalIII.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429824AF29AB00E69CAE /* FinalIII.cpp */; };
+		EDCA4B353FB7ED754542FB67 /* DiskDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC277E2F436A2B0016265E /* DiskDecoder.cpp */; };
+		EE8C74CAC90BCD520A46169C /* Joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5085D89B25B848940043B15C /* Joystick.cpp */; };
+		EEA599B219AC01B97E9D5126 /* Bits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC25842F41A8760016265E /* Bits.cpp */; };
+		EEB060D6F5D39E1292D057E8 /* FSTraits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27542F436A2B0016265E /* FSTraits.cpp */; };
+		F1B35F96166C19CB15572962 /* DriveMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C434B24AF29AC00E69CAE /* DriveMemory.cpp */; };
+		F3C06A98D9094E7E6B0DA48F /* RSCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5036E0B2261AEF000048E66A /* RSCommand.cpp */; };
+		F428343D78E84B279B0509E4 /* PIA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AF2F8026AFFE9A002DC43B /* PIA.cpp */; };
+		F49C11C33D947E77F7CCC5E5 /* VICIIBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50A194892BDA5EED0046849E /* VICIIBase.cpp */; };
+		F4E3B132FF79F3DA06BAEC73 /* Westermann.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429524AF29AB00E69CAE /* Westermann.cpp */; };
+		F4F5262EE0AF8E287421D460 /* FSExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC272C2F436A2B0016265E /* FSExporter.cpp */; };
+		F65FFE6BD4FB0A414CD2FF8B /* Isepic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42BA24AF29AB00E69CAE /* Isepic.cpp */; };
+		F7EBBAA1503CFD5EE9B560DA /* u_rle.c in Sources */ = {isa = PBXBuildFile; fileRef = 50AC284C2F446B2D0016265E /* u_rle.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		F84DB38E1095FA4DC7F4B9D2 /* DOSEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27832F436A2B0016265E /* DOSEncoder.cpp */; };
+		F85326E2061CBCD654A2A444 /* Zaxxon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C42B024AF29AB00E69CAE /* Zaxxon.cpp */; };
+		F85691C60E6487C9CA892F27 /* MonitorBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508C1E652C0B5F770097473C /* MonitorBase.cpp */; };
+		F8DBD1753E5C4C91C4E4A0A6 /* FSCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27442F436A2B0016265E /* FSCache.cpp */; };
+		F9C2821F3246D45DBAE314EB /* FSImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC272E2F436A2B0016265E /* FSImporter.cpp */; };
+		FA3F4ED9132211B5105F264D /* dac.cc in Sources */ = {isa = PBXBuildFile; fileRef = 504C432224AF29AC00E69CAE /* dac.cc */; settings = {COMPILER_FLAGS = "-w"; }; };
+		FBA6FA33B7BE4B1C4A1A7622 /* VirtualC64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 506F30462B7692180083EAEA /* VirtualC64.cpp */; };
+		FE1E851228B329E82736578B /* IMGFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27972F436A2B0016265E /* IMGFile.cpp */; };
+		FEC00DC61C147290A757E564 /* SuperGames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504C429B24AF29AB00E69CAE /* SuperGames.cpp */; };
+		FED6E0DE618EAC6D3C154759 /* PosixAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50AC27572F436A2B0016265E /* PosixAdapter.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9E239B8F7193182BF8EA859A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B0E129BE42E0D8ABB9AA10DF;
+			remoteInfo = "VirtualC64 OE Plugin";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		503A5AC41222781A00EAA95E /* CopyFiles */ = {
@@ -1035,20 +1030,12 @@
 		};
 /* End PBXCopyFilesBuildPhase section */
 
-/* Begin PBXContainerItemProxy section */
-		9E239B8F7193182BF8EA859A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B0E129BE42E0D8ABB9AA10DF;
-			remoteInfo = "VirtualC64 OE Plugin";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		025229EE0AF27E740024DAB3 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
+		05586D669AC18A6E7A5A04BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		1796762630CEAB783B4FA224 /* VirtualC64GameCore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VirtualC64GameCore.mm; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		500333EB26202527008445E4 /* ExpansionPortTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpansionPortTypes.h; sourceTree = "<group>"; };
@@ -1906,11 +1893,9 @@
 		50FF818E1F88D9100004548A /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* VirtualC64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualC64.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E65297DE9E9DC6D69712784E /* VirtualC64GameCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualC64GameCore.h; sourceTree = "<group>"; };
-		1796762630CEAB783B4FA224 /* VirtualC64GameCore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VirtualC64GameCore.mm; sourceTree = "<group>"; };
-		05586D669AC18A6E7A5A04BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BDBB5E182079B1D288228307 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenEmuBase.framework; path = "../OpenEmu-SDK/build/Build/Products/Release/OpenEmuBase.framework"; sourceTree = "<group>"; };
 		9783207965880FE7B73862B7 /* VirtualC64.oecoreplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualC64.oecoreplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDBB5E182079B1D288228307 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenEmuBase.framework; path = "../OpenEmu-SDK/build/Build/Products/Release/OpenEmuBase.framework"; sourceTree = "<group>"; };
+		E65297DE9E9DC6D69712784E /* VirtualC64GameCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualC64GameCore.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1987,6 +1972,7 @@
 				5070D72124AF2EB1005862D0 /* Resources */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
+				63C7E2662F7C9B0500E472F1 /* Recovered References */,
 			);
 			name = V64;
 			sourceTree = "<group>";
@@ -2007,6 +1993,16 @@
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4F300EA5668BABA1677BE467 /* OpenEmu */ = {
+			isa = PBXGroup;
+			children = (
+				E65297DE9E9DC6D69712784E /* VirtualC64GameCore.h */,
+				1796762630CEAB783B4FA224 /* VirtualC64GameCore.mm */,
+				05586D669AC18A6E7A5A04BC /* Info.plist */,
+			);
+			path = OpenEmu;
 			sourceTree = "<group>";
 		};
 		5002FA7921C264C100DA4BBC /* Dialogs */ = {
@@ -3555,15 +3551,12 @@
 			path = Misc;
 			sourceTree = "<group>";
 		};
-		4F300EA5668BABA1677BE467 /* OpenEmu */ = {
+		63C7E2662F7C9B0500E472F1 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				E65297DE9E9DC6D69712784E /* VirtualC64GameCore.h */,
-				1796762630CEAB783B4FA224 /* VirtualC64GameCore.mm */,
-				05586D669AC18A6E7A5A04BC /* Info.plist */,
+				BDBB5E182079B1D288228307 /* OpenEmuBase.framework */,
 			);
-			name = OpenEmu;
-			path = OpenEmu;
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4663,7 +4656,6 @@
 				CD6D78DF2CB05DC73F3C132D /* Mouse.cpp in Sources */,
 				6F767B1C94A9BFCF88B27350 /* SimonsBasic.cpp in Sources */,
 				1A4EFB4DDBCD034590A269B7 /* VirtualC64GameCore.mm in Sources */,
-			
 				6565CF5BB3D9520C9E7755F4 /* FileSystem.cpp in Sources */,
 				381B2D526726E087BDF811AE /* FileSystemLayer1.cpp in Sources */,
 				107FFE99D046C472905A5335 /* FileSystemLayer2.cpp in Sources */,
@@ -4693,10 +4685,18 @@
 				1C7373F21F9BFAFA572CC0B4 /* TcpTransport.cpp in Sources */,
 				AA8EB50A038447E92F687660 /* HttpTransport.cpp in Sources */,
 				40086CD5D0AAC5EB0501D55B /* Socket.cpp in Sources */,
-);
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		98068FEB93148498344A47B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B0E129BE42E0D8ABB9AA10DF /* VirtualC64 OE Plugin */;
+			targetProxy = 9E239B8F7193182BF8EA859A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */ = {
@@ -4724,14 +4724,6 @@
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
-
-/* Begin PBXTargetDependency section */
-		98068FEB93148498344A47B3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B0E129BE42E0D8ABB9AA10DF /* VirtualC64 OE Plugin */;
-			targetProxy = 9E239B8F7193182BF8EA859A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		504F836A0A89E0D2009FA225 /* Debug */ = {
@@ -5125,6 +5117,16 @@
 			};
 			name = Debug;
 		};
+		7315694FCEFCD85057D8DC2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
+				PRODUCT_NAME = "Build & Install";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		8D1C7D0DD043C8CEBFECF7FE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5172,16 +5174,6 @@
 			};
 			name = Debug;
 		};
-		7315694FCEFCD85057D8DC2F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INSTALL_PATH = "\"$(USER_LIBRARY_DIR)/Application Support/Bit/Cores\"";
-				PRODUCT_NAME = "Build & Install";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -5212,20 +5204,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A9219BE58BF87E861AFC489E /* Build configuration list for PBXNativeTarget "VirtualC64 OE Plugin" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6FE282DF2D90E820F47E4F44 /* Debug */,
-				8D1C7D0DD043C8CEBFECF7FE /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		8BA0D3A2F347AF046B6E0F30 /* Build configuration list for PBXAggregateTarget "Build & Install VirtualC64" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F239539A21759C54A3900E1F /* Debug */,
 				7315694FCEFCD85057D8DC2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9219BE58BF87E861AFC489E /* Build configuration list for PBXNativeTarget "VirtualC64 OE Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6FE282DF2D90E820F47E4F44 /* Debug */,
+				8D1C7D0DD043C8CEBFECF7FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

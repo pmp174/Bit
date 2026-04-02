@@ -28,13 +28,6 @@ import OpenEmuKit
 @objc(OEBlankSlateView)
 class BlankSlateView: NSView {
     
-    enum Mode {
-        case homebrewLoading
-        case homebrewError(Error?)
-        case flashpointLoading
-        case flashpointError(Error?)
-        case flashpointNotConfigured
-    }
     
     private enum Layout {
         static let containerSize = NSSize(width: 427, height: 418)
@@ -307,41 +300,6 @@ class BlankSlateView: NSView {
             
             headline = NSLocalizedString("Screenshots", comment: "")
             informationalText = NSLocalizedString("Create your personal collection of screenshots. To take a screenshot, you can use the keyboard shortcut ⌘ + T while playing a game.", comment: "")
-        }
-        else if let representedObject = representedObject as? Mode {
-            
-            switch representedObject {
-            case .homebrewLoading:
-                isLoading = true
-                boxText = NSLocalizedString("Fetching Games…", comment: "Homebrew Blank Slate View Updating Info")
-                
-                headline = NSLocalizedString("Homebrew Games", comment: "")
-                informationalText = NSLocalizedString("Check out some excellent homebrew games.", comment: "")
-            case let .homebrewError(error):
-                boxImage = NSImage(named: "blank_slate_warning")
-                boxText = NSLocalizedString("No Internet Connection", comment: "Homebrew Blank Slate View Error Info")
-                
-                headline = NSLocalizedString("Homebrew Games", comment: "")
-                informationalText = error?.localizedDescription ?? ""
-            case .flashpointLoading:
-                isLoading = true
-                boxText = NSLocalizedString("Loading Flash Games…", comment: "Flashpoint Blank Slate View Loading Info")
-                
-                headline = NSLocalizedString("Flashpoint Games", comment: "")
-                informationalText = NSLocalizedString("Fetching games from the Flashpoint archive.", comment: "")
-            case let .flashpointError(error):
-                boxImage = NSImage(named: "blank_slate_warning")
-                boxText = NSLocalizedString("Could Not Load Database", comment: "Flashpoint Blank Slate View Error Info")
-                
-                headline = NSLocalizedString("Flashpoint Games", comment: "")
-                informationalText = error?.localizedDescription ?? ""
-            case .flashpointNotConfigured:
-                boxImage = NSImage(named: "blank_slate_arrow")
-                boxText = NSLocalizedString("Drag & Drop Flash Games Here", comment: "Flashpoint Blank Slate View Not Configured")
-                
-                headline = NSLocalizedString("Flash Games", comment: "")
-                informationalText = NSLocalizedString("Add .swf files to your Flash game library using the + button or by dragging them here. Use the search field to browse the Flashpoint game archive.", comment: "")
-            }
         }
         else {
             assertionFailure("Unknown represented object: \(String(describing: representedObject))")

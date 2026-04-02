@@ -37,18 +37,18 @@ final class OEDropboxStorageProvider: OEStorageProvider {
     // OAuth2 configuration
     static var appKey: String = ""
     static var appSecret: String = ""
-    private static let redirectURI = "com.openemu.bit:/oauth2callback/dropbox"
     private static let keychainService = "org.openemu.Bit.Dropbox"
-    
+
     private var accessToken: String?
     private var refreshToken: String?
     private var tokenExpiry: Date?
-    
+
     /// Dropbox paths are relative to the app folder root.
     /// Files will appear at `/Apps/Bit/...` in the user's Dropbox.
     private let rootPath = ""
-    
-    private var authContinuation: CheckedContinuation<Void, Error>?
+
+    /// Temporary loopback server for receiving the OAuth callback.
+    private var loopbackServer: OEOAuthLoopbackServer?
     
     var isAuthenticated: Bool {
         return accessToken != nil
@@ -63,33 +63,57 @@ final class OEDropboxStorageProvider: OEStorageProvider {
             try await refreshAccessToken()
             return
         }
-        
+
         guard !Self.appKey.isEmpty else {
-            throw OEStorageProviderError.invalidConfiguration
+            throw OEStorageProviderError.authenticationFailed(
+                underlying: NSError(
+                    domain: "org.openemu.CloudStorage",
+                    code: -1,
+                    userInfo: [NSLocalizedDescriptionKey: "Dropbox is not yet available. API credentials have not been configured."]
+                )
+            )
         }
-        
+
         status = .authenticating
-        
+
+        // Start a loopback HTTP server for the OAuth callback (RFC 8252).
+        let server = OEOAuthLoopbackServer()
+        loopbackServer = server
+        _ = try await server.start()
+        let redirectURI = server.redirectURI
+
         var components = URLComponents(string: "https://www.dropbox.com/oauth2/authorize")!
         components.queryItems = [
             URLQueryItem(name: "client_id", value: Self.appKey),
-            URLQueryItem(name: "redirect_uri", value: Self.redirectURI),
+            URLQueryItem(name: "redirect_uri", value: redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "token_access_type", value: "offline"),
         ]
-        
+
         guard let authURL = components.url else {
+            server.stop()
+            loopbackServer = nil
             throw OEStorageProviderError.invalidConfiguration
         }
-        
+
         NSWorkspace.shared.open(authURL)
-        
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            self.authContinuation = continuation
+
+        // Wait for the authorization code from the loopback server
+        do {
+            let code = try await server.waitForAuthorizationCode()
+            loopbackServer = nil
+            try await exchangeCodeForTokens(code: code, redirectURI: redirectURI)
+        } catch {
+            loopbackServer?.stop()
+            loopbackServer = nil
+            throw error
         }
     }
-    
+
     func signOut() async {
+        loopbackServer?.stop()
+        loopbackServer = nil
+
         // Revoke token
         if let token = accessToken {
             var request = URLRequest(url: URL(string: "https://api.dropboxapi.com/2/auth/token/revoke")!)
@@ -97,38 +121,12 @@ final class OEDropboxStorageProvider: OEStorageProvider {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             _ = try? await URLSession.shared.data(for: request)
         }
-        
+
         accessToken = nil
         refreshToken = nil
         tokenExpiry = nil
         status = .disconnected
         clearTokens()
-    }
-    
-    func handleOAuthRedirect(url: URL) -> Bool {
-        guard url.scheme == "com.openemu.bit",
-              url.host == "oauth2callback",
-              url.path == "/dropbox"
-        else { return false }
-        
-        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        guard let code = components?.queryItems?.first(where: { $0.name == "code" })?.value else {
-            authContinuation?.resume(throwing: OEStorageProviderError.authenticationFailed(underlying: nil))
-            authContinuation = nil
-            return true
-        }
-        
-        Task {
-            do {
-                try await exchangeCodeForTokens(code: code)
-                authContinuation?.resume()
-            } catch {
-                authContinuation?.resume(throwing: error)
-            }
-            authContinuation = nil
-        }
-        
-        return true
     }
     
     // MARK: - File Operations
@@ -301,18 +299,18 @@ final class OEDropboxStorageProvider: OEStorageProvider {
     
     // MARK: - OAuth2 Token Management
     
-    private func exchangeCodeForTokens(code: String) async throws {
+    private func exchangeCodeForTokens(code: String, redirectURI: String) async throws {
         let url = URL(string: "https://api.dropboxapi.com/oauth2/token")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
+
         let body = [
             "code=\(code)",
             "grant_type=authorization_code",
             "client_id=\(Self.appKey)",
             "client_secret=\(Self.appSecret)",
-            "redirect_uri=\(Self.redirectURI)",
+            "redirect_uri=\(redirectURI)",
         ].joined(separator: "&")
         request.httpBody = body.data(using: .utf8)
         

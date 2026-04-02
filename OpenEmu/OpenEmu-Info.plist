@@ -129,6 +129,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.openemu.OpenEmu</string>
+				<string>com.openemu.bit</string>
 			</array>
 		</dict>
 	</array>

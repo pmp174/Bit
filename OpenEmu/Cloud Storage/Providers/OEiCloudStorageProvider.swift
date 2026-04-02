@@ -49,17 +49,32 @@ final class OEiCloudStorageProvider: OEStorageProvider {
     func authenticate() async throws {
         guard FileManager.default.ubiquityIdentityToken != nil else {
             status = .error(OEStorageProviderError.notAuthenticated)
-            throw OEStorageProviderError.notAuthenticated
+            throw OEStorageProviderError.authenticationFailed(
+                underlying: NSError(
+                    domain: "org.openemu.CloudStorage",
+                    code: -1,
+                    userInfo: [NSLocalizedDescriptionKey: "iCloud is not signed in or iCloud Drive is disabled. Please check System Settings > Apple Account > iCloud."]
+                )
+            )
         }
-        
+
         // Resolve the container URL on a background thread (can block)
         let url = await Task.detached(priority: .userInitiated) {
             FileManager.default.url(forUbiquityContainerIdentifier: nil)
         }.value
-        
+
         guard let url else {
+            if #available(macOS 11.0, *) {
+                Logger.cloudStorage.error("iCloud ubiquity container could not be resolved. Ensure iCloud Drive entitlement is configured.")
+            }
             status = .error(OEStorageProviderError.providerUnavailable)
-            throw OEStorageProviderError.providerUnavailable
+            throw OEStorageProviderError.authenticationFailed(
+                underlying: NSError(
+                    domain: "org.openemu.CloudStorage",
+                    code: -2,
+                    userInfo: [NSLocalizedDescriptionKey: "Could not access iCloud Drive. Ensure iCloud Drive is enabled in System Settings and the app has the required iCloud entitlement."]
+                )
+            )
         }
         
         containerURL = url

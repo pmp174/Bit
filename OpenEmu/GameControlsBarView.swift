@@ -30,11 +30,12 @@ final class GameControlsBarView: NSView {
     private var fullScreenButton: NSButton!
     private var pauseButton: NSButton!
     private(set) var orderedControls: [NSView] = []
-    
+    var onCollapse: (() -> Void)?
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         
@@ -46,6 +47,10 @@ final class GameControlsBarView: NSView {
     }
     
     override func draw(_ dirtyRect: NSRect) {
+        if #available(macOS 26, *) {
+            // Liquid Glass handles the background
+            return
+        }
         if OEAppearance.hudBar == .dark {
             NSImage(named: "hud_bar")?.draw(in: bounds)
         } else {
@@ -56,8 +61,12 @@ final class GameControlsBarView: NSView {
     private func setUpControls() {
         
         let stop = HUDBarButton()
-        stop.image = NSImage(named: "hud_power")
-        stop.backgroundColor = .red
+        if #available(macOS 26, *) {
+            stop.image = NSImage(systemSymbolName: "xmark.circle", accessibilityDescription: "Quit Game")
+        } else {
+            stop.image = NSImage(named: "hud_power")
+            stop.backgroundColor = .red
+        }
         stop.target = self
         stop.action = #selector(stopEmulation(_:))
         stop.toolTip = NSLocalizedString("Quit Game", comment: "HUD bar, tooltip")
@@ -132,17 +141,31 @@ final class GameControlsBarView: NSView {
         
         
         let fullScreen = HUDBarButton()
-        fullScreen.image = NSImage(named: "hud_fullscreen_enter")
-        fullScreen.alternateImage = NSImage(named: "hud_fullscreen_exit")
-        fullScreen.backgroundColor = .black
+        if #available(macOS 26, *) {
+            fullScreen.image = NSImage(systemSymbolName: "arrow.up.left.and.arrow.down.right", accessibilityDescription: "Enter Full Screen")
+            fullScreen.alternateImage = NSImage(systemSymbolName: "arrow.down.right.and.arrow.up.left", accessibilityDescription: "Exit Full Screen")
+        } else {
+            fullScreen.image = NSImage(named: "hud_fullscreen_enter")
+            fullScreen.alternateImage = NSImage(named: "hud_fullscreen_exit")
+            fullScreen.backgroundColor = .black
+        }
         fullScreen.setButtonType(.pushOnPushOff)
         fullScreen.target = self
         fullScreen.action = #selector(toggleFullScreen(_:))
         fullScreen.toolTip = NSLocalizedString("Toggle Fullscreen", comment: "HUD bar, tooltip")
         addSubview(fullScreen)
         fullScreenButton = fullScreen
-        
-        
+
+        // Collapse button
+        let collapse = HUDBarButton()
+        collapse.image = NSImage(systemSymbolName: "chevron.down.circle", accessibilityDescription: "Collapse")
+        collapse.target = self
+        collapse.action = #selector(collapseBar(_:))
+        collapse.toolTip = NSLocalizedString("Collapse Controls", comment: "HUD bar, tooltip")
+        addSubview(collapse)
+        let collapseBtn: HUDBarButton? = collapse
+
+
         // MARK: - Auto Layout
         
         for view in subviews {
@@ -154,13 +177,24 @@ final class GameControlsBarView: NSView {
         
         
         // MARK: Size
-        for button in [stop, fullScreen] {
-            constraints.append(button.widthAnchor.constraint(equalToConstant: 51))
-            constraints.append(button.heightAnchor.constraint(equalToConstant: 22))
+        if #available(macOS 26, *) {
+            for button in [stop, playPause, restart, saves, options, fullScreen] {
+                constraints.append(button.widthAnchor.constraint(equalToConstant: 32))
+                constraints.append(button.heightAnchor.constraint(equalToConstant: 32))
+            }
+        } else {
+            for button in [stop, fullScreen] {
+                constraints.append(button.widthAnchor.constraint(equalToConstant: 51))
+                constraints.append(button.heightAnchor.constraint(equalToConstant: 22))
+            }
+            for button in [playPause, restart, saves, options] {
+                constraints.append(button.widthAnchor.constraint(equalToConstant: 32))
+                constraints.append(button.heightAnchor.constraint(equalToConstant: 32))
+            }
         }
-        for button in [playPause, restart, saves, options] {
-            constraints.append(button.widthAnchor.constraint(equalToConstant: 32))
-            constraints.append(button.heightAnchor.constraint(equalToConstant: 32))
+        if let collapse = collapseBtn {
+            constraints.append(collapse.widthAnchor.constraint(equalToConstant: 32))
+            constraints.append(collapse.heightAnchor.constraint(equalToConstant: 32))
         }
         constraints.append(volume.widthAnchor.constraint(equalToConstant: 70))
         
@@ -175,8 +209,16 @@ final class GameControlsBarView: NSView {
             volume.leadingAnchor.constraint(equalTo:      volumeDown.trailingAnchor,           constant:   3),
             volumeUp.leadingAnchor.constraint(equalTo:    volume.trailingAnchor,               constant:   3),
             fullScreen.leadingAnchor.constraint(equalTo:  volumeUp.trailingAnchor,             constant:  22),
-            fullScreen.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ]
+
+        if let collapse = collapseBtn {
+            constraints += [
+                collapse.leadingAnchor.constraint(equalTo: fullScreen.trailingAnchor, constant: 8),
+                collapse.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            ]
+        } else {
+            constraints.append(fullScreen.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10))
+        }
         
         
         // MARK: Y axis
@@ -189,6 +231,9 @@ final class GameControlsBarView: NSView {
 
         // Store controls in left-to-right order for controller navigation
         orderedControls = [stop, playPause, restart, saves, options, volumeDown, volume, volumeUp, fullScreen]
+        if let collapse = collapseBtn {
+            orderedControls.append(collapse)
+        }
     }
     
     // MARK: - Actions
@@ -209,6 +254,10 @@ final class GameControlsBarView: NSView {
         }
     }
     
+    @objc private func collapseBar(_ sender: Any?) {
+        onCollapse?()
+    }
+
     @objc private func showOptionsMenu(_ sender: NSButton) {
         if let menu = (window as? GameControlsBar)?.optionsMenu {
             let targetRect = sender.bounds.insetBy(dx: -2, dy: 1)

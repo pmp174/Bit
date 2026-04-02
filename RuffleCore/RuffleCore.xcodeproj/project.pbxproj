@@ -6,8 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		63C7E2BB2F7D540700E472F1 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2BA2F7D540700E472F1 /* OpenEmuBase.framework */; };
+		63C7E2BD2F7D541200E472F1 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2BC2F7D541200E472F1 /* Metal.framework */; };
+		63C7E2BF2F7D541800E472F1 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2BE2F7D541800E472F1 /* IOSurface.framework */; };
+		63C7E2C12F7D542000E472F1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2C02F7D542000E472F1 /* CoreGraphics.framework */; };
+		63C7E2C32F7D542800E472F1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2C22F7D542800E472F1 /* Security.framework */; };
+		63C7E2C52F7D542F00E472F1 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2C42F7D542F00E472F1 /* OpenGL.framework */; };
+		63C7E2C72F7D546300E472F1 /* libruffle_openemu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2C62F7D546300E472F1 /* libruffle_openemu.a */; };
+		63C7E2C92F7D547B00E472F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7E2C82F7D547B00E472F1 /* QuartzCore.framework */; };
+		63C7E2CA2F7D56A100E472F1 /* RuffleGameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E2B62F7D516000E472F1 /* RuffleGameCore.mm */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		63C7E2A32F7D2F4B00E472F1 /* RuffleCore.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RuffleCore.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		63C7E2A32F7D2F4B00E472F1 /* RuffleCore.oecoreplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RuffleCore.oecoreplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		63C7E2B52F7D516000E472F1 /* RuffleGameCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RuffleGameCore.h; sourceTree = "<group>"; };
+		63C7E2B62F7D516000E472F1 /* RuffleGameCore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RuffleGameCore.mm; sourceTree = "<group>"; };
+		63C7E2B72F7D518E00E472F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63C7E2BA2F7D540700E472F1 /* OpenEmuBase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = OpenEmuBase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		63C7E2BC2F7D541200E472F1 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		63C7E2BE2F7D541800E472F1 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		63C7E2C02F7D542000E472F1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		63C7E2C22F7D542800E472F1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		63C7E2C42F7D542F00E472F1 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		63C7E2C62F7D546300E472F1 /* libruffle_openemu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libruffle_openemu.a; path = "../ruffle/target/aarch64-apple-darwin/release/libruffle_openemu.a"; sourceTree = "<group>"; };
+		63C7E2C82F7D547B00E472F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -15,6 +38,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C7E2C92F7D547B00E472F1 /* QuartzCore.framework in Frameworks */,
+				63C7E2C72F7D546300E472F1 /* libruffle_openemu.a in Frameworks */,
+				63C7E2C52F7D542F00E472F1 /* OpenGL.framework in Frameworks */,
+				63C7E2C32F7D542800E472F1 /* Security.framework in Frameworks */,
+				63C7E2C12F7D542000E472F1 /* CoreGraphics.framework in Frameworks */,
+				63C7E2BF2F7D541800E472F1 /* IOSurface.framework in Frameworks */,
+				63C7E2BD2F7D541200E472F1 /* Metal.framework in Frameworks */,
+				63C7E2BB2F7D540700E472F1 /* OpenEmuBase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -24,6 +55,10 @@
 		63C7E29A2F7D2F4B00E472F1 = {
 			isa = PBXGroup;
 			children = (
+				63C7E2B82F7D518E00E472F1 /* Resources */,
+				63C7E2B52F7D516000E472F1 /* RuffleGameCore.h */,
+				63C7E2B62F7D516000E472F1 /* RuffleGameCore.mm */,
+				63C7E2B92F7D540700E472F1 /* Frameworks */,
 				63C7E2A42F7D2F4B00E472F1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -31,9 +66,32 @@
 		63C7E2A42F7D2F4B00E472F1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				63C7E2A32F7D2F4B00E472F1 /* RuffleCore.bundle */,
+				63C7E2A32F7D2F4B00E472F1 /* RuffleCore.oecoreplugin */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		63C7E2B82F7D518E00E472F1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				63C7E2B72F7D518E00E472F1 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		63C7E2B92F7D540700E472F1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				63C7E2C82F7D547B00E472F1 /* QuartzCore.framework */,
+				63C7E2C62F7D546300E472F1 /* libruffle_openemu.a */,
+				63C7E2C42F7D542F00E472F1 /* OpenGL.framework */,
+				63C7E2C22F7D542800E472F1 /* Security.framework */,
+				63C7E2C02F7D542000E472F1 /* CoreGraphics.framework */,
+				63C7E2BE2F7D541800E472F1 /* IOSurface.framework */,
+				63C7E2BC2F7D541200E472F1 /* Metal.framework */,
+				63C7E2BA2F7D540700E472F1 /* OpenEmuBase.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,7 +113,7 @@
 			packageProductDependencies = (
 			);
 			productName = RuffleCore;
-			productReference = 63C7E2A32F7D2F4B00E472F1 /* RuffleCore.bundle */;
+			productReference = 63C7E2A32F7D2F4B00E472F1 /* RuffleCore.oecoreplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -106,6 +164,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C7E2CA2F7D56A100E472F1 /* RuffleGameCore.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,7 +225,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -222,7 +281,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -232,42 +291,62 @@
 		63C7E2A82F7D2F4B00E472F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = arm64;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VD338C6859;
-				GENERATE_INFOPLIST_FILE = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				GCC_PREPROCESSOR_DEFINITIONS = GL_SILENCE_DEPRECATION;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../ruffle/openemu",
+					"$(PROJECT_DIR)/../OpenEmu/SystemPlugins/Flash",
+				);
+				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ruffle/target/aarch64-apple-darwin/release";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = darbylabs.RuffleCore;
+				OTHER_LDFLAGS = "-lc++";
+				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Ruffle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = oecoreplugin;
 			};
 			name = Debug;
 		};
 		63C7E2A92F7D2F4B00E472F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = arm64;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VD338C6859;
-				GENERATE_INFOPLIST_FILE = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				GCC_PREPROCESSOR_DEFINITIONS = GL_SILENCE_DEPRECATION;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../ruffle/openemu",
+					"$(PROJECT_DIR)/../OpenEmu/SystemPlugins/Flash",
+				);
+				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ruffle/target/aarch64-apple-darwin/release";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = darbylabs.RuffleCore;
+				OTHER_LDFLAGS = "-lc++";
+				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Ruffle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = oecoreplugin;
 			};
 			name = Release;
 		};

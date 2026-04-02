@@ -35,9 +35,15 @@ import OSLog
     @objc static let shared = OECloudStorageManager()
     
     // MARK: - Notifications
-    
+
     static let providerDidChangeNotification = Notification.Name("OECloudStorageProviderDidChange")
     static let statusDidChangeNotification = Notification.Name("OECloudStorageStatusDidChange")
+    static let syncProgressDidChangeNotification = Notification.Name("OECloudStorageSyncProgressDidChange")
+
+    /// Current sync progress (0.0–1.0). Observable via `syncProgressDidChangeNotification`.
+    private(set) var syncProgress: Double = 0
+    private(set) var syncStatusMessage: String = ""
+    private(set) var isSyncing: Bool = false
     
     // MARK: - UserDefaults Keys
     
@@ -230,8 +236,148 @@ import OSLog
         try await libraryProvider.evictLocalCopy(at: localURL)
     }
     
+    // MARK: - Bulk Sync
+
+    /// Upload all existing library files to the cloud.
+    /// Call this after first sign-in or when the user taps "Sync Now".
+    func syncExistingLibrary() async throws {
+        guard isCloudEnabled else { return }
+        guard let database = OELibraryDatabase.default else { return }
+
+        isSyncing = true
+        syncProgress = 0
+        syncStatusMessage = NSLocalizedString("Preparing sync…", comment: "")
+        postSyncProgressNotification()
+
+        let scope = syncScope
+        var filesToUpload: [(localURL: URL, remotePath: String, category: String)] = []
+
+        // Collect ROMs
+        if scope.contains(.library), let romsURL = database.romsFolderURL {
+            let romFiles = collectFiles(in: romsURL, baseURL: romsURL)
+            for (url, relative) in romFiles {
+                filesToUpload.append((url, "Library/\(relative)", "ROM"))
+            }
+        }
+
+        // Collect save states
+        if scope.contains(.saves) {
+            let statesURL = database.stateFolderURL
+            let stateFiles = collectFiles(in: statesURL, baseURL: statesURL)
+            for (url, relative) in stateFiles {
+                filesToUpload.append((url, "SaveStates/\(relative)", "Save State"))
+            }
+        }
+
+        // Collect screenshots
+        if scope.contains(.screenshots) {
+            let screenshotsURL = database.screenshotFolderURL
+            let screenshotFiles = collectFiles(in: screenshotsURL, baseURL: screenshotsURL)
+            for (url, relative) in screenshotFiles {
+                filesToUpload.append((url, "Screenshots/\(relative)", "Screenshot"))
+            }
+        }
+
+        let totalFiles = filesToUpload.count
+        guard totalFiles > 0 else {
+            syncStatusMessage = NSLocalizedString("No files to sync.", comment: "")
+            isSyncing = false
+            postSyncProgressNotification()
+            return
+        }
+
+        syncStatusMessage = String(format: NSLocalizedString("Uploading 0 of %d files…", comment: ""), totalFiles)
+        postSyncProgressNotification()
+
+        var uploadedCount = 0
+        var failedCount = 0
+
+        for (index, (localURL, remotePath, _)) in filesToUpload.enumerated() {
+            let fileName = (remotePath as NSString).lastPathComponent
+            let fileSize = Self.formattedFileSize(at: localURL)
+
+            // Show which file is currently uploading
+            syncProgress = Double(index) / Double(totalFiles)
+            syncStatusMessage = String(
+                format: NSLocalizedString("Uploading %d of %d — %@ (%@)", comment: ""),
+                index + 1, totalFiles, fileName, fileSize
+            )
+            postSyncProgressNotification()
+
+            do {
+                // Route through the appropriate provider
+                if remotePath.hasPrefix("Library/") {
+                    try await libraryProvider.upload(localURL: localURL, toRemotePath: remotePath)
+                } else {
+                    try await savesProvider.upload(localURL: localURL, toRemotePath: remotePath)
+                }
+                uploadedCount += 1
+            } catch {
+                failedCount += 1
+                if #available(macOS 11.0, *) {
+                    Logger.cloudStorage.error("Failed to upload \(remotePath): \(error.localizedDescription)")
+                }
+            }
+        }
+
+        UserDefaults.standard.set(Date(), forKey: "OELastCloudSyncDate")
+
+        if failedCount > 0 {
+            syncStatusMessage = String(
+                format: NSLocalizedString("Sync complete: %d uploaded, %d failed.", comment: ""),
+                uploadedCount, failedCount
+            )
+        } else {
+            syncStatusMessage = String(
+                format: NSLocalizedString("Sync complete: %d files uploaded.", comment: ""),
+                uploadedCount
+            )
+        }
+        syncProgress = 1.0
+        isSyncing = false
+        postSyncProgressNotification()
+        NotificationCenter.default.post(name: Self.statusDidChangeNotification, object: self)
+    }
+
     // MARK: - Private
-    
+
+    private func postSyncProgressNotification() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Self.syncProgressDidChangeNotification, object: self)
+        }
+    }
+
+    /// Recursively collect all files under a directory with their relative paths.
+    private func collectFiles(in directory: URL, baseURL: URL) -> [(url: URL, relativePath: String)] {
+        var results: [(URL, String)] = []
+
+        guard let enumerator = FileManager.default.enumerator(
+            at: directory,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else { return results }
+
+        for case let fileURL as URL in enumerator {
+            guard let resourceValues = try? fileURL.resourceValues(forKeys: [.isRegularFileKey]),
+                  resourceValues.isRegularFile == true else { continue }
+
+            let relativePath = fileURL.path.replacingOccurrences(of: baseURL.path + "/", with: "")
+            results.append((fileURL, relativePath))
+        }
+
+        return results
+    }
+
+    private static func formattedFileSize(at url: URL) -> String {
+        guard let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
+              let size = attrs[.size] as? Int64 else {
+            return "unknown size"
+        }
+        let formatter = ByteCountFormatter()
+        formatter.countStyle = .file
+        return formatter.string(fromByteCount: size)
+    }
+
     private static func savedProviderType(for key: String) -> OEStorageProviderType {
         guard let raw = UserDefaults.standard.string(forKey: key),
               let type = OEStorageProviderType(rawValue: raw) else {

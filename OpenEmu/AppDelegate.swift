@@ -588,6 +588,39 @@ class AppDelegate: NSObject {
     }
 }
 
+// MARK: - Cloud Secrets
+
+private extension AppDelegate {
+
+    /// Loads OAuth API credentials from `OpenEmu/CloudSecrets.plist`.
+    ///
+    /// Search order:
+    /// 1. Source tree (via `#filePath`) — for development builds.
+    /// 2. App bundle — for release/distribution builds where the plist is embedded.
+    ///
+    /// The file is gitignored. Copy `CloudSecrets.plist.example` to
+    /// `CloudSecrets.plist` in the same directory and fill in your keys.
+    func loadCloudSecrets(sourceFile: String = #filePath) {
+        let sourceDir = URL(fileURLWithPath: sourceFile).deletingLastPathComponent()
+        let candidateURLs: [URL?] = [
+            sourceDir.appendingPathComponent("CloudSecrets.plist"),
+            Bundle.main.url(forResource: "CloudSecrets", withExtension: "plist"),
+        ]
+
+        for case let url? in candidateURLs {
+            guard FileManager.default.fileExists(atPath: url.path),
+                  let secrets = NSDictionary(contentsOf: url) as? [String: String]
+            else { continue }
+
+            OEGoogleDriveStorageProvider.clientID     = secrets["GoogleDriveClientID"] ?? ""
+            OEGoogleDriveStorageProvider.clientSecret  = secrets["GoogleDriveClientSecret"] ?? ""
+            OEDropboxStorageProvider.appKey             = secrets["DropboxAppKey"] ?? ""
+            OEDropboxStorageProvider.appSecret          = secrets["DropboxAppSecret"] ?? ""
+            return
+        }
+    }
+}
+
 // MARK: - NSMenuDelegate
 
 extension AppDelegate: NSMenuDelegate {
@@ -847,6 +880,11 @@ extension AppDelegate: NSMenuDelegate {
         
         CoreUpdater.shared.checkForNewCores()   // TODO: check error from completion handler
         
+        // Load cloud storage OAuth credentials from CloudSecrets.plist.
+        // Searches: 1) App bundle  2) ~/Library/Application Support/OpenEmu/
+        // See CloudSecrets.plist.example for the expected format.
+        loadCloudSecrets()
+
         // Authenticate cloud storage provider if configured
         if OECloudStorageManager.shared.isCloudEnabled {
             Task {

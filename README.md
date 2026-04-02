@@ -1,15 +1,6 @@
-# Bit (An Openmenu ARM64 port for apple silicon based on work made by bazley82)
+# Bit
+A mac os and apple silicon native multisystem emulation app based on openemu.
 
-## About this Port
-This version of OpenEmu has been specifically patched to run natively on Apple Silicon and includes several build fixes for modern macOS/Xcode environments.
-
-### Key Modifications:
-- **Full ARM64 Suite:** Successfully ported and verified all **25 emulation cores** (Nestopia, BSNES, Mupen64Plus, Snes9x, DeSmuME, Genesis Plus GX, etc.) for native Apple Silicon compatibility.
-- **Modern Build Standards:** Updated all projects to `MACOSX_DEPLOYMENT_TARGET = 11.0` and resolved hundreds of narrowing conversion and linkage errors.
-- **C64 Support:** Integrated Commodore 64 system support directly into the app bundle.
-- **Permission Fixes:** Resolved the persistent "Input Monitoring" permission loop that affects many users on modern macOS versions.
-- **Flattened Architecture:** Converted all submodules into regular directories to create a standalone, portable repository.
-- **Custom Design:** Features a new, high-resolution "Liquid Glass" application icon, optimized for macOS Tahoe.
   
 ![Bit App Icon](https://github.com/pmp174/Bit/blob/f5b22ee213a71f376752432778dbdf528d74de27/Bit%20SnapShots/Bit%20App%20Icon-iOS-Default-256x256%401x.png)
 
@@ -25,14 +16,14 @@ This version of OpenEmu has been specifically patched to run natively on Apple S
 ![Bit Dark](https://github.com/pmp174/Bit/blob/e2af42584a27c03e2ecfc6ea19b71a47c66c73bc/Bit%20SnapShots/ColorsDark.png)
 
 > [!IMPORTANT]
-> **Transparency Disclaimer:** This repository is an experimental port of OpenEmu, created and maintained entirely through **AI-assisted coding** (using "Vibe Coding" techniques). The project was initiated by a user with no formal coding experience to test the capabilities of advanced AI agents (specifically Antigravity & Claud) in porting complex legacy software to run natively on Apple Silicon. This is based on work made in the original openemu repository, work made by bazley82, and work made by pystIC. 
+> **Transparency Disclaimer:** This repository is an experimental port of OpenEmu, created and maintained entirely through **AI-assisted coding** (using "Vibe Coding" techniques). The project was initiated by a user with no formal coding experience (specifically Antigravity & Claud) in porting complex legacy software to run natively on Apple Silicon. This is based on work made in the original openemu repository, work made by bazley82, and work made by pystIC. 
 
 ## Quick Start
 You can download the pre-compiled native app from the **[Releases](https://github.com/pmp174/Bit/releases)** section.
 
 ---
 
-Currently, OpenEmu can load the following game engines as plugins:
+Supported Systems:
 * Atari 2600 ([Stella](https://github.com/stella-emu/stella))
 * Atari 5200 ([Atari800](https://github.com/atari800/atari800)) 
 * Atari 7800 ([ProSystem](https://gitlab.com/jgemu/prosystem)) 
@@ -52,6 +43,7 @@ Currently, OpenEmu can load the following game engines as plugins:
 * Sega Genesis / Mega Drive ([Genesis Plus](https://github.com/ekeeke/Genesis-Plus-GX)) 
 * Sega Master System ([Genesis Plus](https://github.com/ekeeke/Genesis-Plus-GX)) 
 * Sega Saturn ([Mednafen](https://mednafen.github.io)) 
+* Sega Dreamcast / Naomi / Naomi 2 / Atomis Wave ([flycast](https://github.com/flyinghead/flycast) 
 * Sony PlayStation ([Mednafen](https://mednafen.github.io)) 
 * Super Nintendo (SNES) ([BSNES](https://github.com/bsnes-emu/bsnes), [Snes9x](https://github.com/snes9xgit/snes9x)) 
 * Vectrex ([VecXGL](https://github.com/james7780/VecXGL)) 
@@ -59,14 +51,10 @@ Currently, OpenEmu can load the following game engines as plugins:
 * Pokémon Mini ([PokeMini](https://github.com/pokerazor/pokemini)) 
 * WonderSwan ([Mednafen](https://mednafen.github.io)) 
 * Commodore 64 ([VirtualC64](https://github.com/dirkwhoffmann/virtualc64))
+* PSP ([PPSSP](https://github.com/hrydgard/ppsspp))
+* Gamecube ([Dolphin](https://github.com/dolphin-emu/dolphin))
+* Flash Games ([Ruffle](https://github.com/ruffle-rs/ruffle)) and ([Flashpoint Database Api](https://github.com/FlashpointProject/flashpoint-database-api))
 
-Currently not available but in the pipeline
-
-* PPSSP
-* Gamecube
-
-## Known Issues
-Some of these cores are unavailable due to compile issues. Will be ironing that out soon. 
 
 ## Minimum Requirements
 - macOS 26

@@ -34,16 +34,21 @@ final class GameInfoHelper {
     }
     
     func gameInfo(withDictionary gameInfo: [String : Any]) -> [String : Any] {
-        
+
         DispatchQueue(label: "org.openemu.OpenEmu.GameInfoHelper").sync {
-            
+
+            let systemIdentifier = gameInfo["systemIdentifier"] as! String
+
+            // Flash games: use Flashpoint API instead of OpenVGDB
+            if systemIdentifier == "openemu.system.flash" {
+                return flashpointGameInfo(gameInfo)
+            }
+
             guard let database = database else {
                 return [:]
             }
-            
+
             lazy var resultDict: [String : Any] = [:]
-            
-            let systemIdentifier = gameInfo["systemIdentifier"] as! String
             var header = gameInfo["header"] as? String
             var serial = gameInfo["serial"] as? String
             let md5 = gameInfo["md5"] as? String
@@ -227,9 +232,25 @@ final class GameInfoHelper {
     
     func sizeOfROMHeader(forSystem system: String) -> Int32 {
         guard let database = database else { return 0 }
-        
+
         let sql = "select systemheadersizebytes as 'size' from systems where systemoeid = '\(system)'"
         let result = try? database.executeQuery(sql)
         return result?.last?["size"] as? Int32 ?? 0
+    }
+
+    // MARK: - Flash / Flashpoint
+
+    private func flashpointGameInfo(_ gameInfo: [String : Any]) -> [String : Any] {
+        guard let url = gameInfo["URL"] as? URL else { return [:] }
+        let title = (url.lastPathComponent as NSString).deletingPathExtension
+
+        guard let artURL = FlashpointArtScraper.fetchArtURL(forGameTitle: title) else {
+            return ["gameTitle": title]
+        }
+
+        return [
+            "gameTitle": title,
+            "boxImageURL": artURL.absoluteString
+        ]
     }
 }

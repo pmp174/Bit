@@ -27,7 +27,7 @@
 #import "RuffleGameCore.h"
 #import <OpenEmuBase/OERingBuffer.h>
 #import "OEFlashSystemResponderClient.h"
-#import <OpenGL/gl.h>
+
 
 #include "ruffle_openemu.h"
 
@@ -44,6 +44,10 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
     uint32_t _height;
     double _frameRate;
     uint64_t _lastTickTime;
+    OEIntPoint _lastMousePosition;
+    int16_t *_audioBuffer;
+    int _audioBufferFrames;
+    BOOL _didLogAudioDiag;
 }
 @end
 
@@ -55,10 +59,13 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
     {
         _ruffleHandle = NULL;
         _videoBuffer = NULL;
+        _audioBuffer = NULL;
+        _audioBufferFrames = 0;
         _width = 550;  // Default Flash stage size
         _height = 400;
         _frameRate = 30.0;
         _lastTickTime = 0;
+        _didLogAudioDiag = NO;
     }
     return self;
 }
@@ -68,6 +75,10 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
     if (_videoBuffer) {
         free(_videoBuffer);
         _videoBuffer = NULL;
+    }
+    if (_audioBuffer) {
+        free(_audioBuffer);
+        _audioBuffer = NULL;
     }
     if (_ruffleHandle) {
         ruffle_destroy(_ruffleHandle);
@@ -114,7 +125,7 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
         _frameRate = fps;
     }
 
-    // Allocate video buffer (RGBA, 4 bytes per pixel)
+    // Allocate video buffer (BGRA, 4 bytes per pixel)
     if (_videoBuffer) free(_videoBuffer);
     _videoBuffer = (uint8_t *)calloc(_width * _height * 4, sizeof(uint8_t));
 
@@ -125,21 +136,54 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
 {
     if (!_ruffleHandle) return;
 
-    // Calculate dt in microseconds based on frame rate
-    uint64_t dt_micros = (uint64_t)(1000000.0 / _frameRate);
+    // Calculate dt in microseconds based on frame rate.
+    // Add 1 to avoid floating-point truncation causing the Ruffle player
+    // to not advance a frame (dt must be >= frame_duration internally).
+    uint64_t dt_micros = (uint64_t)(1000000.0 / _frameRate) + 1;
 
     // Advance the Flash player
     ruffle_tick(_ruffleHandle, dt_micros);
 
-    // Render the current frame into our pixel buffer
+    // Render the current frame into our pixel buffer (Ruffle outputs RGBA)
     ruffle_render(_ruffleHandle, _videoBuffer, _width, _height);
+
+    // Convert RGBA to BGRA in-place (swap R and B channels)
+    uint32_t *pixels = (uint32_t *)_videoBuffer;
+    uint32_t pixelCount = _width * _height;
+    for (uint32_t i = 0; i < pixelCount; i++) {
+        uint32_t rgba = pixels[i];
+        pixels[i] = (rgba & 0xFF00FF00) | ((rgba & 0x000000FF) << 16) | ((rgba & 0x00FF0000) >> 16);
+    }
 
     // Mix audio and write to the ring buffer
     int audioFrames = (int)(kAudioSampleRate / _frameRate);
-    int16_t audioBuffer[audioFrames * kAudioChannels];
-    int32_t written = ruffle_get_audio(_ruffleHandle, audioBuffer, audioFrames);
+    if (audioFrames <= 0) audioFrames = 735; // fallback: ~44100/60
+
+    // Allocate audio buffer on heap (avoid VLA issues in C++)
+    if (_audioBufferFrames < audioFrames) {
+        free(_audioBuffer);
+        _audioBufferFrames = audioFrames;
+        _audioBuffer = (int16_t *)calloc(audioFrames * kAudioChannels, sizeof(int16_t));
+    }
+
+    memset(_audioBuffer, 0, audioFrames * kAudioChannels * sizeof(int16_t));
+    int32_t written = ruffle_get_audio(_ruffleHandle, _audioBuffer, audioFrames);
     if (written > 0) {
-        [[self audioBufferAtIndex:0] write:audioBuffer maxLength:written * kAudioChannels * sizeof(int16_t)];
+        [[self audioBufferAtIndex:0] write:_audioBuffer maxLength:written * kAudioChannels * sizeof(int16_t)];
+    }
+
+    // One-time diagnostic: check if audio data is non-zero
+    if (!_didLogAudioDiag && written > 0) {
+        BOOL hasAudio = NO;
+        for (int i = 0; i < written * kAudioChannels; i++) {
+            if (_audioBuffer[i] != 0) {
+                hasAudio = YES;
+                break;
+            }
+        }
+        NSLog(@"RuffleCore audio diagnostic: frames=%d, written=%d, hasNonZeroData=%@",
+              audioFrames, written, hasAudio ? @"YES" : @"NO");
+        _didLogAudioDiag = YES;
     }
 }
 
@@ -159,6 +203,11 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
     if (_videoBuffer) {
         free(_videoBuffer);
         _videoBuffer = NULL;
+    }
+    if (_audioBuffer) {
+        free(_audioBuffer);
+        _audioBuffer = NULL;
+        _audioBufferFrames = 0;
     }
     [super stopEmulation];
 }
@@ -197,14 +246,14 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
     return OEIntSizeMake(_width, _height);
 }
 
-- (GLenum)pixelFormat
+- (uint32_t)pixelFormat
 {
-    return GL_RGBA;
+    return OEPixelFormat_BGRA;
 }
 
-- (GLenum)pixelType
+- (uint32_t)pixelType
 {
-    return GL_UNSIGNED_BYTE;
+    return OEPixelType_UNSIGNED_INT_8_8_8_8_REV;
 }
 
 #pragma mark - Audio
@@ -232,6 +281,46 @@ static const int kAudioFramesPerTick = 735; // ~44100 / 60
 {
     if (_ruffleHandle) {
         ruffle_key_up(_ruffleHandle, (uint32_t)button);
+    }
+}
+
+#pragma mark - Mouse Input
+
+- (oneway void)mouseMovedAtPoint:(OEIntPoint)point
+{
+    if (_ruffleHandle) {
+        _lastMousePosition = point;
+        ruffle_mouse_move(_ruffleHandle, (double)point.x, (double)point.y);
+    }
+}
+
+- (oneway void)leftMouseDownAtPoint:(OEIntPoint)point
+{
+    if (_ruffleHandle) {
+        _lastMousePosition = point;
+        ruffle_mouse_down(_ruffleHandle, (double)point.x, (double)point.y, 0);
+    }
+}
+
+- (oneway void)leftMouseUp
+{
+    if (_ruffleHandle) {
+        ruffle_mouse_up(_ruffleHandle, (double)_lastMousePosition.x, (double)_lastMousePosition.y, 0);
+    }
+}
+
+- (oneway void)rightMouseDownAtPoint:(OEIntPoint)point
+{
+    if (_ruffleHandle) {
+        _lastMousePosition = point;
+        ruffle_mouse_down(_ruffleHandle, (double)point.x, (double)point.y, 1);
+    }
+}
+
+- (oneway void)rightMouseUp
+{
+    if (_ruffleHandle) {
+        ruffle_mouse_up(_ruffleHandle, (double)_lastMousePosition.x, (double)_lastMousePosition.y, 1);
     }
 }
 

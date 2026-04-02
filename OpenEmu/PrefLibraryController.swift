@@ -91,6 +91,10 @@ final class PrefLibraryController: NSViewController {
         NotificationCenter.default.addObserver(
             self, selector: #selector(cloudStatusDidChange(_:)),
             name: OECloudStorageManager.statusDidChangeNotification, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(cloudSyncProgressDidChange(_:)),
+            name: OECloudStorageManager.syncProgressDidChangeNotification, object: nil)
     }
 
     deinit {
@@ -511,6 +515,19 @@ final class PrefLibraryController: NSViewController {
     private func updateCloudStatus() {
         let type = cloudManager.libraryProviderType
 
+        // Show sync progress when actively syncing
+        if cloudManager.isSyncing {
+            statusIndicator.stringValue = "●"
+            statusIndicator.textColor = .systemBlue
+            statusLabel.stringValue = cloudManager.syncStatusMessage
+            syncNowButton.isEnabled = false
+            syncNowButton.title = NSLocalizedString("Syncing…", comment: "")
+            return
+        }
+
+        syncNowButton.isEnabled = type != .local
+        syncNowButton.title = NSLocalizedString("Sync Now", comment: "")
+
         if type == .local {
             statusIndicator.stringValue = "●"
             statusIndicator.textColor = .systemGray
@@ -521,16 +538,21 @@ final class PrefLibraryController: NSViewController {
                 statusIndicator.stringValue = "●"
                 statusIndicator.textColor = .systemGreen
 
-                let dateStr: String
-                if let lastSync = UserDefaults.standard.object(forKey: "OELastCloudSyncDate") as? Date {
-                    let formatter = DateFormatter()
-                    formatter.dateStyle = .short
-                    formatter.timeStyle = .short
-                    dateStr = formatter.string(from: lastSync)
+                // Show the last sync status message if available, otherwise show last sync date
+                if !cloudManager.syncStatusMessage.isEmpty && cloudManager.syncProgress >= 1.0 {
+                    statusLabel.stringValue = cloudManager.syncStatusMessage
                 } else {
-                    dateStr = NSLocalizedString("Never", comment: "")
+                    let dateStr: String
+                    if let lastSync = UserDefaults.standard.object(forKey: "OELastCloudSyncDate") as? Date {
+                        let formatter = DateFormatter()
+                        formatter.dateStyle = .short
+                        formatter.timeStyle = .short
+                        dateStr = formatter.string(from: lastSync)
+                    } else {
+                        dateStr = NSLocalizedString("Never", comment: "")
+                    }
+                    statusLabel.stringValue = String(format: NSLocalizedString("Connected — Last sync: %@", comment: ""), dateStr)
                 }
-                statusLabel.stringValue = String(format: NSLocalizedString("Connected — Last sync: %@", comment: ""), dateStr)
             } else {
                 statusIndicator.stringValue = "●"
                 statusIndicator.textColor = .systemOrange
@@ -553,11 +575,81 @@ final class PrefLibraryController: NSViewController {
     // MARK: - Cloud Actions
 
     @objc private func cloudProviderChanged(_ sender: NSPopUpButton) {
-        let type = selectedCloudProviderType()
-        cloudManager.setProvider(type)
+        let newType = selectedCloudProviderType()
+        let oldType = cloudManager.libraryProviderType
+
+        // No change — nothing to do
+        guard newType != oldType else { return }
+
+        // Switching to local from a cloud provider — warn about remote files
+        if newType == .local && oldType != .local {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Switch to Local Storage?", comment: "")
+            alert.informativeText = String(
+                format: NSLocalizedString(
+                    "Your files on %@ will remain there but will no longer sync. New saves and screenshots will only be stored locally.",
+                    comment: ""),
+                oldType.displayName)
+            alert.addButton(withTitle: NSLocalizedString("Switch to Local", comment: ""))
+            alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+            alert.alertStyle = .warning
+
+            alert.beginSheetModal(for: view.window!) { [weak self] response in
+                guard let self else { return }
+                if response == .alertFirstButtonReturn {
+                    self.cloudManager.setProvider(newType)
+                    self.updateCloudProviderSettings()
+                    self.updateCloudStatus()
+                    self.updateCloudDetailsVisibility()
+                } else {
+                    // Revert popup selection
+                    self.restoreProviderPopupSelection(to: oldType)
+                }
+            }
+            return
+        }
+
+        // Switching between two cloud providers — offer migration
+        if oldType != .local && newType != .local {
+            let alert = NSAlert()
+            alert.messageText = String(
+                format: NSLocalizedString("Switch from %@ to %@?", comment: ""),
+                oldType.displayName, newType.displayName)
+            alert.informativeText = NSLocalizedString(
+                "Your existing files will remain on the previous provider. After switching, you can use Sync Now to upload your local library to the new provider.",
+                comment: "")
+            alert.addButton(withTitle: NSLocalizedString("Switch Provider", comment: ""))
+            alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+
+            alert.beginSheetModal(for: view.window!) { [weak self] response in
+                guard let self else { return }
+                if response == .alertFirstButtonReturn {
+                    self.cloudManager.setProvider(newType)
+                    self.updateCloudProviderSettings()
+                    self.updateCloudStatus()
+                    self.updateCloudDetailsVisibility()
+                } else {
+                    self.restoreProviderPopupSelection(to: oldType)
+                }
+            }
+            return
+        }
+
+        // Switching from local to a cloud provider — no warning needed
+        cloudManager.setProvider(newType)
         updateCloudProviderSettings()
         updateCloudStatus()
         updateCloudDetailsVisibility()
+    }
+
+    private func restoreProviderPopupSelection(to type: OEStorageProviderType) {
+        switch type {
+        case .local:       providerPopup.selectItem(at: 0)
+        case .iCloud:      providerPopup.selectItem(at: 1)
+        case .googleDrive: providerPopup.selectItem(at: 2)
+        case .dropbox:     providerPopup.selectItem(at: 3)
+        case .webDAV:      providerPopup.selectItem(at: 4)
+        }
     }
 
     private func updateCloudDetailsVisibility() {
@@ -592,6 +684,11 @@ final class PrefLibraryController: NSViewController {
                     updateCloudProviderSettings()
                     updateCloudStatus()
                 }
+                // Start initial sync of existing files after sign-in
+                try await cloudManager.syncExistingLibrary()
+                await MainActor.run {
+                    updateCloudStatus()
+                }
             } catch {
                 await MainActor.run {
                     sender.isEnabled = true
@@ -608,12 +705,31 @@ final class PrefLibraryController: NSViewController {
     }
 
     @objc private func cloudSignOut(_ sender: NSButton) {
-        Task {
-            await cloudManager.signOutAll()
-            await MainActor.run {
-                providerPopup.selectItem(at: 0)
-                updateCloudProviderSettings()
-                updateCloudStatus()
+        let providerName = cloudManager.libraryProviderType.displayName
+
+        let alert = NSAlert()
+        alert.messageText = String(
+            format: NSLocalizedString("Sign out of %@?", comment: ""),
+            providerName)
+        alert.informativeText = String(
+            format: NSLocalizedString(
+                "Your files on %@ will remain there but will no longer sync. The provider will be reset to Local.",
+                comment: ""),
+            providerName)
+        alert.addButton(withTitle: NSLocalizedString("Sign Out", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+        alert.alertStyle = .warning
+
+        alert.beginSheetModal(for: view.window!) { [weak self] response in
+            guard let self, response == .alertFirstButtonReturn else { return }
+            Task {
+                await self.cloudManager.signOutAll()
+                await MainActor.run {
+                    self.providerPopup.selectItem(at: 0)
+                    self.updateCloudProviderSettings()
+                    self.updateCloudStatus()
+                    self.updateCloudDetailsVisibility()
+                }
             }
         }
     }
@@ -684,7 +800,7 @@ final class PrefLibraryController: NSViewController {
         Task {
             do {
                 try await cloudManager.authenticate()
-                UserDefaults.standard.set(Date(), forKey: "OELastCloudSyncDate")
+                try await cloudManager.syncExistingLibrary()
                 await MainActor.run {
                     sender.isEnabled = true
                     sender.title = NSLocalizedString("Sync Now", comment: "")
@@ -694,6 +810,7 @@ final class PrefLibraryController: NSViewController {
                 await MainActor.run {
                     sender.isEnabled = true
                     sender.title = NSLocalizedString("Sync Now", comment: "")
+                    updateCloudStatus()
                 }
             }
         }
@@ -703,6 +820,12 @@ final class PrefLibraryController: NSViewController {
         DispatchQueue.main.async { [weak self] in
             self?.updateCloudStatus()
             self?.updateCloudProviderSettings()
+        }
+    }
+
+    @objc private func cloudSyncProgressDidChange(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateCloudStatus()
         }
     }
 

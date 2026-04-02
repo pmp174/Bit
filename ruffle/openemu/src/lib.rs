@@ -59,6 +59,7 @@ struct RuffleContext {
     height: u32,
     swf_path: Option<String>,
     sample_rate: u32,
+    audio_diag_logged: bool,
 }
 
 /// Create a new Ruffle context with offscreen rendering.
@@ -111,6 +112,7 @@ pub unsafe extern "C" fn ruffle_create(
         height,
         swf_path: None,
         sample_rate,
+        audio_diag_logged: false,
     });
 
     Box::into_raw(ctx)
@@ -246,6 +248,20 @@ pub unsafe extern "C" fn ruffle_get_audio(
     let total_samples = (num_frames * 2) as usize; // stereo
     let mut output = vec![0i16; total_samples];
     ctx.audio_proxy.mix(&mut output);
+
+    // One-time diagnostic: log whether audio data was produced
+    if !ctx.audio_diag_logged {
+        let has_nonzero = output.iter().any(|&s| s != 0);
+        tracing::info!(
+            "ruffle_get_audio diagnostic: num_frames={}, has_nonzero_audio={}",
+            num_frames,
+            has_nonzero
+        );
+        if has_nonzero {
+            ctx.audio_diag_logged = true;
+        }
+    }
+
     std::ptr::copy_nonoverlapping(output.as_ptr(), buffer, total_samples);
     num_frames
 }

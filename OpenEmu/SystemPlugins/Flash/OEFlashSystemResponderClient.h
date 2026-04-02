@@ -25,6 +25,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <OpenEmuBase/OEGameCore.h>
 
 @protocol OESystemResponderClient;
 
@@ -59,5 +60,11 @@ typedef enum _OEFlashButton
 
 - (oneway void)didPushFlashButton:(OEFlashButton)button;
 - (oneway void)didReleaseFlashButton:(OEFlashButton)button;
+
+- (oneway void)mouseMovedAtPoint:(OEIntPoint)point;
+- (oneway void)leftMouseDownAtPoint:(OEIntPoint)point;
+- (oneway void)leftMouseUp;
+- (oneway void)rightMouseDownAtPoint:(OEIntPoint)point;
+- (oneway void)rightMouseUp;
 
 @end

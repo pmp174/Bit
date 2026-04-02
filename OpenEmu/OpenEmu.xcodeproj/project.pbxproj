@@ -291,6 +291,9 @@
 		5AC349311D89E4EB0089B26F /* NSDocumentController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC349301D89E4EB0089B26F /* NSDocumentController+Additions.swift */; };
 		5AC349331D89EB7B0089B26F /* GameIntegralScalingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC349321D89EB7B0089B26F /* GameIntegralScalingDelegate.swift */; };
 		5AFD06BD2058893B00DFE765 /* GameScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFD06BC2058893B00DFE765 /* GameScannerViewController.swift */; };
+		630A19602F7D60B4004E2EDC /* Images 2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630A195F2F7D60B4004E2EDC /* Images 2.xcassets */; };
+		630A19622F7DFC87004E2EDC /* FlashpointArtScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A19612F7DFC87004E2EDC /* FlashpointArtScraper.swift */; };
+		630A19642F7E222C004E2EDC /* OEOAuthLoopbackServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A19632F7E222C004E2EDC /* OEOAuthLoopbackServer.swift */; };
 		630A9A862F68D5D100384730 /* OEStorageProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A852F68D5D100384730 /* OEStorageProviderType.swift */; };
 		630A9A882F68D5E900384730 /* OEStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A872F68D5E900384730 /* OEStorageProvider.swift */; };
 		630A9A8A2F68D61800384730 /* OELocalStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A892F68D61800384730 /* OELocalStorageProvider.swift */; };
@@ -327,10 +330,6 @@
 		6376EB1E2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */; };
 		63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87FBC06D1BFC70FE00AECF5A /* Commodore 64.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63C7E2672F7CA1A900E472F1 /* Arcade.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 945E42FB1517F2B500057D08 /* Arcade.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		63C7E2752F7CD21D00E472F1 /* RuffleLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E2742F7CD21D00E472F1 /* RuffleLauncher.swift */; };
-		63C7E2782F7CD28D00E472F1 /* FlashpointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E2772F7CD28D00E472F1 /* FlashpointViewController.swift */; };
-		63C7E27A2F7CD7E100E472F1 /* ruffle_desktop in Resources */ = {isa = PBXBuildFile; fileRef = 63C7E2792F7CD7E100E472F1 /* ruffle_desktop */; };
-		63C7E27B2F7CD81100E472F1 /* ruffle_desktop in Copy Auxilliary Executables */ = {isa = PBXBuildFile; fileRef = 63C7E2792F7CD7E100E472F1 /* ruffle_desktop */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		63C7E28C2F7D171500E472F1 /* Flash.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 63C7E2882F7D150200E472F1 /* Flash.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63C7E28D2F7D17DE00E472F1 /* OEFlashSystemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E26C2F7CCF8800E472F1 /* OEFlashSystemController.swift */; };
 		63C7E28E2F7D182300E472F1 /* OEFlashSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C7E26F2F7CCF8C00E472F1 /* OEFlashSystemResponder.m */; };
@@ -384,15 +383,12 @@
 		83BC345E1516456000F05A2B /* OEAlert+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BC345D1516455F00F05A2B /* OEAlert+Additions.swift */; };
 		83C68ED114483579000F720A /* OEAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C68ED014483579000F720A /* OEAlert.swift */; };
 		83C6C1DC190536CC00DD7B13 /* OEDBImageMigrationPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 83C6C1DB190536CC00DD7B13 /* OEDBImageMigrationPolicy.m */; };
-		83C748CC196DF34D0090BC91 /* HomebrewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83C748CB196DF34D0090BC91 /* HomebrewViewController.xib */; };
 		83CA87B41961CDD400D86D55 /* 1.2 to 1.3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 83CA87B31961CDD400D86D55 /* 1.2 to 1.3.xcmappingmodel */; };
 		83CACEC8196D6D1300999E70 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CACEC7196D6D1300999E70 /* Download.swift */; };
 		83CB0C7A1A3F000700409FB2 /* BlankSlateSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CB0C791A3F000700409FB2 /* BlankSlateSpinnerView.swift */; };
 		83D33BD61AEB9ABE0085753B /* ALIterativeMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D33BD51AEB9ABE0085753B /* ALIterativeMigrator.m */; };
 		83DBA2271906A250000815B9 /* 1.1 to 1.2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 83DBA2261906A250000815B9 /* 1.1 to 1.2.xcmappingmodel */; };
 		83DEF7C1196C403400C7DF57 /* ControlLabels.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83DEF7C3196C403400C7DF57 /* ControlLabels.strings */; };
-		83E89274197471F8004D4489 /* HomebrewCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E89273197471F8004D4489 /* HomebrewCoverView.swift */; };
-		83F444FD196CA24B007E8C63 /* HomebrewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F444FC196CA24B007E8C63 /* HomebrewViewController.swift */; };
 		83F4DE1314DFF9C200A82E36 /* InputLimitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4DE1214DFF9C200A82E36 /* InputLimitFormatter.swift */; };
 		83F7DBAF18C0E2470029199C /* OEFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F7DBAE18C0E2470029199C /* OEFileManager.m */; };
 		83FE9646196859D300DD8DB9 /* PrefGameplayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F40EB7B1C1072B100683055 /* PrefGameplayController.xib */; };
@@ -465,7 +461,6 @@
 		8F4BDF801CE4ACC6007DCB86 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F4BDF7A1CE4AB25007DCB86 /* libz.tbd */; };
 		8F5074741C10BCEC00F52B83 /* LibraryGamesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F5074751C10BCEC00F52B83 /* LibraryGamesViewController.xib */; };
 		8F580207283AFE5E0021465F /* ArchiveHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F580206283AFE5E0021465F /* ArchiveHelper.swift */; };
-		8F58592F24F4340D009B8502 /* HomebrewOutlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F58592E24F4340D009B8502 /* HomebrewOutlinedButton.swift */; };
 		8F65E76526F3988500471DC4 /* GridSizeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F65E76426F3988500471DC4 /* GridSizeSlider.swift */; };
 		8F714FD824F85CEA006AF031 /* HUDBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F714FD724F85CEA006AF031 /* HUDBarButton.swift */; };
 		8F76285E255C835D00A1246D /* PrefControlsController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F76285D255C835A00A1246D /* PrefControlsController2.xib */; };
@@ -1211,7 +1206,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				63C7E27B2F7CD81100E472F1 /* ruffle_desktop in Copy Auxilliary Executables */,
 				0547FDDC24E86166005C1FFC /* OpenEmuHelperApp in Copy Auxilliary Executables */,
 			);
 			name = "Copy Auxilliary Executables";
@@ -1561,6 +1555,9 @@
 		5AC349321D89EB7B0089B26F /* GameIntegralScalingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameIntegralScalingDelegate.swift; sourceTree = "<group>"; };
 		5AECA1471BE1D25600C3B4E2 /* OpenEmu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenEmu-Bridging-Header.h"; sourceTree = "<group>"; };
 		5AFD06BC2058893B00DFE765 /* GameScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScannerViewController.swift; sourceTree = "<group>"; };
+		630A195F2F7D60B4004E2EDC /* Images 2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images 2.xcassets"; sourceTree = "<group>"; };
+		630A19612F7DFC87004E2EDC /* FlashpointArtScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashpointArtScraper.swift; sourceTree = "<group>"; };
+		630A19632F7E222C004E2EDC /* OEOAuthLoopbackServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEOAuthLoopbackServer.swift; sourceTree = "<group>"; };
 		630A9A852F68D5D100384730 /* OEStorageProviderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEStorageProviderType.swift; sourceTree = "<group>"; };
 		630A9A872F68D5E900384730 /* OEStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEStorageProvider.swift; sourceTree = "<group>"; };
 		630A9A892F68D61800384730 /* OELocalStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OELocalStorageProvider.swift; sourceTree = "<group>"; };
@@ -1598,9 +1595,6 @@
 		63C7E2702F7CCF9A00E472F1 /* Flash-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Flash-Info.plist"; sourceTree = "<group>"; };
 		63C7E2712F7CCF9B00E472F1 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
 		63C7E2722F7CCF9D00E472F1 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
-		63C7E2742F7CD21D00E472F1 /* RuffleLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuffleLauncher.swift; sourceTree = "<group>"; };
-		63C7E2772F7CD28D00E472F1 /* FlashpointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashpointViewController.swift; sourceTree = "<group>"; };
-		63C7E2792F7CD7E100E472F1 /* ruffle_desktop */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ruffle_desktop; sourceTree = "<group>"; };
 		63C7E2882F7D150200E472F1 /* Flash.oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Flash.oesystemplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		63C7E2952F7D20FB00E472F1 /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Keyboard-Mappings.plist"; path = "SystemPlugins/Flash/Supporting Files/Keyboard-Mappings.plist"; sourceTree = "<group>"; };
 		63C7E2972F7D212100E472F1 /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Controller-Mappings.plist"; path = "SystemPlugins/Flash/Supporting Files/Controller-Mappings.plist"; sourceTree = "<group>"; };
@@ -1705,7 +1699,6 @@
 		83C68ED014483579000F720A /* OEAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OEAlert.swift; sourceTree = "<group>"; };
 		83C6C1DA190536CC00DD7B13 /* OEDBImageMigrationPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEDBImageMigrationPolicy.h; sourceTree = "<group>"; };
 		83C6C1DB190536CC00DD7B13 /* OEDBImageMigrationPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEDBImageMigrationPolicy.m; sourceTree = "<group>"; };
-		83C748CB196DF34D0090BC91 /* HomebrewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomebrewViewController.xib; sourceTree = "<group>"; };
 		83CA87B31961CDD400D86D55 /* 1.2 to 1.3.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.2 to 1.3.xcmappingmodel"; sourceTree = "<group>"; };
 		83CACEC7196D6D1300999E70 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		83CB0C791A3F000700409FB2 /* BlankSlateSpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlankSlateSpinnerView.swift; sourceTree = "<group>"; };
@@ -1716,12 +1709,10 @@
 		83DBA2261906A250000815B9 /* 1.1 to 1.2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.1 to 1.2.xcmappingmodel"; sourceTree = "<group>"; };
 		83DEF7C2196C403400C7DF57 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ControlLabels.strings; sourceTree = "<group>"; };
 		83DEF7C4196C403700C7DF57 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ControlLabels.strings; sourceTree = "<group>"; };
-		83E89273197471F8004D4489 /* HomebrewCoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebrewCoverView.swift; sourceTree = "<group>"; };
 		83E8927C197490B3004D4489 /* DisabledScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisabledScrollView.swift; sourceTree = "<group>"; };
 		83F3E31E19B3B383009EC4ED /* es */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		83F3E31F19B3B383009EC4ED /* es */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		83F3E32019B3B383009EC4ED /* es */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ControlLabels.strings; sourceTree = "<group>"; };
-		83F444FC196CA24B007E8C63 /* HomebrewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebrewViewController.swift; sourceTree = "<group>"; };
 		83F4DE1214DFF9C200A82E36 /* InputLimitFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputLimitFormatter.swift; sourceTree = "<group>"; };
 		83F7DBAD18C0E2470029199C /* OEFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEFileManager.h; sourceTree = "<group>"; };
 		83F7DBAE18C0E2470029199C /* OEFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEFileManager.m; sourceTree = "<group>"; };
@@ -1791,7 +1782,6 @@
 		8F4BDF7C1CE4AB34007DCB86 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		8F5074751C10BCEC00F52B83 /* LibraryGamesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LibraryGamesViewController.xib; sourceTree = "<group>"; };
 		8F580206283AFE5E0021465F /* ArchiveHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHelper.swift; sourceTree = "<group>"; };
-		8F58592E24F4340D009B8502 /* HomebrewOutlinedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebrewOutlinedButton.swift; sourceTree = "<group>"; };
 		8F65E76426F3988500471DC4 /* GridSizeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridSizeSlider.swift; sourceTree = "<group>"; };
 		8F714FD724F85CEA006AF031 /* HUDBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HUDBarButton.swift; sourceTree = "<group>"; };
 		8F76285D255C835A00A1246D /* PrefControlsController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PrefControlsController2.xib; sourceTree = "<group>"; };
@@ -3087,7 +3077,6 @@
 			children = (
 				63C7E2972F7D212100E472F1 /* Controller-Mappings.plist */,
 				63C7E2952F7D20FB00E472F1 /* Keyboard-Mappings.plist */,
-				63C7E2792F7CD7E100E472F1 /* ruffle_desktop */,
 				5AECA14A1BE1D26700C3B4E2 /* Swift Bridging Header */,
 				2A37F4ABFDCFA73011CA2CEA /* Sources */,
 				C67118201363687A0034379A /* System Plugins */,
@@ -3384,6 +3373,7 @@
 				630A9A932F68D74700384730 /* OECloudStorageManager.swift */,
 				630A9A972F68DB8A00384730 /* OEEvictionScheduler.swift */,
 				630A9A992F68DC1700384730 /* OEFileMonitor.swift */,
+				630A19632F7E222C004E2EDC /* OEOAuthLoopbackServer.swift */,
 			);
 			path = "Cloud Storage";
 			sourceTree = "<group>";
@@ -3408,6 +3398,7 @@
 				63C7E26D2F7CCF8900E472F1 /* OEFlashSystemResponderClient.h */,
 				63C7E26E2F7CCF8A00E472F1 /* OEFlashSystemResponder.h */,
 				63C7E26F2F7CCF8C00E472F1 /* OEFlashSystemResponder.m */,
+				630A195F2F7D60B4004E2EDC /* Images 2.xcassets */,
 			);
 			path = Flash;
 			sourceTree = "<group>";
@@ -3426,7 +3417,6 @@
 		63C7E2732F7CCFA800E472F1 /* Emulation */ = {
 			isa = PBXGroup;
 			children = (
-				63C7E2742F7CD21D00E472F1 /* RuffleLauncher.swift */,
 			);
 			path = Emulation;
 			sourceTree = "<group>";
@@ -3434,7 +3424,6 @@
 		63C7E2762F7CD25800E472F1 /* Flashpoint */ = {
 			isa = PBXGroup;
 			children = (
-				63C7E2772F7CD28D00E472F1 /* FlashpointViewController.swift */,
 			);
 			path = Flashpoint;
 			sourceTree = "<group>";
@@ -3507,7 +3496,6 @@
 				0544B68423D1415900F63D61 /* Collection View V2 */,
 				8306CD0C1BD3ABFD0025BC6C /* Games Library */,
 				83955CB9165DAE7900572B34 /* Blank Slate View */,
-				83F444FA196CA207007E8C63 /* Homebrew */,
 				0544B68223D1355400F63D61 /* LibraryController.swift */,
 				010EDCA21CE628490020417C /* LibraryController.xib */,
 				5A9606DB1C0A84BC0089B494 /* LibraryToolbar.swift */,
@@ -3562,6 +3550,7 @@
 				8FBD79182736A17B00E455FC /* GameInfoHelper.swift */,
 				8F4AEAC0273594E6005C6246 /* OpenVGDB.swift */,
 				836BC9561853815A00B6AF26 /* SQLiteDatabase.swift */,
+				630A19612F7DFC87004E2EDC /* FlashpointArtScraper.swift */,
 			);
 			name = GameInfo;
 			sourceTree = "<group>";
@@ -3643,17 +3632,6 @@
 				5A575DFC1E92D23600491B0D /* Cheats.swift */,
 			);
 			name = Utilities;
-			sourceTree = "<group>";
-		};
-		83F444FA196CA207007E8C63 /* Homebrew */ = {
-			isa = PBXGroup;
-			children = (
-				83F444FC196CA24B007E8C63 /* HomebrewViewController.swift */,
-				83C748CB196DF34D0090BC91 /* HomebrewViewController.xib */,
-				83E89273197471F8004D4489 /* HomebrewCoverView.swift */,
-				8F58592E24F4340D009B8502 /* HomebrewOutlinedButton.swift */,
-			);
-			name = Homebrew;
 			sourceTree = "<group>";
 		};
 		87DF04C71BCE26FB0060E2C2 /* Dreamcast */ = {
@@ -6010,6 +5988,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				630A19602F7D60B4004E2EDC /* Images 2.xcassets in Resources */,
 				63C7E2982F7D212100E472F1 /* Controller-Mappings.plist in Resources */,
 				63C7E2962F7D20FB00E472F1 /* Keyboard-Mappings.plist in Resources */,
 			);
@@ -6106,14 +6085,12 @@
 				0544B69F23D16D3100F63D61 /* CollectionViewItem.xib in Resources */,
 				0544B69523D16D0C00F63D61 /* ImageCollectionViewController.xib in Resources */,
 				83FE9646196859D300DD8DB9 /* PrefGameplayController.xib in Resources */,
-				63C7E27A2F7CD7E100E472F1 /* ruffle_desktop in Resources */,
 				0544B69323D16D0C00F63D61 /* ImageCollectionHeaderView.xib in Resources */,
 				05B753A023330EB60063BD73 /* Main.storyboard in Resources */,
 				010EDCA31CE628490020417C /* LibraryController.xib in Resources */,
 				83FE964A196859F800DD8DB9 /* PrefLibraryController.xib in Resources */,
 				6355D3732F66B9A40024B088 /* Bit App Icon.icon in Resources */,
 				83FE966419685F8F00DD8DB9 /* SetupAssistant.xib in Resources */,
-				83C748CC196DF34D0090BC91 /* HomebrewViewController.xib in Resources */,
 				556CEBF01BCE173B00F00EAA /* Graphics.xcassets in Resources */,
 				051DDCB923E5E50100325147 /* AvailableLibrariesCollectionViewItem.xib in Resources */,
 				8FD78305243A8AD300861B7A /* Debug.strings in Resources */,
@@ -6869,7 +6846,6 @@
 				C6252DC814E7A38000350A13 /* ControlsButtonSetupView.swift in Sources */,
 				0586AB22231A1E9A00BCDA6B /* OEGameLayerNotificationView.swift in Sources */,
 				0544B69923D16D0C00F63D61 /* ImageCollectionHeaderView.swift in Sources */,
-				63C7E2752F7CD21D00E472F1 /* RuffleLauncher.swift in Sources */,
 				0544B69423D16D0C00F63D61 /* ImageCollectionViewItem.swift in Sources */,
 				C69DCD010FE994A5009AE5A6 /* PluginDocument.swift in Sources */,
 				05A002D423DE1006007F0DB7 /* UserDefaults+OEAdditions.swift in Sources */,
@@ -6898,15 +6874,12 @@
 				8FDCCAD8270632AC00CBF2E3 /* OEGridViewFieldEditor.swift in Sources */,
 				630D27EE2F738EB2005FBEAD /* AchievementNotificationView.swift in Sources */,
 				53439AAB13B92CE6005C0CC8 /* OECollectionViewController.m in Sources */,
-				63C7E2782F7CD28D00E472F1 /* FlashpointViewController.swift in Sources */,
 				8F7AE88A2546802A00B837A8 /* InsetScrollView.swift in Sources */,
 				53439AE313B92E59005C0CC8 /* RatingCell.swift in Sources */,
 				05A002D623DE5389007F0DB7 /* SidebarHeaderView.swift in Sources */,
-				8F58592F24F4340D009B8502 /* HomebrewOutlinedButton.swift in Sources */,
 				5A9606D21C0A5A570089B494 /* NSManagedObjectContext+LibraryDatabase.swift in Sources */,
 				5AFD06BD2058893B00DFE765 /* GameScannerViewController.swift in Sources */,
 				8370D3E11A8D2A7600313F87 /* ArrowCursorTextView.swift in Sources */,
-				83F444FD196CA24B007E8C63 /* HomebrewViewController.swift in Sources */,
 				53439B6E13B932DB005C0CC8 /* PrefLibraryController.swift in Sources */,
 				0557CB1B22A781B60037175F /* OEShadersModel+OpenEmu.swift in Sources */,
 				53439B7113B932ED005C0CC8 /* PrefGameplayController.swift in Sources */,
@@ -6915,6 +6888,7 @@
 				051DDCB523E5D74400325147 /* AvailableLibrariesViewController.swift in Sources */,
 				8F65E76526F3988500471DC4 /* GridSizeSlider.swift in Sources */,
 				836AEA711975BFE100B86935 /* OEGridCell.m in Sources */,
+				630A19642F7E222C004E2EDC /* OEOAuthLoopbackServer.swift in Sources */,
 				05644A4823331EA90033576F /* AboutViewController.swift in Sources */,
 				630A9A902F68D6A800384730 /* OEGoogleDriveStorageProvider.swift in Sources */,
 				630A9A862F68D5D100384730 /* OEStorageProviderType.swift in Sources */,
@@ -6935,6 +6909,7 @@
 				83BABBEE1458978B0097F6B2 /* SetupAssistantTableView.swift in Sources */,
 				8F4A69732547F84500DFE092 /* GameControlsBarView.swift in Sources */,
 				8FB8A29526E296BD00F2B626 /* SidebarItem.swift in Sources */,
+				630A19622F7DFC87004E2EDC /* FlashpointArtScraper.swift in Sources */,
 				8F3062DB251A897F00BDFF1F /* OESearchField.swift in Sources */,
 				8FEA6770270373460034CFCE /* GameControlsBar.swift in Sources */,
 				8FC080272825914E00F18E15 /* OELibraryDatabase.swift in Sources */,
@@ -7034,7 +7009,6 @@
 				94A4E992179F9D0400AD8C7D /* OEDBScreenshotsMedia.swift in Sources */,
 				94A4E996179FAB9F00AD8C7D /* OEMediaViewController.m in Sources */,
 				8F4AEAC1273594E6005C6246 /* OpenVGDB.swift in Sources */,
-				83E89274197471F8004D4489 /* HomebrewCoverView.swift in Sources */,
 				0544B69823D16D0C00F63D61 /* ImageCollectionDataSource.swift in Sources */,
 				5A9606D61C0A7C9D0089B494 /* NSWindow+FullScreen.swift in Sources */,
 				83AB259917A6A432009C80BC /* ControlsSectionTitleView.swift in Sources */,

@@ -103,6 +103,9 @@
 	<key>OEFileSuffixes</key>
 	<array>
 		<string>sv</string>
+		<string>bin</string>
+		<string>zip</string>
+		<string>7z</string>
 	</array>
 	<key>OEGenericControlNamesKey</key>
 	<array>

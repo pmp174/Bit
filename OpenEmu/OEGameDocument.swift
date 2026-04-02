@@ -529,6 +529,11 @@ final class OEGameDocument: NSDocument {
         }
     }
     
+    /// Helper to call super.canClose from closures (Swift doesn't allow `super` in closures with explicit `self` capture).
+    private func invokeSuperCanClose(withDelegate delegate: Any, shouldClose shouldCloseSelector: Selector?, contextInfo: UnsafeMutableRawPointer?) {
+        super.canClose(withDelegate: delegate, shouldClose: shouldCloseSelector, contextInfo: contextInfo)
+    }
+
     override func canClose(withDelegate delegate: Any, shouldClose shouldCloseSelector: Selector?, contextInfo: UnsafeMutableRawPointer?) {
         if emulationStatus == .notSetup || emulationStatus == .terminating {
             super.canClose(withDelegate: delegate, shouldClose: shouldCloseSelector, contextInfo: contextInfo)
@@ -550,25 +555,56 @@ final class OEGameDocument: NSDocument {
             return
         }
         
+        // Immediately hide the HUD controls bar and collapsed circle so they
+        // don't linger as orphaned windows during the async close flow.
+        gameViewController.controlsWindow.tearDown()
+
         saveState(name: OEDBSaveState.autosaveName) {
             self.emulationStatus = .terminating
             // TODO: #567 and #568 need to be fixed first
             //removeDeviceNotificationObservers()
-            
-            self.gameCoreManager?.stopEmulation() {
-                DLog("Emulation stopped")
+
+            // If the core already terminated (XPC died) or the manager is gone,
+            // skip the stopEmulation call since the completion handler won't fire.
+            if self.coreDidTerminateSuddenly || self.gameCoreManager == nil {
+                DLog("Core already terminated, cleaning up directly")
                 OEBindingsController.default.systemBindings(for: self.systemPlugin.controller).remove(self)
-                
                 self.emulationStatus = .notSetup
-                
                 self.gameCoreManager = nil
-                
                 if let lastPlayStartDate = self.lastPlayStartDate {
                     self.rom.addTimeIntervalToPlayTime(abs(lastPlayStartDate.timeIntervalSinceNow))
                 }
                 self.lastPlayStartDate = nil
-                
                 super.canClose(withDelegate: delegate, shouldClose: shouldCloseSelector, contextInfo: contextInfo)
+                return
+            }
+
+            var didComplete = false
+            let finishClose = { [self] in
+                guard !didComplete else { return }
+                didComplete = true
+                DLog("Emulation stopped")
+                OEBindingsController.default.systemBindings(for: self.systemPlugin.controller).remove(self)
+                self.emulationStatus = .notSetup
+                self.gameCoreManager = nil
+                if let lastPlayStartDate = self.lastPlayStartDate {
+                    self.rom.addTimeIntervalToPlayTime(abs(lastPlayStartDate.timeIntervalSinceNow))
+                }
+                self.lastPlayStartDate = nil
+                self.invokeSuperCanClose(withDelegate: delegate, shouldClose: shouldCloseSelector, contextInfo: contextInfo)
+            }
+
+            self.gameCoreManager?.stopEmulation {
+                finishClose()
+            }
+
+            // Safety timeout: if the XPC helper hangs (e.g. GPU cleanup deadlock)
+            // the completion handler never fires. Force close after 3 seconds.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                if !didComplete {
+                    DLog("stopEmulation timed out — forcing close")
+                    finishClose()
+                }
             }
         }
     }
@@ -2065,11 +2101,26 @@ extension OEGameDocument: OESystemBindingsObserver {
     }
     
     func gameCoreDidTerminate() {
-        if !(emulationStatus == .starting || emulationStatus == .paused) {
-            return
+        switch emulationStatus {
+        case .terminating:
+            // The close flow was already in progress (canClose set .terminating)
+            // but the XPC helper died before the stopEmulation completion fired.
+            // The 3-second safety timeout in canClose will handle the actual
+            // document close via super.canClose. Just clean up state here.
+            emulationStatus = .notSetup
+            gameCoreManager = nil
+            if let lastPlayStartDate {
+                rom.addTimeIntervalToPlayTime(abs(lastPlayStartDate.timeIntervalSinceNow))
+            }
+            lastPlayStartDate = nil
+
+        case .starting, .paused, .playing:
+            coreDidTerminateSuddenly = true
+            stopEmulation(self)
+
+        default:
+            break
         }
-        coreDidTerminateSuddenly = true
-        stopEmulation(self)
     }
     
     // MARK: - RetroAchievements

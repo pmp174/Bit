@@ -190,7 +190,7 @@ static __weak SVGameCore *_current;
 
 - (GLenum)pixelFormat
 {
-    return GL_BGRA;
+    return GL_RGBA;
 }
 
 - (GLenum)pixelType

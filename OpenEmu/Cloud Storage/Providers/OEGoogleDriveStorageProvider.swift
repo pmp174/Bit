@@ -39,20 +39,20 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
     // OAuth2 configuration — users must set these before authenticating
     static var clientID: String = ""
     static var clientSecret: String = ""
-    private static let redirectURI = "com.openemu.bit:/oauth2callback/google"
     private static let keychainService = "org.openemu.Bit.GoogleDrive"
-    
+
     private var accessToken: String?
     private var refreshToken: String?
     private var tokenExpiry: Date?
-    
+
     /// Cache of folder IDs: path -> Google Drive folder ID
     private var folderIDCache: [String: String] = [:]
-    
+
     /// The root folder ID for the "Bit" folder in Drive
     private var rootFolderID: String?
-    
-    private var authContinuation: CheckedContinuation<Void, Error>?
+
+    /// Temporary loopback server for receiving the OAuth callback.
+    private var loopbackServer: OEOAuthLoopbackServer?
     
     var isAuthenticated: Bool {
         return accessToken != nil
@@ -68,40 +68,62 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
             try await ensureRootFolder()
             return
         }
-        
+
         guard !Self.clientID.isEmpty else {
-            throw OEStorageProviderError.invalidConfiguration
+            throw OEStorageProviderError.authenticationFailed(
+                underlying: NSError(
+                    domain: "org.openemu.CloudStorage",
+                    code: -1,
+                    userInfo: [NSLocalizedDescriptionKey: "Google Drive is not yet available. API credentials have not been configured."]
+                )
+            )
         }
-        
+
         status = .authenticating
-        
+
+        // Start a loopback HTTP server for the OAuth callback (RFC 8252).
+        let server = OEOAuthLoopbackServer()
+        loopbackServer = server
+        _ = try await server.start()
+        let redirectURI = server.redirectURI
+
         // Build OAuth2 authorization URL
         var components = URLComponents(string: "https://accounts.google.com/o/oauth2/v2/auth")!
         components.queryItems = [
             URLQueryItem(name: "client_id", value: Self.clientID),
-            URLQueryItem(name: "redirect_uri", value: Self.redirectURI),
+            URLQueryItem(name: "redirect_uri", value: redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: "https://www.googleapis.com/auth/drive.file"),
             URLQueryItem(name: "access_type", value: "offline"),
             URLQueryItem(name: "prompt", value: "consent"),
         ]
-        
+
         guard let authURL = components.url else {
+            server.stop()
+            loopbackServer = nil
             throw OEStorageProviderError.invalidConfiguration
         }
-        
+
         // Open browser for auth
         NSWorkspace.shared.open(authURL)
-        
-        // Wait for the OAuth redirect callback
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            self.authContinuation = continuation
+
+        // Wait for the authorization code from the loopback server
+        do {
+            let code = try await server.waitForAuthorizationCode()
+            loopbackServer = nil
+            try await exchangeCodeForTokens(code: code, redirectURI: redirectURI)
+        } catch {
+            loopbackServer?.stop()
+            loopbackServer = nil
+            throw error
         }
-        
+
         try await ensureRootFolder()
     }
-    
+
     func signOut() async {
+        loopbackServer?.stop()
+        loopbackServer = nil
         accessToken = nil
         refreshToken = nil
         tokenExpiry = nil
@@ -109,32 +131,6 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
         folderIDCache = [:]
         status = .disconnected
         clearTokens()
-    }
-    
-    func handleOAuthRedirect(url: URL) -> Bool {
-        guard url.scheme == "com.openemu.bit",
-              url.host == "oauth2callback",
-              url.path == "/google"
-        else { return false }
-        
-        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        guard let code = components?.queryItems?.first(where: { $0.name == "code" })?.value else {
-            authContinuation?.resume(throwing: OEStorageProviderError.authenticationFailed(underlying: nil))
-            authContinuation = nil
-            return true
-        }
-        
-        Task {
-            do {
-                try await exchangeCodeForTokens(code: code)
-                authContinuation?.resume()
-            } catch {
-                authContinuation?.resume(throwing: error)
-            }
-            authContinuation = nil
-        }
-        
-        return true
     }
     
     // MARK: - File Operations
@@ -272,17 +268,17 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
     
     // MARK: - OAuth2 Token Management
     
-    private func exchangeCodeForTokens(code: String) async throws {
+    private func exchangeCodeForTokens(code: String, redirectURI: String) async throws {
         let url = URL(string: "https://oauth2.googleapis.com/token")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
+
         let body = [
             "code=\(code)",
             "client_id=\(Self.clientID)",
             "client_secret=\(Self.clientSecret)",
-            "redirect_uri=\(Self.redirectURI)",
+            "redirect_uri=\(redirectURI)",
             "grant_type=authorization_code",
         ].joined(separator: "&")
         request.httpBody = body.data(using: .utf8)
@@ -356,51 +352,81 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
         }
     }
     
+    /// Extract an error message from a Google API JSON error response.
+    private func googleAPIError(data: Data, response: URLResponse?) -> NSError? {
+        guard let httpResponse = response as? HTTPURLResponse,
+              !(200...299).contains(httpResponse.statusCode) else {
+            return nil
+        }
+
+        var message = "HTTP \(httpResponse.statusCode)"
+        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let error = json["error"] as? [String: Any] {
+            if let msg = error["message"] as? String {
+                message = msg
+            }
+        }
+
+        return NSError(
+            domain: "org.openemu.GoogleDrive",
+            code: httpResponse.statusCode,
+            userInfo: [NSLocalizedDescriptionKey: message]
+        )
+    }
+
     private func findFile(name: String, parentID: String) async throws -> String? {
         let escapedName = name.replacingOccurrences(of: "'", with: "\\'")
         let query = "name = '\(escapedName)' and '\(parentID)' in parents and trashed = false"
         let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let url = URL(string: "https://www.googleapis.com/drive/v3/files?q=\(encodedQuery)&fields=files(id)")!
-        
+
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
-        
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        if let apiError = googleAPIError(data: data, response: response) {
+            throw OEStorageProviderError.authenticationFailed(underlying: apiError)
+        }
+
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let files = json["files"] as? [[String: Any]],
               let first = files.first,
               let id = first["id"] as? String else {
             return nil
         }
-        
+
         return id
     }
-    
+
     private func createFolder(name: String, parentID: String) async throws -> String {
         let url = URL(string: "https://www.googleapis.com/drive/v3/files")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         let metadata: [String: Any] = [
             "name": name,
             "mimeType": "application/vnd.google-apps.folder",
             "parents": [parentID],
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: metadata)
-        
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        if let apiError = googleAPIError(data: data, response: response) {
+            throw OEStorageProviderError.uploadFailed(path: name, underlying: apiError)
+        }
+
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let id = json["id"] as? String else {
             throw OEStorageProviderError.uploadFailed(path: name, underlying: nil)
         }
-        
+
         return id
     }
-    
+
     private func createFile(name: String, parentID: String, data: Data) async throws -> String {
         // Use multipart upload for simplicity
         let boundary = UUID().uuidString
@@ -409,13 +435,13 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
         request.httpMethod = "POST"
         request.setValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/related; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
+
         let metadata: [String: Any] = [
             "name": name,
             "parents": [parentID],
         ]
         let metadataJSON = try JSONSerialization.data(withJSONObject: metadata)
-        
+
         var body = Data()
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Type: application/json; charset=UTF-8\r\n\r\n".data(using: .utf8)!)
@@ -425,17 +451,21 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
         body.append(data)
         body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
         request.httpBody = body
-        
-        let (responseData, _) = try await URLSession.shared.data(for: request)
-        
+
+        let (responseData, response) = try await URLSession.shared.data(for: request)
+
+        if let apiError = googleAPIError(data: responseData, response: response) {
+            throw OEStorageProviderError.uploadFailed(path: name, underlying: apiError)
+        }
+
         guard let json = try? JSONSerialization.jsonObject(with: responseData) as? [String: Any],
               let id = json["id"] as? String else {
             throw OEStorageProviderError.uploadFailed(path: name, underlying: nil)
         }
-        
+
         return id
     }
-    
+
     private func updateFileContent(fileID: String, data: Data) async throws {
         let url = URL(string: "https://www.googleapis.com/upload/drive/v3/files/\(fileID)?uploadType=media")!
         var request = URLRequest(url: url)
@@ -443,11 +473,11 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
         request.setValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
         request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
         request.httpBody = data
-        
-        let (_, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw OEStorageProviderError.uploadFailed(path: fileID, underlying: nil)
+
+        let (responseData, response) = try await URLSession.shared.data(for: request)
+
+        if let apiError = googleAPIError(data: responseData, response: response) {
+            throw OEStorageProviderError.uploadFailed(path: fileID, underlying: apiError)
         }
     }
     

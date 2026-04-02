@@ -34,7 +34,10 @@ final class OEWebDAVStorageProvider: OEStorageProvider {
     
     private(set) var status: OEStorageProviderStatus = .disconnected
     
+    /// The root URL for Bit storage: serverURL + "/Bit/"
     private var serverURL: URL?
+    /// The base server URL (without the /Bit/ path) used for connectivity checks.
+    private var baseServerURL: URL?
     private var session: URLSession?
     
     private static let keychainService = "org.openemu.Bit.WebDAV"
@@ -47,6 +50,7 @@ final class OEWebDAVStorageProvider: OEStorageProvider {
     
     /// Configure the WebDAV server URL and credentials.
     func configure(serverURL: URL, username: String, password: String) {
+        self.baseServerURL = serverURL
         self.serverURL = serverURL.appendingPathComponent("Bit/", isDirectory: true)
         
         let config = URLSessionConfiguration.default
@@ -74,32 +78,36 @@ final class OEWebDAVStorageProvider: OEStorageProvider {
             }
             configure(serverURL: url, username: saved.username, password: saved.password)
         }
-        
-        guard let serverURL, let session else {
+
+        guard let baseServerURL, let session else {
             throw OEStorageProviderError.invalidConfiguration
         }
-        
+
         status = .authenticating
-        
-        // Test connection with PROPFIND on root
-        var request = URLRequest(url: serverURL)
+
+        // Test connection with PROPFIND on the base server URL (not the Bit/ directory,
+        // which may not exist yet on first use).
+        var request = URLRequest(url: baseServerURL)
         request.httpMethod = "PROPFIND"
         request.setValue("0", forHTTPHeaderField: "Depth")
         request.setValue("application/xml", forHTTPHeaderField: "Content-Type")
-        
+
         do {
             let (_, response) = try await session.data(for: request)
             let httpResponse = response as? HTTPURLResponse
-            
+
             if let code = httpResponse?.statusCode, (200...299).contains(code) || code == 207 {
-                status = .connected
-                
-                // Ensure Bit root directory exists
+                // Connection to server succeeded. Create the Bit root directory if needed.
                 try await ensureDirectory(at: "")
+                status = .connected
             } else if httpResponse?.statusCode == 401 {
                 status = .error(OEStorageProviderError.notAuthenticated)
                 throw OEStorageProviderError.authenticationFailed(underlying: nil)
             } else {
+                let code = httpResponse?.statusCode ?? 0
+                if #available(macOS 11.0, *) {
+                    Logger.cloudStorage.error("WebDAV PROPFIND returned unexpected status \(code)")
+                }
                 status = .error(OEStorageProviderError.providerUnavailable)
                 throw OEStorageProviderError.providerUnavailable
             }
@@ -112,6 +120,7 @@ final class OEWebDAVStorageProvider: OEStorageProvider {
     }
     
     func signOut() async {
+        baseServerURL = nil
         serverURL = nil
         session = nil
         status = .disconnected

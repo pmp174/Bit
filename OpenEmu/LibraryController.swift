@@ -31,7 +31,7 @@ final class LibraryController: NSTabViewController, NSMenuItemValidation {
     }
     
     enum Category: Int, CaseIterable {
-        case games, saveStates, screenshots, homebrew, flashpoint
+        case games, saveStates, screenshots
     }
     
     enum ViewMode: Int {
@@ -210,20 +210,6 @@ final class LibraryController: NSTabViewController, NSMenuItemValidation {
                 item.viewController = ctrl
                 addTabViewItem(item)
             }
-        }
-        do {
-            let ctrl = HomebrewViewController()
-            ctrl.database = database
-            let item = NSTabViewItem(identifier: "org.openemu.category.homebrew")
-            item.viewController = ctrl
-            addTabViewItem(item)
-        }
-        do {
-            let ctrl = FlashpointViewController()
-            ctrl.database = database
-            let item = NSTabViewItem(identifier: "org.openemu.category.flashpoint")
-            item.viewController = ctrl
-            addTabViewItem(item)
         }
     }
     
