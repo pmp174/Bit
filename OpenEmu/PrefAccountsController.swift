@@ -24,220 +24,1257 @@
 
 import Cocoa
 
+// MARK: - Service Item Model
+
+private struct ServiceItem {
+    let id: String
+    let name: String
+    let subtitle: String
+    let iconName: String
+    let cloudProviderType: OEStorageProviderType?
+    var isSignedIn: Bool
+}
+
+// MARK: - PrefAccountsController
+
 final class PrefAccountsController: NSViewController {
 
-    // MARK: - UI Elements
+    // Key constants
+    private static let evictionDaysKey = "OECloudEvictionDays"
 
-    // Logged-out state
-    private var usernameField: NSTextField!
-    private var passwordField: NSSecureTextField!
-    private var signInButton: NSButton!
-    private var statusLabel: NSTextField!
-    private var loginContainer: NSView!
+    // Views
+    private var listContainer: NSView!
+    private var detailContainer: NSView!
+    private var contentStack: NSStackView!
+    private var scrollView: NSScrollView!
 
-    // Logged-in state
-    private var loggedInContainer: NSView!
-    private var loggedInLabel: NSTextField!
-    private var signOutButton: NSButton!
+    // Currently displayed detail service (nil = list view)
+    private var activeDetailService: ServiceItem?
 
     // MARK: - Lifecycle
 
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 468, height: 300))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 468, height: 560))
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        buildLayout()
+        showListView()
 
-        buildLoginView()
-        buildLoggedInView()
-        updateUI()
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(cloudStatusDidChange),
+            name: OECloudStorageManager.statusDidChangeNotification, object: nil
+        )
     }
 
-    // MARK: - Build Login View
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
-    private func buildLoginView() {
-        loginContainer = NSView()
-        loginContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loginContainer)
+    // MARK: - Layout
 
-        let header = NSTextField(labelWithString: "RetroAchievements")
-        header.font = .boldSystemFont(ofSize: 13)
-        header.translatesAutoresizingMaskIntoConstraints = false
-        loginContainer.addSubview(header)
+    private func buildLayout() {
+        // List container (service list)
+        listContainer = NSView()
+        listContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(listContainer)
 
-        let description = NSTextField(wrappingLabelWithString: "Sign in with your RetroAchievements account to track achievements while playing games.")
-        description.font = .systemFont(ofSize: 11)
-        description.textColor = .secondaryLabelColor
-        description.translatesAutoresizingMaskIntoConstraints = false
-        loginContainer.addSubview(description)
+        // Detail container (account detail view)
+        detailContainer = NSView()
+        detailContainer.translatesAutoresizingMaskIntoConstraints = false
+        detailContainer.isHidden = true
+        view.addSubview(detailContainer)
 
-        let gridView = NSGridView(numberOfColumns: 2, rows: 0)
-        gridView.column(at: 0).xPlacement = .trailing
-        gridView.rowAlignment = .firstBaseline
-        gridView.columnSpacing = 8
-        gridView.rowSpacing = 10
-        gridView.translatesAutoresizingMaskIntoConstraints = false
-        loginContainer.addSubview(gridView)
+        NSLayoutConstraint.activate([
+            listContainer.topAnchor.constraint(equalTo: view.topAnchor),
+            listContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            listContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            listContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-        let usernameLabel = NSTextField(labelWithString: "Username:")
+            detailContainer.topAnchor.constraint(equalTo: view.topAnchor),
+            detailContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            detailContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            detailContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+
+        buildListView()
+    }
+
+    private func buildListView() {
+        let titleLabel = NSTextField(labelWithString: NSLocalizedString("Accounts", comment: ""))
+        titleLabel.font = .boldSystemFont(ofSize: 16)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        listContainer.addSubview(titleLabel)
+
+        scrollView = NSScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.hasVerticalScroller = true
+        scrollView.drawsBackground = false
+        scrollView.borderType = .noBorder
+        listContainer.addSubview(scrollView)
+
+        contentStack = NSStackView()
+        contentStack.orientation = .vertical
+        contentStack.alignment = .leading
+        contentStack.spacing = 20
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+
+        let flipView = FlippedView()
+        flipView.translatesAutoresizingMaskIntoConstraints = false
+        flipView.addSubview(contentStack)
+        scrollView.documentView = flipView
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: listContainer.topAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: 20),
+
+            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            scrollView.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: listContainer.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor),
+
+            flipView.leadingAnchor.constraint(equalTo: scrollView.contentView.leadingAnchor),
+            flipView.trailingAnchor.constraint(equalTo: scrollView.contentView.trailingAnchor),
+            flipView.topAnchor.constraint(equalTo: scrollView.contentView.topAnchor),
+            flipView.widthAnchor.constraint(equalTo: scrollView.contentView.widthAnchor),
+
+            contentStack.topAnchor.constraint(equalTo: flipView.topAnchor, constant: 4),
+            contentStack.leadingAnchor.constraint(equalTo: flipView.leadingAnchor, constant: 20),
+            contentStack.trailingAnchor.constraint(equalTo: flipView.trailingAnchor, constant: -20),
+            contentStack.bottomAnchor.constraint(lessThanOrEqualTo: flipView.bottomAnchor, constant: -20),
+        ])
+    }
+
+    // MARK: - Navigation
+
+    private func showListView() {
+        activeDetailService = nil
+        detailContainer.isHidden = true
+        listContainer.isHidden = false
+        refreshSections()
+    }
+
+    private func showDetailView(for service: ServiceItem) {
+        activeDetailService = service
+        listContainer.isHidden = true
+        detailContainer.isHidden = false
+        detailContainer.subviews.forEach { $0.removeFromSuperview() }
+
+        if service.cloudProviderType != nil {
+            buildCloudDetailView(service: service)
+        } else if service.id == "retroachievements" {
+            buildRetroAchievementsDetailView(service: service)
+        } else if service.id == "screenscraper" {
+            buildScreenScraperDetailView(service: service)
+        }
+    }
+
+    // MARK: - Data
+
+    private func allServices() -> [ServiceItem] {
+        let cm = OECloudStorageManager.shared
+        return [
+            ServiceItem(id: "icloud", name: NSLocalizedString("iCloud", comment: ""),
+                        subtitle: NSLocalizedString("Cloud Storage", comment: ""),
+                        iconName: "icloud", cloudProviderType: .iCloud,
+                        isSignedIn: cm.provider(for: .iCloud)?.isAuthenticated ?? false),
+            ServiceItem(id: "screenscraper", name: NSLocalizedString("Screen Scraper.fr", comment: ""),
+                        subtitle: NSLocalizedString("Game Image & Meta Data", comment: ""),
+                        iconName: "photo.artframe", cloudProviderType: nil,
+                        isSignedIn: ScreenScraperCredentialStore.shared.hasCredentials),
+            ServiceItem(id: "googledrive", name: NSLocalizedString("Google Drive", comment: ""),
+                        subtitle: NSLocalizedString("Cloud Storage", comment: ""),
+                        iconName: "externaldrive.badge.icloud", cloudProviderType: .googleDrive,
+                        isSignedIn: cm.provider(for: .googleDrive)?.isAuthenticated ?? false),
+            ServiceItem(id: "retroachievements", name: NSLocalizedString("Retro Achievements", comment: ""),
+                        subtitle: NSLocalizedString("Retroachievements & Trophies", comment: ""),
+                        iconName: "trophy", cloudProviderType: nil,
+                        isSignedIn: RetroAchievementsCredentialStore.shared.isLoggedIn),
+            ServiceItem(id: "dropbox", name: NSLocalizedString("Drop Box", comment: ""),
+                        subtitle: NSLocalizedString("Cloud Storage", comment: ""),
+                        iconName: "externaldrive.badge.icloud", cloudProviderType: .dropbox,
+                        isSignedIn: cm.provider(for: .dropbox)?.isAuthenticated ?? false),
+            ServiceItem(id: "webdav", name: NSLocalizedString("WebDAV / NAS", comment: ""),
+                        subtitle: NSLocalizedString("Network Storage", comment: ""),
+                        iconName: "server.rack", cloudProviderType: .webDAV,
+                        isSignedIn: cm.provider(for: .webDAV)?.isAuthenticated ?? false),
+        ]
+    }
+
+    private func refreshSections() {
+        contentStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        let services = allServices()
+        let signedIn = services.filter { $0.isSignedIn }
+        let available = services.filter { !$0.isSignedIn }
+
+        if !signedIn.isEmpty {
+            let section = buildSection(title: NSLocalizedString("Accounts", comment: ""), services: signedIn)
+            contentStack.addArrangedSubview(section)
+            section.widthAnchor.constraint(equalTo: contentStack.widthAnchor).isActive = true
+        }
+        if !available.isEmpty {
+            let section = buildSection(title: NSLocalizedString("Available Services", comment: ""), services: available)
+            contentStack.addArrangedSubview(section)
+            section.widthAnchor.constraint(equalTo: contentStack.widthAnchor).isActive = true
+        }
+    }
+
+    @objc private func cloudStatusDidChange() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if self.activeDetailService != nil {
+                // Refresh the detail view if currently showing one
+                if let svc = self.activeDetailService, let updated = self.allServices().first(where: { $0.id == svc.id }) {
+                    self.showDetailView(for: updated)
+                }
+            } else {
+                self.refreshSections()
+            }
+        }
+    }
+
+    // MARK: - Section Building
+
+    private func buildSection(title: String, services: [ServiceItem]) -> NSView {
+        let container = NSStackView()
+        container.orientation = .vertical
+        container.alignment = .leading
+        container.spacing = 8
+
+        let headerLabel = NSTextField(labelWithString: title)
+        headerLabel.font = .boldSystemFont(ofSize: 13)
+        headerLabel.textColor = .labelColor
+        container.addArrangedSubview(headerLabel)
+
+        let box = RoundedGroupBox()
+        box.translatesAutoresizingMaskIntoConstraints = false
+        container.addArrangedSubview(box)
+        box.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
+
+        let rowStack = NSStackView()
+        rowStack.orientation = .vertical
+        rowStack.alignment = .leading
+        rowStack.spacing = 0
+        rowStack.translatesAutoresizingMaskIntoConstraints = false
+        box.addSubview(rowStack)
+
+        NSLayoutConstraint.activate([
+            rowStack.topAnchor.constraint(equalTo: box.topAnchor),
+            rowStack.leadingAnchor.constraint(equalTo: box.leadingAnchor),
+            rowStack.trailingAnchor.constraint(equalTo: box.trailingAnchor),
+            rowStack.bottomAnchor.constraint(equalTo: box.bottomAnchor),
+        ])
+
+        for (index, service) in services.enumerated() {
+            let row = ServiceRowView(service: service) { [weak self] svc in
+                self?.handleRowClick(svc)
+            }
+            rowStack.addArrangedSubview(row)
+            row.widthAnchor.constraint(equalTo: rowStack.widthAnchor).isActive = true
+
+            if index < services.count - 1 {
+                let sep = NSBox()
+                sep.boxType = .separator
+                sep.translatesAutoresizingMaskIntoConstraints = false
+                rowStack.addArrangedSubview(sep)
+                sep.leadingAnchor.constraint(equalTo: rowStack.leadingAnchor, constant: 56).isActive = true
+                sep.trailingAnchor.constraint(equalTo: rowStack.trailingAnchor).isActive = true
+            }
+        }
+        return container
+    }
+
+    // MARK: - Row Click Handling
+
+    private func handleRowClick(_ service: ServiceItem) {
+        if service.isSignedIn {
+            // Show detail view for signed-in accounts
+            showDetailView(for: service)
+        } else if service.cloudProviderType != nil {
+            // Show sign-in popover for cloud services
+            showCloudSignInPopover(for: service)
+        } else if service.id == "retroachievements" {
+            showRetroAchievementsSignInSheet()
+        } else if service.id == "screenscraper" {
+            showScreenScraperSheet()
+        }
+    }
+
+    // MARK: - Cloud Sign-In Popover
+
+    private func showCloudSignInPopover(for service: ServiceItem) {
+        guard let providerType = service.cloudProviderType else { return }
+
+        let popover = NSPopover()
+        popover.behavior = .transient
+
+        let vc = NSViewController()
+        vc.view = NSView(frame: NSRect(x: 0, y: 0, width: 280, height: 140))
+
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .centerX
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        vc.view.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: vc.view.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor, constant: 16),
+            stack.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor, constant: -16),
+            stack.bottomAnchor.constraint(lessThanOrEqualTo: vc.view.bottomAnchor, constant: -16),
+        ])
+
+        if providerType == .webDAV {
+            // WebDAV needs URL/user/pass fields
+            buildWebDAVPopoverContent(stack: stack, popover: popover)
+        } else {
+            let boldTitle = NSTextField(labelWithString: String(format: NSLocalizedString("%@ requires completing authentication in your web browser.", comment: ""), service.name))
+            boldTitle.font = .boldSystemFont(ofSize: 12)
+            boldTitle.alignment = .center
+            boldTitle.preferredMaxLayoutWidth = 248
+            boldTitle.lineBreakMode = .byWordWrapping
+            boldTitle.maximumNumberOfLines = 0
+            stack.addArrangedSubview(boldTitle)
+
+            let subtitle = NSTextField(labelWithString: NSLocalizedString("After authentication, setup will continue in Internet Accounts.", comment: ""))
+            subtitle.font = .systemFont(ofSize: 11)
+            subtitle.textColor = .secondaryLabelColor
+            subtitle.alignment = .center
+            subtitle.preferredMaxLayoutWidth = 248
+            subtitle.lineBreakMode = .byWordWrapping
+            subtitle.maximumNumberOfLines = 0
+            stack.addArrangedSubview(subtitle)
+
+            let openBrowserBtn = NSButton(title: NSLocalizedString("Open Browser", comment: ""), target: nil, action: nil)
+            openBrowserBtn.bezelStyle = .rounded
+            openBrowserBtn.tag = OEStorageProviderType.allCases.firstIndex(of: providerType) ?? 0
+            stack.addArrangedSubview(openBrowserBtn)
+
+            // Store popover reference for dismissal
+            objc_setAssociatedObject(openBrowserBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
+            openBrowserBtn.target = self
+            openBrowserBtn.action = #selector(cloudPopoverOpenBrowser(_:))
+
+            let cancelBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: nil, action: nil)
+            cancelBtn.bezelStyle = .rounded
+            objc_setAssociatedObject(cancelBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
+            cancelBtn.target = self
+            cancelBtn.action = #selector(cloudPopoverCancel(_:))
+            stack.addArrangedSubview(cancelBtn)
+        }
+
+        popover.contentViewController = vc
+        popover.contentSize = providerType == .webDAV ? NSSize(width: 300, height: 220) : NSSize(width: 280, height: 160)
+
+        // Position the popover relative to the service list
+        popover.show(relativeTo: contentStack.bounds, of: contentStack, preferredEdge: .maxY)
+    }
+
+    private func buildWebDAVPopoverContent(stack: NSStackView, popover: NSPopover) {
+        let title = NSTextField(labelWithString: NSLocalizedString("Connect to WebDAV / NAS", comment: ""))
+        title.font = .boldSystemFont(ofSize: 12)
+        title.alignment = .center
+        stack.addArrangedSubview(title)
+
+        let grid = NSGridView(numberOfColumns: 2, rows: 0)
+        grid.column(at: 0).xPlacement = .trailing
+        grid.rowAlignment = .firstBaseline
+        grid.columnSpacing = 8
+        grid.rowSpacing = 8
+
+        let urlLabel = NSTextField(labelWithString: NSLocalizedString("URL:", comment: ""))
+        urlLabel.alignment = .right
+        let urlField = NSTextField()
+        urlField.placeholderString = "https://nas.local/webdav"
+        urlField.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        urlField.identifier = NSUserInterfaceItemIdentifier("webdavURL")
+        grid.addRow(with: [urlLabel, urlField])
+
+        let userLabel = NSTextField(labelWithString: NSLocalizedString("User:", comment: ""))
+        userLabel.alignment = .right
+        let userField = NSTextField()
+        userField.placeholderString = NSLocalizedString("Username", comment: "")
+        userField.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        userField.identifier = NSUserInterfaceItemIdentifier("webdavUser")
+        grid.addRow(with: [userLabel, userField])
+
+        let passLabel = NSTextField(labelWithString: NSLocalizedString("Pass:", comment: ""))
+        passLabel.alignment = .right
+        let passField = NSSecureTextField()
+        passField.placeholderString = NSLocalizedString("Password", comment: "")
+        passField.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        passField.identifier = NSUserInterfaceItemIdentifier("webdavPass")
+        grid.addRow(with: [passLabel, passField])
+
+        // Load existing values
+        let defaults = UserDefaults.standard
+        urlField.stringValue = defaults.string(forKey: "OECloudWebDAVURL") ?? ""
+        userField.stringValue = defaults.string(forKey: "OECloudWebDAVUsername") ?? ""
+
+        stack.addArrangedSubview(grid)
+
+        let connectBtn = NSButton(title: NSLocalizedString("Save & Connect", comment: ""), target: self, action: #selector(webdavPopoverConnect(_:)))
+        connectBtn.bezelStyle = .rounded
+        objc_setAssociatedObject(connectBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
+        stack.addArrangedSubview(connectBtn)
+
+        let cancelBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(cloudPopoverCancel(_:)))
+        cancelBtn.bezelStyle = .rounded
+        objc_setAssociatedObject(cancelBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
+        stack.addArrangedSubview(cancelBtn)
+    }
+
+    @objc private func cloudPopoverOpenBrowser(_ sender: NSButton) {
+        let providerType = OEStorageProviderType.allCases[sender.tag]
+        guard let provider = OECloudStorageManager.shared.provider(for: providerType) else { return }
+
+        if let popover = objc_getAssociatedObject(sender, &AssociatedKeys.popoverKey) as? NSPopover {
+            popover.close()
+        }
+
+        sender.isEnabled = false
+        Task {
+            do {
+                try await provider.authenticate()
+                await MainActor.run { self.refreshSections() }
+            } catch {
+                await MainActor.run {
+                    let alert = NSAlert()
+                    alert.messageText = NSLocalizedString("Sign In Failed", comment: "")
+                    alert.informativeText = error.localizedDescription
+                    alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+                    alert.runModal()
+                    self.refreshSections()
+                }
+            }
+        }
+    }
+
+    @objc private func cloudPopoverCancel(_ sender: NSButton) {
+        if let popover = objc_getAssociatedObject(sender, &AssociatedKeys.popoverKey) as? NSPopover {
+            popover.close()
+        }
+    }
+
+    @objc private func webdavPopoverConnect(_ sender: NSButton) {
+        guard let contentView = sender.window?.contentView ?? sender.superview?.superview else { return }
+        guard let urlField = contentView.findView(withIdentifier: "webdavURL") as? NSTextField,
+              let userField = contentView.findView(withIdentifier: "webdavUser") as? NSTextField,
+              let passField = contentView.findView(withIdentifier: "webdavPass") as? NSSecureTextField
+        else { return }
+
+        let url = urlField.stringValue.trimmingCharacters(in: .whitespaces)
+        let user = userField.stringValue.trimmingCharacters(in: .whitespaces)
+        let pass = passField.stringValue
+
+        guard !url.isEmpty else { return }
+
+        UserDefaults.standard.set(url, forKey: "OECloudWebDAVURL")
+        UserDefaults.standard.set(user, forKey: "OECloudWebDAVUsername")
+        if !pass.isEmpty {
+            UserDefaults.standard.set(pass, forKey: "OECloudWebDAVPassword")
+        }
+
+        if let popover = objc_getAssociatedObject(sender, &AssociatedKeys.popoverKey) as? NSPopover {
+            popover.close()
+        }
+
+        sender.isEnabled = false
+        Task {
+            do {
+                guard let provider = OECloudStorageManager.shared.provider(for: .webDAV) else { return }
+                try await provider.authenticate()
+                await MainActor.run { self.refreshSections() }
+            } catch {
+                await MainActor.run {
+                    let alert = NSAlert()
+                    alert.messageText = NSLocalizedString("Connection Failed", comment: "")
+                    alert.informativeText = error.localizedDescription
+                    alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+                    alert.runModal()
+                }
+            }
+        }
+    }
+
+    // MARK: - Cloud Account Detail View
+
+    private func buildCloudDetailView(service: ServiceItem) {
+        guard let providerType = service.cloudProviderType else { return }
+        let cm = OECloudStorageManager.shared
+
+        let scroll = NSScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.hasVerticalScroller = true
+        scroll.drawsBackground = false
+        scroll.borderType = .noBorder
+        detailContainer.addSubview(scroll)
+
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 20
+        stack.translatesAutoresizingMaskIntoConstraints = false
+
+        let flip = FlippedView()
+        flip.translatesAutoresizingMaskIntoConstraints = false
+        flip.addSubview(stack)
+        scroll.documentView = flip
+
+        NSLayoutConstraint.activate([
+            scroll.topAnchor.constraint(equalTo: detailContainer.topAnchor),
+            scroll.leadingAnchor.constraint(equalTo: detailContainer.leadingAnchor),
+            scroll.trailingAnchor.constraint(equalTo: detailContainer.trailingAnchor),
+            scroll.bottomAnchor.constraint(equalTo: detailContainer.bottomAnchor),
+
+            flip.leadingAnchor.constraint(equalTo: scroll.contentView.leadingAnchor),
+            flip.trailingAnchor.constraint(equalTo: scroll.contentView.trailingAnchor),
+            flip.topAnchor.constraint(equalTo: scroll.contentView.topAnchor),
+            flip.widthAnchor.constraint(equalTo: scroll.contentView.widthAnchor),
+
+            stack.topAnchor.constraint(equalTo: flip.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: flip.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: flip.trailingAnchor, constant: -20),
+            stack.bottomAnchor.constraint(lessThanOrEqualTo: flip.bottomAnchor, constant: -20),
+        ])
+
+        // Back button
+        let backBtn = NSButton(title: NSLocalizedString("\u{2190} Accounts", comment: ""), target: self, action: #selector(backToList(_:)))
+        backBtn.bezelStyle = .accessoryBarAction
+        backBtn.isBordered = false
+        backBtn.font = .systemFont(ofSize: 13)
+        backBtn.contentTintColor = .controlAccentColor
+        stack.addArrangedSubview(backBtn)
+
+        // ── Account Header ──────────────────────────────────────
+        let headerRow = NSStackView()
+        headerRow.orientation = .horizontal
+        headerRow.alignment = .centerY
+        headerRow.spacing = 12
+        headerRow.translatesAutoresizingMaskIntoConstraints = false
+
+        let icon = NSImageView()
+        if let img = NSImage(systemSymbolName: service.iconName, accessibilityDescription: service.name) {
+            icon.image = img
+        }
+        icon.contentTintColor = .secondaryLabelColor
+        icon.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        headerRow.addArrangedSubview(icon)
+
+        let nameStack = NSStackView()
+        nameStack.orientation = .vertical
+        nameStack.alignment = .leading
+        nameStack.spacing = 2
+        let nameLabel = NSTextField(labelWithString: service.name)
+        nameLabel.font = .boldSystemFont(ofSize: 15)
+        nameStack.addArrangedSubview(nameLabel)
+        let subtitleLabel = NSTextField(labelWithString: service.subtitle)
+        subtitleLabel.font = .systemFont(ofSize: 11)
+        subtitleLabel.textColor = .secondaryLabelColor
+        nameStack.addArrangedSubview(subtitleLabel)
+        headerRow.addArrangedSubview(nameStack)
+
+        // Spacer
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        headerRow.addArrangedSubview(spacer)
+
+        let signOutBtn = NSButton(title: NSLocalizedString("Sign Out", comment: ""), target: self, action: #selector(cloudDetailSignOut(_:)))
+        signOutBtn.bezelStyle = .rounded
+        signOutBtn.tag = OEStorageProviderType.allCases.firstIndex(of: providerType) ?? 0
+        headerRow.addArrangedSubview(signOutBtn)
+
+        let syncNowBtn = NSButton(title: NSLocalizedString("Sync Now", comment: ""), target: self, action: #selector(cloudDetailSyncNow(_:)))
+        syncNowBtn.bezelStyle = .rounded
+        syncNowBtn.tag = OEStorageProviderType.allCases.firstIndex(of: providerType) ?? 0
+        headerRow.addArrangedSubview(syncNowBtn)
+
+        stack.addArrangedSubview(headerRow)
+        headerRow.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+
+        // ── Sync Options ────────────────────────────────────────
+        let syncHeader = NSTextField(labelWithString: NSLocalizedString("Sync Options", comment: ""))
+        syncHeader.font = .boldSystemFont(ofSize: 13)
+        stack.addArrangedSubview(syncHeader)
+
+        let syncBox = RoundedGroupBox()
+        syncBox.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(syncBox)
+        syncBox.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+
+        let syncRows = NSStackView()
+        syncRows.orientation = .vertical
+        syncRows.alignment = .leading
+        syncRows.spacing = 0
+        syncRows.translatesAutoresizingMaskIntoConstraints = false
+        syncBox.addSubview(syncRows)
+
+        NSLayoutConstraint.activate([
+            syncRows.topAnchor.constraint(equalTo: syncBox.topAnchor),
+            syncRows.leadingAnchor.constraint(equalTo: syncBox.leadingAnchor),
+            syncRows.trailingAnchor.constraint(equalTo: syncBox.trailingAnchor),
+            syncRows.bottomAnchor.constraint(equalTo: syncBox.bottomAnchor),
+        ])
+
+        let scope = cm.syncScope
+        let isActiveProvider = cm.libraryProviderType == providerType
+
+        let savesRow = makeSyncToggleRow(
+            iconName: "doc", title: NSLocalizedString("Saves", comment: ""),
+            isOn: isActiveProvider && scope.contains(.saves), tag: 0, providerTag: providerType)
+        syncRows.addArrangedSubview(savesRow)
+        savesRow.widthAnchor.constraint(equalTo: syncRows.widthAnchor).isActive = true
+
+        let sep1 = makeSeparator()
+        syncRows.addArrangedSubview(sep1)
+        sep1.leadingAnchor.constraint(equalTo: syncRows.leadingAnchor, constant: 56).isActive = true
+        sep1.trailingAnchor.constraint(equalTo: syncRows.trailingAnchor).isActive = true
+
+        let gamesRow = makeSyncToggleRow(
+            iconName: "gamecontroller", title: NSLocalizedString("Games", comment: ""),
+            isOn: isActiveProvider && scope.contains(.library), tag: 1, providerTag: providerType)
+        syncRows.addArrangedSubview(gamesRow)
+        gamesRow.widthAnchor.constraint(equalTo: syncRows.widthAnchor).isActive = true
+
+        let sep2 = makeSeparator()
+        syncRows.addArrangedSubview(sep2)
+        sep2.leadingAnchor.constraint(equalTo: syncRows.leadingAnchor, constant: 56).isActive = true
+        sep2.trailingAnchor.constraint(equalTo: syncRows.trailingAnchor).isActive = true
+
+        let screenshotsRow = makeSyncToggleRow(
+            iconName: "photo", title: NSLocalizedString("Screenshots", comment: ""),
+            isOn: isActiveProvider && scope.contains(.screenshots), tag: 2, providerTag: providerType)
+        syncRows.addArrangedSubview(screenshotsRow)
+        screenshotsRow.widthAnchor.constraint(equalTo: syncRows.widthAnchor).isActive = true
+
+        // ── Storage Management ──────────────────────────────────
+        let storageHeader = NSTextField(labelWithString: NSLocalizedString("Storage Management", comment: ""))
+        storageHeader.font = .boldSystemFont(ofSize: 13)
+        stack.addArrangedSubview(storageHeader)
+
+        let storageBox = RoundedGroupBox()
+        storageBox.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(storageBox)
+        storageBox.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+
+        let storageRows = NSStackView()
+        storageRows.orientation = .vertical
+        storageRows.alignment = .leading
+        storageRows.spacing = 0
+        storageRows.translatesAutoresizingMaskIntoConstraints = false
+        storageBox.addSubview(storageRows)
+
+        NSLayoutConstraint.activate([
+            storageRows.topAnchor.constraint(equalTo: storageBox.topAnchor),
+            storageRows.leadingAnchor.constraint(equalTo: storageBox.leadingAnchor),
+            storageRows.trailingAnchor.constraint(equalTo: storageBox.trailingAnchor),
+            storageRows.bottomAnchor.constraint(equalTo: storageBox.bottomAnchor),
+        ])
+
+        let evictionDays = UserDefaults.standard.integer(forKey: Self.evictionDaysKey)
+        let days = evictionDays > 0 ? evictionDays : 30
+        let offloadRow = makeSyncToggleRow(
+            iconName: "clock.arrow.circlepath",
+            title: String(format: NSLocalizedString("Offload Games After %d Days", comment: ""), days),
+            isOn: evictionDays > 0, tag: 10, providerTag: providerType)
+        storageRows.addArrangedSubview(offloadRow)
+        offloadRow.widthAnchor.constraint(equalTo: storageRows.widthAnchor).isActive = true
+
+        // ── Download All / Offload All ──────────────────────────
+        let buttonRow = NSStackView()
+        buttonRow.orientation = .horizontal
+        buttonRow.spacing = 8
+
+        let downloadAllBtn = NSButton(title: NSLocalizedString("Download All", comment: ""), target: self, action: #selector(detailDownloadAll(_:)))
+        downloadAllBtn.bezelStyle = .rounded
+        buttonRow.addArrangedSubview(downloadAllBtn)
+
+        let offloadAllBtn = NSButton(title: NSLocalizedString("Offload All", comment: ""), target: self, action: #selector(detailOffloadAll(_:)))
+        offloadAllBtn.bezelStyle = .rounded
+        buttonRow.addArrangedSubview(offloadAllBtn)
+
+        stack.addArrangedSubview(buttonRow)
+    }
+
+    private func makeSyncToggleRow(iconName: String, title: String, isOn: Bool, tag: Int, providerTag: OEStorageProviderType) -> NSView {
+        let row = NSView()
+        row.translatesAutoresizingMaskIntoConstraints = false
+        row.heightAnchor.constraint(equalToConstant: 44).isActive = true
+
+        let icon = NSImageView()
+        icon.image = NSImage(systemSymbolName: iconName, accessibilityDescription: title)
+        icon.contentTintColor = .secondaryLabelColor
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        row.addSubview(icon)
+
+        let label = NSTextField(labelWithString: title)
+        label.font = .systemFont(ofSize: 13)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        row.addSubview(label)
+
+        let toggle = NSSwitch()
+        toggle.state = isOn ? .on : .off
+        toggle.translatesAutoresizingMaskIntoConstraints = false
+        toggle.target = self
+        toggle.action = #selector(syncToggleChanged(_:))
+        // Encode both toggle type (tag) and provider type (via identifier)
+        toggle.tag = tag
+        toggle.identifier = NSUserInterfaceItemIdentifier(providerTag.rawValue)
+        row.addSubview(toggle)
+
+        NSLayoutConstraint.activate([
+            icon.leadingAnchor.constraint(equalTo: row.leadingAnchor, constant: 12),
+            icon.centerYAnchor.constraint(equalTo: row.centerYAnchor),
+            icon.widthAnchor.constraint(equalToConstant: 24),
+            icon.heightAnchor.constraint(equalToConstant: 24),
+
+            label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
+            label.centerYAnchor.constraint(equalTo: row.centerYAnchor),
+
+            toggle.trailingAnchor.constraint(equalTo: row.trailingAnchor, constant: -12),
+            toggle.centerYAnchor.constraint(equalTo: row.centerYAnchor),
+        ])
+
+        return row
+    }
+
+    private func makeSeparator() -> NSBox {
+        let sep = NSBox()
+        sep.boxType = .separator
+        sep.translatesAutoresizingMaskIntoConstraints = false
+        return sep
+    }
+
+    // MARK: - Sync Toggle Actions
+
+    @objc private func syncToggleChanged(_ sender: NSSwitch) {
+        guard let providerRaw = sender.identifier?.rawValue,
+              let providerType = OEStorageProviderType(rawValue: providerRaw) else { return }
+
+        let cm = OECloudStorageManager.shared
+        let tag = sender.tag
+
+        // Tag 10 = offload toggle (not a sync scope toggle)
+        if tag == 10 {
+            if sender.state == .on {
+                UserDefaults.standard.set(30, forKey: Self.evictionDaysKey)
+            } else {
+                UserDefaults.standard.set(0, forKey: Self.evictionDaysKey)
+            }
+            return
+        }
+
+        let isEnabling = sender.state == .on
+
+        // If enabling sync and this provider is not the active provider, warn about switching
+        if isEnabling && cm.libraryProviderType != providerType && cm.libraryProviderType != .local {
+            let currentName = cm.libraryProviderType.displayName
+            let newName = providerType.displayName
+
+            let alert = NSAlert()
+            alert.messageText = String(format: NSLocalizedString("Switch sync to %@?", comment: ""), newName)
+            alert.informativeText = String(format: NSLocalizedString("Enabling sync on %@ will disable sync on %@. Your files on %@ will remain there but will no longer sync automatically.", comment: ""), newName, currentName, currentName)
+            alert.addButton(withTitle: String(format: NSLocalizedString("Switch to %@", comment: ""), newName))
+            alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+            alert.alertStyle = .warning
+
+            let response = alert.runModal()
+            if response != .alertFirstButtonReturn {
+                sender.state = .off
+                return
+            }
+
+            // Switch provider
+            cm.setProvider(providerType)
+        } else if isEnabling && cm.libraryProviderType == .local {
+            // Switching from local to this provider
+            cm.setProvider(providerType)
+        }
+
+        // Update sync scope
+        var scope = cm.syncScope
+        let scopeFlag: OESyncScope
+        switch tag {
+        case 0: scopeFlag = .saves
+        case 1: scopeFlag = .library
+        case 2: scopeFlag = .screenshots
+        default: return
+        }
+
+        if isEnabling {
+            scope.insert(scopeFlag)
+        } else {
+            scope.remove(scopeFlag)
+        }
+        cm.syncScope = scope
+
+        // If all sync options are off, revert to local
+        if scope.isEmpty {
+            cm.setProvider(.local)
+        }
+    }
+
+    // MARK: - Cloud Detail Actions
+
+    @objc private func backToList(_ sender: Any?) {
+        showListView()
+    }
+
+    @objc private func cloudDetailSignOut(_ sender: NSButton) {
+        let providerType = OEStorageProviderType.allCases[sender.tag]
+        let name = providerType.displayName
+
+        let alert = NSAlert()
+        alert.messageText = String(format: NSLocalizedString("Sign out of %@?", comment: ""), name)
+        alert.informativeText = String(format: NSLocalizedString("Your files on %@ will remain there but will no longer sync.", comment: ""), name)
+        alert.addButton(withTitle: NSLocalizedString("Sign Out", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+        alert.alertStyle = .warning
+
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        let cm = OECloudStorageManager.shared
+        if cm.libraryProviderType == providerType {
+            cm.setProvider(.local)
+        }
+
+        Task {
+            await cm.provider(for: providerType)?.signOut()
+            await MainActor.run { self.showListView() }
+        }
+    }
+
+    @objc private func cloudDetailSyncNow(_ sender: NSButton) {
+        sender.isEnabled = false
+        sender.title = NSLocalizedString("Syncing\u{2026}", comment: "")
+        let cm = OECloudStorageManager.shared
+
+        Task {
+            do {
+                try await cm.authenticate()
+                try await cm.syncExistingLibrary()
+            } catch { }
+            await MainActor.run {
+                sender.isEnabled = true
+                sender.title = NSLocalizedString("Sync Now", comment: "")
+            }
+        }
+    }
+
+    @objc private func detailDownloadAll(_ sender: NSButton) {
+        let alert = OEAlert()
+        alert.messageText = NSLocalizedString("Download all games from the cloud?", comment: "")
+        alert.informativeText = NSLocalizedString("This will download all cloud-backed games to your Mac. This may take a while depending on your library size and internet speed.", comment: "")
+        alert.defaultButtonTitle = NSLocalizedString("Download All", comment: "")
+        alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        sender.isEnabled = false
+        sender.title = NSLocalizedString("Downloading\u{2026}", comment: "")
+
+        Task {
+            let result = await OECloudStorageManager.shared.downloadEntireLibrary { completed, total, _ in
+                DispatchQueue.main.async {
+                    sender.title = String(format: NSLocalizedString("Downloading %d of %d\u{2026}", comment: ""), completed, total)
+                }
+            }
+            await MainActor.run {
+                sender.isEnabled = true
+                sender.title = NSLocalizedString("Download All", comment: "")
+                let done = OEAlert()
+                done.messageText = result.failed > 0
+                    ? String(format: NSLocalizedString("Downloaded %d games. %d failed.", comment: ""), result.downloaded, result.failed)
+                    : String(format: NSLocalizedString("Downloaded %d games.", comment: ""), result.downloaded)
+                done.defaultButtonTitle = NSLocalizedString("OK", comment: "")
+                done.runModal()
+            }
+        }
+    }
+
+    @objc private func detailOffloadAll(_ sender: NSButton) {
+        let alert = OEAlert()
+        alert.messageText = NSLocalizedString("Offload all uploaded games?", comment: "")
+        alert.informativeText = NSLocalizedString("This will remove local copies of all games that have been uploaded to the cloud. You can re-download them anytime.", comment: "")
+        alert.defaultButtonTitle = NSLocalizedString("Offload All", comment: "")
+        alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        guard let database = OELibraryDatabase.default else { return }
+        let context = database.mainThreadContext
+
+        sender.isEnabled = false
+        sender.title = NSLocalizedString("Offloading\u{2026}", comment: "")
+
+        Task {
+            var offloadedCount = 0
+            let roms: [OEDBRom] = context.performAndWait {
+                let req = OEDBRom.fetchRequest()
+                req.predicate = NSPredicate(format: "cloudIdentifier != nil")
+                return (try? context.fetch(req) as? [OEDBRom]) ?? []
+            }
+            for rom in roms {
+                guard let url = rom.url, (try? url.checkResourceIsReachable()) == true else { continue }
+                do {
+                    try await OECloudStorageManager.shared.evictROM(localURL: url)
+                    await MainActor.run { rom.setDownloaded(false) }
+                    offloadedCount += 1
+                } catch { }
+            }
+            await MainActor.run {
+                sender.isEnabled = true
+                sender.title = NSLocalizedString("Offload All", comment: "")
+                let done = OEAlert()
+                done.messageText = String(format: NSLocalizedString("Offloaded %d games.", comment: ""), offloadedCount)
+                done.defaultButtonTitle = NSLocalizedString("OK", comment: "")
+                done.runModal()
+            }
+        }
+    }
+
+    // MARK: - RetroAchievements Detail View
+
+    private func buildRetroAchievementsDetailView(service: ServiceItem) {
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 16
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        detailContainer.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: detailContainer.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: detailContainer.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: detailContainer.trailingAnchor, constant: -20),
+        ])
+
+        let backBtn = NSButton(title: NSLocalizedString("\u{2190} Accounts", comment: ""), target: self, action: #selector(backToList(_:)))
+        backBtn.bezelStyle = .accessoryBarAction
+        backBtn.isBordered = false
+        backBtn.font = .systemFont(ofSize: 13)
+        backBtn.contentTintColor = .controlAccentColor
+        stack.addArrangedSubview(backBtn)
+
+        let headerRow = NSStackView()
+        headerRow.orientation = .horizontal
+        headerRow.alignment = .centerY
+        headerRow.spacing = 12
+
+        let icon = NSImageView()
+        icon.image = NSImage(systemSymbolName: "trophy", accessibilityDescription: "RetroAchievements")
+        icon.contentTintColor = .secondaryLabelColor
+        icon.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        headerRow.addArrangedSubview(icon)
+
+        let username = RetroAchievementsCredentialStore.shared.username ?? ""
+        let nameLabel = NSTextField(labelWithString: username)
+        nameLabel.font = .boldSystemFont(ofSize: 15)
+        headerRow.addArrangedSubview(nameLabel)
+
+        let headerSpacer = NSView()
+        headerSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        headerRow.addArrangedSubview(headerSpacer)
+
+        let signOutBtn = NSButton(title: NSLocalizedString("Sign Out", comment: ""), target: self, action: #selector(raDetailSignOut(_:)))
+        signOutBtn.bezelStyle = .rounded
+        headerRow.addArrangedSubview(signOutBtn)
+
+        stack.addArrangedSubview(headerRow)
+        headerRow.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+
+        let desc = NSTextField(wrappingLabelWithString: NSLocalizedString("Track achievements while playing retro games. Achievements are automatically synced when you play.", comment: ""))
+        desc.font = .systemFont(ofSize: 11)
+        desc.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(desc)
+    }
+
+    @objc private func raDetailSignOut(_ sender: NSButton) {
+        RetroAchievementsCredentialStore.shared.clear()
+        showListView()
+    }
+
+    // MARK: - ScreenScraper Detail View
+
+    private func buildScreenScraperDetailView(service: ServiceItem) {
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 16
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        detailContainer.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: detailContainer.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: detailContainer.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: detailContainer.trailingAnchor, constant: -20),
+        ])
+
+        let backBtn = NSButton(title: NSLocalizedString("\u{2190} Accounts", comment: ""), target: self, action: #selector(backToList(_:)))
+        backBtn.bezelStyle = .accessoryBarAction
+        backBtn.isBordered = false
+        backBtn.font = .systemFont(ofSize: 13)
+        backBtn.contentTintColor = .controlAccentColor
+        stack.addArrangedSubview(backBtn)
+
+        let headerRow = NSStackView()
+        headerRow.orientation = .horizontal
+        headerRow.alignment = .centerY
+        headerRow.spacing = 12
+
+        let icon = NSImageView()
+        icon.image = NSImage(systemSymbolName: "photo.artframe", accessibilityDescription: "ScreenScraper")
+        icon.contentTintColor = .secondaryLabelColor
+        icon.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        headerRow.addArrangedSubview(icon)
+
+        let nameLabel = NSTextField(labelWithString: ScreenScraperCredentialStore.shared.username ?? "Screen Scraper.fr")
+        nameLabel.font = .boldSystemFont(ofSize: 15)
+        headerRow.addArrangedSubview(nameLabel)
+
+        let headerSpacer = NSView()
+        headerSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        headerRow.addArrangedSubview(headerSpacer)
+
+        let clearBtn = NSButton(title: NSLocalizedString("Sign Out", comment: ""), target: self, action: #selector(ssDetailClear(_:)))
+        clearBtn.bezelStyle = .rounded
+        headerRow.addArrangedSubview(clearBtn)
+
+        stack.addArrangedSubview(headerRow)
+        headerRow.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+
+        let enableCheckbox = NSButton(checkboxWithTitle: NSLocalizedString("Enable ScreenScraper artwork fallback", comment: ""), target: self, action: #selector(ssDetailEnableChanged(_:)))
+        enableCheckbox.state = UserDefaults.standard.bool(forKey: GameInfoHelper.useScreenScraperKey) ? .on : .off
+        stack.addArrangedSubview(enableCheckbox)
+
+        let desc = NSTextField(wrappingLabelWithString: NSLocalizedString("ScreenScraper.fr provides box art and descriptions for games not found in the local database.", comment: ""))
+        desc.font = .systemFont(ofSize: 11)
+        desc.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(desc)
+    }
+
+    @objc private func ssDetailClear(_ sender: NSButton) {
+        ScreenScraperCredentialStore.shared.clear()
+        UserDefaults.standard.set(false, forKey: GameInfoHelper.useScreenScraperKey)
+        showListView()
+    }
+
+    @objc private func ssDetailEnableChanged(_ sender: NSButton) {
+        UserDefaults.standard.set(sender.state == .on, forKey: GameInfoHelper.useScreenScraperKey)
+    }
+
+    // MARK: - RetroAchievements Sign-In Sheet
+
+    private func showRetroAchievementsSignInSheet() {
+        let sheetVC = NSViewController()
+        sheetVC.view = NSView(frame: NSRect(x: 0, y: 0, width: 360, height: 280))
+
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 12
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        sheetVC.view.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: sheetVC.view.topAnchor, constant: 20),
+            stack.leadingAnchor.constraint(equalTo: sheetVC.view.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: sheetVC.view.trailingAnchor, constant: -20),
+        ])
+
+        let header = NSTextField(labelWithString: NSLocalizedString("Retro Achievements", comment: ""))
+        header.font = .boldSystemFont(ofSize: 14)
+        stack.addArrangedSubview(header)
+
+        let desc = NSTextField(wrappingLabelWithString: NSLocalizedString("Sign in with your RetroAchievements account to track achievements while playing games.", comment: ""))
+        desc.font = .systemFont(ofSize: 11)
+        desc.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(desc)
+
+        let grid = NSGridView(numberOfColumns: 2, rows: 0)
+        grid.column(at: 0).xPlacement = .trailing
+        grid.rowAlignment = .firstBaseline
+        grid.columnSpacing = 8
+        grid.rowSpacing = 10
+
+        let usernameLabel = NSTextField(labelWithString: NSLocalizedString("Username:", comment: ""))
         usernameLabel.alignment = .right
-        usernameField = NSTextField()
-        usernameField.placeholderString = "RetroAchievements username"
-        usernameField.widthAnchor.constraint(equalToConstant: 240).isActive = true
-        gridView.addRow(with: [usernameLabel, usernameField])
+        let usernameField = NSTextField()
+        usernameField.placeholderString = NSLocalizedString("RetroAchievements username", comment: "")
+        usernameField.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        usernameField.identifier = NSUserInterfaceItemIdentifier("raUsername")
+        grid.addRow(with: [usernameLabel, usernameField])
 
-        let passwordLabel = NSTextField(labelWithString: "Password:")
+        let passwordLabel = NSTextField(labelWithString: NSLocalizedString("Password:", comment: ""))
         passwordLabel.alignment = .right
-        passwordField = NSSecureTextField()
-        passwordField.placeholderString = "Password"
-        passwordField.widthAnchor.constraint(equalToConstant: 240).isActive = true
-        gridView.addRow(with: [passwordLabel, passwordField])
+        let passwordField = NSSecureTextField()
+        passwordField.placeholderString = NSLocalizedString("Password", comment: "")
+        passwordField.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        passwordField.identifier = NSUserInterfaceItemIdentifier("raPassword")
+        grid.addRow(with: [passwordLabel, passwordField])
+        stack.addArrangedSubview(grid)
 
-        signInButton = NSButton(title: "Sign In", target: self, action: #selector(signIn(_:)))
-        signInButton.bezelStyle = .rounded
-        signInButton.keyEquivalent = "\r"
-        signInButton.translatesAutoresizingMaskIntoConstraints = false
-        loginContainer.addSubview(signInButton)
-
-        statusLabel = NSTextField(labelWithString: "")
+        let statusLabel = NSTextField(labelWithString: "")
         statusLabel.font = .systemFont(ofSize: 11)
         statusLabel.textColor = .systemRed
         statusLabel.isHidden = true
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginContainer.addSubview(statusLabel)
+        statusLabel.identifier = NSUserInterfaceItemIdentifier("raStatus")
+        stack.addArrangedSubview(statusLabel)
 
-        NSLayoutConstraint.activate([
-            loginContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-            loginContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            loginContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
+        let signInBtn = NSButton(title: NSLocalizedString("Sign In", comment: ""), target: self, action: #selector(raSheetSignIn(_:)))
+        signInBtn.bezelStyle = .rounded
+        signInBtn.keyEquivalent = "\r"
+        stack.addArrangedSubview(signInBtn)
 
-            header.topAnchor.constraint(equalTo: loginContainer.topAnchor),
-            header.leadingAnchor.constraint(equalTo: loginContainer.leadingAnchor),
+        let closeBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(dismissSheet(_:)))
+        closeBtn.bezelStyle = .rounded
+        closeBtn.keyEquivalent = "\u{1b}"
+        stack.addArrangedSubview(closeBtn)
 
-            description.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 6),
-            description.leadingAnchor.constraint(equalTo: loginContainer.leadingAnchor),
-            description.trailingAnchor.constraint(equalTo: loginContainer.trailingAnchor),
-
-            gridView.topAnchor.constraint(equalTo: description.bottomAnchor, constant: 16),
-            gridView.leadingAnchor.constraint(equalTo: loginContainer.leadingAnchor),
-
-            signInButton.topAnchor.constraint(equalTo: gridView.bottomAnchor, constant: 14),
-            signInButton.trailingAnchor.constraint(equalTo: gridView.trailingAnchor),
-
-            statusLabel.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 8),
-            statusLabel.leadingAnchor.constraint(equalTo: loginContainer.leadingAnchor),
-            statusLabel.trailingAnchor.constraint(equalTo: loginContainer.trailingAnchor),
-
-            signInButton.bottomAnchor.constraint(equalTo: loginContainer.bottomAnchor),
-        ])
+        sheetVC.preferredContentSize = NSSize(width: 360, height: 280)
+        view.window?.beginSheet(makeSheetWindow(for: sheetVC))
     }
 
-    // MARK: - Build Logged-In View
+    @objc private func raSheetSignIn(_ sender: NSButton) {
+        guard let win = sender.window,
+              let usernameField = win.contentView?.findView(withIdentifier: "raUsername") as? NSTextField,
+              let passwordField = win.contentView?.findView(withIdentifier: "raPassword") as? NSSecureTextField,
+              let statusLabel = win.contentView?.findView(withIdentifier: "raStatus") as? NSTextField
+        else { return }
 
-    private func buildLoggedInView() {
-        loggedInContainer = NSView()
-        loggedInContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loggedInContainer)
-
-        let header = NSTextField(labelWithString: "RetroAchievements")
-        header.font = .boldSystemFont(ofSize: 13)
-        header.translatesAutoresizingMaskIntoConstraints = false
-        loggedInContainer.addSubview(header)
-
-        let checkmark = NSImageView()
-        checkmark.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: "Signed in")
-        checkmark.contentTintColor = .systemGreen
-        checkmark.translatesAutoresizingMaskIntoConstraints = false
-        loggedInContainer.addSubview(checkmark)
-
-        loggedInLabel = NSTextField(labelWithString: "")
-        loggedInLabel.font = .systemFont(ofSize: 13)
-        loggedInLabel.translatesAutoresizingMaskIntoConstraints = false
-        loggedInContainer.addSubview(loggedInLabel)
-
-        signOutButton = NSButton(title: "Sign Out", target: self, action: #selector(signOut(_:)))
-        signOutButton.bezelStyle = .rounded
-        signOutButton.translatesAutoresizingMaskIntoConstraints = false
-        loggedInContainer.addSubview(signOutButton)
-
-        NSLayoutConstraint.activate([
-            loggedInContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-            loggedInContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            loggedInContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
-
-            header.topAnchor.constraint(equalTo: loggedInContainer.topAnchor),
-            header.leadingAnchor.constraint(equalTo: loggedInContainer.leadingAnchor),
-
-            checkmark.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
-            checkmark.leadingAnchor.constraint(equalTo: loggedInContainer.leadingAnchor),
-            checkmark.widthAnchor.constraint(equalToConstant: 20),
-            checkmark.heightAnchor.constraint(equalToConstant: 20),
-
-            loggedInLabel.centerYAnchor.constraint(equalTo: checkmark.centerYAnchor),
-            loggedInLabel.leadingAnchor.constraint(equalTo: checkmark.trailingAnchor, constant: 6),
-
-            signOutButton.topAnchor.constraint(equalTo: checkmark.bottomAnchor, constant: 14),
-            signOutButton.leadingAnchor.constraint(equalTo: loggedInContainer.leadingAnchor),
-            signOutButton.bottomAnchor.constraint(equalTo: loggedInContainer.bottomAnchor),
-        ])
-    }
-
-    // MARK: - UI State
-
-    private func updateUI() {
-        let store = RetroAchievementsCredentialStore.shared
-        let loggedIn = store.isLoggedIn
-
-        loginContainer.isHidden = loggedIn
-        loggedInContainer.isHidden = !loggedIn
-
-        if loggedIn, let username = store.username {
-            loggedInLabel.stringValue = "Signed in as \(username)"
-        }
-    }
-
-    // MARK: - Actions
-
-    @objc private func signIn(_ sender: NSButton) {
         let username = usernameField.stringValue.trimmingCharacters(in: .whitespaces)
         let password = passwordField.stringValue
-
         guard !username.isEmpty, !password.isEmpty else {
-            showStatus("Please enter your username and password.", isError: true)
+            statusLabel.stringValue = NSLocalizedString("Please enter your username and password.", comment: "")
+            statusLabel.textColor = .systemRed
+            statusLabel.isHidden = false
             return
         }
 
-        signInButton.isEnabled = false
+        sender.isEnabled = false
         statusLabel.isHidden = true
 
-        // Call RetroAchievements login API
-        performLogin(username: username, password: password)
+        performRetroAchievementsLogin(username: username, password: password) { [weak self] success, errorMessage in
+            DispatchQueue.main.async {
+                sender.isEnabled = true
+                if success {
+                    self?.view.window?.endSheet(win)
+                    self?.refreshSections()
+                } else {
+                    statusLabel.stringValue = errorMessage ?? NSLocalizedString("Login failed.", comment: "")
+                    statusLabel.textColor = .systemRed
+                    statusLabel.isHidden = false
+                }
+            }
+        }
     }
 
-    @objc private func signOut(_ sender: NSButton) {
-        RetroAchievementsCredentialStore.shared.clear()
-        passwordField.stringValue = ""
-        usernameField.stringValue = ""
+    // MARK: - ScreenScraper Sign-In Sheet
+
+    private func showScreenScraperSheet() {
+        let sheetVC = NSViewController()
+        sheetVC.view = NSView(frame: NSRect(x: 0, y: 0, width: 360, height: 320))
+
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 12
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        sheetVC.view.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: sheetVC.view.topAnchor, constant: 20),
+            stack.leadingAnchor.constraint(equalTo: sheetVC.view.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: sheetVC.view.trailingAnchor, constant: -20),
+        ])
+
+        let header = NSTextField(labelWithString: NSLocalizedString("Screen Scraper.fr", comment: ""))
+        header.font = .boldSystemFont(ofSize: 14)
+        stack.addArrangedSubview(header)
+
+        let desc = NSTextField(wrappingLabelWithString: NSLocalizedString("ScreenScraper.fr provides box art and descriptions for games not found in the local database. Sign in for higher rate limits.", comment: ""))
+        desc.font = .systemFont(ofSize: 11)
+        desc.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(desc)
+
+        let grid = NSGridView(numberOfColumns: 2, rows: 0)
+        grid.column(at: 0).xPlacement = .trailing
+        grid.rowAlignment = .firstBaseline
+        grid.columnSpacing = 8
+        grid.rowSpacing = 10
+
+        let usernameLabel = NSTextField(labelWithString: NSLocalizedString("Username:", comment: ""))
+        usernameLabel.alignment = .right
+        let usernameField = NSTextField()
+        usernameField.placeholderString = NSLocalizedString("ScreenScraper username", comment: "")
+        usernameField.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        usernameField.identifier = NSUserInterfaceItemIdentifier("ssUsername")
+        grid.addRow(with: [usernameLabel, usernameField])
+
+        let passwordLabel = NSTextField(labelWithString: NSLocalizedString("Password:", comment: ""))
+        passwordLabel.alignment = .right
+        let passwordField = NSSecureTextField()
+        passwordField.placeholderString = NSLocalizedString("Password", comment: "")
+        passwordField.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        passwordField.identifier = NSUserInterfaceItemIdentifier("ssPassword")
+        grid.addRow(with: [passwordLabel, passwordField])
+        stack.addArrangedSubview(grid)
+
+        let statusLabel = NSTextField(labelWithString: "")
+        statusLabel.font = .systemFont(ofSize: 11)
         statusLabel.isHidden = true
-        updateUI()
+        statusLabel.identifier = NSUserInterfaceItemIdentifier("ssStatus")
+        stack.addArrangedSubview(statusLabel)
+
+        let saveBtn = NSButton(title: NSLocalizedString("Save", comment: ""), target: self, action: #selector(ssSheetSave(_:)))
+        saveBtn.bezelStyle = .rounded
+        saveBtn.keyEquivalent = "\r"
+        stack.addArrangedSubview(saveBtn)
+
+        let closeBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(dismissSheet(_:)))
+        closeBtn.bezelStyle = .rounded
+        closeBtn.keyEquivalent = "\u{1b}"
+        stack.addArrangedSubview(closeBtn)
+
+        sheetVC.preferredContentSize = NSSize(width: 360, height: 300)
+        view.window?.beginSheet(makeSheetWindow(for: sheetVC))
     }
 
-    // MARK: - Login API
+    @objc private func ssSheetSave(_ sender: NSButton) {
+        guard let win = sender.window,
+              let usernameField = win.contentView?.findView(withIdentifier: "ssUsername") as? NSTextField,
+              let passwordField = win.contentView?.findView(withIdentifier: "ssPassword") as? NSSecureTextField,
+              let statusLabel = win.contentView?.findView(withIdentifier: "ssStatus") as? NSTextField
+        else { return }
 
-    private func performLogin(username: String, password: String) {
-        let urlString = "https://retroachievements.org/dorequest.php"
-        guard let url = URL(string: urlString) else {
-            showStatus("Invalid URL.", isError: true)
-            signInButton.isEnabled = true
+        let username = usernameField.stringValue.trimmingCharacters(in: .whitespaces)
+        let password = passwordField.stringValue
+        guard !username.isEmpty, !password.isEmpty else {
+            statusLabel.stringValue = NSLocalizedString("Please enter username and password.", comment: "")
+            statusLabel.textColor = .systemRed
+            statusLabel.isHidden = false
             return
         }
 
+        ScreenScraperCredentialStore.shared.save(username: username, password: password)
+        UserDefaults.standard.set(true, forKey: GameInfoHelper.useScreenScraperKey)
+        view.window?.endSheet(win)
+        refreshSections()
+    }
+
+    // MARK: - RetroAchievements Login API
+
+    private func performRetroAchievementsLogin(username: String, password: String, completion: @escaping (Bool, String?) -> Void) {
+        guard let url = URL(string: "https://retroachievements.org/dorequest.php") else {
+            completion(false, NSLocalizedString("Invalid URL.", comment: ""))
+            return
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-        // Build POST body: r=login&u=<username>&p=<password>
         var components = URLComponents()
         components.queryItems = [
             URLQueryItem(name: "r", value: "login"),
@@ -246,74 +1283,175 @@ final class PrefAccountsController: NSViewController {
         ]
         request.httpBody = components.percentEncodedQuery?.data(using: .utf8)
 
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                self?.handleLoginResponse(data: data, response: response, error: error, username: username)
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            if let error { completion(false, error.localizedDescription); return }
+            guard let data else { completion(false, NSLocalizedString("No response.", comment: "")); return }
+            do {
+                guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                    completion(false, NSLocalizedString("Unexpected response.", comment: "")); return
+                }
+                guard json["Success"] as? Bool == true,
+                      let token = json["Token"] as? String, !token.isEmpty else {
+                    completion(false, json["Error"] as? String ?? NSLocalizedString("Login failed.", comment: ""))
+                    return
+                }
+                let correctedUsername = json["User"] as? String ?? username
+                RetroAchievementsCredentialStore.shared.save(username: correctedUsername, token: token)
+                completion(true, nil)
+            } catch {
+                completion(false, NSLocalizedString("Failed to parse response.", comment: ""))
             }
-        }
-        task.resume()
+        }.resume()
     }
 
-    private func handleLoginResponse(data: Data?, response: URLResponse?, error: Error?, username: String) {
-        signInButton.isEnabled = true
+    // MARK: - Sheet Helpers
 
-        if let error = error {
-            showStatus("Connection error: \(error.localizedDescription)", isError: true)
-            return
-        }
-
-        guard let data = data else {
-            showStatus("No response from server.", isError: true)
-            return
-        }
-
-        // Parse JSON response
-        // Expected: {"Success": true, "User": "...", "Token": "...", "Score": ..., ...}
-        do {
-            guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-                showStatus("Unexpected response format.", isError: true)
-                return
-            }
-
-            let success = json["Success"] as? Bool ?? false
-            if !success {
-                let errorMsg = json["Error"] as? String ?? "Login failed. Check your credentials."
-                showStatus(errorMsg, isError: true)
-                return
-            }
-
-            guard let token = json["Token"] as? String, !token.isEmpty else {
-                showStatus("No API token received.", isError: true)
-                return
-            }
-
-            // Use the case-corrected username from the server if available
-            let correctedUsername = json["User"] as? String ?? username
-
-            RetroAchievementsCredentialStore.shared.save(username: correctedUsername, token: token)
-            passwordField.stringValue = ""
-            updateUI()
-        } catch {
-            showStatus("Failed to parse response.", isError: true)
-        }
+    @objc private func dismissSheet(_ sender: NSButton) {
+        guard let sheetWindow = sender.window else { return }
+        view.window?.endSheet(sheetWindow)
     }
 
-    private func showStatus(_ message: String, isError: Bool) {
-        statusLabel.stringValue = message
-        statusLabel.textColor = isError ? .systemRed : .secondaryLabelColor
-        statusLabel.isHidden = false
+    private func makeSheetWindow(for vc: NSViewController) -> NSWindow {
+        let window = NSPanel(contentRect: NSRect(origin: .zero, size: vc.preferredContentSize),
+                             styleMask: [.titled, .closable], backing: .buffered, defer: false)
+        window.contentViewController = vc
+        window.isReleasedWhenClosed = false
+        return window
     }
 }
 
 // MARK: - PreferencePane
 
 extension PrefAccountsController: PreferencePane {
+    var icon: NSImage? { NSImage(systemSymbolName: "person.crop.circle", accessibilityDescription: "Accounts") }
+    var panelTitle: String { "Accounts" }
+    var viewSize: NSSize { NSSize(width: 468, height: 560) }
+}
 
-    var icon: NSImage? {
-        NSImage(systemSymbolName: "person.crop.circle", accessibilityDescription: "Accounts")
+// MARK: - Associated Keys
+
+private enum AssociatedKeys {
+    static var popoverKey: UInt8 = 0
+}
+
+// MARK: - Rounded Group Box
+
+private class RoundedGroupBox: NSView {
+    override init(frame: NSRect) {
+        super.init(frame: frame)
+        wantsLayer = true
+        layer?.cornerRadius = 10
+        layer?.cornerCurve = .continuous
+        layer?.masksToBounds = true
+    }
+    required init?(coder: NSCoder) { fatalError() }
+
+    override func updateLayer() {
+        super.updateLayer()
+        layer?.backgroundColor = NSColor.quaternaryLabelColor.withAlphaComponent(0.1).cgColor
+    }
+    override var isFlipped: Bool { true }
+}
+
+// MARK: - Service Row View
+
+private class ServiceRowView: NSView {
+    private let service: ServiceItem
+    private let action: (ServiceItem) -> Void
+    private var trackingArea: NSTrackingArea?
+
+    init(service: ServiceItem, action: @escaping (ServiceItem) -> Void) {
+        self.service = service
+        self.action = action
+        super.init(frame: .zero)
+        wantsLayer = true
+        setupSubviews()
+    }
+    required init?(coder: NSCoder) { fatalError() }
+
+    private func setupSubviews() {
+        translatesAutoresizingMaskIntoConstraints = false
+
+        let iconView = NSImageView()
+        if let img = NSImage(systemSymbolName: service.iconName, accessibilityDescription: service.name) {
+            iconView.image = img
+        }
+        iconView.contentTintColor = .secondaryLabelColor
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        iconView.setContentHuggingPriority(.required, for: .horizontal)
+        addSubview(iconView)
+
+        let titleLabel = NSTextField(labelWithString: service.name)
+        titleLabel.font = .systemFont(ofSize: 13)
+        titleLabel.lineBreakMode = .byTruncatingTail
+
+        let subtitleLabel = NSTextField(labelWithString: service.subtitle)
+        subtitleLabel.font = .systemFont(ofSize: 11)
+        subtitleLabel.textColor = .secondaryLabelColor
+        subtitleLabel.lineBreakMode = .byTruncatingTail
+
+        let textStack = NSStackView(views: [titleLabel, subtitleLabel])
+        textStack.orientation = .vertical
+        textStack.alignment = .leading
+        textStack.spacing = 2
+        textStack.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(textStack)
+
+        let chevron = NSImageView()
+        chevron.image = NSImage(systemSymbolName: "chevron.right", accessibilityDescription: nil)
+        chevron.contentTintColor = .tertiaryLabelColor
+        chevron.translatesAutoresizingMaskIntoConstraints = false
+        chevron.setContentHuggingPriority(.required, for: .horizontal)
+        addSubview(chevron)
+
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 52),
+            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            iconView.widthAnchor.constraint(equalToConstant: 32),
+            iconView.heightAnchor.constraint(equalToConstant: 32),
+            textStack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
+            textStack.centerYAnchor.constraint(equalTo: centerYAnchor),
+            textStack.trailingAnchor.constraint(lessThanOrEqualTo: chevron.leadingAnchor, constant: -8),
+            chevron.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            chevron.centerYAnchor.constraint(equalTo: centerYAnchor),
+            chevron.widthAnchor.constraint(equalToConstant: 12),
+            chevron.heightAnchor.constraint(equalToConstant: 12),
+        ])
     }
 
-    var panelTitle: String { "Accounts" }
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        if let ta = trackingArea { removeTrackingArea(ta) }
+        trackingArea = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeInKeyWindow], owner: self)
+        addTrackingArea(trackingArea!)
+    }
+    override func mouseEntered(with event: NSEvent) {
+        layer?.backgroundColor = NSColor.quaternaryLabelColor.withAlphaComponent(0.15).cgColor
+    }
+    override func mouseExited(with event: NSEvent) {
+        layer?.backgroundColor = nil
+    }
+    override func mouseUp(with event: NSEvent) {
+        let loc = convert(event.locationInWindow, from: nil)
+        if bounds.contains(loc) { action(service) }
+    }
+}
 
-    var viewSize: NSSize { NSSize(width: 468, height: 300) }
+// MARK: - Flipped View
+
+private class FlippedView: NSView {
+    override var isFlipped: Bool { true }
+}
+
+// MARK: - NSView Helper
+
+private extension NSView {
+    func findView(withIdentifier id: String) -> NSView? {
+        if self.identifier?.rawValue == id { return self }
+        for sub in subviews {
+            if let found = sub.findView(withIdentifier: id) { return found }
+        }
+        return nil
+    }
 }
