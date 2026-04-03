@@ -294,6 +294,8 @@
 		630A19602F7D60B4004E2EDC /* Images 2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630A195F2F7D60B4004E2EDC /* Images 2.xcassets */; };
 		630A19622F7DFC87004E2EDC /* FlashpointArtScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A19612F7DFC87004E2EDC /* FlashpointArtScraper.swift */; };
 		630A19642F7E222C004E2EDC /* OEOAuthLoopbackServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A19632F7E222C004E2EDC /* OEOAuthLoopbackServer.swift */; };
+		630A19662F7EBA06004E2EDC /* ScreenScraperCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A19652F7EBA06004E2EDC /* ScreenScraperCredentialStore.swift */; };
+		630A19682F7EBA31004E2EDC /* ScreenScraperScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A19672F7EBA31004E2EDC /* ScreenScraperScraper.swift */; };
 		630A9A862F68D5D100384730 /* OEStorageProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A852F68D5D100384730 /* OEStorageProviderType.swift */; };
 		630A9A882F68D5E900384730 /* OEStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A872F68D5E900384730 /* OEStorageProvider.swift */; };
 		630A9A8A2F68D61800384730 /* OELocalStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A9A892F68D61800384730 /* OELocalStorageProvider.swift */; };
@@ -328,6 +330,7 @@
 		6376EB162F72E28100F07E39 /* OENaomiSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB152F72E28100F07E39 /* OENaomiSystemResponder.m */; };
 		6376EB1A2F72E29D00F07E39 /* OENaomi2SystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB192F72E29D00F07E39 /* OENaomi2SystemResponder.m */; };
 		6376EB1E2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */; };
+		637889E32F7F40C5001C9E95 /* CloudSyncBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637889E22F7F40C5001C9E95 /* CloudSyncBarViewController.swift */; };
 		63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 87FBC06D1BFC70FE00AECF5A /* Commodore 64.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63C7E2672F7CA1A900E472F1 /* Arcade.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 945E42FB1517F2B500057D08 /* Arcade.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63C7E28C2F7D171500E472F1 /* Flash.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 63C7E2882F7D150200E472F1 /* Flash.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1558,6 +1561,8 @@
 		630A195F2F7D60B4004E2EDC /* Images 2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images 2.xcassets"; sourceTree = "<group>"; };
 		630A19612F7DFC87004E2EDC /* FlashpointArtScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashpointArtScraper.swift; sourceTree = "<group>"; };
 		630A19632F7E222C004E2EDC /* OEOAuthLoopbackServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEOAuthLoopbackServer.swift; sourceTree = "<group>"; };
+		630A19652F7EBA06004E2EDC /* ScreenScraperCredentialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScraperCredentialStore.swift; sourceTree = "<group>"; };
+		630A19672F7EBA31004E2EDC /* ScreenScraperScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScraperScraper.swift; sourceTree = "<group>"; };
 		630A9A852F68D5D100384730 /* OEStorageProviderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEStorageProviderType.swift; sourceTree = "<group>"; };
 		630A9A872F68D5E900384730 /* OEStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEStorageProvider.swift; sourceTree = "<group>"; };
 		630A9A892F68D61800384730 /* OELocalStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OELocalStorageProvider.swift; sourceTree = "<group>"; };
@@ -1588,6 +1593,7 @@
 		6376EB1B2F72E2B100F07E39 /* OEAtomiswaveSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEAtomiswaveSystemResponderClient.h; sourceTree = "<group>"; };
 		6376EB1C2F72E2B200F07E39 /* OEAtomiswaveSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEAtomiswaveSystemResponder.h; sourceTree = "<group>"; };
 		6376EB1D2F72E2B400F07E39 /* OEAtomiswaveSystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OEAtomiswaveSystemResponder.m; sourceTree = "<group>"; };
+		637889E22F7F40C5001C9E95 /* CloudSyncBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSyncBarViewController.swift; sourceTree = "<group>"; };
 		63C7E26C2F7CCF8800E472F1 /* OEFlashSystemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OEFlashSystemController.swift; sourceTree = "<group>"; };
 		63C7E26D2F7CCF8900E472F1 /* OEFlashSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEFlashSystemResponderClient.h; sourceTree = "<group>"; };
 		63C7E26E2F7CCF8A00E472F1 /* OEFlashSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEFlashSystemResponder.h; sourceTree = "<group>"; };
@@ -3233,6 +3239,7 @@
 				630D27E92F738E12005FBEAD /* RetroAchievementsCredentialStore.swift */,
 				630D27EB2F738E64005FBEAD /* PrefAccountsController.swift */,
 				63CF885F2F7776E000F574F3 /* PrefDeveloperController.swift */,
+				630A19652F7EBA06004E2EDC /* ScreenScraperCredentialStore.swift */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -3474,6 +3481,7 @@
 				8306CD0E1BD3AC180025BC6C /* LibraryGamesViewController.swift */,
 				8F5074751C10BCEC00F52B83 /* LibraryGamesViewController.xib */,
 				6376EB0B2F7235D400F07E39 /* SystemInfoPopoverViewController.swift */,
+				637889E22F7F40C5001C9E95 /* CloudSyncBarViewController.swift */,
 			);
 			name = "Games Library";
 			sourceTree = "<group>";
@@ -3551,6 +3559,7 @@
 				8F4AEAC0273594E6005C6246 /* OpenVGDB.swift */,
 				836BC9561853815A00B6AF26 /* SQLiteDatabase.swift */,
 				630A19612F7DFC87004E2EDC /* FlashpointArtScraper.swift */,
+				630A19672F7EBA31004E2EDC /* ScreenScraperScraper.swift */,
 			);
 			name = GameInfo;
 			sourceTree = "<group>";
@@ -6929,10 +6938,12 @@
 				5A2CE89A206EA61B00790F89 /* NSArray+OEAdditions.swift in Sources */,
 				83096F0314E98FC000F7EBC2 /* FileManager+Hashing.swift in Sources */,
 				83955CB5165D939100572B34 /* BlankSlateView.swift in Sources */,
+				637889E32F7F40C5001C9E95 /* CloudSyncBarViewController.swift in Sources */,
 				8FBAE9EB254BD7FA00446C3B /* NSControl+i18n.swift in Sources */,
 				0571307F259A8859001CB13A /* AppMover.swift in Sources */,
 				05888F3A25A0373300286232 /* ShaderParametersViewController.swift in Sources */,
 				630A9A962F68DB0500384730 /* PrefCloudSyncController.swift in Sources */,
+				630A19682F7EBA31004E2EDC /* ScreenScraperScraper.swift in Sources */,
 				630A9A8A2F68D61800384730 /* OELocalStorageProvider.swift in Sources */,
 				8F80217A24F45E4800DC82E3 /* ControlsScroller.swift in Sources */,
 				EFBD5D7814EFE19A00FBD1E0 /* NSColor+OEAdditions.swift in Sources */,
@@ -6984,6 +6995,7 @@
 				8F419A3C25B6C81600A7F0BE /* PrefDebugController.swift in Sources */,
 				5A6C157C1DC96C3700839986 /* OEMediaViewController+TouchBar.swift in Sources */,
 				5AC349331D89EB7B0089B26F /* GameIntegralScalingDelegate.swift in Sources */,
+				630A19662F7EBA06004E2EDC /* ScreenScraperCredentialStore.swift in Sources */,
 				8FE5DC0C270DF56500878DFF /* LibraryMigrator.swift in Sources */,
 				0544B6AA23D16DDC00F63D61 /* SaveStateViewController.swift in Sources */,
 				8FEC1BA024F7D37700DBBF72 /* TextButton.swift in Sources */,

@@ -133,6 +133,7 @@ class AppDelegate: NSObject {
             OELibraryDatabase.databasePathKey: path,
             OECopyToLibraryKey: true,
             OEAutomaticallyGetInfoKey: true,
+            GameInfoHelper.useScreenScraperKey: false,
             OEGameVolumeKey: 0.5,
             "defaultCore.openemu.system.nes": "org.openemu.Nestopia",
             "defaultCore.openemu.system.snes": "org.openemu.SNES9x",
@@ -889,6 +890,8 @@ extension AppDelegate: NSMenuDelegate {
         if OECloudStorageManager.shared.isCloudEnabled {
             Task {
                 try? await OECloudStorageManager.shared.authenticate()
+                // Pull cloud library metadata (creates placeholder entries for cloud-only games)
+                try? await OECloudStorageManager.shared.pullCloudLibrary()
             }
             OEEvictionScheduler.shared.start()
             OEFileMonitor.shared.start()

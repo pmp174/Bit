@@ -32,27 +32,57 @@ import Network
 /// and shuts down. This implements the loopback redirect approach described in
 /// RFC 8252 (OAuth 2.0 for Native Apps).
 final class OEOAuthLoopbackServer {
-    
+
     private var listener: NWListener?
     private var continuation: CheckedContinuation<String, Error>?
     private var assignedPort: UInt16 = 0
-    
+    private let preferredPort: NWEndpoint.Port
+
+    /// Create a loopback server.
+    /// - Parameter port: A fixed port to listen on. Use a consistent port so the
+    ///   redirect URI can be pre-configured in OAuth provider settings (e.g. Dropbox).
+    ///   Pass `.any` to use a random available port.
+    init(port: NWEndpoint.Port = .any) {
+        self.preferredPort = port
+    }
+
     /// The redirect URI to use in OAuth authorization requests.
     /// Only valid after `start()` completes.
+    /// Uses `localhost` instead of `127.0.0.1` because some providers (e.g. Dropbox)
+    /// only allow `http://localhost` for local OAuth redirects.
     var redirectURI: String {
-        return "http://127.0.0.1:\(assignedPort)"
+        return "http://localhost:\(assignedPort)"
     }
-    
-    /// Start the loopback server on a random available port.
+
+    /// Start the loopback server.
+    /// Tries the preferred port first; if it's already in use, falls back to a random port.
     /// - Returns: The port number the server is listening on.
     func start() async throws -> UInt16 {
+        // Try preferred port first, fall back to random if busy
+        let portsToTry: [NWEndpoint.Port] = preferredPort == .any ? [.any] : [preferredPort, .any]
+
+        for port in portsToTry {
+            do {
+                let result = try await startListener(on: port)
+                return result
+            } catch {
+                // If this was the preferred port and it failed, try the next one
+                if port != .any { continue }
+                throw error
+            }
+        }
+
+        throw OEStorageProviderError.authenticationFailed(underlying: nil)
+    }
+
+    private func startListener(on port: NWEndpoint.Port) async throws -> UInt16 {
         return try await withCheckedThrowingContinuation { continuation in
             do {
-                let listener = try NWListener(using: .tcp, on: .any)
+                let listener = try NWListener(using: .tcp, on: port)
                 self.listener = listener
-                
+
                 var portResumed = false
-                
+
                 listener.stateUpdateHandler = { [weak self] state in
                     guard !portResumed else { return }
                     switch state {
@@ -64,6 +94,8 @@ final class OEOAuthLoopbackServer {
                         }
                     case .failed(let error):
                         portResumed = true
+                        self?.listener?.cancel()
+                        self?.listener = nil
                         continuation.resume(throwing: error)
                     case .cancelled:
                         portResumed = true
@@ -72,11 +104,11 @@ final class OEOAuthLoopbackServer {
                         break
                     }
                 }
-                
+
                 listener.newConnectionHandler = { [weak self] connection in
                     self?.handleConnection(connection)
                 }
-                
+
                 listener.start(queue: .main)
             } catch {
                 continuation.resume(throwing: error)

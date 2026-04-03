@@ -438,7 +438,9 @@ static NSDictionary *disabledActions = nil;
             OEDBRom *rom = [(OEDBGame *)item defaultROM];
             if(rom != nil)
             {
-                if([rom isLocallyPinned])
+                if([rom isCloudDownloading])
+                    indicationType = OEGridViewCellIndicationTypeDownloading;
+                else if([rom isLocallyPinned])
                     indicationType = OEGridViewCellIndicationTypePinned;
                 else if(![rom isLocallyAvailable])
                     indicationType = OEGridViewCellIndicationTypeCloudOnly;

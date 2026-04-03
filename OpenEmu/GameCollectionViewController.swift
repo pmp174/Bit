@@ -34,6 +34,23 @@ class GameCollectionViewController: ImageCollectionViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(cloudDownloadDidChange(_:)),
+                                               name: OEDBRom.cloudDownloadDidStartNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(cloudDownloadDidChange(_:)),
+                                               name: OEDBRom.cloudDownloadDidFinishNotification,
+                                               object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func cloudDownloadDidChange(_ notification: Notification) {
+        reloadData()
     }
     
     
@@ -143,17 +160,37 @@ extension GameCollectionViewController: CollectionViewExtendedDelegate, NSMenuIt
                              action: #selector(consolidateFiles(_:)),
                              keyEquivalent: "")
             }
-            
+
+            // Cloud storage items
+            if OECloudStorageManager.shared.isCloudEnabled {
+                let rom = game.defaultROM
+                if rom?.isLocallyAvailable == false && rom?.isCloudDownloading == false {
+                    menu.addItem(.separator())
+                    menu.addItem(withTitle: NSLocalizedString("Download Now", comment: ""),
+                                 action: #selector(downloadFromCloud(_:)),
+                                 keyEquivalent: "")
+                }
+                if rom?.isLocallyAvailable == true {
+                    menu.addItem(.separator())
+                    menu.addItem(withTitle: NSLocalizedString("Keep Downloaded", comment: ""),
+                                 action: #selector(pinSelectedGames(_:)),
+                                 keyEquivalent: "")
+                    menu.addItem(withTitle: NSLocalizedString("Remove Download", comment: ""),
+                                 action: #selector(evictSelectedGames(_:)),
+                                 keyEquivalent: "")
+                }
+            }
+
             menu.addItem(.separator())
-            
+
             item = NSMenuItem(title: NSLocalizedString("Add to Collection", comment: ""),
                               action: nil,
                               keyEquivalent: "")
             item.submenu = collectionsMenu(for: games)
             menu.addItem(item)
-            
+
             menu.addItem(.separator())
-            
+
             menu.addItem(withTitle: NSLocalizedString("Rename Game", comment: ""),
                          action: #selector(CollectionView.beginEditingWithSelectedItem(_:)),
                          keyEquivalent: "")
@@ -197,17 +234,40 @@ extension GameCollectionViewController: CollectionViewExtendedDelegate, NSMenuIt
             menu.addItem(withTitle: NSLocalizedString("Consolidate Files…", comment: ""),
                          action: #selector(consolidateFiles(_:)),
                          keyEquivalent: "")
-            
+
+            // Cloud storage items for multi-selection
+            if OECloudStorageManager.shared.isCloudEnabled {
+                let hasCloudOnly = games.contains { $0.defaultROM?.isLocallyAvailable == false }
+                let hasLocal = games.contains { $0.defaultROM?.isLocallyAvailable == true }
+
+                if hasCloudOnly || hasLocal {
+                    menu.addItem(.separator())
+                }
+                if hasCloudOnly {
+                    menu.addItem(withTitle: NSLocalizedString("Download Now", comment: ""),
+                                 action: #selector(downloadFromCloud(_:)),
+                                 keyEquivalent: "")
+                }
+                if hasLocal {
+                    menu.addItem(withTitle: NSLocalizedString("Keep Downloaded", comment: ""),
+                                 action: #selector(pinSelectedGames(_:)),
+                                 keyEquivalent: "")
+                    menu.addItem(withTitle: NSLocalizedString("Remove Download", comment: ""),
+                                 action: #selector(evictSelectedGames(_:)),
+                                 keyEquivalent: "")
+                }
+            }
+
             menu.addItem(.separator())
-            
+
             item = NSMenuItem(title: NSLocalizedString("Add to Collection", comment: ""),
                               action: nil,
                               keyEquivalent: "")
             item.submenu = collectionsMenu(for: games)
             menu.addItem(item)
-            
+
             menu.addItem(.separator())
-            
+
             var title: String
             if type(of: representedObject as AnyObject) === OEDBCollection.self {
                 title = NSLocalizedString("Remove Games", comment: "")
@@ -530,6 +590,66 @@ extension GameCollectionViewController: CollectionViewExtendedDelegate, NSMenuIt
         }
     }
     
+    // MARK: - Cloud Actions
+
+    @objc func downloadFromCloud(_ sender: Any?) {
+        for game in selectedGames {
+            guard let rom = game.defaultROM,
+                  !rom.isLocallyAvailable,
+                  !rom.isCloudDownloading else { continue }
+            rom.downloadFromCloudInBackground()
+        }
+    }
+
+    @objc func pinSelectedGames(_ sender: Any?) {
+        for game in selectedGames {
+            guard let rom = game.defaultROM, rom.isLocallyAvailable else { continue }
+            rom.isLocallyPinned = true
+        }
+        reloadData()
+    }
+
+    @objc func unpinSelectedGames(_ sender: Any?) {
+        for game in selectedGames {
+            guard let rom = game.defaultROM, rom.isLocallyAvailable else { continue }
+            rom.isLocallyPinned = false
+        }
+        reloadData()
+    }
+
+    @objc func evictSelectedGames(_ sender: Any?) {
+        let games = selectedGames.filter {
+            $0.defaultROM?.isLocallyAvailable == true && $0.defaultROM?.cloudIdentifier != nil
+        }
+        guard !games.isEmpty else { return }
+
+        let multipleGames = games.count > 1
+        let alert = OEAlert()
+        alert.messageText = multipleGames
+            ? NSLocalizedString("Remove downloads for the selected games?", comment: "")
+            : NSLocalizedString("Remove download for this game?", comment: "")
+        alert.informativeText = NSLocalizedString("The game will remain in your cloud storage and can be re-downloaded anytime.", comment: "")
+        alert.defaultButtonTitle = NSLocalizedString("Remove Download", comment: "")
+        alert.alternateButtonTitle = NSLocalizedString("Cancel", comment: "")
+
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        for game in games {
+            guard let rom = game.defaultROM, let url = rom.url else { continue }
+            Task {
+                do {
+                    try await OECloudStorageManager.shared.evictROM(localURL: url)
+                    await MainActor.run {
+                        rom.setDownloaded(false)
+                        self.reloadData()
+                    }
+                } catch {
+                    DLog("Eviction failed: \(error)")
+                }
+            }
+        }
+    }
+
     func collectionView(_ collectionView: CollectionView, doubleClickForItemAt indexPath: IndexPath) {
         let item = dataSource.item(at: indexPath)
         NSApp.sendAction(#selector(LibraryController.startSelectedGame(_:)), to: nil, from: item)

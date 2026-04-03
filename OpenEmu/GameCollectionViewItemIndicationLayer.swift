@@ -44,8 +44,8 @@ final class GameCollectionViewItemIndicationLayer: CALayer {
     private static let cloudBadgeBackgroundColorRef = CGColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.55)
     private static let pinBadgeBackgroundColorRef = CGColor(red: 0.3, green: 0.7, blue: 0.3, alpha: 0.85)
     private static let downloadingBackgroundColorRef = CGColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.65)
-    private static let progressTrackColorRef = CGColor(white: 1.0, alpha: 0.3)
-    private static let progressFillColorRef = CGColor(white: 1.0, alpha: 0.9)
+    private static let progressTrackColorRef = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.3)
+    private static let progressFillColorRef = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.9)
 
     private static let rotationAnimation: CAKeyframeAnimation = {
         let stepCount = 12

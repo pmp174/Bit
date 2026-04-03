@@ -31,7 +31,10 @@ final class GameScannerViewController: NSViewController {
     private static let importGuideURL = URL(string: "https://github.com/OpenEmu/OpenEmu/wiki/User-guide:-Importing")!
 
     @IBOutlet weak var scannerView: NSView!
-    
+
+    /// Additional bottom bar to account for in sidebar layout (e.g., cloud sync bar).
+    weak var additionalBarView: NSView?
+
     @IBOutlet var headlineLabel: NSTextField!
     @IBOutlet var togglePauseButton: GameScannerButton!
     @IBOutlet var progressIndicator: NSProgressIndicator!
@@ -149,8 +152,24 @@ final class GameScannerViewController: NSViewController {
         var gameScannerFrame = scannerView.frame
         gameScannerFrame.origin.y = visibleGameScanner ? 0 : -gameScannerFrame.height
         
+        var contentOriginY = gameScannerFrame.maxY
+        
+        // Account for additional bar (e.g. cloud sync) stacked above game scanner.
+        if let bar = additionalBarView, !bar.isHidden {
+            var barFrame = bar.frame
+            barFrame.origin.y = contentOriginY
+            contentOriginY = barFrame.maxY
+            
+            let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+            if animated && !reduceMotion {
+                bar.animator().frame = barFrame
+            } else {
+                bar.frame = barFrame
+            }
+        }
+        
         var sourceListFrame = sourceListScrollView.frame
-        sourceListFrame.origin.y = gameScannerFrame.maxY
+        sourceListFrame.origin.y = contentOriginY
         sourceListFrame.size.height = sourceListScrollView.superview!.frame.height - sourceListFrame.minY
         
         let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
@@ -279,6 +298,11 @@ final class GameScannerViewController: NSViewController {
     func hideGameScannerView(animated: Bool = true) {
         guard itemsRequiringAttention.isEmpty else { return }
         layOutSidebarViews(withVisibleGameScanner: false, animated: animated)
+    }
+
+    /// Re-runs the sidebar bottom-bar layout using the current visibility state.
+    func refreshSidebarLayout(animated: Bool = true) {
+        layOutSidebarViews(withVisibleGameScanner: isGameScannerVisible, animated: animated)
     }
     
     @objc func toggleGameScannerView() {

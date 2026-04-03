@@ -278,66 +278,115 @@ final class OEGameDocument: NSDocument {
         let isReachable = try? fileURL?.checkResourceIsReachable()
         if isReachable != true {
             fileURL = nil
-            let sourceURL = rom.sourceURL
-            
-            // try to fallback on external source
-            if let sourceURL = sourceURL {
-                let name = (rom.fileName != nil) ? rom.fileName! : (sourceURL.lastPathComponent as NSString).deletingPathExtension
-                
-                if OEAlert.romDownloadRequired(name: name).runModal() == .alertFirstButtonReturn {
-                    
-                    var destination: URL?
-                    var error: NSError?
-                    
-                    let alert = OEAlert()
-                    alert.messageText = String(format: NSLocalizedString("Downloading %@…", comment: "Downloading rom message text"), name)
-                    alert.defaultButtonTitle = NSLocalizedString("Cancel", comment: "")
-                    alert.showsProgressbar = true
-                    alert.progress = -1
-                    
-                    alert.performBlockInModalSession {
-                        let download = Download(url: sourceURL)
-                        download.progressHandler = { progress in
-                            alert.progress = Double(progress)
-                            return true
+
+            // Try to download from cloud storage if available
+            if OECloudStorageManager.shared.isCloudEnabled,
+               let romLocation = rom.location,
+               let romFolderURL = rom.libraryDatabase.romsFolderURL,
+               let localURL = URL(string: romLocation, relativeTo: romFolderURL) {
+
+                let gameName = rom.game?.displayName ?? rom.fileName ?? "game"
+
+                let alert = OEAlert()
+                alert.messageText = String(format: NSLocalizedString("Downloading %@…", comment: "Downloading rom message text"), gameName)
+                alert.defaultButtonTitle = NSLocalizedString("Cancel", comment: "")
+                alert.showsProgressbar = true
+                alert.progress = -1
+
+                var cloudError: Error?
+                alert.performBlockInModalSession {
+                    Task {
+                        do {
+                            try await OECloudStorageManager.shared.downloadROM(
+                                relativePath: romLocation,
+                                toLocalURL: localURL
+                            )
+                            rom.setDownloaded(true)
+                        } catch {
+                            cloudError = error
                         }
-                        
-                        download.completionHandler = { dst, err in
-                            destination = dst
-                            if let err = err {
-                                error = err as NSError
-                            }
+                        DispatchQueue.main.async {
                             alert.close(withResult: .alertSecondButtonReturn)
-                        }
-                        
-                        download.start()
-                    }
-                    
-                    if alert.runModal() == .alertFirstButtonReturn || error?.code == NSUserCancelledError {
-                        // User canceld
-                        let error = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError)
-                        throw error
-                    }
-                    else {
-                        if error != nil || destination == nil {
-                            throw error!
-                        }
-                        
-                        fileURL = destination
-                        // make sure that rom's fileName is set
-                        if rom.fileName == nil {
-                            rom.fileName = destination?.lastPathComponent
-                            rom.save()
                         }
                     }
                 }
-                else {
-                    // User canceld
+
+                let result = alert.runModal()
+                if result == .alertFirstButtonReturn {
+                    // User cancelled
                     let error = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError)
                     throw error
                 }
+
+                if cloudError == nil,
+                   (try? localURL.checkResourceIsReachable()) == true {
+                    fileURL = localURL
+                }
             }
-            
+
+            // If cloud download didn't work, try sourceURL fallback
+            if fileURL == nil {
+                let sourceURL = rom.sourceURL
+
+                // try to fallback on external source
+                if let sourceURL = sourceURL {
+                    let name = (rom.fileName != nil) ? rom.fileName! : (sourceURL.lastPathComponent as NSString).deletingPathExtension
+
+                    if OEAlert.romDownloadRequired(name: name).runModal() == .alertFirstButtonReturn {
+
+                        var destination: URL?
+                        var error: NSError?
+
+                        let alert = OEAlert()
+                        alert.messageText = String(format: NSLocalizedString("Downloading %@…", comment: "Downloading rom message text"), name)
+                        alert.defaultButtonTitle = NSLocalizedString("Cancel", comment: "")
+                        alert.showsProgressbar = true
+                        alert.progress = -1
+
+                        alert.performBlockInModalSession {
+                            let download = Download(url: sourceURL)
+                            download.progressHandler = { progress in
+                                alert.progress = Double(progress)
+                                return true
+                            }
+
+                            download.completionHandler = { dst, err in
+                                destination = dst
+                                if let err = err {
+                                    error = err as NSError
+                                }
+                                alert.close(withResult: .alertSecondButtonReturn)
+                            }
+
+                            download.start()
+                        }
+
+                        if alert.runModal() == .alertFirstButtonReturn || error?.code == NSUserCancelledError {
+                            // User cancelled
+                            let error = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError)
+                            throw error
+                        }
+                        else {
+                            if error != nil || destination == nil {
+                                throw error!
+                            }
+
+                            fileURL = destination
+                            // make sure that rom's fileName is set
+                            if rom.fileName == nil {
+                                rom.fileName = destination?.lastPathComponent
+                                rom.save()
+                            }
+                        }
+                    }
+                    else {
+                        // User cancelled
+                        let error = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError)
+                        throw error
+                    }
+                }
+            }
+
             // check if we have recovered
             let isReachable = try? fileURL?.checkResourceIsReachable()
             if fileURL == nil || isReachable != true {

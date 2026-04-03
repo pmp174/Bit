@@ -123,9 +123,18 @@ protocol OEStorageProvider: AnyObject {
     /// - Parameter remotePath: The remote path to check.
     /// - Returns: `true` if the file exists.
     func fileExists(remotePath: String) async throws -> Bool
-    
+
+    /// Recursively list all files under a remote path.
+    /// - Parameter remotePath: The remote directory path.
+    /// - Returns: Flat array of all files (no directories) found recursively.
+    func listRecursive(remotePath: String) async throws -> [OECloudFileInfo]
+
+    /// Ensure a remote directory exists, creating it if needed.
+    /// Used to pre-create folders before parallel uploads.
+    func ensureRemoteDirectory(path: String) async throws
+
     // MARK: - Eviction Support
-    
+
     /// For providers that support native eviction (like iCloud), evict the local copy.
     /// Default implementation does nothing (most providers handle eviction by deleting the local file).
     func evictLocalCopy(at localURL: URL) async throws
@@ -134,13 +143,31 @@ protocol OEStorageProvider: AnyObject {
 // MARK: - Default Implementations
 
 extension OEStorageProvider {
-    
+
     func handleOAuthRedirect(url: URL) -> Bool {
         return false
     }
-    
+
     func evictLocalCopy(at localURL: URL) async throws {
         // Default: remove the local file. The cloud copy remains.
         try FileManager.default.removeItem(at: localURL)
+    }
+
+    func listRecursive(remotePath: String) async throws -> [OECloudFileInfo] {
+        var allFiles: [OECloudFileInfo] = []
+        let items = try await list(remotePath: remotePath)
+        for item in items {
+            if item.isDirectory {
+                let children = try await listRecursive(remotePath: item.path)
+                allFiles.append(contentsOf: children)
+            } else {
+                allFiles.append(item)
+            }
+        }
+        return allFiles
+    }
+
+    func ensureRemoteDirectory(path: String) async throws {
+        // Default: no-op. Providers that need explicit folder creation override this.
     }
 }

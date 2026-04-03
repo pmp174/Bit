@@ -731,15 +731,13 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
         {
             OEDBRom *rom = [game defaultROM];
             [menu addItem:[NSMenuItem separatorItem]];
-            if([rom isLocallyPinned])
-                [menu addItemWithTitle:NSLocalizedString(@"Remove Download Pin", @"") action:@selector(toggleKeepDownloaded:) keyEquivalent:@""];
-            else
-                [menu addItemWithTitle:NSLocalizedString(@"Keep Downloaded", @"") action:@selector(toggleKeepDownloaded:) keyEquivalent:@""];
-            
             if(![rom isLocallyAvailable])
                 [menu addItemWithTitle:NSLocalizedString(@"Download Now", @"") action:@selector(downloadFromCloud:) keyEquivalent:@""];
-            else if(![rom isLocallyPinned])
-                [menu addItemWithTitle:NSLocalizedString(@"Remove Local Copy", @"") action:@selector(removeLocalCopy:) keyEquivalent:@""];
+            else
+            {
+                [menu addItemWithTitle:NSLocalizedString(@"Keep Downloaded", @"") action:@selector(toggleKeepDownloaded:) keyEquivalent:@""];
+                [menu addItemWithTitle:NSLocalizedString(@"Remove Download", @"") action:@selector(removeLocalCopy:) keyEquivalent:@""];
+            }
         }
 
         //[menu addItemWithTitle:@"Add Save File To Game…" action:@selector(addSaveStateFromFile:) keyEquivalent:@""];
@@ -789,8 +787,7 @@ static NSString * const OEGameTableSortDescriptorsKey = @"OEGameTableSortDescrip
         {
             [menu addItem:[NSMenuItem separatorItem]];
             [menu addItemWithTitle:NSLocalizedString(@"Keep Downloaded", @"") action:@selector(toggleKeepDownloaded:) keyEquivalent:@""];
-            [menu addItemWithTitle:NSLocalizedString(@"Remove Download Pin", @"") action:@selector(unpinSelectedGames:) keyEquivalent:@""];
-            [menu addItemWithTitle:NSLocalizedString(@"Remove Local Copies", @"") action:@selector(removeLocalCopy:) keyEquivalent:@""];
+            [menu addItemWithTitle:NSLocalizedString(@"Remove Download", @"") action:@selector(removeLocalCopy:) keyEquivalent:@""];
         }
 
         [menu addItem:[NSMenuItem separatorItem]];

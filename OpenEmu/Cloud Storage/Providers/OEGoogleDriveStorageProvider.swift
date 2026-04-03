@@ -82,7 +82,8 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
         status = .authenticating
 
         // Start a loopback HTTP server for the OAuth callback (RFC 8252).
-        let server = OEOAuthLoopbackServer()
+        // Use a fixed port so the redirect URI (http://127.0.0.1:17484) is predictable.
+        let server = OEOAuthLoopbackServer(port: 17484)
         loopbackServer = server
         _ = try await server.start()
         let redirectURI = server.redirectURI
@@ -220,7 +221,7 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
         let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let url = URL(string: "https://www.googleapis.com/drive/v3/files?q=\(encodedQuery)&fields=files(id,name,size,modifiedTime,mimeType)")!
         
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url) 
         request.setValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
         
         let (data, _) = try await URLSession.shared.data(for: request)
@@ -255,17 +256,22 @@ final class OEGoogleDriveStorageProvider: OEStorageProvider {
     
     func fileExists(remotePath: String) async throws -> Bool {
         try await ensureValidToken()
-        
+
         let parentPath = (remotePath as NSString).deletingLastPathComponent
         let fileName = (remotePath as NSString).lastPathComponent
-        
+
         guard let parentID = try await resolveFolderPath(parentPath) else {
             return false
         }
-        
+
         return try await findFile(name: fileName, parentID: parentID) != nil
     }
-    
+
+    func ensureRemoteDirectory(path: String) async throws {
+        try await ensureValidToken()
+        _ = try await ensureFolderPath(path)
+    }
+
     // MARK: - OAuth2 Token Management
     
     private func exchangeCodeForTokens(code: String, redirectURI: String) async throws {

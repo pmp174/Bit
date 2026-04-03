@@ -107,6 +107,23 @@ final class OEDBSystem: OEDBItem {
         return context.allObjects(ofType: Self.self, matching: predicate, sortedBy: sortDescriptors)
     }
     
+    /// Returns enabled systems that support the given file extension.
+    /// Used for cloud metadata sync where only the filename is available (no file on disk).
+    class func systemsForFileExtension(_ ext: String, in context: NSManagedObjectContext) -> [OEDBSystem] {
+        let lowered = ext.lowercased()
+        var results: [OEDBSystem] = []
+        for systemPlugin in OESystemPlugin.allPlugins {
+            guard let controller = systemPlugin.controller,
+                  controller.canHandleFileExtension(lowered)
+            else { continue }
+            if let system = system(for: systemPlugin.systemIdentifier, in: context),
+               system.isEnabled {
+                results.append(system)
+            }
+        }
+        return results
+    }
+    
     class func systemsForFile(with fileURL: URL, in context: NSManagedObjectContext) -> [OEDBSystem] {
         if let file = try? OEFile(url: fileURL) {
             return systems(for: file, in: context)

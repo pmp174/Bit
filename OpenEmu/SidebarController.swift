@@ -39,6 +39,7 @@ final class SidebarController: NSViewController {
     
     @IBOutlet var sidebarView: NSOutlineView!
     @IBOutlet var gameScannerViewController: GameScannerViewController!
+    private(set) var cloudSyncBarViewController: CloudSyncBarViewController!
     
     var database: OELibraryDatabase? {
         didSet {
@@ -111,6 +112,30 @@ final class SidebarController: NSViewController {
         updateTintOverlay()
         
         NotificationCenter.default.addObserver(self, selector: #selector(tintColorDidChange), name: .OETintColorDidChange, object: nil)
+        
+        setupCloudSyncBar()
+    }
+    
+    private func setupCloudSyncBar() {
+        let controller = CloudSyncBarViewController()
+        cloudSyncBarViewController = controller
+        addChild(controller)
+        
+        let barView = controller.view
+        let containerView = gameScannerViewController.scannerView.superview!
+        barView.frame = NSRect(x: 0, y: 0,
+                               width: containerView.bounds.width,
+                               height: CloudSyncBarViewController.barHeight)
+        barView.autoresizingMask = [.width]
+        barView.isHidden = true
+        containerView.addSubview(barView)
+        
+        gameScannerViewController.additionalBarView = barView
+        
+        controller.onLayoutNeeded = { [weak self] in
+            guard let self else { return }
+            self.gameScannerViewController.refreshSidebarLayout(animated: true)
+        }
     }
     
     private var tintOverlayView: SidebarTintOverlayView?

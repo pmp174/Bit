@@ -60,7 +60,10 @@ final class CloudSyncBarViewController: NSViewController {
         statusLabel = NSTextField(labelWithString: "")
         statusLabel.font = .monospacedDigitSystemFont(ofSize: 11, weight: .regular)
         statusLabel.textColor = .secondaryLabelColor
-        statusLabel.lineBreakMode = .byTruncatingTail
+        statusLabel.lineBreakMode = .byTruncatingMiddle
+        statusLabel.maximumNumberOfLines = 1
+        statusLabel.cell?.truncatesLastVisibleLine = true
+        statusLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(statusLabel)
 

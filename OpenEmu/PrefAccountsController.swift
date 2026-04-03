@@ -293,7 +293,7 @@ final class PrefAccountsController: NSViewController {
             showDetailView(for: service)
         } else if service.cloudProviderType != nil {
             // Show sign-in popover for cloud services
-            showCloudSignInPopover(for: service)
+            showCloudSignInSheet(for: service)
         } else if service.id == "retroachievements" {
             showRetroAchievementsSignInSheet()
         } else if service.id == "screenscraper" {
@@ -301,110 +301,124 @@ final class PrefAccountsController: NSViewController {
         }
     }
 
-    // MARK: - Cloud Sign-In Popover
+    // MARK: - Cloud Sign-In Sheet
 
-    private func showCloudSignInPopover(for service: ServiceItem) {
+    private func showCloudSignInSheet(for service: ServiceItem) {
         guard let providerType = service.cloudProviderType else { return }
 
-        let popover = NSPopover()
-        popover.behavior = .transient
+        if providerType == .webDAV {
+            showWebDAVSignInSheet()
+        } else {
+            showOAuthSignInSheet(for: service, providerType: providerType)
+        }
+    }
 
-        let vc = NSViewController()
-        vc.view = NSView(frame: NSRect(x: 0, y: 0, width: 280, height: 140))
+    private func showOAuthSignInSheet(for service: ServiceItem, providerType: OEStorageProviderType) {
+        let sheetVC = NSViewController()
+        sheetVC.view = NSView(frame: NSRect(x: 0, y: 0, width: 280, height: 200))
 
         let stack = NSStackView()
         stack.orientation = .vertical
-        stack.alignment = .centerX
+        stack.alignment = .leading
         stack.spacing = 10
         stack.translatesAutoresizingMaskIntoConstraints = false
-        vc.view.addSubview(stack)
+        sheetVC.view.addSubview(stack)
 
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: vc.view.topAnchor, constant: 16),
-            stack.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor, constant: 16),
-            stack.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor, constant: -16),
-            stack.bottomAnchor.constraint(lessThanOrEqualTo: vc.view.bottomAnchor, constant: -16),
+            stack.topAnchor.constraint(equalTo: sheetVC.view.topAnchor, constant: 20),
+            stack.leadingAnchor.constraint(equalTo: sheetVC.view.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: sheetVC.view.trailingAnchor, constant: -20),
         ])
 
-        if providerType == .webDAV {
-            // WebDAV needs URL/user/pass fields
-            buildWebDAVPopoverContent(stack: stack, popover: popover)
-        } else {
-            let boldTitle = NSTextField(labelWithString: String(format: NSLocalizedString("%@ requires completing authentication in your web browser.", comment: ""), service.name))
-            boldTitle.font = .boldSystemFont(ofSize: 12)
-            boldTitle.alignment = .center
-            boldTitle.preferredMaxLayoutWidth = 248
-            boldTitle.lineBreakMode = .byWordWrapping
-            boldTitle.maximumNumberOfLines = 0
-            stack.addArrangedSubview(boldTitle)
+        let header = NSTextField(labelWithString: service.name)
+        header.font = .boldSystemFont(ofSize: 13)
+        stack.addArrangedSubview(header)
 
-            let subtitle = NSTextField(labelWithString: NSLocalizedString("After authentication, setup will continue in Internet Accounts.", comment: ""))
-            subtitle.font = .systemFont(ofSize: 11)
-            subtitle.textColor = .secondaryLabelColor
-            subtitle.alignment = .center
-            subtitle.preferredMaxLayoutWidth = 248
-            subtitle.lineBreakMode = .byWordWrapping
-            subtitle.maximumNumberOfLines = 0
-            stack.addArrangedSubview(subtitle)
+        let desc = NSTextField(wrappingLabelWithString: String(format: NSLocalizedString("%@ requires completing authentication in your web browser.", comment: ""), service.name))
+        desc.font = .systemFont(ofSize: 12)
+        desc.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(desc)
 
-            let openBrowserBtn = NSButton(title: NSLocalizedString("Open Browser", comment: ""), target: nil, action: nil)
-            openBrowserBtn.bezelStyle = .rounded
-            openBrowserBtn.tag = OEStorageProviderType.allCases.firstIndex(of: providerType) ?? 0
-            stack.addArrangedSubview(openBrowserBtn)
+        let subtitle = NSTextField(wrappingLabelWithString: NSLocalizedString("After authentication, setup will continue in Internet Accounts.", comment: ""))
+        subtitle.font = .systemFont(ofSize: 11)
+        subtitle.textColor = .tertiaryLabelColor
+        stack.addArrangedSubview(subtitle)
+        stack.setCustomSpacing(16, after: subtitle)
 
-            // Store popover reference for dismissal
-            objc_setAssociatedObject(openBrowserBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
-            openBrowserBtn.target = self
-            openBrowserBtn.action = #selector(cloudPopoverOpenBrowser(_:))
+        let openBrowserBtn = NSButton(title: NSLocalizedString("Open Browser", comment: ""), target: self, action: #selector(cloudSheetOpenBrowser(_:)))
+        openBrowserBtn.bezelStyle = .rounded
+        openBrowserBtn.controlSize = .large
+        openBrowserBtn.keyEquivalent = "\r"
+        openBrowserBtn.tag = OEStorageProviderType.allCases.firstIndex(of: providerType) ?? 0
+        openBrowserBtn.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(openBrowserBtn)
+        openBrowserBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
 
-            let cancelBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: nil, action: nil)
-            cancelBtn.bezelStyle = .rounded
-            objc_setAssociatedObject(cancelBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
-            cancelBtn.target = self
-            cancelBtn.action = #selector(cloudPopoverCancel(_:))
-            stack.addArrangedSubview(cancelBtn)
-        }
+        let cancelBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(dismissSheet(_:)))
+        cancelBtn.bezelStyle = .rounded
+        cancelBtn.controlSize = .large
+        cancelBtn.keyEquivalent = "\u{1b}"
+        cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(cancelBtn)
+        cancelBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
 
-        popover.contentViewController = vc
-        popover.contentSize = providerType == .webDAV ? NSSize(width: 300, height: 220) : NSSize(width: 280, height: 160)
-
-        // Position the popover relative to the service list
-        popover.show(relativeTo: contentStack.bounds, of: contentStack, preferredEdge: .maxY)
+        sheetVC.preferredContentSize = NSSize(width: 280, height: 210)
+        view.window?.beginSheet(makeSheetWindow(for: sheetVC))
     }
 
-    private func buildWebDAVPopoverContent(stack: NSStackView, popover: NSPopover) {
-        let title = NSTextField(labelWithString: NSLocalizedString("Connect to WebDAV / NAS", comment: ""))
-        title.font = .boldSystemFont(ofSize: 12)
-        title.alignment = .center
-        stack.addArrangedSubview(title)
+    private func showWebDAVSignInSheet() {
+        let sheetVC = NSViewController()
+        sheetVC.view = NSView(frame: NSRect(x: 0, y: 0, width: 360, height: 280))
+
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        sheetVC.view.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: sheetVC.view.topAnchor, constant: 20),
+            stack.leadingAnchor.constraint(equalTo: sheetVC.view.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: sheetVC.view.trailingAnchor, constant: -20),
+        ])
+
+        let header = NSTextField(labelWithString: NSLocalizedString("WebDAV / NAS", comment: ""))
+        header.font = .boldSystemFont(ofSize: 13)
+        stack.addArrangedSubview(header)
+
+        let desc = NSTextField(wrappingLabelWithString: NSLocalizedString("Connect to a WebDAV server or NAS for cloud storage.", comment: ""))
+        desc.font = .systemFont(ofSize: 12)
+        desc.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(desc)
 
         let grid = NSGridView(numberOfColumns: 2, rows: 0)
         grid.column(at: 0).xPlacement = .trailing
         grid.rowAlignment = .firstBaseline
         grid.columnSpacing = 8
-        grid.rowSpacing = 8
+        grid.rowSpacing = 10
 
-        let urlLabel = NSTextField(labelWithString: NSLocalizedString("URL:", comment: ""))
+        let urlLabel = NSTextField(labelWithString: NSLocalizedString("Server URL:", comment: ""))
         urlLabel.alignment = .right
         let urlField = NSTextField()
         urlField.placeholderString = "https://nas.local/webdav"
-        urlField.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        urlField.widthAnchor.constraint(equalToConstant: 200).isActive = true
         urlField.identifier = NSUserInterfaceItemIdentifier("webdavURL")
         grid.addRow(with: [urlLabel, urlField])
 
-        let userLabel = NSTextField(labelWithString: NSLocalizedString("User:", comment: ""))
+        let userLabel = NSTextField(labelWithString: NSLocalizedString("Username:", comment: ""))
         userLabel.alignment = .right
         let userField = NSTextField()
         userField.placeholderString = NSLocalizedString("Username", comment: "")
-        userField.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        userField.widthAnchor.constraint(equalToConstant: 200).isActive = true
         userField.identifier = NSUserInterfaceItemIdentifier("webdavUser")
         grid.addRow(with: [userLabel, userField])
 
-        let passLabel = NSTextField(labelWithString: NSLocalizedString("Pass:", comment: ""))
+        let passLabel = NSTextField(labelWithString: NSLocalizedString("Password:", comment: ""))
         passLabel.alignment = .right
         let passField = NSSecureTextField()
         passField.placeholderString = NSLocalizedString("Password", comment: "")
-        passField.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        passField.widthAnchor.constraint(equalToConstant: 200).isActive = true
         passField.identifier = NSUserInterfaceItemIdentifier("webdavPass")
         grid.addRow(with: [passLabel, passField])
 
@@ -414,30 +428,41 @@ final class PrefAccountsController: NSViewController {
         userField.stringValue = defaults.string(forKey: "OECloudWebDAVUsername") ?? ""
 
         stack.addArrangedSubview(grid)
+        stack.setCustomSpacing(16, after: grid)
 
-        let connectBtn = NSButton(title: NSLocalizedString("Save & Connect", comment: ""), target: self, action: #selector(webdavPopoverConnect(_:)))
+        let connectBtn = NSButton(title: NSLocalizedString("Save & Connect", comment: ""), target: self, action: #selector(webdavSheetConnect(_:)))
         connectBtn.bezelStyle = .rounded
-        objc_setAssociatedObject(connectBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
+        connectBtn.controlSize = .large
+        connectBtn.keyEquivalent = "\r"
+        connectBtn.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(connectBtn)
+        connectBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
 
-        let cancelBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(cloudPopoverCancel(_:)))
+        let cancelBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(dismissSheet(_:)))
         cancelBtn.bezelStyle = .rounded
-        objc_setAssociatedObject(cancelBtn, &AssociatedKeys.popoverKey, popover, .OBJC_ASSOCIATION_RETAIN)
+        cancelBtn.controlSize = .large
+        cancelBtn.keyEquivalent = "\u{1b}"
+        cancelBtn.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(cancelBtn)
+        cancelBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+
+        sheetVC.preferredContentSize = NSSize(width: 360, height: 280)
+        view.window?.beginSheet(makeSheetWindow(for: sheetVC))
     }
 
-    @objc private func cloudPopoverOpenBrowser(_ sender: NSButton) {
+    @objc private func cloudSheetOpenBrowser(_ sender: NSButton) {
         let providerType = OEStorageProviderType.allCases[sender.tag]
         guard let provider = OECloudStorageManager.shared.provider(for: providerType) else { return }
 
-        if let popover = objc_getAssociatedObject(sender, &AssociatedKeys.popoverKey) as? NSPopover {
-            popover.close()
+        if let sheetWindow = sender.window {
+            view.window?.endSheet(sheetWindow)
         }
 
-        sender.isEnabled = false
         Task {
             do {
                 try await provider.authenticate()
+                // Pull cloud library metadata from newly connected provider
+                try? await OECloudStorageManager.shared.pullCloudLibrary()
                 await MainActor.run { self.refreshSections() }
             } catch {
                 await MainActor.run {
@@ -452,17 +477,11 @@ final class PrefAccountsController: NSViewController {
         }
     }
 
-    @objc private func cloudPopoverCancel(_ sender: NSButton) {
-        if let popover = objc_getAssociatedObject(sender, &AssociatedKeys.popoverKey) as? NSPopover {
-            popover.close()
-        }
-    }
-
-    @objc private func webdavPopoverConnect(_ sender: NSButton) {
-        guard let contentView = sender.window?.contentView ?? sender.superview?.superview else { return }
-        guard let urlField = contentView.findView(withIdentifier: "webdavURL") as? NSTextField,
-              let userField = contentView.findView(withIdentifier: "webdavUser") as? NSTextField,
-              let passField = contentView.findView(withIdentifier: "webdavPass") as? NSSecureTextField
+    @objc private func webdavSheetConnect(_ sender: NSButton) {
+        guard let win = sender.window,
+              let urlField = win.contentView?.findView(withIdentifier: "webdavURL") as? NSTextField,
+              let userField = win.contentView?.findView(withIdentifier: "webdavUser") as? NSTextField,
+              let passField = win.contentView?.findView(withIdentifier: "webdavPass") as? NSSecureTextField
         else { return }
 
         let url = urlField.stringValue.trimmingCharacters(in: .whitespaces)
@@ -477,15 +496,14 @@ final class PrefAccountsController: NSViewController {
             UserDefaults.standard.set(pass, forKey: "OECloudWebDAVPassword")
         }
 
-        if let popover = objc_getAssociatedObject(sender, &AssociatedKeys.popoverKey) as? NSPopover {
-            popover.close()
-        }
+        view.window?.endSheet(win)
 
-        sender.isEnabled = false
         Task {
             do {
                 guard let provider = OECloudStorageManager.shared.provider(for: .webDAV) else { return }
                 try await provider.authenticate()
+                // Pull cloud library metadata from newly connected provider
+                try? await OECloudStorageManager.shared.pullCloudLibrary()
                 await MainActor.run { self.refreshSections() }
             } catch {
                 await MainActor.run {
@@ -855,7 +873,8 @@ final class PrefAccountsController: NSViewController {
         Task {
             do {
                 try await cm.authenticate()
-                try await cm.syncExistingLibrary()
+                try await cm.pullCloudLibrary()     // Pull first (new games from other machines)
+                try await cm.syncExistingLibrary()  // Push second (upload local games)
             } catch { }
             await MainActor.run {
                 sender.isEnabled = true
@@ -1123,16 +1142,23 @@ final class PrefAccountsController: NSViewController {
         statusLabel.isHidden = true
         statusLabel.identifier = NSUserInterfaceItemIdentifier("raStatus")
         stack.addArrangedSubview(statusLabel)
+        stack.setCustomSpacing(16, after: statusLabel)
 
         let signInBtn = NSButton(title: NSLocalizedString("Sign In", comment: ""), target: self, action: #selector(raSheetSignIn(_:)))
         signInBtn.bezelStyle = .rounded
+        signInBtn.controlSize = .large
         signInBtn.keyEquivalent = "\r"
+        signInBtn.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(signInBtn)
+        signInBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
 
         let closeBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(dismissSheet(_:)))
         closeBtn.bezelStyle = .rounded
+        closeBtn.controlSize = .large
         closeBtn.keyEquivalent = "\u{1b}"
+        closeBtn.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(closeBtn)
+        closeBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
 
         sheetVC.preferredContentSize = NSSize(width: 360, height: 280)
         view.window?.beginSheet(makeSheetWindow(for: sheetVC))
@@ -1228,18 +1254,25 @@ final class PrefAccountsController: NSViewController {
         statusLabel.isHidden = true
         statusLabel.identifier = NSUserInterfaceItemIdentifier("ssStatus")
         stack.addArrangedSubview(statusLabel)
+        stack.setCustomSpacing(16, after: statusLabel)
 
         let saveBtn = NSButton(title: NSLocalizedString("Save", comment: ""), target: self, action: #selector(ssSheetSave(_:)))
         saveBtn.bezelStyle = .rounded
+        saveBtn.controlSize = .large
         saveBtn.keyEquivalent = "\r"
+        saveBtn.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(saveBtn)
+        saveBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
 
         let closeBtn = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(dismissSheet(_:)))
         closeBtn.bezelStyle = .rounded
+        closeBtn.controlSize = .large
         closeBtn.keyEquivalent = "\u{1b}"
+        closeBtn.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(closeBtn)
+        closeBtn.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
 
-        sheetVC.preferredContentSize = NSSize(width: 360, height: 300)
+        sheetVC.preferredContentSize = NSSize(width: 360, height: 320)
         view.window?.beginSheet(makeSheetWindow(for: sheetVC))
     }
 
@@ -1328,12 +1361,6 @@ extension PrefAccountsController: PreferencePane {
     var viewSize: NSSize { NSSize(width: 468, height: 560) }
 }
 
-// MARK: - Associated Keys
-
-private enum AssociatedKeys {
-    static var popoverKey: UInt8 = 0
-}
-
 // MARK: - Rounded Group Box
 
 private class RoundedGroupBox: NSView {
@@ -1348,7 +1375,14 @@ private class RoundedGroupBox: NSView {
 
     override func updateLayer() {
         super.updateLayer()
-        layer?.backgroundColor = NSColor.quaternaryLabelColor.withAlphaComponent(0.1).cgColor
+        let bgColor = NSColor(name: nil) { appearance in
+            if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                return NSColor(white: 1.0, alpha: 0.06)
+            } else {
+                return NSColor.white
+            }
+        }
+        layer?.backgroundColor = bgColor.cgColor
     }
     override var isFlipped: Bool { true }
 }

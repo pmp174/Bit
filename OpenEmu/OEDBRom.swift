@@ -102,6 +102,15 @@ final class OEDBRom: OEDBItem {
         return try context.fetch(fetchRequest).first as? OEDBRom
     }
     
+    @nonobjc
+    class func rom(withCloudIdentifier cloudId: String, in context: NSManagedObjectContext) throws -> OEDBRom? {
+        let fetchRequest = Self.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        fetchRequest.includesPendingChanges = true
+        fetchRequest.predicate = NSPredicate(format: "cloudIdentifier == %@", cloudId)
+        return try context.fetch(fetchRequest).first as? OEDBRom
+    }
+    
     // MARK: - Accessors
     
     @objc(URL)
@@ -263,12 +272,19 @@ final class OEDBRom: OEDBItem {
     }
     
     // MARK: - Cloud Storage
-    
+
+    static let cloudDownloadDidStartNotification = Notification.Name("OEDBRomCloudDownloadDidStart")
+    static let cloudDownloadDidFinishNotification = Notification.Name("OEDBRomCloudDownloadDidFinish")
+
+    /// Whether a cloud download is currently in progress for this ROM.
+    /// This is a runtime-only flag, not persisted in Core Data.
+    @objc private(set) var isCloudDownloading: Bool = false
+
     /// Whether the ROM file is currently downloaded locally.
     @objc var isLocallyAvailable: Bool {
         return isDownloaded?.boolValue ?? true
     }
-    
+
     /// Whether the user has pinned this ROM to keep it downloaded.
     @objc var isLocallyPinned: Bool {
         get { return isPinned?.boolValue ?? false }
@@ -277,7 +293,7 @@ final class OEDBRom: OEDBItem {
             save()
         }
     }
-    
+
     /// Mark this ROM as downloaded or cloud-only.
     @objc func setDownloaded(_ downloaded: Bool) {
         isDownloaded = NSNumber(value: downloaded)
@@ -286,26 +302,41 @@ final class OEDBRom: OEDBItem {
         }
         save()
     }
-    
+
     /// Ensure the ROM file is available locally, downloading from cloud if needed.
     func ensureLocallyAvailable() async throws {
         guard !isLocallyAvailable, let location = location else { return }
-        
+
         guard let romFolderURL = libraryDatabase.romsFolderURL,
               let localURL = URL(string: location, relativeTo: romFolderURL) else { return }
-        
+
         try await OECloudStorageManager.shared.downloadROM(
             relativePath: location,
             toLocalURL: localURL
         )
-        
+
         setDownloaded(true)
     }
-    
+
     /// ObjC-callable wrapper that triggers an async cloud download on a background thread.
+    /// Posts start/finish notifications so the grid UI can show download progress.
     @objc func downloadFromCloudInBackground() {
+        guard !isCloudDownloading else { return }
+        isCloudDownloading = true
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Self.cloudDownloadDidStartNotification, object: self)
+        }
+
         Task {
-            try? await ensureLocallyAvailable()
+            do {
+                try await ensureLocallyAvailable()
+            } catch {
+                // Download failed — logged by the provider
+            }
+            await MainActor.run {
+                self.isCloudDownloading = false
+                NotificationCenter.default.post(name: Self.cloudDownloadDidFinishNotification, object: self)
+            }
         }
     }
     

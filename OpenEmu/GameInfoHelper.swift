@@ -29,6 +29,9 @@ final class GameInfoHelper {
     
     static let shared = GameInfoHelper()
     
+    /// UserDefaults key: whether to use ScreenScraper as fallback when OpenVGDB has no result.
+    static let useScreenScraperKey = "useScreenScraperFallback"
+    
     var database: OpenVGDB? {
         return OpenVGDB.shared.isAvailable ? OpenVGDB.shared : nil
     }
@@ -201,6 +204,17 @@ final class GameInfoHelper {
                 resultDict.merge(result) { (_, new) in new }
             }
             
+            // If OpenVGDB returned no box image, try ScreenScraper as fallback
+            let hasBoxImage = resultDict["boxImageURL"] != nil
+            let useScreenScraper = UserDefaults.standard.bool(forKey: GameInfoHelper.useScreenScraperKey)
+            
+            if !hasBoxImage && useScreenScraper {
+                if let ssResult = screenScraperGameInfo(gameInfo, existingResult: resultDict) {
+                    // Keep existing OpenVGDB values; only fill in what's missing
+                    resultDict.merge(ssResult) { (existing, _) in existing }
+                }
+            }
+            
             return resultDict
         }
     }
@@ -252,5 +266,25 @@ final class GameInfoHelper {
             "gameTitle": title,
             "boxImageURL": artURL.absoluteString
         ]
+    }
+
+    // MARK: - ScreenScraper
+
+    private func screenScraperGameInfo(_ gameInfo: [String : Any], existingResult: [String : Any]) -> [String : Any]? {
+        let systemIdentifier = gameInfo["systemIdentifier"] as? String ?? ""
+        let md5 = (gameInfo["md5"] as? String) ?? (existingResult["md5"] as? String)
+        let romFileName: String? = {
+            if let url = gameInfo["URL"] as? URL {
+                return url.lastPathComponent
+            }
+            return nil
+        }()
+
+        return ScreenScraperScraper.gameInfo(
+            md5: md5,
+            systemIdentifier: systemIdentifier,
+            romFileName: romFileName,
+            romFileSize: nil
+        )
     }
 }
