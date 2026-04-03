@@ -82,5 +82,21 @@ final class HUDBarButton: HoverButton {
                 NSGraphicsContext.current?.restoreGraphicsState()
             }
         }
+        
+        // Draw controller focus ring
+        if isControllerFocused {
+            NSGraphicsContext.current?.saveGraphicsState()
+            
+            let focusColor = NSColor.white.withAlphaComponent(0.8)
+            focusColor.setStroke()
+            
+            let focusRect = bounds.insetBy(dx: 1, dy: 1)
+            let r: CGFloat = 6
+            let focusPath = NSBezierPath(roundedRect: focusRect, xRadius: r, yRadius: r)
+            focusPath.lineWidth = 2
+            focusPath.stroke()
+            
+            NSGraphicsContext.current?.restoreGraphicsState()
+        }
     }
 }

@@ -478,10 +478,11 @@ __weak DolphinGameCore *_current;
     // just picks up whatever the latest rendered frame is.
     Config::SetCurrent(Config::MAIN_EMULATION_SPEED, 1.0f);
 
-    // Increase audio latency to reduce stuttering. The default (20ms) is too tight
-    // for the OpenEmu ring buffer architecture where audio and video are driven by
-    // separate cadences. A larger buffer absorbs timing jitter.
-    Config::SetCurrent(Config::MAIN_AUDIO_LATENCY, 40);
+    // Increase audio latency to reduce crackling/popping. The default (20ms) is too
+    // tight for the OpenEmu ring buffer architecture where audio and video are driven
+    // by separate cadences. A larger buffer absorbs timing jitter between Dolphin's
+    // audio thread and the AVAudioEngine consumer.
+    Config::SetCurrent(Config::MAIN_AUDIO_LATENCY, 64);
 
     // Enable GPU sync for more stable frame pacing
     Config::SetCurrent(Config::MAIN_SYNC_GPU, true);

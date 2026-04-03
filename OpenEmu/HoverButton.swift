@@ -34,6 +34,12 @@ class HoverButton: NSButton {
         }
     }
     
+    var isControllerFocused: Bool = false {
+        didSet {
+            needsDisplay = true
+        }
+    }
+    
     override func updateTrackingAreas() {
         super.updateTrackingAreas()
         

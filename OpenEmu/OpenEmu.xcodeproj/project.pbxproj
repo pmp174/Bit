@@ -1583,6 +1583,7 @@
 		6324EFD82F706DC2006AC7A8 /* PrefCoresAndSystemFilesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefCoresAndSystemFilesController.swift; sourceTree = "<group>"; };
 		6355D3702F66546B0024B088 /* PrefGeneralController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefGeneralController.swift; sourceTree = "<group>"; };
 		6355D3722F66B9A40024B088 /* Bit App Icon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "Bit App Icon.icon"; sourceTree = "<group>"; };
+		6360626F2F7FFF6C002B726C /* TestingProtocol.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TestingProtocol.md; sourceTree = "<group>"; };
 		6376EB0B2F7235D400F07E39 /* SystemInfoPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfoPopoverViewController.swift; sourceTree = "<group>"; };
 		6376EB132F72E26F00F07E39 /* OENaomiSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OENaomiSystemResponderClient.h; sourceTree = "<group>"; };
 		6376EB142F72E27F00F07E39 /* OENaomiSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OENaomiSystemResponder.h; sourceTree = "<group>"; };
@@ -3157,6 +3158,7 @@
 				8F22764629D301FC001FB9F8 /* Config.xcconfig */,
 				8F22765029D30551001FB9F8 /* CodeSignDefault.xcconfig */,
 				8F22764529D2FDE3001FB9F8 /* CodeSign.xcconfig */,
+				6360626F2F7FFF6C002B726C /* TestingProtocol.md */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

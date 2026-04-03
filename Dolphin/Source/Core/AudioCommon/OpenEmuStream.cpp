@@ -47,8 +47,10 @@ void OpenEmuStream::ClearAudioCallback()
 
 void OpenEmuStream::AudioThread()
 {
-  // Mix ~5 ms of audio at a time (48000 * 0.005 = 240 stereo frames)
-  constexpr std::size_t FRAMES_PER_CHUNK = 240;
+  // Mix ~10 ms of audio at a time (48000 * 0.010 = 480 stereo frames).
+  // Using a larger chunk than the sleep interval ensures the ring buffer
+  // stays ahead of the consumer even when the OS overshoots the sleep.
+  constexpr std::size_t FRAMES_PER_CHUNK = 480;
   s16 buffer[FRAMES_PER_CHUNK * 2]; // stereo interleaved
 
   while (m_running.load())
@@ -65,7 +67,10 @@ void OpenEmuStream::AudioThread()
       }
     }
 
-    // Sleep ~5 ms to roughly match real-time audio rate without busy-waiting
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    // Sleep less than the chunk duration so we consistently produce audio
+    // faster than the consumer drains it. The ring buffer absorbs the
+    // surplus and the shorter sleep reduces the impact of OS scheduling
+    // jitter that causes underruns (crackling/popping).
+    std::this_thread::sleep_for(std::chrono::milliseconds(3));
   }
 }

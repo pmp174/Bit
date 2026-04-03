@@ -236,6 +236,25 @@ final class GameControlsBarView: NSView {
         }
     }
     
+    // MARK: - Controller Focus
+    
+    func setControllerFocusIndex(_ index: Int?) {
+        for (i, control) in orderedControls.enumerated() {
+            if let button = control as? HoverButton {
+                button.isControllerFocused = (i == index)
+            } else if let slider = control as? NSSlider {
+                // Highlight the slider's cell area with a focus ring
+                if i == index {
+                    slider.focusRingType = .exterior
+                    slider.needsDisplay = true
+                } else {
+                    slider.focusRingType = .none
+                    slider.needsDisplay = true
+                }
+            }
+        }
+    }
+    
     // MARK: - Actions
     
     @objc private func stopEmulation(_ sender: Any?) {

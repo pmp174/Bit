@@ -47,6 +47,10 @@ final class ControllerNavigationManager {
     
     private(set) var mode: Mode = .inactive
     
+    /// Set by OEAlert when a dialog is visible, to prevent other handlers from
+    /// processing controller events that the alert should consume.
+    var alertVisible = false
+    
     // MARK: - Monitor References
     
     private var libraryMonitor: AnyObject?
@@ -71,21 +75,47 @@ final class ControllerNavigationManager {
     private var selectPressed = false
     private var wasEmulationPausedBeforeHUD = false
     
-    // MARK: - Button Numbers (common HID mapping)
+    // MARK: - Button Numbers
+    //
+    // Face button layout differs between controllers:
+    //   Xbox/Generic: A(South)=1, B(East)=2
+    //   PlayStation:  Cross(South)=2, Circle(East)=3
+    // Bumpers, Start, and Select are consistent across both.
     
-    private let buttonA: UInt = 1
-    private let buttonB: UInt = 2
+    private let sonyVendorID: UInt = 0x054C
+    
     private let buttonLBumper: UInt = 5
     private let buttonRBumper: UInt = 6
     private let buttonStart: UInt = 9
     private let buttonSelect: UInt = 10
+    
+    private func confirmButton(for handler: OEDeviceHandler?) -> UInt {
+        if handler?.vendorID == sonyVendorID { return 2 }  // Cross
+        return 1  // A
+    }
+    
+    private func cancelButton(for handler: OEDeviceHandler?) -> UInt {
+        if handler?.vendorID == sonyVendorID { return 3 }  // Circle
+        return 2  // B
+    }
     
     // MARK: - Debounce
     
     private var lastNavigationTime: Date = .distantPast
     private let navigationDebounceInterval: TimeInterval = 0.2
     
-    private init() {}
+    // MARK: - Menu Tracking
+    
+    private var menuControllerMonitor: AnyObject?
+    private var menuBeginObserver: NSObjectProtocol?
+    private var menuEndObserver: NSObjectProtocol?
+    private var menuVisible = false
+    private var lastMenuNavTime: Date = .distantPast
+    private let menuNavDebounce: TimeInterval = 0.15
+    
+    private init() {
+        setupMenuObservers()
+    }
     
     // MARK: - Mode Activation
     
@@ -96,8 +126,8 @@ final class ControllerNavigationManager {
         mode = .library
         libraryFocus = .gameGrid
         
-        libraryMonitor = OEDeviceManager.shared.addGlobalEventMonitorHandler { [weak self] _, event in
-            self?.handleLibraryEvent(event)
+        libraryMonitor = OEDeviceManager.shared.addGlobalEventMonitorHandler { [weak self] handler, event in
+            self?.handleLibraryEvent(event, handler: handler)
             return true
         } as AnyObject
     }
@@ -119,8 +149,8 @@ final class ControllerNavigationManager {
         startPressed = false
         selectPressed = false
         
-        inGameMonitor = OEDeviceManager.shared.addUnhandledEventMonitorHandler { [weak self] _, event in
-            self?.handleInGameEvent(event)
+        inGameMonitor = OEDeviceManager.shared.addUnhandledEventMonitorHandler { [weak self] handler, event in
+            self?.handleInGameEvent(event, handler: handler)
         } as AnyObject
     }
     
@@ -155,8 +185,8 @@ final class ControllerNavigationManager {
     
     // MARK: - Library Event Handling
     
-    private func handleLibraryEvent(_ event: OEHIDEvent) {
-        guard mode == .library else { return }
+    private func handleLibraryEvent(_ event: OEHIDEvent, handler: OEDeviceHandler?) {
+        guard mode == .library, !alertVisible, !menuVisible else { return }
         
         switch event.type {
         case .hatSwitch:
@@ -168,7 +198,7 @@ final class ControllerNavigationManager {
             handleLibraryAxis(event)
             markNavigationTime()
         case .button:
-            handleLibraryButton(event)
+            handleLibraryButton(event, handler: handler)
         default:
             break
         }
@@ -222,17 +252,19 @@ final class ControllerNavigationManager {
         }
     }
     
-    private func handleLibraryButton(_ event: OEHIDEvent) {
+    private func handleLibraryButton(_ event: OEHIDEvent, handler: OEDeviceHandler?) {
         guard event.state == .on else { return }
         
         let btn = event.buttonNumber
-        if btn == buttonA {
+        if btn == confirmButton(for: handler) {
             if libraryFocus == .gameGrid {
                 launchSelectedGame()
             }
         } else if btn == buttonLBumper {
+            libraryFocus = .sidebar
             moveSidebarSelection(by: -1)
         } else if btn == buttonRBumper {
+            libraryFocus = .sidebar
             moveSidebarSelection(by: 1)
         }
     }
@@ -314,7 +346,9 @@ final class ControllerNavigationManager {
     
     // MARK: - In-Game Event Handling
     
-    private func handleInGameEvent(_ event: OEHIDEvent) {
+    private func handleInGameEvent(_ event: OEHIDEvent, handler: OEDeviceHandler?) {
+        guard !alertVisible, !menuVisible else { return }
+        
         if event.type == .button {
             // Track Start+Select combo
             if event.buttonNumber == buttonStart {
@@ -334,7 +368,7 @@ final class ControllerNavigationManager {
             }
             
             if mode == .hudBar {
-                handleHUDBarButton(event)
+                handleHUDBarButton(event, handler: handler)
             }
         } else if mode == .hudBar {
             handleHUDBarNavigation(event)
@@ -365,6 +399,7 @@ final class ControllerNavigationManager {
         
         mode = .hudBar
         hudButtonIndex = 0
+        updateHUDFocusHighlight()
     }
     
     private func dismissHUDBar() {
@@ -374,6 +409,7 @@ final class ControllerNavigationManager {
         }
         let controlsBar = gameVC.controlsWindow!
         
+        controlsBar.controlsView?.setControllerFocusIndex(nil)
         controlsBar.resumeAutoHide()
         controlsBar.hide()
         
@@ -409,13 +445,13 @@ final class ControllerNavigationManager {
         }
     }
     
-    private func handleHUDBarButton(_ event: OEHIDEvent) {
+    private func handleHUDBarButton(_ event: OEHIDEvent, handler: OEDeviceHandler?) {
         guard event.state == .on, mode == .hudBar else { return }
         
         let btn = event.buttonNumber
-        if btn == buttonA {
+        if btn == confirmButton(for: handler) {
             activateCurrentHUDButton()
-        } else if btn == buttonB {
+        } else if btn == cancelButton(for: handler) {
             DispatchQueue.main.async {
                 self.dismissHUDBar()
             }
@@ -427,6 +463,14 @@ final class ControllerNavigationManager {
         guard !controls.isEmpty else { return }
         
         hudButtonIndex = max(0, min(hudButtonIndex + offset, controls.count - 1))
+        updateHUDFocusHighlight()
+    }
+    
+    private func updateHUDFocusHighlight() {
+        DispatchQueue.main.async {
+            guard let gameVC = self.findGameViewController() else { return }
+            gameVC.controlsWindow?.controlsView?.setControllerFocusIndex(self.hudButtonIndex)
+        }
     }
     
     private func activateCurrentHUDButton() {
@@ -478,5 +522,123 @@ final class ControllerNavigationManager {
     private func findHUDBarControls() -> [NSView]? {
         guard let gameVC = findGameViewController() else { return nil }
         return gameVC.controlsWindow?.controlsView?.orderedControls
+    }
+    
+    // MARK: - Menu Controller Navigation
+    
+    private func setupMenuObservers() {
+        menuBeginObserver = NotificationCenter.default.addObserver(
+            forName: NSMenu.didBeginTrackingNotification,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            self?.menuDidBeginTracking()
+        }
+        
+        menuEndObserver = NotificationCenter.default.addObserver(
+            forName: NSMenu.didEndTrackingNotification,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            self?.menuDidEndTracking()
+        }
+    }
+    
+    private func menuDidBeginTracking() {
+        menuVisible = true
+        
+        menuControllerMonitor = OEDeviceManager.shared.addGlobalEventMonitorHandler { [weak self] handler, event in
+            guard let self = self else { return false }
+            return self.handleMenuEvent(event, handler: handler)
+        } as AnyObject
+    }
+    
+    private func menuDidEndTracking() {
+        menuVisible = false
+        
+        if let monitor = menuControllerMonitor {
+            OEDeviceManager.shared.removeMonitor(monitor)
+            menuControllerMonitor = nil
+        }
+    }
+    
+    private func handleMenuEvent(_ event: OEHIDEvent, handler: OEDeviceHandler?) -> Bool {
+        switch event.type {
+        case .hatSwitch:
+            let dir = event.hatDirection
+            guard Date().timeIntervalSince(lastMenuNavTime) >= menuNavDebounce else { return true }
+            if dir.contains(.north) {
+                synthesizeKeyPress(0x7E) // Up arrow
+            } else if dir.contains(.south) {
+                synthesizeKeyPress(0x7D) // Down arrow
+            } else if dir.contains(.east) {
+                synthesizeKeyPress(0x7C) // Right arrow (open submenu)
+            } else if dir.contains(.west) {
+                synthesizeKeyPress(0x7B) // Left arrow (close submenu)
+            }
+            lastMenuNavTime = Date()
+            return true
+            
+        case .axis:
+            guard event.direction != .null else { return true }
+            guard Date().timeIntervalSince(lastMenuNavTime) >= menuNavDebounce else { return true }
+            
+            if event.axis == OEHIDEventAxis(rawValue: 0x31) {
+                // Y axis (vertical)
+                synthesizeKeyPress(event.direction == .positive ? 0x7D : 0x7E) // Down / Up
+            } else if event.axis == OEHIDEventAxis(rawValue: 0x30) {
+                // X axis (horizontal)
+                synthesizeKeyPress(event.direction == .positive ? 0x7C : 0x7B) // Right / Left
+            }
+            lastMenuNavTime = Date()
+            return true
+            
+        case .button:
+            guard event.state == .on else { return true }
+            let confirmBtn = confirmButton(for: handler)
+            let cancelBtn = cancelButton(for: handler)
+            
+            if event.buttonNumber == confirmBtn {
+                synthesizeKeyPress(0x24) // Return
+            } else if event.buttonNumber == cancelBtn {
+                synthesizeKeyPress(0x35) // Escape
+            }
+            return true
+            
+        default:
+            return true
+        }
+    }
+    
+    /// Synthesizes a keyboard key press event so that NSMenu responds to
+    /// controller input as if it were arrow keys / Return / Escape.
+    private func synthesizeKeyPress(_ keyCode: UInt16) {
+        // Map key codes to their character representations
+        let chars: String
+        var modifierFlags: NSEvent.ModifierFlags = []
+        switch keyCode {
+        case 0x7E: chars = String(Unicode.Scalar(NSUpArrowFunctionKey)!);    modifierFlags = .function
+        case 0x7D: chars = String(Unicode.Scalar(NSDownArrowFunctionKey)!);  modifierFlags = .function
+        case 0x7B: chars = String(Unicode.Scalar(NSLeftArrowFunctionKey)!);  modifierFlags = .function
+        case 0x7C: chars = String(Unicode.Scalar(NSRightArrowFunctionKey)!); modifierFlags = .function
+        case 0x24: chars = "\r"
+        case 0x35: chars = "\u{1B}"
+        default: return
+        }
+        
+        guard let keyDown = NSEvent.keyEvent(
+            with: .keyDown,
+            location: .zero,
+            modifierFlags: modifierFlags,
+            timestamp: ProcessInfo.processInfo.systemUptime,
+            windowNumber: 0,
+            context: nil,
+            characters: chars,
+            charactersIgnoringModifiers: chars,
+            isARepeat: false,
+            keyCode: keyCode
+        ) else { return }
+        
+        NSApp.postEvent(keyDown, atStart: false)
     }
 }

@@ -23,6 +23,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Cocoa
+import OpenEmuSystem
 
 typealias OEAlertCompletionHandler = (OEAlert, NSApplication.ModalResponse) -> Void
 
@@ -56,6 +57,14 @@ final class OEAlert: NSObject {
     private var blocks = [(() -> Void)]()
     private var sheetMode = false
     private var needsRebuild = true
+    
+    // MARK: - Controller Navigation
+    
+    private var controllerMonitor: AnyObject?
+    private var focusedAlertButtonIndex: Int = 0
+    private var visibleAlertButtons: [NSButton] = []
+    private var lastAlertNavTime: Date = .distantPast
+    private let alertNavDebounce: TimeInterval = 0.2
     
     // MARK: - Controls
     
@@ -196,6 +205,8 @@ final class OEAlert: NSObject {
         
         window.makeKeyAndOrderFront(nil)
         
+        setupControllerNavigation()
+        
         let executeBlocks = {
             DispatchQueue(label: "org.openemu.OEAlert").sync {
                 while !self.blocks.isEmpty {
@@ -216,6 +227,8 @@ final class OEAlert: NSObject {
         executeBlocks()
         
         NSApp.endModalSession(session)
+        
+        teardownControllerNavigation()
         
         window.close()
         
@@ -261,7 +274,11 @@ final class OEAlert: NSObject {
         
         layoutWindowIfNeeded()
         window.animationBehavior = .alertPanel
+        
+        setupControllerNavigation()
+        
         sheetWindow.beginSheet(window) { result in
+            self.teardownControllerNavigation()
             self.result = result
             handler(result)
             self.performCallback()
@@ -847,6 +864,126 @@ final class OEAlert: NSObject {
         childTb.groupTouchBar.templateItems = allItems
         childTb.groupTouchBar.defaultItemIdentifiers = allItemIDs
         window.touchBar = tb
+    }
+    
+    // MARK: - Controller Navigation Support
+    
+    private func setupControllerNavigation() {
+        // Build visible buttons array in visual order (left to right)
+        visibleAlertButtons = []
+        if !otherButtonTitle.isEmpty {
+            visibleAlertButtons.append(otherButton)
+        }
+        if !alternateButtonTitle.isEmpty {
+            visibleAlertButtons.append(alternateButton)
+        }
+        if !defaultButtonTitle.isEmpty {
+            visibleAlertButtons.append(defaultButton)
+        }
+        
+        guard !visibleAlertButtons.isEmpty else { return }
+        
+        // Default focus on the default button (rightmost)
+        focusedAlertButtonIndex = visibleAlertButtons.count - 1
+        updateAlertButtonFocus()
+        
+        // Register controller event monitor
+        controllerMonitor = OEDeviceManager.shared.addGlobalEventMonitorHandler { [weak self] handler, event in
+            guard let self = self else { return false }
+            return self.handleControllerEvent(event, handler: handler)
+        } as AnyObject
+        
+        // Prevent other controller handlers from processing events
+        ControllerNavigationManager.shared.alertVisible = true
+    }
+    
+    private func teardownControllerNavigation() {
+        if let monitor = controllerMonitor {
+            OEDeviceManager.shared.removeMonitor(monitor)
+            controllerMonitor = nil
+        }
+        
+        // Restore original key equivalent to the default button
+        for button in visibleAlertButtons {
+            button.keyEquivalent = ""
+        }
+        if !defaultButtonTitle.isEmpty {
+            defaultButton.keyEquivalent = "\r"
+        }
+        
+        ControllerNavigationManager.shared.alertVisible = false
+        visibleAlertButtons = []
+    }
+    
+    private func handleControllerEvent(_ event: OEHIDEvent, handler: OEDeviceHandler?) -> Bool {
+        guard !visibleAlertButtons.isEmpty else { return false }
+        
+        switch event.type {
+        case .hatSwitch:
+            let dir = event.hatDirection
+            if dir.contains(.east) || dir.contains(.west) {
+                guard Date().timeIntervalSince(lastAlertNavTime) >= alertNavDebounce else { return true }
+                moveAlertFocus(by: dir.contains(.east) ? 1 : -1)
+                lastAlertNavTime = Date()
+            }
+            return true
+            
+        case .axis:
+            if event.axis == OEHIDEventAxis(rawValue: 0x30), event.direction != .null {
+                guard Date().timeIntervalSince(lastAlertNavTime) >= alertNavDebounce else { return true }
+                moveAlertFocus(by: event.direction == .positive ? 1 : -1)
+                lastAlertNavTime = Date()
+            }
+            return true
+            
+        case .button:
+            guard event.state == .on else { return true }
+            let sonyVendorID: UInt = 0x054C
+            let confirmBtn: UInt = handler?.vendorID == sonyVendorID ? 2 : 1
+            let cancelBtn: UInt = handler?.vendorID == sonyVendorID ? 3 : 2
+            
+            if event.buttonNumber == confirmBtn {
+                activateFocusedAlertButton()
+            } else if event.buttonNumber == cancelBtn {
+                cancelAlert()
+            }
+            return true
+            
+        default:
+            return true
+        }
+    }
+    
+    private func moveAlertFocus(by offset: Int) {
+        let newIndex = focusedAlertButtonIndex + offset
+        guard newIndex >= 0, newIndex < visibleAlertButtons.count else { return }
+        focusedAlertButtonIndex = newIndex
+        updateAlertButtonFocus()
+    }
+    
+    private func updateAlertButtonFocus() {
+        guard focusedAlertButtonIndex < visibleAlertButtons.count else { return }
+        
+        // Move key equivalent to focused button for blue highlight appearance
+        for (i, button) in visibleAlertButtons.enumerated() {
+            button.keyEquivalent = (i == focusedAlertButtonIndex) ? "\r" : ""
+        }
+        
+        // Set first responder for focus ring
+        window.makeFirstResponder(visibleAlertButtons[focusedAlertButtonIndex])
+    }
+    
+    private func activateFocusedAlertButton() {
+        guard focusedAlertButtonIndex < visibleAlertButtons.count else { return }
+        visibleAlertButtons[focusedAlertButtonIndex].performClick(nil)
+    }
+    
+    private func cancelAlert() {
+        if !alternateButtonTitle.isEmpty {
+            alternateButton.performClick(nil)
+        } else if !defaultButtonTitle.isEmpty {
+            defaultButton.performClick(nil)
+        }
     }
 }
 
