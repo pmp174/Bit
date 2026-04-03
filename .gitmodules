@@ -58,9 +58,6 @@
 [submodule "PokeMini"]
 	path = PokeMini
 	url = ../../OpenEmu/PokeMini-Core
-[submodule "Reicast"]
-	path = Reicast
-	url = ../../OpenEmu/Reicast-Core.git
 [submodule "mGBA"]
 	path = mGBA
 	url = ../../OpenEmu/mGBA-Core.git
