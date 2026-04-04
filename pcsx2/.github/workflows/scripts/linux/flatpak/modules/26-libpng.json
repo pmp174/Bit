@@ -1,0 +1,46 @@
+{
+  "name": "libpng",
+  "buildsystem": "cmake-ninja",
+  "builddir": true,
+  "config-opts": [
+    "-DPNG_TESTS=OFF",
+    "-DPNG_STATIC=OFF",
+    "-DPNG_SHARED=ON",
+    "-DPNG_TOOLS=OFF"
+  ],
+  "build-options": {
+    "strip": true
+  },
+  "sources": [
+    {
+      "type": "archive",
+      "url": "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.55/libpng-1.6.55.tar.xz",
+      "sha256": "d925722864837ad5ae2a82070d4b2e0603dc72af44bd457c3962298258b8e82d"
+    },
+    {
+      "type": "file",
+      "url": "https://download.sourceforge.net/libpng-apng/libpng-1.6.55-apng.patch.gz",
+      "dest-filename": "libpng-1.6.55-apng.patch.gz",
+      "sha256": "017c06f75ffed25f6cda9b5369ec6da0ac35a6616adf7abe4222516a0237f37a"
+    },
+    {
+      "type": "shell",
+      "commands":
+      [
+          "gunzip -f libpng-1.6.55-apng.patch.gz",
+          "patch -p1  < \"libpng-1.6.55-apng.patch\""
+      ]
+    }
+  ],
+  "cleanup": [
+    "/bin",
+    "/include",
+    "/lib/*.a",
+    "/lib/*.la",
+    "/lib/cmake",
+    "/lib/libpng",
+    "/lib/pkgconfig",
+    "/share/man"
+  ]
+}
+

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>PCSX2</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.openemu.PCSX2</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>PCSX2</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>NSPrincipalClass</key>
+	<string>OEGameCoreController</string>
+	<key>OEGameCoreClass</key>
+	<string>PCSX2GameCore</string>
+	<key>OEGameCoreOptions</key>
+	<dict>
+		<key>openemu.system.ps2</key>
+		<dict>
+			<key>OEGameCoreHasGlitches</key>
+			<true/>
+			<key>OEGameCoreRequiresFiles</key>
+			<true/>
+			<key>OERequiredFiles</key>
+			<array>
+				<dict>
+					<key>Name</key>
+					<string>scph39001.bin</string>
+					<key>Description</key>
+					<string>PS2 BIOS (USA v1.60) - SCPH-39001</string>
+					<key>MD5</key>
+					<string>d5ce2c7d119f563ce04bc04dbc3a323e</string>
+					<key>Size</key>
+					<integer>4194304</integer>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>scph70012.bin</string>
+					<key>Description</key>
+					<string>PS2 BIOS (USA v2.00) - SCPH-70012</string>
+					<key>MD5</key>
+					<string>d333558cc14561c1fdc334c75d5f37b7</string>
+					<key>Size</key>
+					<integer>4194304</integer>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>scph77001.bin</string>
+					<key>Description</key>
+					<string>PS2 BIOS (USA v2.20) - SCPH-77001</string>
+					<key>MD5</key>
+					<string>cb801b7920a7d536ba07b6534d2433ca</string>
+					<key>Size</key>
+					<integer>4194304</integer>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>scph30001.bin</string>
+					<key>Description</key>
+					<string>PS2 BIOS (USA v1.00) - SCPH-30001</string>
+					<key>MD5</key>
+					<string>a20c97c02210f16678ca3010127caf36</string>
+					<key>Size</key>
+					<integer>4194304</integer>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>scph10000.bin</string>
+					<key>Description</key>
+					<string>PS2 BIOS (Japan v1.00) - SCPH-10000</string>
+					<key>MD5</key>
+					<string>acf4730ceb38ac9d8c7d8e21f2614600</string>
+					<key>Size</key>
+					<integer>4194304</integer>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>scph30004.bin</string>
+					<key>Description</key>
+					<string>PS2 BIOS (Europe v1.20) - SCPH-30004</string>
+					<key>MD5</key>
+					<string>b7fa11e87d51752a98b38e3e691cbf17</string>
+					<key>Size</key>
+					<integer>4194304</integer>
+					<key>Optional</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>OEGameCorePlayerCount</key>
+	<string>2</string>
+	<key>OEProjectURL</key>
+	<string>https://github.com/PCSX2/pcsx2</string>
+	<key>OESystemIdentifiers</key>
+	<array>
+		<string>openemu.system.ps2</string>
+	</array>
+</dict>
+</plist>

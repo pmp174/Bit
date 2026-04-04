@@ -1,0 +1,3 @@
+/Users/darbymartinez/Downloads/OpenEmuARM64-metal4-shaders-core-updates-master/build-openemu/CMakeFiles/PCSX2.dir
+/Users/darbymartinez/Downloads/OpenEmuARM64-metal4-shaders-core-updates-master/build-openemu/CMakeFiles/ALL_BUILD.dir
+/Users/darbymartinez/Downloads/OpenEmuARM64-metal4-shaders-core-updates-master/build-openemu/CMakeFiles/ZERO_CHECK.dir

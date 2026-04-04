@@ -310,6 +310,7 @@
 		630D27EA2F738E12005FBEAD /* RetroAchievementsCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27E92F738E12005FBEAD /* RetroAchievementsCredentialStore.swift */; };
 		630D27EC2F738E64005FBEAD /* PrefAccountsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27EB2F738E64005FBEAD /* PrefAccountsController.swift */; };
 		630D27EE2F738EB2005FBEAD /* AchievementNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27ED2F738EB2005FBEAD /* AchievementNotificationView.swift */; };
+		63139BA92F809EC500A3E773 /* PlayStation 2.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 3DB744BA1BD8BA9E00C23E74 /* PlayStation 2.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63195AAB2F70627100E25883 /* ControllerNavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63195AAA2F70627100E25883 /* ControllerNavigationManager.swift */; };
 		6324EFD52F706CFC006AC7A8 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6324EFD42F706CFC006AC7A8 /* SettingsWindowController.swift */; };
 		6324EFD72F706D23006AC7A8 /* SettingsSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6324EFD62F706D23006AC7A8 /* SettingsSidebarViewController.swift */; };
@@ -1277,6 +1278,7 @@
 			dstPath = Systems;
 			dstSubfolderSpec = 13;
 			files = (
+				63139BA92F809EC500A3E773 /* PlayStation 2.oesystemplugin in Copy System Plugins to App Plugins */,
 				63C7E28C2F7D171500E472F1 /* Flash.oesystemplugin in Copy System Plugins to App Plugins */,
 				63C7E2672F7CA1A900E472F1 /* Arcade.oesystemplugin in Copy System Plugins to App Plugins */,
 				63C569622F6D85B30056DA64 /* Commodore 64.oesystemplugin in Copy System Plugins to App Plugins */,
