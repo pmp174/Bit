@@ -267,8 +267,15 @@ static __fi void _doBranch_shared(u32 tar)
 static void doBranch( u32 target )
 {
 	_doBranch_shared( target );
-	intUpdateCPUCycles();
-	intEventTest();
+
+	// When called from the recompiler (via interpreter fallback like REC_SYS(JR)),
+	// skip cycle update and event test — the JIT's iBranchTest handles those.
+	// intEventTest could also fastjmp_jmp with a zeroed intJmpBuf, crashing.
+	if( Cpu == &intCpu )
+	{
+		intUpdateCPUCycles();
+		intEventTest();
+	}
 }
 
 void intDoBranch(u32 target)
@@ -332,7 +339,7 @@ void BEQ()  // Branch if Rs == Rt
 {
 	if (cpuRegs.GPR.r[_Rs_].SD[0] == cpuRegs.GPR.r[_Rt_].SD[0])
 		doBranch(_BranchTarget_);
-	else
+	else if (Cpu == &intCpu)
 		intEventTest();
 }
 
@@ -340,7 +347,7 @@ void BNE()  // Branch if Rs != Rt
 {
 	if (cpuRegs.GPR.r[_Rs_].SD[0] != cpuRegs.GPR.r[_Rt_].SD[0])
 		doBranch(_BranchTarget_);
-	else
+	else if (Cpu == &intCpu)
 		intEventTest();
 }
 
@@ -414,7 +421,8 @@ void BEQL()    // Branch if Rs == Rt
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 
@@ -427,7 +435,8 @@ void BNEL()     // Branch if Rs != Rt
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 
@@ -440,7 +449,8 @@ void BLEZL()    // Branch if Rs <= 0
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 
@@ -453,7 +463,8 @@ void BGTZL()     // Branch if Rs >  0
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 
@@ -466,7 +477,8 @@ void BLTZL()     // Branch if Rs <  0
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 
@@ -479,7 +491,8 @@ void BGEZL()     // Branch if Rs >= 0
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 
@@ -493,7 +506,8 @@ void BLTZALL()   // Branch if Rs <  0 and link
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 
@@ -507,7 +521,8 @@ void BGEZALL()   // Branch if Rs >= 0 and link
 	else
 	{
 		cpuRegs.pc +=4;
-		intEventTest();
+		if (Cpu == &intCpu)
+			intEventTest();
 	}
 }
 

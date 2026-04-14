@@ -53,6 +53,13 @@ endif()
 # bzip2
 #============================================================================
 
+# Generate bz_version.h required by newer bzip2 sources
+set(BZ_VERSION "1.1.0")
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/bzip2/bz_version.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/bz_version.h
+)
+
 set(BZIP2_PUBLIC_HDRS
   bzip2/bzlib.h
 )
@@ -76,4 +83,5 @@ dolphin_disable_warnings(bzip2)
 target_include_directories(bzip2
 PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/bzip2
+  ${CMAKE_CURRENT_BINARY_DIR}
 )

@@ -18,6 +18,8 @@
 		<string>OEControllerMicrosoftXbox360ButtonX</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerMicrosoftXbox360ButtonBack</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerMicrosoftXbox360ButtonStart</string>
 	</dict>
 	<key>OEControllerSonyPS3Sixaxis</key>
 	<dict>
@@ -35,6 +37,8 @@
 		<string>OEControllerSonyPS3SixaxisButtonSquare</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerSonyPS3SixaxisButtonSelect</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerSonyPS3SixaxisButtonStart</string>
 	</dict>
 	<key>OEControllerLogitechDualAction</key>
 	<dict>
@@ -167,6 +171,8 @@
 		<string>OEControllerWiimoteButton1</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerWiimoteButtonMinus</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerWiimoteButtonPlus</string>
 	</dict>
 	<key>OEControllerNintendoWiiUProController</key>
 	<dict>
@@ -184,6 +190,8 @@
 		<string>OEControllerNintendoWiiUProControllerButtonY</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerNintendoWiiUProControllerButtonMinus</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerNintendoWiiUProControllerButtonPlus</string>
 	</dict>
 	<key>OEControllerSonyPS4Dualshock4</key>
 	<dict>
@@ -195,6 +203,8 @@
 		<string>OEControllerSonyPS4Dualshock4ButtonSquare</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerSonyPS4Dualshock4ButtonShare</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerSonyPS4Dualshock4ButtonOptions</string>
 	</dict>
 	<key>OEControllerGCExtendedGamepadProfile</key>
 	<dict>
@@ -212,6 +222,8 @@
 		<string>OEControllerGCExtendedGamepadProfileButtonX</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerGCExtendedGamepadProfileButtonL1</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerGCExtendedGamepadProfileButtonR1</string>
 	</dict>
 	<key>OEControllerNintendoSwitchProController</key>
 	<dict>
@@ -223,6 +235,8 @@
 		<string>OEControllerNintendoSwitchProControllerButtonY</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerNintendoSwitchProControllerButtonMinus</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerNintendoSwitchProControllerButtonPlus</string>
 	</dict>
 	<key>OEControllerMicrosoftXboxOne</key>
 	<dict>
@@ -234,6 +248,8 @@
 		<string>OEControllerMicrosoftXboxOneButtonX</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerMicrosoftXboxOneButtonView</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerMicrosoftXboxOneButtonMenu</string>
 	</dict>
 	<key>OEControllerRetroBitSegaBluetooth8ButtonArcadePad</key>
 	<dict>
@@ -262,6 +278,8 @@
 		<string>OEControllerSonyPS5DualSenseButtonSquare</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerSonyPS5DualSenseButtonCreate</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerSonyPS5DualSenseButtonOptions</string>
 	</dict>
 	<key>OEControllerMicrosoftXboxOneSBLE</key>
 	<dict>
@@ -273,6 +291,8 @@
 		<string>OEControllerMicrosoftXboxOneSBLEButtonX</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerMicrosoftXboxOneSBLEButtonView</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerMicrosoftXboxOneSBLEButtonMenu</string>
 	</dict>
 	<key>OEControllerMicrosoftXboxSeriesXS</key>
 	<dict>
@@ -284,6 +304,8 @@
 		<string>OEControllerMicrosoftXboxSeriesXSButtonX</string>
 		<key>OEC64SwapJoysticks</key>
 		<string>OEControllerMicrosoftXboxSeriesXSButtonView</string>
+		<key>OEC64LoadDisk</key>
+		<string>OEControllerMicrosoftXboxSeriesXSButtonMenu</string>
 	</dict>
 </dict>
 </plist>

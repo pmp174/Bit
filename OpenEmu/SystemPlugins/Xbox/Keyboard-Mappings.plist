@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OEXboxButtonDpadUp</key>
+	<integer>82</integer>
+	<key>OEXboxButtonDpadDown</key>
+	<integer>81</integer>
+	<key>OEXboxButtonDpadLeft</key>
+	<integer>80</integer>
+	<key>OEXboxButtonDpadRight</key>
+	<integer>79</integer>
+	<key>OEXboxButtonA</key>
+	<integer>22</integer>
+	<key>OEXboxButtonB</key>
+	<integer>29</integer>
+	<key>OEXboxButtonX</key>
+	<integer>4</integer>
+	<key>OEXboxButtonY</key>
+	<integer>27</integer>
+	<key>OEXboxButtonWhite</key>
+	<integer>20</integer>
+	<key>OEXboxButtonBlack</key>
+	<integer>7</integer>
+	<key>OEXboxLeftTrigger</key>
+	<integer>26</integer>
+	<key>OEXboxRightTrigger</key>
+	<integer>9</integer>
+	<key>OEXboxButtonStart</key>
+	<integer>40</integer>
+	<key>OEXboxButtonBack</key>
+	<integer>229</integer>
+	<key>OEXboxButtonLeftStick</key>
+	<integer>8</integer>
+	<key>OEXboxButtonRightStick</key>
+	<integer>10</integer>
+</dict>
+</plist>

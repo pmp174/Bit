@@ -140,6 +140,12 @@ static const struct { unsigned short hidUsage; C64Key c64Key; } kKeyMap[] = {
     { 0x35, C64Key::leftArrow },  // kHIDUsage_KeyboardGraveAccentAndTilde -> left arrow
     { 0x31, C64Key::at },         // kHIDUsage_KeyboardBackslash -> @
 
+    // C64-specific keys mapped to numpad and other available keys
+    { 0x55, C64Key::asterisk },   // kHIDUsage_KeypadAsterisk -> * (C64 dedicated key)
+    { 0x67, C64Key::equal },      // kHIDUsage_KeypadEqualSign -> =
+    { 0x56, C64Key::pound },      // kHIDUsage_KeypadHyphen -> £ (C64 pound sign)
+    { 0x57, C64Key::upArrow },    // kHIDUsage_KeypadPlus -> ↑ (C64 up-arrow character)
+
     // Home
     { 0x4A, C64Key::home },       // kHIDUsage_KeyboardHome
     { 0x4D, C64Key::home },       // kHIDUsage_KeyboardEnd -> Home
@@ -184,6 +190,7 @@ static void emuCallback(const void *listener, Message msg)
     BOOL _showBorders;
     BOOL _warpMode;
     BOOL _sid8580;
+    BOOL _usingOriginalROMs;
     NSMutableArray<NSMutableDictionary<NSString *, id> *> *_availableDisplayModes;
 
     // Frame counter for diagnostics
@@ -205,6 +212,7 @@ static void emuCallback(const void *listener, Message msg)
         _joystickSwapped = NO;
         _warpMode = NO;
         _sid8580 = NO;
+        _usingOriginalROMs = NO;
         _pendingAutoType = nil;
         _autoTypeDelay = 0;
         _samplesPerFrame = VC64_SAMPLES_PER_FRAME_PAL;
@@ -241,16 +249,55 @@ static void emuCallback(const void *listener, Message msg)
     // (Matches the reference Headless.cpp initialization order)
     // =========================================================================
 
-    // Install open-source ROMs (MEGA65 OpenROMs) so we don't require BIOS files
-    // This is just a memcpy into emulator memory — safe before launch()
-    NSLog(@"[VirtualC64] loadFileAtPath: installing OpenROMs (pre-launch)...");
-    try {
-        _emu.c64.installOpenRoms();
-        NSLog(@"[VirtualC64] loadFileAtPath: OpenROMs installed OK");
-    } catch (std::exception &e) {
-        NSLog(@"[VirtualC64] Warning: Could not install OpenROMs: %s", e.what());
-    } catch (...) {
-        NSLog(@"[VirtualC64] Warning: Could not install OpenROMs (unknown error)");
+    // Try to load original C64 ROMs from the BIOS directory first.
+    // Expected filenames: kernal.rom, basic.rom, chargen.rom, 1541.rom
+    // Falls back to open-source ROMs (MEGA65 OpenROMs) if not found.
+    NSString *biosPath = [self biosDirectoryPath];
+    _usingOriginalROMs = NO;
+
+    if (biosPath) {
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSDictionary *romFiles = @{
+            @"kernal.rom":  @"KERNAL",
+            @"basic.rom":   @"BASIC",
+            @"chargen.rom": @"CHAR",
+            @"1541.rom":    @"VC1541",
+        };
+
+        int romsLoaded = 0;
+        for (NSString *filename in romFiles) {
+            NSString *romPath = [biosPath stringByAppendingPathComponent:filename];
+            if ([fm fileExistsAtPath:romPath]) {
+                try {
+                    std::filesystem::path fsRomPath(romPath.fileSystemRepresentation);
+                    _emu.c64.loadRom(fsRomPath);
+                    romsLoaded++;
+                    NSLog(@"[VirtualC64] Loaded original ROM: %@", filename);
+                } catch (std::exception &e) {
+                    NSLog(@"[VirtualC64] Warning: Could not load ROM %@: %s", filename, e.what());
+                } catch (...) {
+                    NSLog(@"[VirtualC64] Warning: Could not load ROM %@ (unknown error)", filename);
+                }
+            }
+        }
+
+        // Need at least kernal + basic + chargen (3 ROMs) for original ROM mode
+        if (romsLoaded >= 3) {
+            _usingOriginalROMs = YES;
+            NSLog(@"[VirtualC64] Using original C64 ROMs (%d loaded)", romsLoaded);
+        }
+    }
+
+    if (!_usingOriginalROMs) {
+        NSLog(@"[VirtualC64] loadFileAtPath: installing OpenROMs (pre-launch)...");
+        try {
+            _emu.c64.installOpenRoms();
+            NSLog(@"[VirtualC64] loadFileAtPath: OpenROMs installed OK");
+        } catch (std::exception &e) {
+            NSLog(@"[VirtualC64] Warning: Could not install OpenROMs: %s", e.what());
+        } catch (...) {
+            NSLog(@"[VirtualC64] Warning: Could not install OpenROMs (unknown error)");
+        }
     }
 
     // Verify ROMs are ready before we launch
@@ -419,8 +466,9 @@ static void emuCallback(const void *listener, Message msg)
     }
 
     // Set up delay for auto-typing (wait for C64 to boot to BASIC prompt)
+    // OpenROMs BASIC takes ~5 seconds to fully initialize at PAL speed
     if (_pendingAutoType) {
-        _autoTypeDelay = 150;
+        _autoTypeDelay = 250;
     }
     NSLog(@"[VirtualC64] startEmulation: complete (powered=%d, running=%d)",
           _emu.isPoweredOn(), _emu.isRunning());
@@ -683,6 +731,17 @@ static void emuCallback(const void *listener, Message msg)
 - (oneway void)swapJoysticks
 {
     _joystickSwapped = !_joystickSwapped;
+    NSLog(@"[VirtualC64] Joystick ports swapped: %@", _joystickSwapped ? @"YES" : @"NO");
+}
+
+- (oneway void)loadDisk
+{
+    NSLog(@"[VirtualC64] loadDisk: auto-typing LOAD command");
+    try {
+        _emu.keyboard.autoType("LOAD\"*\",8,1\nRUN\n");
+    } catch (...) {
+        NSLog(@"[VirtualC64] Warning: Could not auto-type LOAD command");
+    }
 }
 
 #pragma mark - Input: Keyboard
@@ -970,6 +1029,17 @@ static void emuCallback(const void *listener, Message msg)
             OEGameCoreDisplayModeNameKey: @"Warp Mode",
             OEGameCoreDisplayModeStateKey: @(_warpMode),
         } mutableCopy]];
+
+        // Separator
+        [_availableDisplayModes addObject:[@{
+            OEGameCoreDisplayModeSeparatorItemKey: @"",
+        } mutableCopy]];
+
+        // ROM info (read-only label)
+        NSString *romLabel = _usingOriginalROMs ? @"ROMs: Original (kernal/basic/chargen)" : @"ROMs: Open-source (MEGA65 OpenROMs)";
+        [_availableDisplayModes addObject:[@{
+            OEGameCoreDisplayModeLabelKey: romLabel,
+        } mutableCopy]];
     }
 
     return _availableDisplayModes;
@@ -1016,6 +1086,24 @@ static void emuCallback(const void *listener, Message msg)
 
     // Reset display modes cache to reflect state changes
     _availableDisplayModes = nil;
+}
+
+#pragma mark - Joystick Port Swap
+
+- (BOOL)supportsJoystickPortSwap
+{
+    return YES;
+}
+
+- (BOOL)joystickPortsSwapped
+{
+    return _joystickSwapped;
+}
+
+- (void)swapJoystickPorts
+{
+    _joystickSwapped = !_joystickSwapped;
+    NSLog(@"[VirtualC64] Joystick ports swapped: %@", _joystickSwapped ? @"YES" : @"NO");
 }
 
 @end

@@ -2655,13 +2655,13 @@ void VMManager::InitializeCPUProviders()
 
 	CpuMicroVU0.Reserve();
 	CpuMicroVU1.Reserve();
-#elif defined(_M_ARM64)
-	// ARM64: EE recompiler available, IOP/VU still interpreter-only
+#elif defined(ARCH_ARM64)
+	// ARM64: EE + IOP + VU recompilers available
 	recCpu.Reserve();
+	psxRec.Reserve();
 
-	// Despite not having VU recompilers on ARM64 yet, we still need the
-	// MTVU thread alive to prevent ring buffer deadlocks.
-	vu1Thread.Open();
+	CpuMicroVU0.Reserve();
+	CpuMicroVU1.Reserve();
 #else
 	vu1Thread.Open();
 #endif
@@ -2683,12 +2683,13 @@ void VMManager::ShutdownCPUProviders()
 
 	psxRec.Shutdown();
 	recCpu.Shutdown();
-#elif defined(_M_ARM64)
-	// ARM64: Shutdown EE recompiler + MTVU thread
-	recCpu.Shutdown();
+#elif defined(ARCH_ARM64)
+	// ARM64: Shutdown EE + IOP + VU recompilers
+	CpuMicroVU1.Shutdown();
+	CpuMicroVU0.Shutdown();
 
-	if (vu1Thread.IsOpen())
-		vu1Thread.WaitVU();
+	psxRec.Shutdown();
+	recCpu.Shutdown();
 #else
 	if (vu1Thread.IsOpen())
 		vu1Thread.WaitVU();
@@ -2712,13 +2713,13 @@ void VMManager::UpdateCPUImplementations()
 
 	CpuVU0 = EmuConfig.Cpu.Recompiler.EnableVU0 ? static_cast<BaseVUmicroCPU*>(&CpuMicroVU0) : static_cast<BaseVUmicroCPU*>(&CpuIntVU0);
 	CpuVU1 = EmuConfig.Cpu.Recompiler.EnableVU1 ? static_cast<BaseVUmicroCPU*>(&CpuMicroVU1) : static_cast<BaseVUmicroCPU*>(&CpuIntVU1);
-#elif defined(_M_ARM64)
-	// ARM64: EE recompiler available, IOP/VU still interpreter-only
-	Cpu = CHECK_EEREC ? &recCpu : &intCpu;
+#elif defined(ARCH_ARM64)
+	// ARM64: All interpreters (debugging display pipeline)
+	Cpu = &intCpu;
 	psxCpu = &psxInt;
 
-	CpuVU0 = &CpuIntVU0;
-	CpuVU1 = &CpuIntVU1;
+	CpuVU0 = static_cast<BaseVUmicroCPU*>(&CpuIntVU0);
+	CpuVU1 = static_cast<BaseVUmicroCPU*>(&CpuIntVU1);
 #else
 	Cpu = &intCpu;
 	psxCpu = &psxInt;
@@ -2733,7 +2734,7 @@ void VMManager::Internal::ClearCPUExecutionCaches()
 	Cpu->Reset();
 	psxCpu->Reset();
 
-#ifdef _M_X86
+#if defined(_M_X86) || defined(ARCH_ARM64)
 	// mVU's VU0 needs to be properly initialized for macro mode even if it's not used for micro mode!
 	if (CHECK_EEREC && !EmuConfig.Cpu.Recompiler.EnableVU0)
 		CpuMicroVU0.Reset();

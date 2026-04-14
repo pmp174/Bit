@@ -1392,8 +1392,6 @@ GSDevice::PresentResult GSDeviceMTL::BeginPresent(bool frame_skip)
 	if (OpenEmuBridge::g_metalDevice && OpenEmuBridge::g_outputTexture)
 	{
 		s_oeFrameCount++;
-		if (s_oeFrameCount <= 5 || (s_oeFrameCount % 300) == 0)
-			OEBridgeLog("BeginPresent[%d]: frame_skip=%d g_gs_device=%p", s_oeFrameCount, frame_skip, g_gs_device.get());
 
 		if (frame_skip || !g_gs_device)
 		{
@@ -1409,9 +1407,13 @@ GSDevice::PresentResult GSDeviceMTL::BeginPresent(bool frame_skip)
 
 		// Render directly to the OpenEmu Shared output texture (readback in EndPresent)
 		[m_pass_desc colorAttachments][0].texture = OpenEmuBridge::g_outputTexture;
+		[m_pass_desc colorAttachments][0].loadAction = MTLLoadActionClear;
+		[m_pass_desc colorAttachments][0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0); // Clear to black
 		id<MTLRenderCommandEncoder> enc = [buf renderCommandEncoderWithDescriptor:m_pass_desc];
 		[enc setLabel:@"Present (OpenEmu)"];
 		m_current_render.encoder = MRCRetain(enc);
+		// Reset load action for future use
+		[m_pass_desc colorAttachments][0].loadAction = MTLLoadActionDontCare;
 
 		if (s_oeFrameCount <= 5)
 			OEBridgeLog("BeginPresent[%d]: OK - rendering directly to g_outputTexture=%p (%ux%u)",
@@ -1481,14 +1483,20 @@ void GSDeviceMTL::EndPresent()
 		                               fromRegion:MTLRegionMake2D(0, 0, w, h)
 		                              mipmapLevel:0];
 
-		// Log pixel values: first 5 frames, then every 500 frames
-		if (s_oeFrameCount <= 5 || (s_oeFrameCount % 500) == 0)
+		// Force alpha to 0xFF (opaque) — PS2 framebuffer alpha is not meant
+		// for transparency compositing by the host window system.
 		{
-			u32 px0 = OpenEmuBridge::g_videoBuffer[0];
-			u32 px1 = OpenEmuBridge::g_videoBuffer[1];
-			u32 pxMid = OpenEmuBridge::g_videoBuffer[(h/2) * w + w/2];
-			OEBridgeLog("EndPresent[%d]: pixel[0,0]=0x%08X pixel[1,0]=0x%08X pixel[center]=0x%08X",
-				s_oeFrameCount, px0, px1, pxMid);
+			u32* pixels = OpenEmuBridge::g_videoBuffer;
+			u32 count = w * h;
+			u32 nonBlackCount = 0;
+			for (u32 i = 0; i < count; i++)
+			{
+				if (pixels[i] & 0x00FFFFFFu)
+					nonBlackCount++;
+				pixels[i] |= 0xFF000000u;
+			}
+			if (s_oeFrameCount <= 10 || (s_oeFrameCount % 300) == 0)
+				OEBridgeLog("EndPresent[%d]: pixel scan: %u/%u non-black pixels", s_oeFrameCount, nonBlackCount, count);
 		}
 
 		// Signal frame ready for OpenEmu's executeFrame to pick up
@@ -1500,7 +1508,7 @@ void GSDeviceMTL::EndPresent()
 
 		FrameCompleted();
 
-		if (s_oeFrameCount <= 5 || (s_oeFrameCount % 300) == 0)
+		if (s_oeFrameCount <= 10 || (s_oeFrameCount % 300) == 0)
 			OEBridgeLog("EndPresent[%d]: frame readback complete (%ux%u)", s_oeFrameCount, w, h);
 		return;
 	}
@@ -1796,11 +1804,10 @@ static_assert(offsetof(DisplayConstantBuffer, TimeAndPad.x)        == offsetof(G
 
 void GSDeviceMTL::PresentRect(GSTexture* sTex, const GSVector4& sRect, GSTexture* dTex, const GSVector4& dRect, PresentShader shader, float shaderTime, bool linear)
 { @autoreleasepool {
-	if (OpenEmuBridge::g_metalDevice && (s_oeFrameCount <= 10 || (s_oeFrameCount % 500) == 0))
-		OEBridgeLog("PresentRect[%d]: sTex=%p(%dx%d) dTex=%p dRect=(%.0f,%.0f,%.0f,%.0f) winSize=(%d,%d) shader=%d",
+	if (OpenEmuBridge::g_metalDevice && s_oeFrameCount <= 5)
+		OEBridgeLog("PresentRect[%d]: sTex=%p(%dx%d) dRect=(%.1f,%.1f,%.1f,%.1f) shader=%d",
 			s_oeFrameCount, sTex, sTex ? sTex->GetWidth() : 0, sTex ? sTex->GetHeight() : 0,
-			dTex, dRect.x, dRect.y, dRect.z, dRect.w,
-			GetWindowWidth(), GetWindowHeight(), static_cast<int>(shader));
+			dRect.x, dRect.y, dRect.z, dRect.w, static_cast<int>(shader));
 
 	GSVector2i ds = dTex ? dTex->GetSize() : GetWindowSize();
 	DisplayConstantBuffer cb;
@@ -1808,9 +1815,6 @@ void GSDeviceMTL::PresentRect(GSTexture* sTex, const GSVector4& sRect, GSTexture
 	cb.SetTarget(dRect, ds);
 	cb.SetTime(shaderTime);
 	id<MTLRenderPipelineState> pipe = m_present_pipeline[static_cast<int>(shader)];
-
-	if (OpenEmuBridge::g_metalDevice && (s_oeFrameCount <= 10 || (s_oeFrameCount % 500) == 0))
-		OEBridgeLog("PresentRect[%d]: pipe=%p encoder=%p", s_oeFrameCount, pipe, (id)m_current_render.encoder);
 
 	if (dTex)
 	{
@@ -2446,6 +2450,7 @@ void GSDeviceMTL::RenderHW(GSHWDrawConfig& config)
 	}
 
 	BeginRenderPass(@"RenderHW", rt, MTLLoadActionLoad, config.ds, MTLLoadActionLoad, stencil, MTLLoadActionLoad);
+
 	id<MTLRenderCommandEncoder> mtlenc = m_current_render.encoder;
 	FlushDebugEntries(mtlenc);
 	if (usesStencil(config.destination_alpha))

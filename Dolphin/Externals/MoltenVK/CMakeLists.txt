@@ -5,6 +5,7 @@ set(MOLTENVK_VERSION "v1.2.8")
 ExternalProject_Add(MoltenVK
   GIT_REPOSITORY https://github.com/KhronosGroup/MoltenVK.git
   GIT_TAG ${MOLTENVK_VERSION}
+  UPDATE_COMMAND ""
 
   CONFIGURE_COMMAND ${CMAKE_CURRENT_LIST_DIR}/configure.sh <LOG_DIR> <SOURCE_DIR> ${MOLTENVK_VERSION}
 

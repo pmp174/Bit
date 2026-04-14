@@ -398,6 +398,7 @@ extension OSLog {
                 if let peripheralDevices = gameCore.peripheralDevices {
                     owner.setPeripheralDevices(peripheralDevices)
                 }
+                owner.setSupportsJoystickPortSwap(gameCore.supportsJoystickPortSwap)
             } else {
                 os_log(.error, log: .helper, "gameCoreOwner is nil after loading ROM")
             }
@@ -634,6 +635,13 @@ extension OSLog {
             if let peripheralDevices = gameCore.peripheralDevices {
                 self.gameCoreOwner?.setPeripheralDevices(peripheralDevices)
             }
+        }
+    }
+
+    public func swapJoystickPorts() {
+        gameCore.perform {
+            guard let gameCore = self.gameCore else { return }
+            gameCore.swapJoystickPorts()
         }
     }
     

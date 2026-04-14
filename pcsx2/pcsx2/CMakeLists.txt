@@ -1069,6 +1069,9 @@ set(pcsx2arm64Sources
 	arm64/iFPU.cpp
 	arm64/iMMI.cpp
 	arm64/recVTLB.cpp
+	arm64/iR3000A.cpp
+	arm64/iR3000Atables.cpp
+	arm64/microVU.cpp
 	)
 
 set(pcsx2arm64Headers
@@ -1089,6 +1092,7 @@ set(pcsx2arm64Headers
 	arm64/iMMI.h
 	arm64/iCOP0.h
 	arm64/iFPU.h
+	arm64/iR3000A.h
 )
 
 # These ones benefit a lot from LTO

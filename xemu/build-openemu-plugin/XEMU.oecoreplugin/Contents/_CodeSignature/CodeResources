@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>files</key>
+	<dict/>
+	<key>files2</key>
+	<dict>
+		<key>Frameworks/libSDL3.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			IO8NMEcf2oxn9PK55ejfq47S1x8=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"20ef0d30471fda8c67f4f2b9e5e8dfab8ed2d71f"</string>
+		</dict>
+		<key>Frameworks/libSDL3.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			/UrX4vOUnR0Z6x1SCiJBbpDwsEc=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"fd4ad7e2f3949d1d19eb1d520a22416e90f0b047"</string>
+		</dict>
+		<key>Frameworks/libbz2.1.0.8.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			Qbp+tzLz7+r9WV1gPffHpsK59EM=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"41ba7eb732f3efeafd595d603df7c7a6c2b9f443"</string>
+		</dict>
+		<key>Frameworks/libbz2.1.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			NXxZsNXy93rgrIp0ahYH+hOlgms=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"357c59b0d5f2f77ae0ac8a746a1607fa13a5826b"</string>
+		</dict>
+		<key>Frameworks/libbz2.1.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			rTg6rs6kGs6devX2cFf4IOa0oIk=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"ad383aaecea41ace9d7af5f67057f820e6b4a089"</string>
+		</dict>
+		<key>Frameworks/libbz2.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			1akQHYEFcp1O6J91LX3V66jS3Fo=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"d5a9101d8105729d4ee89f752d7dd5eba8d2dc5a"</string>
+		</dict>
+		<key>Frameworks/libcharset.1.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			OUoLn9EbOffzuTuMK7fyetF1SkQ=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"394a0b9fd11b39f7f3b93b8c2bb7f27ad1754a44"</string>
+		</dict>
+		<key>Frameworks/libcharset.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			gSvTqDrF32DYHEGQ4aHSmS3GzxI=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"812bd3a83ac5df60d81c4190e1a1d2992dc6cf12"</string>
+		</dict>
+		<key>Frameworks/libedit.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			dSncNy2JfyXhH9p73aTM4+1gzrE=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"7529dc372d897f25e11fda7bdda4cce3ed60ceb1"</string>
+		</dict>
+		<key>Frameworks/libedit.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			4GVPzuWot6IaBwVXkY8+zZpN/M0=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"e0654fcee5a8b7a21a070557918f3ecd9a4dfccd"</string>
+		</dict>
+		<key>Frameworks/libepoxy.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			i3y6EI9qt7I09CPIAx+ODy6MlHE=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"8b7cba108f6ab7b234f423c8031f8e0f2e8c9471"</string>
+		</dict>
+		<key>Frameworks/libepoxy.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			mfDLG1souS9MRuHonSUnbGDQrpI=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"99f0cb1b5b28b92f4c46e1e89d25276c60d0ae92"</string>
+		</dict>
+		<key>Frameworks/libffi.8.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			hwhHX/Jlt1Km0/MqG8JWhFOcz5w=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"8708475ff265b752a6d3f32a1bc25684539ccf9c"</string>
+		</dict>
+		<key>Frameworks/libffi.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			iZuA8s0ARXPxg04Xm0qljKvIHiw=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"899b80f2cd004573f1834e179b4aa58cabc81e2c"</string>
+		</dict>
+		<key>Frameworks/libgio-2.0.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			pMb6SUJHI6ZajAUsSrxLbvZwCIs=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"a4c6fa49424723a65a8c052c4abc4b6ef670088b"</string>
+		</dict>
+		<key>Frameworks/libgio-2.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			Arp+QZOeObgzojMiT2KWe+azz/4=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"02ba7e41939e39b833a233224f62967be6b3cffe"</string>
+		</dict>
+		<key>Frameworks/libglib-2.0.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			isLTjw0mnsBk/ttGXJSLhl+RPrk=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"8ac2d38f0d269ec064fedb465c948b865f913eb9"</string>
+		</dict>
+		<key>Frameworks/libglib-2.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			8unXO9om7K2s18TFoo0nazllDDc=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"f2e9d73bda26ecadacd7c4c5a28d276b39650c37"</string>
+		</dict>
+		<key>Frameworks/libgmodule-2.0.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			fg1G3zg7ykFYcWtOuCgKT97VnGo=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"7e0d46df383bca4158716b4eb8280a4fded59c6a"</string>
+		</dict>
+		<key>Frameworks/libgmodule-2.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			QcZv2NezgOJ8XyLvQ9nJawu96tA=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"41c66fd8d7b380e27c5f22ef43d9c96b0bbdead0"</string>
+		</dict>
+		<key>Frameworks/libgobject-2.0.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			XnZDsedkkXRAPSR2cXaW3Z03I8s=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"5e7643b1e7649174403d2476717696dd9d3723cb"</string>
+		</dict>
+		<key>Frameworks/libgobject-2.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			VmNM7xM2NE6nsI0XmoqAOIBxcg0=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"56634cef1336344ea7b08d179a8a80388071720d"</string>
+		</dict>
+		<key>Frameworks/libgthread-2.0.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			6p3GVpgFJuOW6uHkIGz5prEdv8A=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"ea9dc656980526e396eae1e4206cf9a6b11dbfc0"</string>
+		</dict>
+		<key>Frameworks/libgthread-2.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			HvScxQOUN+XEUvuDupGmHLHilTM=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"1ef49cc5039437e5c452fb83ba91a61cb1e29533"</string>
+		</dict>
+		<key>Frameworks/libiconv.2.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			if/7xVCWW/12ctG5uCrilM4IoqE=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"89fffbc550965bfd7672d1b9b82ae294ce08a2a1"</string>
+		</dict>
+		<key>Frameworks/libiconv.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			uLjN62TTz1kseoehAvYIvyUQjMs=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"b8b8cdeb64d3cf592c7a87a102f608bf25108ccb"</string>
+		</dict>
+		<key>Frameworks/libintl.8.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			kjKqe0yReXNAEs6xHv9L1Ouj9Ec=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"9232aa7b4c9179734012ceb11eff4bd4eba3f447"</string>
+		</dict>
+		<key>Frameworks/libintl.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			MasFCDXRAiuXTQhB8BVYiTNhPEo=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"31ab050835d1022b974d0841f015588933613c4a"</string>
+		</dict>
+		<key>Frameworks/libpcap.1.10.6.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			TusEQGZgeYR0ONR/0eLWJzQGxXM=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"4eeb0440666079847438d47fd1e2d6273406c573"</string>
+		</dict>
+		<key>Frameworks/libpcap.A.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			SGgdQHRoA8+ifQZcAKMSkqX1Gd8=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"48681d40746803cfa27d065c00a31292a5f519df"</string>
+		</dict>
+		<key>Frameworks/libpcap.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			XyQjEGfAh07mn+3B1ca3tfCaPlk=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"5f24231067c0874ee69fedc1d5c6b7b5f09a3e59"</string>
+		</dict>
+		<key>Frameworks/libpcre2-16.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			/tDFhMIEcnfEvaSZth/XggnZ8IM=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"fed0c584c2047277c4bda499b61fd78209d9f083"</string>
+		</dict>
+		<key>Frameworks/libpcre2-16.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			w+23OeuIAoaF1M2IFQrsTXIT6YA=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"c3edb739eb88028685d4cd88150aec4d7213e980"</string>
+		</dict>
+		<key>Frameworks/libpcre2-32.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			EpdQAB2tXjYf/inhbsABVq5CLYY=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"129750001dad5e361ffe29e16ec00156ae422d86"</string>
+		</dict>
+		<key>Frameworks/libpcre2-32.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			f5A67SDFdVOfseX5Hean4qmZXPw=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"7f903aed20c575539fb1e5f91de6a7e2a9995cfc"</string>
+		</dict>
+		<key>Frameworks/libpcre2-8.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			BCS3he07cFu+ptROgFnxY70HluI=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"0424b785ed3b705bbea6d44e8059f163bd0796e2"</string>
+		</dict>
+		<key>Frameworks/libpcre2-8.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			1+AwvNOsa1ynvmmY7A441aFOjz0=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"d7e030bcd3ac6b5ca7be6998ec0e38d5a14e8f3d"</string>
+		</dict>
+		<key>Frameworks/libpcre2-posix.3.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			nXXbKScDHS87UM4krD9g5EvGOt4=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"9d75db2927031d2f3b50ce24ac3f60e44bc63ade"</string>
+		</dict>
+		<key>Frameworks/libpcre2-posix.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			LkwlwrXXN7Zklvq8+nlxVRHZgu0=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"2e4c25c2b5d737b66496fabcfa79715511d982ed"</string>
+		</dict>
+		<key>Frameworks/libpixman-1.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			0T1LKjlKU5gUA71SbX12KgzthLs=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"d13d4b2a394a53981403bd526d7d762a0ced84bb"</string>
+		</dict>
+		<key>Frameworks/libpixman-1.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			wdqGb08KYruk21+hKes5BhAquIM=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"c1da866f4f0a62bba4db5fa129eb3906102ab883"</string>
+		</dict>
+		<key>Frameworks/libsamplerate.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			5rzzMYWVXQg79ZroCop2VZNOKsA=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"e6bcf33185955d083bf59ae80a8a7655934e2ac0"</string>
+		</dict>
+		<key>Frameworks/libsamplerate.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			419ow7JPhAVifX94qe2lz4LM1Dc=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"e35f68c3b24f8405627d7f78a9eda5cf82ccd437"</string>
+		</dict>
+		<key>Frameworks/libslirp.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			/+FFq76i9WIqeXYv9cJwNSR2DTc=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"ffe145abbea2f5622a79762ff5c2703524760d37"</string>
+		</dict>
+		<key>Frameworks/libslirp.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			hW0yrKxnPKeWWHRGqwPJUwkkxBY=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"856d32acac673ca796587446ab03c9530924c416"</string>
+		</dict>
+		<key>Frameworks/libusb-1.0.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			PlkQLyvnz8N+6KGZowVtUkf1BGc=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"3e59102f2be7cfc37ee8a199a3056d5247f50467"</string>
+		</dict>
+		<key>Frameworks/libusb-1.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			Uwjt9b2rYfR+s3REsi1ruQC0o3M=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"5308edf5bdab61f47eb37444b22d6bb900b4a373"</string>
+		</dict>
+		<key>Frameworks/libz.1.3.2.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			c94zxUSzZmLDZiNOwMoKrUUAOA0=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"73de33c544b36662c366234ec0ca0aad4500380d"</string>
+		</dict>
+		<key>Frameworks/libz.1.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			w5rVRaPVmYw8Xdoz3L3RZRDD2N8=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"c39ad545a3d5998c3c5dda33dcbdd16510c3d8df"</string>
+		</dict>
+		<key>Frameworks/libz.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			CDEbc/QtSevUHFi6/fYusbzxxUo=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"08311b73f42d49ebd41c58bafdf62eb1bcf1c54a"</string>
+		</dict>
+	</dict>
+	<key>rules</key>
+	<dict>
+		<key>^Resources/</key>
+		<true/>
+		<key>^Resources/.*\.lproj/</key>
+		<dict>
+			<key>optional</key>
+			<true/>
+			<key>weight</key>
+			<real>1000</real>
+		</dict>
+		<key>^Resources/.*\.lproj/locversion.plist$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
+		<key>^version.plist$</key>
+		<true/>
+	</dict>
+	<key>rules2</key>
+	<dict>
+		<key>.*\.dSYM($|/)</key>
+		<dict>
+			<key>weight</key>
+			<real>11</real>
+		</dict>
+		<key>^(.*/)?\.DS_Store$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>2000</real>
+		</dict>
+		<key>^(Frameworks|SharedFrameworks|PlugIns|Plug-ins|XPCServices|Helpers|MacOS|Library/(Automator|Spotlight|LoginItems))/</key>
+		<dict>
+			<key>nested</key>
+			<true/>
+			<key>weight</key>
+			<real>10</real>
+		</dict>
+		<key>^.*</key>
+		<true/>
+		<key>^Info\.plist$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^PkgInfo$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^Resources/</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^Resources/.*\.lproj/</key>
+		<dict>
+			<key>optional</key>
+			<true/>
+			<key>weight</key>
+			<real>1000</real>
+		</dict>
+		<key>^Resources/.*\.lproj/locversion.plist$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
+		<key>^[^/]+$</key>
+		<dict>
+			<key>nested</key>
+			<true/>
+			<key>weight</key>
+			<real>10</real>
+		</dict>
+		<key>^embedded\.provisionprofile$</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^version\.plist$</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

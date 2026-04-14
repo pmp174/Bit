@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OEControllerImageKey</key>
+	<string>controller_xbox</string>
+	<key>OEControllerImageMaskKey</key>
+	<string>controller_xbox_mask</string>
+	<key>OEControllerKeyPositionKey</key>
+	<dict>
+		<key>OEXboxButtonDpadUp</key>
+		<string>{119, 230}</string>
+		<key>OEXboxButtonDpadDown</key>
+		<string>{119, 188}</string>
+		<key>OEXboxButtonDpadLeft</key>
+		<string>{96, 209}</string>
+		<key>OEXboxButtonDpadRight</key>
+		<string>{142, 209}</string>
+		<key>OEXboxButtonA</key>
+		<string>{380, 222}</string>
+		<key>OEXboxButtonB</key>
+		<string>{414, 254}</string>
+		<key>OEXboxButtonX</key>
+		<string>{346, 254}</string>
+		<key>OEXboxButtonY</key>
+		<string>{380, 286}</string>
+		<key>OEXboxButtonWhite</key>
+		<string>{122, 345}</string>
+		<key>OEXboxButtonBlack</key>
+		<string>{377, 345}</string>
+		<key>OEXboxLeftTrigger</key>
+		<string>{122, 329}</string>
+		<key>OEXboxRightTrigger</key>
+		<string>{377, 329}</string>
+		<key>OEXboxButtonStart</key>
+		<string>{288, 253}</string>
+		<key>OEXboxButtonBack</key>
+		<string>{210, 253}</string>
+		<key>OEXboxButtonLeftStick</key>
+		<string>{185, 280}</string>
+		<key>OEXboxButtonRightStick</key>
+		<string>{315, 192}</string>
+		<key>OEXboxLeftAnalogUp</key>
+		<string>{185, 280}</string>
+		<key>OEXboxLeftAnalogDown</key>
+		<string>{185, 280}</string>
+		<key>OEXboxLeftAnalogLeft</key>
+		<string>{185, 280}</string>
+		<key>OEXboxLeftAnalogRight</key>
+		<string>{185, 280}</string>
+		<key>OEXboxRightAnalogUp</key>
+		<string>{315, 192}</string>
+		<key>OEXboxRightAnalogDown</key>
+		<string>{315, 192}</string>
+		<key>OEXboxRightAnalogLeft</key>
+		<string>{315, 192}</string>
+		<key>OEXboxRightAnalogRight</key>
+		<string>{315, 192}</string>
+	</dict>
+</dict>
+</plist>

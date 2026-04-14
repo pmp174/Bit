@@ -37,6 +37,7 @@ typedef enum
     OEC64ButtonFire,
     OEC64ButtonJump,
     OEC64SwapJoysticks,
+    OEC64LoadDisk,
     OEC64ButtonCount
 } OEC64Button;
 
@@ -51,5 +52,6 @@ typedef enum
 - (oneway void)didPushC64Button:(OEC64Button)button forPlayer:(NSUInteger)player;
 - (oneway void)didReleaseC64Button:(OEC64Button)button forPlayer:(NSUInteger)player;
 - (oneway void)swapJoysticks;
+- (oneway void)loadDisk;
 
 @end

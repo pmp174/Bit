@@ -107,6 +107,7 @@
 				83F37149140BB177005A7353 /* PBXTargetDependency */,
 				83F3714D140BB17A005A7353 /* PBXTargetDependency */,
 				83F3714B140BB179005A7353 /* PBXTargetDependency */,
+				FACE000100000000000000C2 /* PBXTargetDependency */,
 			);
 			name = "Build SystemPlugins";
 			productName = "Build SystemPlugins";
@@ -311,6 +312,14 @@
 		630D27EC2F738E64005FBEAD /* PrefAccountsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27EB2F738E64005FBEAD /* PrefAccountsController.swift */; };
 		630D27EE2F738EB2005FBEAD /* AchievementNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D27ED2F738EB2005FBEAD /* AchievementNotificationView.swift */; };
 		63139BA92F809EC500A3E773 /* PlayStation 2.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 3DB744BA1BD8BA9E00C23E74 /* PlayStation 2.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		631756902F89AEE8002736AA /* OEXboxSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6317568C2F89AEE8002736AA /* OEXboxSystemResponder.m */; };
+		631756912F89AEE8002736AA /* OEXboxSystemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6317568A2F89AEE8002736AA /* OEXboxSystemController.m */; };
+		631756972F89B64A002736AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 631756872F89AEE8002736AA /* Images.xcassets */; };
+		FACE000200000000000000B1 /* OEXboxSystemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6317568A2F89AEE8002736AA /* OEXboxSystemController.m */; };
+		FACE000200000000000000B2 /* OEXboxSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6317568C2F89AEE8002736AA /* OEXboxSystemResponder.m */; };
+		FACE000200000000000000B3 /* Controller-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 631756852F89AEE8002736AA /* Controller-Mappings.plist */; };
+		FACE000200000000000000B4 /* Controller-Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 631756862F89AEE8002736AA /* Controller-Preferences.plist */; };
+		FACE000200000000000000B5 /* Keyboard-Mappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 631756882F89AEE8002736AA /* Keyboard-Mappings.plist */; };
 		63195AAB2F70627100E25883 /* ControllerNavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63195AAA2F70627100E25883 /* ControllerNavigationManager.swift */; };
 		6324EFD52F706CFC006AC7A8 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6324EFD42F706CFC006AC7A8 /* SettingsWindowController.swift */; };
 		6324EFD72F706D23006AC7A8 /* SettingsSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6324EFD62F706D23006AC7A8 /* SettingsSidebarViewController.swift */; };
@@ -766,6 +775,9 @@
 		EF2FDBED14CFFE1B002A64F2 /* ControlsKeySeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D9991E146F40DA004409DC /* ControlsKeySeparatorView.swift */; };
 		EFBD5D7814EFE19A00FBD1E0 /* NSColor+OEAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBD5D7714EFE19A00FBD1E0 /* NSColor+OEAdditions.swift */; };
 		EFBD5D7F14EFE26300FBD1E0 /* OEGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBD5D7C14EFE26300FBD1E0 /* OEGridView.m */; };
+		FACE000100000000000000B1 /* OpenEmuSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D120C417112E1300E868A8 /* OpenEmuSystem.framework */; };
+		FACE000100000000000000C1 /* Xbox.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = FACE000100000000000000A8 /* Xbox.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FACE000100000000000000C4 /* Xbox.oesystemplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = FACE000100000000000000A8 /* Xbox.oesystemplugin */; };
 		FE6310A1187F099800D8AE07 /* MSX.oesystemplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = FEB6625B187B791800D14713 /* MSX.oesystemplugin */; };
 		FEB66268187B792700D14713 /* OEMSXSystemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB66251187B62CA00D14713 /* OEMSXSystemController.swift */; };
 		FEB66269187B792700D14713 /* OEMSXSystemResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB66254187B751700D14713 /* OEMSXSystemResponder.m */; };
@@ -1182,6 +1194,13 @@
 			remoteGlobalIDString = D99E287890004DDD00000001;
 			remoteInfo = Wii;
 		};
+		FACE000100000000000000C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FACE000100000000000000A1;
+			remoteInfo = Xbox;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1323,6 +1342,7 @@
 				B77C065670002BBB00000017 /* Naomi 2.oesystemplugin in Copy System Plugins to App Plugins */,
 				C88D176780003CCC00000017 /* Atomiswave.oesystemplugin in Copy System Plugins to App Plugins */,
 				D99E287890004DDD00000017 /* .oesystemplugin in Copy System Plugins to App Plugins */,
+				FACE000100000000000000C1 /* Xbox.oesystemplugin in Copy System Plugins to App Plugins */,
 			);
 			name = "Copy System Plugins to App Plugins";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1343,6 +1363,7 @@
 				94CE3FB218DE92970079CC16 /* 3DO.oesystemplugin in CopyFiles */,
 				FE6310A1187F099800D8AE07 /* MSX.oesystemplugin in CopyFiles */,
 				94EBBD31183F4DB000743756 /* Arcade.oesystemplugin in CopyFiles */,
+				FACE000100000000000000C4 /* Xbox.oesystemplugin in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1579,6 +1600,16 @@
 		630D27E92F738E12005FBEAD /* RetroAchievementsCredentialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAchievementsCredentialStore.swift; sourceTree = "<group>"; };
 		630D27EB2F738E64005FBEAD /* PrefAccountsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefAccountsController.swift; sourceTree = "<group>"; };
 		630D27ED2F738EB2005FBEAD /* AchievementNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNotificationView.swift; sourceTree = "<group>"; };
+		631756852F89AEE8002736AA /* Controller-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Mappings.plist"; sourceTree = "<group>"; };
+		631756862F89AEE8002736AA /* Controller-Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Controller-Preferences.plist"; sourceTree = "<group>"; };
+		631756872F89AEE8002736AA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		631756882F89AEE8002736AA /* Keyboard-Mappings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keyboard-Mappings.plist"; sourceTree = "<group>"; };
+		631756892F89AEE8002736AA /* OEXboxSystemController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEXboxSystemController.h; sourceTree = "<group>"; };
+		6317568A2F89AEE8002736AA /* OEXboxSystemController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OEXboxSystemController.m; sourceTree = "<group>"; };
+		6317568B2F89AEE8002736AA /* OEXboxSystemResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEXboxSystemResponder.h; sourceTree = "<group>"; };
+		6317568C2F89AEE8002736AA /* OEXboxSystemResponder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OEXboxSystemResponder.m; sourceTree = "<group>"; };
+		6317568D2F89AEE8002736AA /* OEXboxSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEXboxSystemResponderClient.h; sourceTree = "<group>"; };
+		6317568E2F89AEE8002736AA /* Xbox-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Xbox-Info.plist"; sourceTree = "<group>"; };
 		63195AAA2F70627100E25883 /* ControllerNavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerNavigationManager.swift; sourceTree = "<group>"; };
 		6324EFD42F706CFC006AC7A8 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		6324EFD62F706D23006AC7A8 /* SettingsSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSidebarViewController.swift; sourceTree = "<group>"; };
@@ -2207,6 +2238,7 @@
 		F1A2C86D1AAD0B3A00A17C80 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F1A2C86E1AAD0B3B00A17C80 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F1A2C86F1AAD0B3B00A17C80 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ControlLabels.strings; sourceTree = "<group>"; };
+		FACE000100000000000000A8 /* Xbox.oesystemplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Xbox.oesystemplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEB66251187B62CA00D14713 /* OEMSXSystemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OEMSXSystemController.swift; sourceTree = "<group>"; };
 		FEB66253187B751700D14713 /* OEMSXSystemResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEMSXSystemResponder.h; sourceTree = "<group>"; };
 		FEB66254187B751700D14713 /* OEMSXSystemResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEMSXSystemResponder.m; sourceTree = "<group>"; };
@@ -2683,6 +2715,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FACE000100000000000000A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FACE000100000000000000B1 /* OpenEmuSystem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FEB66258187B791800D14713 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2958,6 +2998,7 @@
 				081A46261B95744A00565444 /* Pokemon mini.oesystemplugin */,
 				87DF04FE1BCE2D100060E2C2 /* Dreamcast.oesystemplugin */,
 				3DB744BA1BD8BA9E00C23E74 /* PlayStation 2.oesystemplugin */,
+				FACE000100000000000000A8 /* Xbox.oesystemplugin */,
 				87FBC06D1BFC70FE00AECF5A /* Commodore 64.oesystemplugin */,
 				87FBC08E1C0790B400AECF5A /* Atari 8bit.oesystemplugin */,
 				016F22DC23F19F5F00181842 /* OEAlertTest.app */,
@@ -3400,6 +3441,32 @@
 			);
 			path = Providers;
 			sourceTree = "<group>";
+		};
+		631756842F89AEE8002736AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6317568F2F89AEE8002736AA /* Xbox */ = {
+			isa = PBXGroup;
+			children = (
+				631756842F89AEE8002736AA /* Supporting Files */,
+				631756852F89AEE8002736AA /* Controller-Mappings.plist */,
+				631756862F89AEE8002736AA /* Controller-Preferences.plist */,
+				631756872F89AEE8002736AA /* Images.xcassets */,
+				631756882F89AEE8002736AA /* Keyboard-Mappings.plist */,
+				631756892F89AEE8002736AA /* OEXboxSystemController.h */,
+				6317568A2F89AEE8002736AA /* OEXboxSystemController.m */,
+				6317568B2F89AEE8002736AA /* OEXboxSystemResponder.h */,
+				6317568C2F89AEE8002736AA /* OEXboxSystemResponder.m */,
+				6317568D2F89AEE8002736AA /* OEXboxSystemResponderClient.h */,
+				6317568E2F89AEE8002736AA /* Xbox-Info.plist */,
+			);
+			name = Xbox;
+			path = SystemPlugins/Xbox;
+			sourceTree = SOURCE_ROOT;
 		};
 		63C7E26A2F7CCF6E00E472F1 /* Flash */ = {
 			isa = PBXGroup;
@@ -4551,6 +4618,7 @@
 		C67118201363687A0034379A /* System Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				6317568F2F89AEE8002736AA /* Xbox */,
 				943F99B51707DF3700270E89 /* 3DO */,
 				945E42FD1517F2B500057D08 /* Arcade */,
 				94A224A51707543600098DA0 /* Atari 2600 */,
@@ -5753,6 +5821,23 @@
 			productReference = D99E287890004DDD00000002 /* .oesystemplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
+		FACE000100000000000000A1 /* Xbox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FACE000100000000000000A5 /* Build configuration list for PBXNativeTarget "Xbox" */;
+			buildPhases = (
+				FACE000100000000000000A2 /* Sources */,
+				FACE000100000000000000A3 /* Frameworks */,
+				FACE000100000000000000A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Xbox;
+			productName = Xbox;
+			productReference = FACE000100000000000000A8 /* Xbox.oesystemplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
 		FEB6625A187B791800D14713 /* MSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FEB66265187B791800D14713 /* Build configuration list for PBXNativeTarget "MSX" */;
@@ -5918,6 +6003,7 @@
 				012148042537C6D6007F3C84 /* OESystemPluginPostInstall */,
 				8F7C2947288A2A2200A16C09 /* OECoreListUpdater */,
 				63C7E2872F7D150200E472F1 /* Flash */,
+				FACE000100000000000000A1 /* Xbox */,
 			);
 		};
 /* End PBXProject section */
@@ -6526,6 +6612,17 @@
 				D99E287890004DDD00000011 /* Controller-Preferences.plist in Resources */,
 				D99E287890004DDD00000013 /* Keyboard-Mappings.plist in Resources */,
 				D99E287890004DDD00000015 /* Controller-Mappings.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FACE000100000000000000A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				631756972F89B64A002736AA /* Images.xcassets in Resources */,
+				FACE000200000000000000B3 /* Controller-Mappings.plist in Resources */,
+				FACE000200000000000000B4 /* Controller-Preferences.plist in Resources */,
+				FACE000200000000000000B5 /* Keyboard-Mappings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7366,6 +7463,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FACE000100000000000000A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FACE000200000000000000B1 /* OEXboxSystemController.m in Sources */,
+				FACE000200000000000000B2 /* OEXboxSystemResponder.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FEB66257187B791800D14713 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7667,6 +7773,11 @@
 			isa = PBXTargetDependency;
 			target = D99E287890004DDD00000001 /* Wii */;
 			targetProxy = D99E287890004DDD00000018 /* PBXContainerItemProxy */;
+		};
+		FACE000100000000000000C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FACE000100000000000000A1 /* Xbox */;
+			targetProxy = FACE000100000000000000C3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -9547,6 +9658,26 @@
 			};
 			name = Release;
 		};
+		FACE000100000000000000A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Xbox/Xbox-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Debug;
+		};
+		FACE000100000000000000A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SystemPlugins/Xbox/Xbox-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openemu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = oesystemplugin;
+			};
+			name = Release;
+		};
 		FEB66266187B791800D14713 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -10142,6 +10273,15 @@
 			buildConfigurations = (
 				D99E287890004DDD00000009 /* Debug */,
 				D99E287890004DDD0000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FACE000100000000000000A5 /* Build configuration list for PBXNativeTarget "Xbox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FACE000100000000000000A6 /* Debug */,
+				FACE000100000000000000A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

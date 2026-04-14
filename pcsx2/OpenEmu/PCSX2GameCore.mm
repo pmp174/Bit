@@ -255,11 +255,14 @@ static void PCSX2Log(NSString *format, ...) {
     si.SetStringValue("Folders", "Patches", [patchesPath fileSystemRepresentation]);
     si.SetStringValue("Folders", "Textures", [texturePath fileSystemRepresentation]);
 
-    // CPU settings - ARM64 EE recompiler enabled, IOP/VU still interpreter-only
+    // CPU settings - ARM64 recompilers: EE, IOP, VU0, VU1 all enabled
     si.SetBoolValue("EmuCore/CPU/Recompiler", "EnableEE", true);
-    si.SetBoolValue("EmuCore/CPU/Recompiler", "EnableVU0", false);
-    si.SetBoolValue("EmuCore/CPU/Recompiler", "EnableVU1", false);
-    si.SetBoolValue("EmuCore/CPU/Recompiler", "EnableIOP", false);
+    si.SetBoolValue("EmuCore/CPU/Recompiler", "EnableVU0", true);
+    si.SetBoolValue("EmuCore/CPU/Recompiler", "EnableVU1", true);
+    si.SetBoolValue("EmuCore/CPU/Recompiler", "EnableIOP", true);
+
+    // Speedhacks - enable MTVU (multi-threaded VU1) for better performance
+    si.SetBoolValue("EmuCore/Speedhacks", "vuThread", true);
 
     // GS / Renderer settings - Metal
     si.SetIntValue("EmuCore/GS", "Renderer", 0); // Auto (Metal on macOS)
@@ -399,9 +402,35 @@ static void PCSX2Log(NSString *format, ...) {
         VMManager::SetState(VMState::Running);
         PCSX2Log(@"[PCSX2] VM state set to Running, entering main loop");
 
-        // Main emulation loop
-        while (!OpenEmuBridge::g_shutdownRequested && VMManager::GetState() == VMState::Running) {
-            VMManager::Execute();
+        // Main emulation loop — mirrors the Qt frontend's state machine.
+        // PCSX2 internally transitions between Running/Paused/Resetting states
+        // (e.g., at VSync boundaries). We must handle all of them.
+        bool loopRunning = true;
+        while (loopRunning && !OpenEmuBridge::g_shutdownRequested) {
+            switch (VMManager::GetState()) {
+                case VMState::Running:
+                    VMManager::Execute();
+                    break;
+
+                case VMState::Paused:
+                    // OpenEmu doesn't support pause — resume immediately
+                    VMManager::SetState(VMState::Running);
+                    break;
+
+                case VMState::Resetting:
+                    VMManager::Reset();
+                    break;
+
+                case VMState::Stopping:
+                case VMState::Shutdown:
+                    loopRunning = false;
+                    break;
+
+                default:
+                    // Initializing or unknown — yield briefly
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    break;
+            }
         }
 
         PCSX2Log(@"[PCSX2] Emulation loop exited (state=%d)", (int)VMManager::GetState());

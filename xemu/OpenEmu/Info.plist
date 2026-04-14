@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>XEMU</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.openemu.XEMU</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>XEMU</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>NSPrincipalClass</key>
+	<string>OEGameCoreController</string>
+	<key>OEGameCoreClass</key>
+	<string>XEMUGameCore</string>
+	<key>OESystemIdentifiers</key>
+	<array>
+		<string>openemu.system.xbox</string>
+	</array>
+	<key>OEGameCorePlayerCount</key>
+	<string>4</string>
+	<key>OEGameCoreOptions</key>
+	<dict>
+		<key>openemu.system.xbox</key>
+		<dict>
+			<key>OEGameCoreHasGlitches</key>
+			<true/>
+			<key>OEGameCoreRequiresFiles</key>
+			<true/>
+			<key>OERequiredFiles</key>
+			<array>
+				<dict>
+					<key>Name</key>
+					<string>mcpx_1.0.bin</string>
+					<key>Description</key>
+					<string>Xbox MCPX Boot ROM</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>mcpx-1.0.bin</string>
+					<key>Description</key>
+					<string>Xbox MCPX Boot ROM (v1.0)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>mcpx-1.1.bin</string>
+					<key>Description</key>
+					<string>Xbox MCPX Boot ROM (v1.1)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox_bios.bin</string>
+					<key>Description</key>
+					<string>Xbox Flash ROM / BIOS</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox-3944.bin</string>
+					<key>Description</key>
+					<string>Xbox BIOS (3944)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox-4034.bin</string>
+					<key>Description</key>
+					<string>Xbox BIOS (4034)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox-4817.bin</string>
+					<key>Description</key>
+					<string>Xbox BIOS (4817)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox-5101.bin</string>
+					<key>Description</key>
+					<string>Xbox BIOS (5101)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox-5530.bin</string>
+					<key>Description</key>
+					<string>Xbox BIOS (5530)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox-5713.bin</string>
+					<key>Description</key>
+					<string>Xbox BIOS (5713)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>xbox-5838.bin</string>
+					<key>Description</key>
+					<string>Xbox BIOS (5838)</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>cerbios.bin</string>
+					<key>Description</key>
+					<string>Cerbios Custom BIOS</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>Complex_4627v1.03.bin</string>
+					<key>Description</key>
+					<string>Complex 4627 Custom BIOS</string>
+					<key>ImportByNameOnly</key>
+					<true/>
+					<key>Optional</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -107,6 +107,12 @@ final class OEDBSystem: OEDBItem {
         return context.allObjects(ofType: Self.self, matching: predicate, sortedBy: sortDescriptors)
     }
     
+    /// Returns an enabled system matching the given display name (e.g., "GameCube", "Sony PSP").
+    /// Used for cloud metadata sync where the system folder name is known.
+    class func system(forName name: String, in context: NSManagedObjectContext) -> OEDBSystem? {
+        return enabledSystems(in: context).first { $0.name == name }
+    }
+
     /// Returns enabled systems that support the given file extension.
     /// Used for cloud metadata sync where only the filename is available (no file on disk).
     class func systemsForFileExtension(_ ext: String, in context: NSManagedObjectContext) -> [OEDBSystem] {

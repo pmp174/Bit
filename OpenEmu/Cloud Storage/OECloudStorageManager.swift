@@ -611,10 +611,31 @@ struct OECloudLibraryManifest: Codable {
         }
 
         // Filter to actual ROM files (exclude manifest, hidden files, directories)
-        let romFiles = remoteFiles.filter { file in
-            !file.isDirectory
-            && !file.name.hasPrefix(".")
-            && file.name != ".oe-manifest.json"
+        // and decode percent-encoding from cloud provider paths
+        var romFiles: [(decodedPath: String, decodedName: String, size: Int64)] = []
+        var seenDecodedPaths = Set<String>()
+
+        for file in remoteFiles {
+            guard !file.isDirectory,
+                  !file.name.hasPrefix("."),
+                  file.name != ".oe-manifest.json"
+            else { continue }
+
+            // Decode percent-encoding — cloud providers may return encoded paths
+            let decodedPath = file.path.removingPercentEncoding ?? file.path
+            let decodedName = file.name.removingPercentEncoding ?? file.name
+
+            // Skip disc image track files (e.g., track01.bin, track02.raw) — these are
+            // companion files for GDI/CUE disc images, not standalone games
+            let nameLower = decodedName.lowercased()
+            if nameLower.range(of: #"^track\d+\."#, options: .regularExpression) != nil {
+                continue
+            }
+
+            // Skip percent-encoded duplicates (e.g., "Luigi's%20Mansion.rvz" when "Luigi's Mansion.rvz" exists)
+            guard seenDecodedPaths.insert(decodedPath).inserted else { continue }
+
+            romFiles.append((decodedPath, decodedName, file.size))
         }
 
         guard !romFiles.isEmpty else {
@@ -637,9 +658,17 @@ struct OECloudLibraryManifest: Codable {
         var skippedCount = 0
 
         context.performAndWait {
+            // Build a lookup of system names → OEDBSystem for folder-based detection
+            var systemsByName: [String: OEDBSystem] = [:]
+            for sys in OEDBSystem.enabledSystems(in: context) {
+                systemsByName[sys.name] = sys
+            }
+
             for file in romFiles {
+                let cloudRemotePath = file.decodedPath
+                let decodedName = file.decodedName
+
                 // Derive relativePath by stripping "Library/" prefix
-                let cloudRemotePath = file.path
                 let relativePath: String
                 if cloudRemotePath.hasPrefix("Library/") {
                     relativePath = String(cloudRemotePath.dropFirst("Library/".count))
@@ -647,13 +676,19 @@ struct OECloudLibraryManifest: Codable {
                     relativePath = cloudRemotePath
                 }
 
-                // Dedup check 1: ROM with this cloudIdentifier already exists
+                // Percent-encode for URL/location comparison (ROM locations are stored as URL-encoded strings)
+                let percentEncodedRelative = relativePath.addingPercentEncoding(
+                    withAllowedCharacters: .urlPathAllowed
+                ) ?? relativePath
+
+                // Dedup check 1: ROM with this cloudIdentifier already exists (try both encoded and decoded)
                 if let existing = try? OEDBRom.rom(withCloudIdentifier: cloudRemotePath, in: context),
                    existing.game != nil {
                     skippedCount += 1
                     continue
                 }
 
+                // Also try the manifest-keyed lookup
                 let manifestEntry = manifestEntries[relativePath]
 
                 // Dedup check 2: ROM with matching md5 (from manifest)
@@ -667,9 +702,6 @@ struct OECloudLibraryManifest: Codable {
                 }
 
                 // Dedup check 3: ROM with matching location URL
-                let percentEncodedRelative = relativePath.addingPercentEncoding(
-                    withAllowedCharacters: .urlPathAllowed
-                ) ?? relativePath
                 if let romFolderURL = database.romsFolderURL,
                    let localURL = URL(string: percentEncodedRelative, relativeTo: romFolderURL),
                    let existing = try? OEDBRom.rom(with: localURL, in: context),
@@ -681,20 +713,29 @@ struct OECloudLibraryManifest: Codable {
                     continue
                 }
 
-                // Determine system
-                let fileExtension = (file.name as NSString).pathExtension
+                // Determine system — priority: manifest > folder name > file extension
+                let fileExtension = (decodedName as NSString).pathExtension
                 let system: OEDBSystem?
 
                 if let manifestSystemId = manifestEntry?.systemIdentifier {
+                    // Best: manifest provides exact system identifier
                     system = OEDBSystem.system(for: manifestSystemId, in: context)
                 } else {
-                    let candidates = OEDBSystem.systemsForFileExtension(fileExtension, in: context)
-                    system = candidates.first
+                    // Use the folder name from the cloud path (e.g., "GameCube" from "GameCube/file.iso")
+                    let pathComponents = relativePath.split(separator: "/")
+                    if pathComponents.count >= 2 {
+                        let folderName = String(pathComponents[0])
+                        system = systemsByName[folderName]
+                            ?? OEDBSystem.systemsForFileExtension(fileExtension, in: context).first
+                    } else {
+                        // File at root of Library/ — fall back to extension
+                        system = OEDBSystem.systemsForFileExtension(fileExtension, in: context).first
+                    }
                 }
 
                 guard let resolvedSystem = system else {
                     if #available(macOS 11.0, *) {
-                        Logger.cloudStorage.warning("Skipping cloud file with unknown extension: \(file.name)")
+                        Logger.cloudStorage.warning("Skipping cloud file with unknown system: \(decodedName)")
                     }
                     continue
                 }
@@ -703,7 +744,7 @@ struct OECloudLibraryManifest: Codable {
                 let rom = OEDBRom.createObject(in: context)
                 rom.cloudIdentifier = cloudRemotePath
                 rom.location = percentEncodedRelative
-                rom.fileName = file.name
+                rom.fileName = decodedName
                 rom.fileSize = NSNumber(value: file.size)
                 rom.isDownloaded = NSNumber(value: false)
 
@@ -711,12 +752,12 @@ struct OECloudLibraryManifest: Codable {
                     rom.md5 = md5.lowercased()
                 }
 
-                // Create OEDBGame
+                // Create OEDBGame — use decoded name (no percent-encoding in display names)
                 let gameName: String
                 if let manifestName = manifestEntry?.gameName, !manifestName.isEmpty {
                     gameName = manifestName
                 } else {
-                    gameName = (file.name as NSString).deletingPathExtension
+                    gameName = (decodedName as NSString).deletingPathExtension
                 }
 
                 let game = OEDBGame.createGame(
@@ -729,7 +770,6 @@ struct OECloudLibraryManifest: Codable {
                 createdCount += 1
             }
 
-            // Update progress periodically
             self.syncProgress = 1.0
             try? context.save()
         }

@@ -54,6 +54,7 @@
     switch(button)
     {
         case OEC64SwapJoysticks : [self.client swapJoysticks]; break;
+        case OEC64LoadDisk      : [self.client loadDisk]; break;
         default :
             [self.client didPushC64Button:button forPlayer:aKey.player];
             break;

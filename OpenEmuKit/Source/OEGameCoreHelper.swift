@@ -77,6 +77,7 @@ import AudioToolbox
     func setDisc(_ discNumber: UInt)
     func changeDisplay(withMode displayMode: String)
     func changePeripheral(forPort portIdentifier: String, toDevice deviceIdentifier: String)
+    func swapJoystickPorts()
     func insertFile(at url: URL, completionHandler block: @escaping (Bool, Error?) -> Void)
     
     func handleMouseEvent(_ event: OEEvent)

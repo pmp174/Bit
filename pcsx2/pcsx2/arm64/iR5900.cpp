@@ -4,6 +4,10 @@
 // ARM64 EE Recompiler — Core dispatcher and block compilation
 // Ported from x86/ix86-32/iR5900.cpp
 
+// Bisection flag: when defined, ALL instructions use interpreter fallback
+// while keeping native block dispatch.  Uncomment to test infrastructure vs codegen.
+// #define EE_FORCE_INTERPRETER_FALLBACK
+
 #include "Common.h"
 
 #include "CDVD/CDVD.h"
@@ -32,6 +36,27 @@ using namespace R5900;
 
 namespace a64 = vixl::aarch64;
 
+// Diagnostic logging — writes directly to log file (stderr not captured)
+static void recLog(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
+static void recLog(const char* fmt, ...) {
+	static FILE* s_logFile = nullptr;
+	if (!s_logFile) {
+		s_logFile = fopen("/tmp/pcsx2_openemu.log", "a");
+		if (!s_logFile) return;
+	}
+	time_t now = time(nullptr);
+	struct tm* tm_info = localtime(&now);
+	char timebuf[32];
+	strftime(timebuf, sizeof(timebuf), "%I:%M:%S %p", tm_info);
+	fprintf(s_logFile, "[%s] [EE-REC] ", timebuf);
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(s_logFile, fmt, args);
+	va_end(args);
+	fprintf(s_logFile, "\n");
+	fflush(s_logFile);
+}
+
 // ========================================================================
 // Global state
 // ========================================================================
@@ -41,6 +66,7 @@ static bool eeCpuExecuting = false;
 static bool eeRecExitRequested = false;
 static bool g_resetEeScalingStats = false;
 static bool extraRam = false;
+static u32 s_blocksCompiled = 0;
 
 alignas(16) uptr recLUT[_64kb];
 u32 hwLUT[_64kb];
@@ -123,12 +149,69 @@ static void dyna_page_reset(u32 start, u32 sz);
 
 static void recEventTest()
 {
+	static u32 s_eventTestCount = 0;
+	static u32 s_lastPC = 0;
+	static u32 s_sameCount = 0;
+	s_eventTestCount++;
+
+	if (cpuRegs.pc == s_lastPC)
+		s_sameCount++;
+	else
+	{
+		if (s_sameCount > 10000)
+			recLog("PC changed after %u iterations: old=0x%08X new=0x%08X cycle=%llu",
+				s_sameCount, s_lastPC, cpuRegs.pc,
+				(unsigned long long)cpuRegs.cycle);
+		s_sameCount = 0;
+		s_lastPC = cpuRegs.pc;
+	}
+
+	// When stuck for exactly 50000 iterations, dump BIOS code and registers
+	if (s_sameCount == 50000)
+	{
+		u32 hwpc = cpuRegs.pc & 0x1FFFFFFF; // physical address
+		recLog("STUCK at PC=0x%08X (phys=0x%08X) for %u iterations, cycle=%llu",
+			cpuRegs.pc, hwpc, s_sameCount, (unsigned long long)cpuRegs.cycle);
+
+		// Dump 8 MIPS instructions at the stuck address
+		u8* mem = (u8*)PSM(hwpc);
+		if (mem)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				u32 inst = *(u32*)(mem + i * 4);
+				recLog("  [0x%08X] %08X", cpuRegs.pc + i * 4, inst);
+			}
+		}
+
+		// Dump key registers
+		recLog("  GPR: r1(at)=%016llx r2(v0)=%016llx r3(v1)=%016llx r4(a0)=%016llx",
+			(unsigned long long)cpuRegs.GPR.r[1].UD[0],
+			(unsigned long long)cpuRegs.GPR.r[2].UD[0],
+			(unsigned long long)cpuRegs.GPR.r[3].UD[0],
+			(unsigned long long)cpuRegs.GPR.r[4].UD[0]);
+		recLog("  GPR: r5(a1)=%016llx r6(a2)=%016llx r7(a3)=%016llx r8(t0)=%016llx",
+			(unsigned long long)cpuRegs.GPR.r[5].UD[0],
+			(unsigned long long)cpuRegs.GPR.r[6].UD[0],
+			(unsigned long long)cpuRegs.GPR.r[7].UD[0],
+			(unsigned long long)cpuRegs.GPR.r[8].UD[0]);
+		recLog("  GPR: r29(sp)=%016llx r31(ra)=%016llx COP0.Status=%08X COP0.Cause=%08X",
+			(unsigned long long)cpuRegs.GPR.r[29].UD[0],
+			(unsigned long long)cpuRegs.GPR.r[31].UD[0],
+			cpuRegs.CP0.n.Status.val, cpuRegs.CP0.n.Cause);
+	}
+
+	if (s_eventTestCount <= 10 || (s_eventTestCount % 10000000) == 0)
+		recLog("recEventTest #%u: pc=0x%08X cycle=%llu nextEvent=%llu",
+			s_eventTestCount, cpuRegs.pc, (unsigned long long)cpuRegs.cycle,
+			(unsigned long long)cpuRegs.nextEventCycle);
+
 	_cpuEventTest_Shared();
 
-	// Check both the standard exit flag (set by ExitExecution/SetState)
-	// and the VM state directly (belt-and-suspenders for OpenEmu shutdown)
-	if (eeRecExitRequested ||
-		VMManager::GetState() != VMState::Running)
+	// Match x86 recEventTest: only exit when explicitly requested.
+	// State checks (Paused, Stopping) are handled by Counters.cpp's VSync handler
+	// which calls Cpu->ExitExecution() → sets eeRecExitRequested.
+	if (eeRecExitRequested)
 	{
 		eeRecExitRequested = false;
 		recExitExecution();
@@ -291,9 +374,10 @@ static void _DynGen_Dispatchers()
 	// Start code block using the recompiler memory
 	armStartBlock();
 
-	// Hot paths first — DispatcherEvent and DispatcherReg
-	DispatcherEvent = _DynGen_DispatcherEvent();
+	// DispatcherReg must be generated first — DispatcherEvent and
+	// EnterRecompiledCode both emit jumps to it.
 	DispatcherReg = _DynGen_DispatcherReg();
+	DispatcherEvent = _DynGen_DispatcherEvent();
 
 	// JIT compile stub
 	JITCompile = _DynGen_JITCompile();
@@ -313,8 +397,14 @@ static void _DynGen_Dispatchers()
 	// Tell the block manager where JITCompile is
 	recBlocks.SetJITCompile(JITCompile);
 
+	recLog("EE Dispatchers generated: Reg=%p, Event=%p, JITCompile=%p, Enter=%p, Exit=%p",
+		DispatcherReg, DispatcherEvent, JITCompile, EnterRecompiledCode, ExitRecompiledCode);
+
 	// Register dispatchers with perf profiler
-	Perf::any.Register(DispatcherReg, static_cast<u32>((const u8*)armGetCurrentCodePointer() - (const u8*)DispatcherReg), "EE Dispatcher");
+	// NOTE: Must use armGetAsmPtr() here, NOT armGetCurrentCodePointer(),
+	// because armEndBlock() sets armAsm=nullptr and armGetCurrentCodePointer()
+	// dereferences armAsm->GetCursorOffset() which would crash.
+	Perf::any.Register(DispatcherReg, static_cast<u32>((const u8*)armGetAsmPtr() - (const u8*)DispatcherReg), "EE Dispatcher");
 }
 
 // ========================================================================
@@ -418,6 +508,7 @@ static void recReserve()
 
 static void recResetRaw()
 {
+	recLog("recResetRaw() called");
 	if (!recRAM || CHECK_EXTRAMEM != extraRam)
 	{
 		recReserveRAM();
@@ -429,6 +520,11 @@ static void recResetRaw()
 	// Reset code pointers and regenerate dispatchers
 	recPtr = SysMemory::GetEERec();
 	armSetAsmPtr(recPtr, recPtrEnd - recPtr, &s_recConstPool);
+
+	// Reset constant pool BEFORE generating dispatchers so their trampolines persist.
+	// Previously this was done after _DynGen_Dispatchers(), which destroyed the
+	// trampolines that DispatcherEvent's armEmitCall(recEventTest) depends on.
+	s_recConstPool.Reset();
 
 	_DynGen_Dispatchers();
 
@@ -451,7 +547,7 @@ static void recResetRaw()
 		std::memset(s_pInstCache, 0, sizeof(EEINST) * s_nInstCacheSize);
 
 	recBlocks.Reset();
-	s_recConstPool.Reset();
+	// NOTE: s_recConstPool.Reset() is now called above, BEFORE _DynGen_Dispatchers()
 
 	maxrecmem = 0;
 	g_branch = 0;
@@ -520,6 +616,11 @@ static void recStep()
 
 static void recExecute()
 {
+	static u32 s_execCount = 0;
+	s_execCount++;
+	if (s_execCount <= 5)
+		recLog("recExecute() called (#%u), EnterRecompiledCode=%p", s_execCount, EnterRecompiledCode);
+
 	// Handle pending reset
 	if (eeRecNeedsReset)
 	{
@@ -535,13 +636,17 @@ static void recExecute()
 		// Enter the ARM64 JIT dispatcher
 		((void(*)())EnterRecompiledCode)();
 
-		// We should never get here — exit is via longjmp
-		pxFailRel("EE Recompiler: EnterRecompiledCode returned unexpectedly");
+		// EnterRecompiledCode should only exit via fastjmp_jmp.
+		// If we get here, something corrupted the JIT state.
+		recLog("WARNING: EnterRecompiledCode returned unexpectedly — treating as exit request");
 	}
 
 	// Control returns here via recExitExecution() / longjmp
 	eeCpuExecuting = false;
 	eeRecExitRequested = false;
+	if (s_execCount <= 5 || (s_execCount % 100000) == 0)
+		recLog("recExecute: returned from JIT (#%u), pc=0x%08X, cycle=%llu",
+			s_execCount, cpuRegs.pc, (unsigned long long)cpuRegs.cycle);
 	EE::Profiler.Print();
 }
 
@@ -714,7 +819,7 @@ void iFlushCall(int flushtype)
 		for (u32 i = 0; i < ARMGPR_COUNT; i++)
 		{
 			if (armGPRregs[i].inuse && armGPRregs[i].type == ARMTYPE_TEMP)
-				_freeArmGPR(i);
+				_freeArmGPR(armGPRSlotToReg(i));
 		}
 	}
 
@@ -724,7 +829,7 @@ void iFlushCall(int flushtype)
 		for (u32 i = 0; i < ARMGPR_COUNT; i++)
 		{
 			if (armGPRregs[i].inuse && armGPRregs[i].type != ARMTYPE_TEMP)
-				_freeArmGPR(i);
+				_freeArmGPR(armGPRSlotToReg(i));
 		}
 	}
 
@@ -747,15 +852,16 @@ void iFlushCall(int flushtype)
 		_flushNeonregs();
 	}
 
-	// Flush constants
+	// Flush constants (must delete const status so interpreter-modified GPRs aren't stale)
 	if (flushtype & FLUSH_CONSTANT_REGS)
-		_flushConstRegs(false);
+		_flushConstRegs(true);
 
 	// Flush PC
 	if (flushtype & FLUSH_PC)
 	{
 		if (!g_cpuFlushedPC)
 		{
+			recLog("[COMPILE] iFlushCall FLUSH_PC: writing pc=0x%08X to cpuRegs.pc", pc);
 			armAsm->Mov(RWARG1, pc);
 			armAsm->Str(RWARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, pc)));
 			g_cpuFlushedPC = true;
@@ -778,15 +884,72 @@ void recCall(void (*func)())
 {
 	iFlushCall(FLUSH_INTERPRETER);
 	armEmitCall((const void*)func);
+
+	// The interpreter function may modify any MIPS register at runtime.
+	// Invalidate ALL register cache allocations so subsequent instructions in
+	// this block reload from memory instead of using stale cached values.
+	// The iFlushCall above already wrote all dirty values to memory, so we
+	// can safely discard the allocator state without losing data.
+	_initArmGPRregs();
+	_initNeonregs();
+
+	// Also clear constant tracking — the interpreter may have changed any GPR.
+	// (r0 remains const-zero by MIPS convention.)
+	g_cpuHasConstReg = 1;
+	g_cpuFlushedConstReg = 1;
+}
+
+static void recPreBranchLog()
+{
+	static int s_count = 0;
+	s_count++;
+	if (s_count <= 10)
+		recLog("PRE-BRANCH #%d: pc=0x%08X code=0x%08X rs=%d rs_val=0x%08X",
+			s_count, cpuRegs.pc, cpuRegs.code, (cpuRegs.code >> 21) & 0x1f,
+			cpuRegs.GPR.r[(cpuRegs.code >> 21) & 0x1f].UL[0]);
+}
+
+static void recInterpreterReturned()
+{
+	static int s_count = 0;
+	s_count++;
+	if (s_count <= 10)
+		recLog("INTERP-RETURNED #%d: pc=0x%08X cycle=%llu branch=%d",
+			s_count, cpuRegs.pc, (unsigned long long)cpuRegs.cycle, cpuRegs.branch);
+}
+
+static void recPostBranchLog()
+{
+	static int s_count = 0;
+	s_count++;
+	if (s_count <= 10)
+		recLog("POST-BRANCH #%d: pc=0x%08X cycle=%llu nextEvent=%llu",
+			s_count, cpuRegs.pc, (unsigned long long)cpuRegs.cycle, (unsigned long long)cpuRegs.nextEventCycle);
 }
 
 void recBranchCall(void (*func)())
 {
-	// Set nextEventCycle = cycle to force event test after the call
-	armAsm->Ldr(RWARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
-	armAsm->Str(RWARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, nextEventCycle)));
+	// Set nextEventCycle = cycle to force event test after the call (both u64)
+	armAsm->Ldr(RXARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
+	armAsm->Str(RXARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, nextEventCycle)));
 
-	recCall(func);
+	// Flush all state, but handle PC ourselves (for clarity and control).
+	// recompileNextInstruction pre-increments pc before calling the rec function,
+	// so pc is already instruction_address + 4.  We write it manually below rather
+	// than relying on iFlushCall's FLUSH_PC which would do the same thing.
+	iFlushCall(FLUSH_INTERPRETER & ~FLUSH_PC);
+
+	// Write PC for interpreter.  recompileNextInstruction already pre-incremented
+	// pc (pc += 4 happens before the rec function is called), so pc is already
+	// instruction_address + 4, which is exactly what the interpreter expects
+	// (matching execI's pre-increment convention).
+	armAsm->Mov(RWARG1, pc);
+	armAsm->Str(RWARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, pc)));
+	g_cpuFlushedPC = true;
+
+	// Call the interpreter function
+	armEmitCall((const void*)func);
+
 	g_branch = 2;
 }
 
@@ -840,38 +1003,63 @@ static void iBranchTest(u32 newpc)
 {
 	u32 cycles = scaleblockcycles_clear();
 
-	// Add cycles to cpuRegs.cycle
-	armAsm->Ldr(RWARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
-	if (a64::Assembler::IsImmAddSub(cycles))
+	if (EmuConfig.Speedhacks.WaitLoop && s_nBlockFF && newpc == s_branchTo)
 	{
-		armAsm->Add(RWARG1, RWARG1, cycles);
+		// Wait-loop fast-forward: skip straight to the next event instead of
+		// spinning the loop body.  Equivalent to:
+		//   cycle += blockcycles;
+		//   cycle = max(cycle, nextEventCycle);
+		//   goto DispatcherEvent;
+
+		// cycle += blockcycles
+		armAsm->Ldr(RXARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
+		if (a64::Assembler::IsImmAddSub(cycles))
+			armAsm->Add(RXARG1, RXARG1, cycles);
+		else
+		{
+			armAsm->Mov(RWARG2, cycles);
+			armAsm->Add(RXARG1, RXARG1, RXARG2);
+		}
+
+		// RXARG2 = nextEventCycle
+		armAsm->Ldr(RXARG2, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, nextEventCycle)));
+
+		// cycle = max(cycle + blockcycles, nextEventCycle)
+		armAsm->Cmp(RXARG1, RXARG2);
+		armAsm->Csel(RXARG1, RXARG2, RXARG1, a64::Condition::lt);
+		armAsm->Str(RXARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
+
+		// Always dispatch to event handler
+		armAsm->Mov(RXARG1, reinterpret_cast<uintptr_t>(DispatcherEvent));
+		armAsm->Br(RXARG1);
 	}
 	else
 	{
-		armAsm->Mov(RWARG2, cycles);
-		armAsm->Add(RWARG1, RWARG1, RWARG2);
-	}
-	armAsm->Str(RWARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
+		// Normal path: add cycles to cpuRegs.cycle (u64 — must use 64-bit registers!)
+		armAsm->Ldr(RXARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
+		if (a64::Assembler::IsImmAddSub(cycles))
+		{
+			armAsm->Add(RXARG1, RXARG1, cycles);
+		}
+		else
+		{
+			armAsm->Mov(RWARG2, cycles);
+			armAsm->Add(RXARG1, RXARG1, RXARG2);
+		}
+		armAsm->Str(RXARG1, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, cycle)));
 
-	// Compare cycle vs nextEventCycle
-	armAsm->Ldr(RWARG2, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, nextEventCycle)));
-	armAsm->Cmp(RWARG1, RWARG2);
+		// Compare cycle vs nextEventCycle (RXARG1 still holds updated cycle)
+		armAsm->Ldr(RXARG2, a64::MemOperand(RCPUSTATE, (s64)offsetof(cpuRegisters, nextEventCycle)));
+		armAsm->Cmp(RXARG1, RXARG2);
 
-	// If cycle < nextEventCycle, no event pending — dispatch next block
-	if (newpc == 0xffffffff)
-	{
-		// Dynamic branch — jump to DispatcherReg
-		armEmitCondBranch(a64::Condition::lo, DispatcherReg);
+		// Use register-indirect dispatch to guarantee correct target addresses.
+		// Mov (MOVZ/MOVK) does NOT affect NZCV flags, so the Cmp result is preserved.
+		armAsm->Mov(RXARG1, reinterpret_cast<uintptr_t>(DispatcherReg));
+		armAsm->Mov(RXARG2, reinterpret_cast<uintptr_t>(DispatcherEvent));
+		// If cycle < nextEventCycle (lt) → DispatcherReg, else → DispatcherEvent
+		armAsm->Csel(RXARG1, RXARG1, RXARG2, a64::Condition::lt);
+		armAsm->Br(RXARG1);
 	}
-	else
-	{
-		// Static branch — emit a conditional jump to DispatcherReg
-		// (In the future, this could be block linking)
-		armEmitCondBranch(a64::Condition::lo, DispatcherReg);
-	}
-
-	// cycle >= nextEventCycle — event pending, jump to event handler
-	armEmitJmp(DispatcherEvent);
 }
 
 // ========================================================================
@@ -988,7 +1176,20 @@ void recompileNextInstruction(bool delayslot, bool swapped_delay_slot)
 	{
 		// Compile the instruction via the opcode table
 		s_nBlockCycles += opcode.cycles * (2 - ((cpuRegs.IsDelaySlot && (cpuRegs.CP0.n.Status.b.BEV || cpuRegs.CP0.n.Config & 0x8)) ? 1 : 0));
+		if (s_blocksCompiled <= 5)
+			recLog("  inst @0x%08X code=0x%08X op=%s rec=%p", pc, cpuRegs.code, opcode.Name, (void*)(uintptr_t)opcode.recompile);
+
+#ifdef EE_FORCE_INTERPRETER_FALLBACK
+		// Bisection mode: force ALL instructions through interpreter fallback
+		// while keeping native block dispatch.  This tests whether the bug is
+		// in the native instruction codegen or in the infrastructure.
+		if (opcode.flags & IS_BRANCH)
+			recBranchCall(opcode.interpret);
+		else
+			recCall(opcode.interpret);
+#else
 		opcode.recompile();
+#endif
 	}
 
 	// Clear register allocation flags
@@ -1038,6 +1239,10 @@ static void dyna_page_reset(u32 start, u32 sz)
 
 static void recRecompile(const u32 startpc)
 {
+	s_blocksCompiled++;
+	if (s_blocksCompiled <= 10 || (s_blocksCompiled % 100000) == 0)
+		recLog("Compiling block #%u at PC=0x%08X", s_blocksCompiled, startpc);
+
 	// Check if we need to reset the recompiler cache
 	if (recPtr >= recPtrEnd)
 	{
@@ -1058,7 +1263,13 @@ static void recRecompile(const u32 startpc)
 	if (HWADDR(startpc) == VMManager::Internal::GetCurrentELFEntryPoint())
 		VMManager::Internal::EntryPointCompilingOnCPUThread();
 
+	// Sync armAsmPtr to EE's recPtr before generating code.
+	// armAsmPtr is a thread-local shared between EE and IOP recompilers.
+	// After IOP reset/compilation, it may point to IOP memory.
+	armSetAsmPtr(recPtr, recPtrEnd - recPtr, &s_recConstPool);
+
 	// Align and start a new code block
+	if (s_blocksCompiled <= 10) recLog("  [CP1] armGetAsmPtr/Align");
 	u8* block_start = armGetAsmPtr();
 	armAlignAsmPtr();
 	block_start = armGetAsmPtr();
@@ -1067,7 +1278,9 @@ static void recRecompile(const u32 startpc)
 	maxrecmem = std::max((startpc & ~0xa0000000), maxrecmem);
 
 	// Get or create block metadata
+	if (s_blocksCompiled <= 10) recLog("  [CP2] PC_GETBLOCK_ page=0x%04X", startpc >> 16);
 	s_pCurBlock = PC_GETBLOCK_(startpc, recLUT);
+	if (s_blocksCompiled <= 10) recLog("  [CP3] recBlocks.New");
 	s_pCurBlockEx = recBlocks.New(startpc, (uptr)block_start);
 	pxAssert(s_pCurBlockEx);
 
@@ -1091,6 +1304,7 @@ static void recRecompile(const u32 startpc)
 	// Phase 1: Scan for block end
 	// ==============================
 
+	if (s_blocksCompiled <= 10) recLog("  [CP4] Phase1 scan start, PSM(%08X)=%p", startpc, PSM(startpc));
 	s_nEndBlock = startpc;
 	s_branchTo = 0xFFFFFFFF;
 	s_nBlockFF = false;
@@ -1182,56 +1396,138 @@ static void recRecompile(const u32 startpc)
 	}
 StartRecomp:
 
+	// Wait-loop detection: if a block branches back to its own start and doesn't
+	// write to a register it has already read (except registers loaded from memory
+	// or initialized with constants), it will do the same thing every iteration.
+	// Such blocks can be fast-forwarded to the next event.
+	s_nBlockFF = false;
+	if (s_branchTo == startpc)
+	{
+		s_nBlockFF = true;
+
+		u32 reads = 0, loads = 1;
+
+		for (i = startpc; i < s_nEndBlock; i += 4)
+		{
+			if (i == s_nEndBlock - 8)
+				continue;
+			cpuRegs.code = *(u32*)PSM(i);
+			// nop
+			if (cpuRegs.code == 0)
+				continue;
+			// cache, sync
+			else if (_Opcode_ == 057 || (_Opcode_ == 0 && _Funct_ == 017))
+				continue;
+			// imm arithmetic
+			else if ((_Opcode_ & 070) == 010 || (_Opcode_ & 076) == 030)
+			{
+				if (loads & 1 << _Rs_)
+				{
+					loads |= 1 << _Rt_;
+					continue;
+				}
+				else
+					reads |= 1 << _Rs_;
+				if (reads & 1 << _Rt_)
+				{
+					s_nBlockFF = false;
+					break;
+				}
+			}
+			// common register arithmetic instructions
+			else if (_Opcode_ == 0 && (_Funct_ & 060) == 040 && (_Funct_ & 076) != 050)
+			{
+				if (loads & 1 << _Rs_ && loads & 1 << _Rt_)
+				{
+					loads |= 1 << _Rd_;
+					continue;
+				}
+				else
+					reads |= 1 << _Rs_ | 1 << _Rt_;
+				if (reads & 1 << _Rd_)
+				{
+					s_nBlockFF = false;
+					break;
+				}
+			}
+			// loads
+			else if ((_Opcode_ & 070) == 040 || (_Opcode_ & 076) == 032 || _Opcode_ == 067)
+			{
+				if (loads & 1 << _Rs_)
+				{
+					loads |= 1 << _Rt_;
+					continue;
+				}
+				else
+					reads |= 1 << _Rs_;
+				if (reads & 1 << _Rt_)
+				{
+					s_nBlockFF = false;
+					break;
+				}
+			}
+			// mfc*, cfc*
+			else if ((_Opcode_ & 074) == 020 && _Rs_ < 4)
+			{
+				loads |= 1 << _Rt_;
+			}
+			else
+			{
+				s_nBlockFF = false;
+				break;
+			}
+		}
+	}
+
+	if (s_blocksCompiled <= 10)
+		recLog("  [CP5] Phase1 done, endBlock=0x%08X, numinsts=%u, blockFF=%d", s_nEndBlock, (s_nEndBlock - startpc) / 4, s_nBlockFF);
+
 	// ==============================
 	// Phase 2: Instruction info back-propagation
+	// (Matches x86 layout: cache[0] = pre-block state, cache[1..N] = instruction data)
 	// ==============================
 
 	u32 numinsts = (s_nEndBlock - startpc) / 4;
 	if (numinsts == 0)
 		numinsts = 1;
 
-	// Ensure instruction cache is large enough
-	if (numinsts > s_nInstCacheSize)
+	// Ensure instruction cache is large enough (+1 for sentinel at end)
+	if (s_nInstCacheSize < numinsts + 1)
 	{
-		s_nInstCacheSize = numinsts + 128;
-		s_pInstCache = (EEINST*)realloc(s_pInstCache, sizeof(EEINST) * s_nInstCacheSize);
+		free(s_pInstCache);
+		s_nInstCacheSize = numinsts + 10;
+		s_pInstCache = (EEINST*)malloc(sizeof(EEINST) * s_nInstCacheSize);
 	}
 
-	// Clear and fill instruction info
-	for (u32 j = 0; j < numinsts; j++)
-		_recClearInst(&s_pInstCache[j]);
+	// Initialize sentinel at the end (all-live initial state for back-propagation)
+	EEINST* pcur = s_pInstCache + numinsts;
+	_recClearInst(pcur);
+	pcur->info = 0;
 
-	// Back-propagate register usage
-	{
-		EEINST* prev = nullptr;
-		for (int j = numinsts - 1; j >= 0; j--)
-		{
-			u32 instPC = startpc + j * 4;
-			u32 code = *(u32*)PSM(instPC);
-			recBackpropBSC(code, prev, &s_pInstCache[j]);
-			prev = &s_pInstCache[j];
-		}
-	}
-
-	// COP2 analysis passes
+	// Back-propagate register usage (iterating backward, matching x86 pattern)
 	bool has_cop2 = false;
-	for (u32 j = 0; j < numinsts; j++)
+	for (u32 i = s_nEndBlock; i > startpc; i -= 4)
 	{
-		if (s_pInstCache[j].info & (1 << 1)) // COP2 flag
-		{
-			has_cop2 = true;
-			break;
-		}
+		cpuRegs.code = *(u32*)PSM(i - 4);
+		pcur[-1] = pcur[0]; // Propagate liveness state backward
+		recBackpropBSC(cpuRegs.code, pcur - 1, pcur);
+		pcur--;
+
+		has_cop2 |= (_Opcode_ == 022 || _Opcode_ == 066 || _Opcode_ == 076);
 	}
 
+	// COP2 analysis passes (s_pInstCache + 1 aligns with actual instruction data)
 	if (has_cop2)
 	{
 		R5900::COP2MicroFinishPass cop2_finish;
-		cop2_finish.Run(startpc, s_nEndBlock, s_pInstCache);
+		cop2_finish.Run(startpc, s_nEndBlock, s_pInstCache + 1);
 
 		R5900::COP2FlagHackPass cop2_flags;
-		cop2_flags.Run(startpc, s_nEndBlock, s_pInstCache);
+		cop2_flags.Run(startpc, s_nEndBlock, s_pInstCache + 1);
 	}
+
+	if (s_blocksCompiled <= 10)
+		recLog("  [CP6] Phase2 done, starting Phase3 codegen");
 
 	// ==============================
 	// Phase 3: Code generation
@@ -1259,7 +1555,8 @@ StartRecomp:
 	// Handle end of block
 	if (g_branch == 2)
 	{
-		// SYSCALL / EI / etc — flush everything and do a branch test
+		// Interpreter handled the branch — flush and do a branch test.
+		// cpuRegs.pc was set by the interpreter (branch target or fall-through).
 		iFlushCall(FLUSH_EVERYTHING);
 		iBranchTest(0xffffffff);
 	}
@@ -1278,6 +1575,9 @@ StartRecomp:
 	// End the code block and flush I-cache
 	u8* block_end = armEndBlock();
 
+	// Update recPtr to track code pointer advancement
+	recPtr = armGetAsmPtr();
+
 	// Record the native code size
 	s_pCurBlockEx->x86size = (u32)(block_end - block_start);
 
@@ -1293,6 +1593,9 @@ StartRecomp:
 
 	// Register with perf profiler
 	Perf::ee.RegisterPC(block_start, s_pCurBlockEx->x86size, startpc);
+
+	if (s_blocksCompiled <= 5)
+		recLog("Block #%u compiled OK: %u insts, %u bytes ARM64, g_branch=%d", s_blocksCompiled, s_pCurBlockEx->size, s_pCurBlockEx->x86size, g_branch);
 
 	s_pCurBlock = nullptr;
 	s_pCurBlockEx = nullptr;
@@ -1322,8 +1625,8 @@ void _eeMoveGPRtoR(const vixl::aarch64::Register& to, int fromgpr)
 	}
 	else
 	{
-		// Load from cpuRegs.GPR
-		s64 offset = (s64)offsetof(cpuRegisters, GPR) + fromgpr * sizeof(GPR_reg64);
+		// Load from cpuRegs.GPR — each GPR_reg is 128 bits (16 bytes), index via GPR.r[]
+		s64 offset = (s64)offsetof(cpuRegisters, GPR.r[fromgpr].UD[0]);
 		if (to.Is64Bits())
 			armAsm->Ldr(to, a64::MemOperand(RCPUSTATE, offset));
 		else

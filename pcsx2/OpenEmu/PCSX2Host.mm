@@ -187,6 +187,8 @@ void Host::CancelGameListRefresh() {}
 #pragma mark - VM Shutdown
 
 void Host::RequestVMShutdown(bool allow_confirm, bool allow_save_state, bool default_save_state) {
+    NSLog(@"[PCSX2] Host::RequestVMShutdown called (confirm=%d, save=%d, default=%d)",
+          allow_confirm, allow_save_state, default_save_state);
     OpenEmuBridge::g_shutdownRequested = true;
 }
 

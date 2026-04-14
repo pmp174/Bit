@@ -669,7 +669,16 @@ final class GameControlsBar: NSWindow {
             item.submenu = peripheralDevicesMenu
             menu.addItem(item)
         }
-        
+
+        // joystick port swap (for computer systems like C64, Amiga)
+        if gameViewController.document.supportsJoystickPortSwap {
+            item = NSMenuItem(title: NSLocalizedString("Swap Joystick Ports", comment: ""),
+                              action: #selector(OEGameDocument.swapJoystickPorts(_:)),
+                              keyEquivalent: "")
+            item.state = gameViewController.document.joystickPortsSwapped ? .on : .off
+            menu.addItem(item)
+        }
+
         // video shader
         item = NSMenuItem()
         item.title = NSLocalizedString("Select Shader", comment: "")

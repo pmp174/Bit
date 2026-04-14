@@ -246,7 +246,14 @@ bool GSRenderer::Merge(int field)
 	{
 		const float offset = is_bob ? (tex[1] ? tex_scale[1] : tex_scale[0]) : 0.0f;
 
+#ifdef __APPLE__
+		// Force Weave deinterlacing on Apple — FastMAD (mode 3) halves brightness
+		// because it blends the current field with the previous (initially black) field.
+		// Weave (mode 0) simply interleaves fields without brightness loss.
+		g_gs_device->Interlace(fs, field ^ field2, 0 /* Weave */, offset);
+#else
 		g_gs_device->Interlace(fs, field ^ field2, mode, offset);
+#endif
 	}
 
 	if (GSConfig.ShadeBoost)
@@ -581,8 +588,39 @@ void GSRenderer::EndPresentFrame()
 	ImGuiManager::NewFrame();
 }
 
+// OpenEmu diagnostic log for VSync
+#ifdef __APPLE__
+static FILE* s_vsyncLogFile = nullptr;
+static int s_vsyncCount = 0;
+static void VSyncLog(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
+static void VSyncLog(const char* fmt, ...) {
+	if (!s_vsyncLogFile) {
+		s_vsyncLogFile = fopen("/tmp/pcsx2_openemu.log", "a");
+		if (!s_vsyncLogFile) return;
+	}
+	time_t now = time(nullptr);
+	struct tm* tm_info = localtime(&now);
+	char timebuf[32];
+	strftime(timebuf, sizeof(timebuf), "%I:%M:%S %p", tm_info);
+	fprintf(s_vsyncLogFile, "[%s] [GS-VSYNC] ", timebuf);
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(s_vsyncLogFile, fmt, args);
+	va_end(args);
+	fprintf(s_vsyncLogFile, "\n");
+	fflush(s_vsyncLogFile);
+}
+#endif
+
 void GSRenderer::VSync(u32 field, bool registers_written, bool idle_frame)
 {
+#ifdef __APPLE__
+	s_vsyncCount++;
+	if (s_vsyncCount <= 30 || (s_vsyncCount % 300) == 0)
+		VSyncLog("VSync[%d]: field=%u regs_written=%d idle=%d s_n=%lld frame=%lld",
+			s_vsyncCount, field, registers_written, idle_frame, s_n, g_perfmon.GetFrame());
+#endif
+
 	if (GSConfig.ShouldDump(s_n, g_perfmon.GetFrame()))
 	{
 		if (GSConfig.SaveInfo)
@@ -635,6 +673,25 @@ void GSRenderer::VSync(u32 field, bool registers_written, bool idle_frame)
 	}
 
 	const bool blank_frame = !Merge(field);
+
+#ifdef __APPLE__
+	if (s_vsyncCount <= 30 || (s_vsyncCount % 300) == 0) {
+		GSTexture* cur = g_gs_device ? g_gs_device->GetCurrent() : nullptr;
+		VSyncLog("VSync[%d]: blank_frame=%d skip_frame=%d current=%p s_n=%lld draw_n=%lld xfer_n=%lld",
+			s_vsyncCount, blank_frame, skip_frame, cur, s_n, m_last_draw_n, m_last_transfer_n);
+		if (cur)
+			VSyncLog("VSync[%d]: current texture %dx%d", s_vsyncCount, cur->GetWidth(), cur->GetHeight());
+		// Log PMODE and DISPLAY registers
+		VSyncLog("VSync[%d]: PMODE EN1=%d EN2=%d MMOD=%d ALP=%d SLBG=%d  SMODE2 INT=%d FFMD=%d",
+			s_vsyncCount,
+			m_regs->PMODE.EN1, m_regs->PMODE.EN2, m_regs->PMODE.MMOD, m_regs->PMODE.ALP, m_regs->PMODE.SLBG,
+			m_regs->SMODE2.INT, m_regs->SMODE2.FFMD);
+		VSyncLog("VSync[%d]: DISPFB1 FBP=%d FBW=%d PSM=%d  DISPFB2 FBP=%d FBW=%d PSM=%d",
+			s_vsyncCount,
+			m_regs->DISP[0].DISPFB.FBP, m_regs->DISP[0].DISPFB.FBW, m_regs->DISP[0].DISPFB.PSM,
+			m_regs->DISP[1].DISPFB.FBP, m_regs->DISP[1].DISPFB.FBW, m_regs->DISP[1].DISPFB.PSM);
+	}
+#endif
 
 	m_last_draw_n = s_n;
 	m_last_transfer_n = s_transfer_n;
@@ -693,29 +750,18 @@ void GSRenderer::VSync(u32 field, bool registers_written, bool idle_frame)
 
 		if (BeginPresentFrame(false))
 		{
-#ifdef __APPLE__
-			// OpenEmu diagnostic: log EE cycle count to measure emulation progress
-			{
-				static int s_vsync_diag_count = 0;
-				s_vsync_diag_count++;
-				// Log first 5 frames, then every 500 frames (~8 sec at 60fps)
-				if (s_vsync_diag_count <= 5 || (s_vsync_diag_count % 500) == 0)
-				{
-					FILE* f = fopen("/tmp/pcsx2_openemu.log", "a");
-					if (f) {
-						fprintf(f, "[GS-Renderer] VSync[%d]: current=%p blank=%d idle=%d EE_cycles=%llu EE_pc=0x%08X\n",
-							s_vsync_diag_count, current, blank_frame, idle_frame,
-							(unsigned long long)cpuRegs.cycle, cpuRegs.pc);
-						fflush(f);
-						fclose(f);
-					}
-				}
-			}
-#endif
 			if (current && !blank_frame)
 			{
 				const u64 current_time = Common::Timer::GetCurrentValue();
 				const float shader_time = static_cast<float>(Common::Timer::ConvertValueToSeconds(current_time - m_shader_time_start));
+
+#ifdef __APPLE__
+				if (s_vsyncCount <= 30 || (s_vsyncCount % 300) == 0)
+					VSyncLog("VSync[%d]: PresentRect src_uv=(%.2f,%.2f,%.2f,%.2f) draw_rect=(%.1f,%.1f,%.1f,%.1f) win=%dx%d",
+						s_vsyncCount, src_uv.x, src_uv.y, src_uv.z, src_uv.w,
+						draw_rect.x, draw_rect.y, draw_rect.z, draw_rect.w,
+						g_gs_device->GetWindowWidth(), g_gs_device->GetWindowHeight());
+#endif
 
 				g_gs_device->PresentRect(current, src_uv, nullptr, draw_rect,
 					s_tv_shader_indices[GSConfig.TVShader], shader_time, GSConfig.LinearPresent != GSPostBilinearMode::Off);

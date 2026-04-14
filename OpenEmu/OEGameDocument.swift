@@ -142,6 +142,8 @@ final class OEGameDocument: NSDocument {
     private(set) var discCount: UInt = 0
     private(set) var displayModes: [[String: Any]] = []
     private(set) var peripheralDevices: [[String: Any]] = []
+    private(set) var supportsJoystickPortSwap: Bool = false
+    private(set) var joystickPortsSwapped: Bool = false
     
     private var gameCoreManager: GameCoreManager?
     
@@ -2143,6 +2145,15 @@ extension OEGameDocument: OESystemBindingsObserver {
                 gameCoreManager?.changePeripheral(forPort: portId, toDevice: deviceId)
             }
         }
+    }
+
+    func setSupportsJoystickPortSwap(_ supports: Bool) {
+        self.supportsJoystickPortSwap = supports
+    }
+
+    @IBAction func swapJoystickPorts(_ sender: Any?) {
+        joystickPortsSwapped.toggle()
+        gameCoreManager?.swapJoystickPorts()
     }
     
     func setRemoteContextID(_ contextID: OEContextID) {

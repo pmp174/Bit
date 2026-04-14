@@ -24,6 +24,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		631756812F891E0C002736AA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631756802F891E0C002736AA /* Security.framework */; };
 		6376EB0A2F719C4400F07E39 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6376EB092F719C4400F07E39 /* IOSurface.framework */; };
 		A10000000000000000000001 /* DolphinGameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* DolphinGameCore.mm */; };
 		A10000000000000000000002 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000021 /* OpenEmuBase.framework */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		631756802F891E0C002736AA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		6376EB092F719C4400F07E39 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		A10000000000000000000010 /* DolphinGameCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DolphinGameCore.h; sourceTree = "<group>"; };
 		A10000000000000000000011 /* DolphinGameCore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DolphinGameCore.mm; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				631756812F891E0C002736AA /* Security.framework in Frameworks */,
 				6376EB0A2F719C4400F07E39 /* IOSurface.framework in Frameworks */,
 				A10000000000000000000002 /* OpenEmuBase.framework in Frameworks */,
 				A10000000000000000000003 /* Metal.framework in Frameworks */,
@@ -130,6 +133,7 @@
 		A10000000000000000000220 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				631756802F891E0C002736AA /* Security.framework */,
 				6376EB092F719C4400F07E39 /* IOSurface.framework */,
 				A10000000000000000000021 /* OpenEmuBase.framework */,
 				A10000000000000000000031 /* Metal.framework */,
@@ -277,6 +281,55 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenEmu/Dolphin-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/OpenEmu/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/build-arm64/Source/Core/Core",
+					"$(SRCROOT)/build-arm64/Source/Core/Common",
+					"$(SRCROOT)/build-arm64/Source/Core/AudioCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/InputCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/DiscIO",
+					"$(SRCROOT)/build-arm64/Source/Core/UICommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Metal",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/OGL",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Vulkan",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Null",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Software",
+					"$(SRCROOT)/build-arm64/Externals/glslang/glslang/glslang",
+					"$(SRCROOT)/build-arm64/Externals/glslang/glslang/SPIRV",
+					"$(SRCROOT)/build-arm64/Externals/spirv_cross",
+					"$(SRCROOT)/build-arm64/Externals/SDL/SDL",
+					"$(SRCROOT)/build-arm64/Externals/cubeb",
+					"$(SRCROOT)/build-arm64/Externals/mbedtls/library",
+					"$(SRCROOT)/build-arm64/Externals/minizip-ng/minizip-ng",
+					"$(SRCROOT)/build-arm64/Externals/zlib-ng/zlib-ng",
+					"$(SRCROOT)/build-arm64/Externals/libspng/libspng",
+					"$(SRCROOT)/build-arm64/Externals/SFML",
+					"$(SRCROOT)/build-arm64/Externals/hidapi",
+					"$(SRCROOT)/build-arm64/Externals/miniupnpc/miniupnp/miniupnpc",
+					"$(SRCROOT)/build-arm64/Externals/discord-rpc/src",
+					"$(SRCROOT)/build-arm64/Externals/fmt/fmt",
+					"$(SRCROOT)/build-arm64/Externals/MoltenVK/MoltenVK-prefix/src/MoltenVK/Package/Release/MoltenVK/static/MoltenVK.xcframework/macos-arm64_x86_64",
+					"$(SRCROOT)/build-arm64/Externals/FatFs",
+					"$(SRCROOT)/build-arm64/Externals/FreeSurround",
+					"$(SRCROOT)/build-arm64/Externals/imgui",
+					"$(SRCROOT)/build-arm64/Externals/implot",
+					"$(SRCROOT)/build-arm64/Externals/ed25519",
+					"$(SRCROOT)/build-arm64/Externals/enet/enet",
+					"$(SRCROOT)/build-arm64/Externals/rcheevos",
+					"$(SRCROOT)/build-arm64/Externals/tinygltf",
+					"$(SRCROOT)/build-arm64/Externals/cpp-optparse",
+					"$(SRCROOT)/build-arm64/Externals/LZO",
+					"$(SRCROOT)/build-arm64/Externals/lz4/lz4/build/cmake",
+					"$(SRCROOT)/build-arm64/Externals/xxhash",
+					"$(SRCROOT)/build-arm64/Externals/bzip2",
+					"$(SRCROOT)/build-arm64/Externals/zstd/zstd/build/cmake/lib",
+					"$(SRCROOT)/build-arm64/Externals/pugixml/pugixml",
+					"$(SRCROOT)/build-arm64/Externals/liblzma",
+					"$(SRCROOT)/build-arm64/Externals/libusb",
+					"$(SRCROOT)/build-arm64/Externals/libiconv",
+					"$(SRCROOT)/build-arm64/Externals/libiconv/libcharset",
+				);
 				OTHER_CFLAGS = (
 					"-Wno-narrowing",
 					"-Wno-shorten-64-to-32",
@@ -303,6 +356,7 @@
 					"-lspirv_cross",
 					"-lglslang",
 					"-lSPIRV",
+					"-lhidapi",
 					"-lSDL3",
 					"-lcubeb",
 					"-lmbedtls",
@@ -329,22 +383,17 @@
 					"-llzo2",
 					"-llz4",
 					"-lxxhash",
-					"-lbz2",
+					"-lbzip2",
 					"-lzstd",
 					"-lcurl",
 					"-lpugixml",
-					"-lusb-1.0",
+					"-lusb",
 					"-liconv",
 					"-lresolv",
 					"-llzma",
-					"-lavformat",
-					"-lavcodec",
-					"-lswscale",
-					"-lavutil",
-					"-lswresample",
-					"-lhidapi",
 					"-lc++",
 					"-ld_classic",
+					"-llibcharset",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Dolphin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -360,6 +409,55 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenEmu/Dolphin-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/OpenEmu/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/build-arm64/Source/Core/Core",
+					"$(SRCROOT)/build-arm64/Source/Core/Common",
+					"$(SRCROOT)/build-arm64/Source/Core/AudioCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/InputCommon",
+					"$(SRCROOT)/build-arm64/Source/Core/DiscIO",
+					"$(SRCROOT)/build-arm64/Source/Core/UICommon",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Metal",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/OGL",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Vulkan",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Null",
+					"$(SRCROOT)/build-arm64/Source/Core/VideoBackends/Software",
+					"$(SRCROOT)/build-arm64/Externals/glslang/glslang/glslang",
+					"$(SRCROOT)/build-arm64/Externals/glslang/glslang/SPIRV",
+					"$(SRCROOT)/build-arm64/Externals/spirv_cross",
+					"$(SRCROOT)/build-arm64/Externals/SDL/SDL",
+					"$(SRCROOT)/build-arm64/Externals/cubeb",
+					"$(SRCROOT)/build-arm64/Externals/mbedtls/library",
+					"$(SRCROOT)/build-arm64/Externals/minizip-ng/minizip-ng",
+					"$(SRCROOT)/build-arm64/Externals/zlib-ng/zlib-ng",
+					"$(SRCROOT)/build-arm64/Externals/libspng/libspng",
+					"$(SRCROOT)/build-arm64/Externals/SFML",
+					"$(SRCROOT)/build-arm64/Externals/hidapi",
+					"$(SRCROOT)/build-arm64/Externals/miniupnpc/miniupnp/miniupnpc",
+					"$(SRCROOT)/build-arm64/Externals/discord-rpc/src",
+					"$(SRCROOT)/build-arm64/Externals/fmt/fmt",
+					"$(SRCROOT)/build-arm64/Externals/MoltenVK/MoltenVK-prefix/src/MoltenVK/Package/Release/MoltenVK/static/MoltenVK.xcframework/macos-arm64_x86_64",
+					"$(SRCROOT)/build-arm64/Externals/FatFs",
+					"$(SRCROOT)/build-arm64/Externals/FreeSurround",
+					"$(SRCROOT)/build-arm64/Externals/imgui",
+					"$(SRCROOT)/build-arm64/Externals/implot",
+					"$(SRCROOT)/build-arm64/Externals/ed25519",
+					"$(SRCROOT)/build-arm64/Externals/enet/enet",
+					"$(SRCROOT)/build-arm64/Externals/rcheevos",
+					"$(SRCROOT)/build-arm64/Externals/tinygltf",
+					"$(SRCROOT)/build-arm64/Externals/cpp-optparse",
+					"$(SRCROOT)/build-arm64/Externals/LZO",
+					"$(SRCROOT)/build-arm64/Externals/lz4/lz4/build/cmake",
+					"$(SRCROOT)/build-arm64/Externals/xxhash",
+					"$(SRCROOT)/build-arm64/Externals/bzip2",
+					"$(SRCROOT)/build-arm64/Externals/zstd/zstd/build/cmake/lib",
+					"$(SRCROOT)/build-arm64/Externals/pugixml/pugixml",
+					"$(SRCROOT)/build-arm64/Externals/liblzma",
+					"$(SRCROOT)/build-arm64/Externals/libusb",
+					"$(SRCROOT)/build-arm64/Externals/libiconv",
+					"$(SRCROOT)/build-arm64/Externals/libiconv/libcharset",
+				);
 				OTHER_CFLAGS = (
 					"-Wno-narrowing",
 					"-Wno-shorten-64-to-32",
@@ -386,6 +484,7 @@
 					"-lspirv_cross",
 					"-lglslang",
 					"-lSPIRV",
+					"-lhidapi",
 					"-lSDL3",
 					"-lcubeb",
 					"-lmbedtls",
@@ -412,22 +511,17 @@
 					"-llzo2",
 					"-llz4",
 					"-lxxhash",
-					"-lbz2",
+					"-lbzip2",
 					"-lzstd",
 					"-lcurl",
 					"-lpugixml",
-					"-lusb-1.0",
+					"-lusb",
 					"-liconv",
 					"-lresolv",
 					"-llzma",
-					"-lavformat",
-					"-lavcodec",
-					"-lswscale",
-					"-lavutil",
-					"-lswresample",
-					"-lhidapi",
 					"-lc++",
 					"-ld_classic",
+					"-llibcharset",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openemu.Dolphin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -500,7 +594,6 @@
 					"$(SRCROOT)/build-arm64/Source/Core",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/GameCube",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/Wii",
-					/opt/homebrew/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -540,7 +633,16 @@
 					"$(SRCROOT)/build-arm64/Externals/rcheevos",
 					"$(SRCROOT)/build-arm64/Externals/tinygltf",
 					"$(SRCROOT)/build-arm64/Externals/cpp-optparse",
-					/opt/homebrew/lib,
+					"$(SRCROOT)/build-arm64/Externals/LZO",
+					"$(SRCROOT)/build-arm64/Externals/lz4/lz4/build/cmake",
+					"$(SRCROOT)/build-arm64/Externals/xxhash",
+					"$(SRCROOT)/build-arm64/Externals/bzip2",
+					"$(SRCROOT)/build-arm64/Externals/zstd/zstd/build/cmake/lib",
+					"$(SRCROOT)/build-arm64/Externals/pugixml/pugixml",
+					"$(SRCROOT)/build-arm64/Externals/liblzma",
+					"$(SRCROOT)/build-arm64/Externals/libusb",
+					"$(SRCROOT)/build-arm64/Exrernals/libiconv",
+					"$(SRCROOT)/build-arm64/Externals/libiconv/libcharset",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -613,7 +715,6 @@
 					"$(SRCROOT)/build-arm64/Source/Core",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/GameCube",
 					"$(SRCROOT)/../OpenEmu/SystemPlugins/Wii",
-					/opt/homebrew/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -653,7 +754,16 @@
 					"$(SRCROOT)/build-arm64/Externals/rcheevos",
 					"$(SRCROOT)/build-arm64/Externals/tinygltf",
 					"$(SRCROOT)/build-arm64/Externals/cpp-optparse",
-					/opt/homebrew/lib,
+					"$(SRCROOT)/build-arm64/Externals/LZO",
+					"$(SRCROOT)/build-arm64/Externals/lz4/lz4/build/cmake",
+					"$(SRCROOT)/build-arm64/Externals/xxhash",
+					"$(SRCROOT)/build-arm64/Externals/bzip2",
+					"$(SRCROOT)/build-arm64/Externals/zstd/zstd/build/cmake/lib",
+					"$(SRCROOT)/build-arm64/Externals/pugixml/pugixml",
+					"$(SRCROOT)/build-arm64/Externals/liblzma",
+					"$(SRCROOT)/build-arm64/Externals/libusb",
+					"$(SRCROOT)/build-arm64/Exrernals/libiconv",
+					"$(SRCROOT)/build-arm64/Externals/libiconv/libcharset",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_FAST_MATH = YES;

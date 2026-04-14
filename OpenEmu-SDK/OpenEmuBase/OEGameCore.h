@@ -528,6 +528,19 @@ OE_EXPORTED_CLASS
  *    specified in its OEGameCoreDisplayModeNameKey key. */
 - (void)changeDisplayWithMode:(NSString *)displayMode;
 
+#pragma mark - Joystick Port Swap - Optional
+
+/** Whether the core supports swapping joystick ports.
+ *  @discussion Computer systems like C64 and Amiga often need this because
+ *  games may expect the joystick in either port 1 or port 2. */
+@property(readonly) BOOL supportsJoystickPortSwap;
+
+/** Whether joystick ports are currently swapped. */
+@property(readonly) BOOL joystickPortsSwapped;
+
+/** Toggle joystick port swap. */
+- (void)swapJoystickPorts;
+
 #pragma mark - Peripheral Devices - Optional
 
 /** An array describing the available peripheral port configurations.

@@ -84,6 +84,10 @@ public typealias OEContextID = UInt32
 
     func setPeripheralDevices(_ peripheralDevices: [[String: Any]])
 
+    // MARK: - Joystick Port Swap
+
+    func setSupportsJoystickPortSwap(_ supports: Bool)
+
     // MARK: - Developer
 
     func setFrameRate(_ fps: Double)

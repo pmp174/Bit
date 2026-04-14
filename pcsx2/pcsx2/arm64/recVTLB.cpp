@@ -21,16 +21,4 @@ void vtlb_DynBackpatchLoadStore(uptr code_address, u32 code_size, u32 guest_pc, 
 	Console.Warning("ARM64: vtlb_DynBackpatchLoadStore called but not yet implemented");
 }
 
-// VU JIT save state stub — no VU recompiler on ARM64 yet
-bool SaveStateBase::vuJITFreeze()
-{
-	if (IsSaving())
-		vu1Thread.WaitVU();
-
-	// Stub: freeze empty microRegInfo-sized data for VU0 and VU1
-	// This maintains save state compatibility
-	std::array<u8, 96> empty_data{};
-	Freeze(empty_data);
-	Freeze(empty_data);
-	return true;
-}
+// vuJITFreeze is now provided by arm64/microVU.cpp

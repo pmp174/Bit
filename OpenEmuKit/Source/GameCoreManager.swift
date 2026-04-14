@@ -122,6 +122,10 @@ extension GameCoreManager: OEGameCoreHelper {
         gameCoreHelper?.changePeripheral(forPort: portIdentifier, toDevice: deviceIdentifier)
     }
 
+    public func swapJoystickPorts() {
+        gameCoreHelper?.swapJoystickPorts()
+    }
+
     public func setOutputBounds(_ rect: NSRect) {
         gameCoreHelper?.setOutputBounds(rect)
     }

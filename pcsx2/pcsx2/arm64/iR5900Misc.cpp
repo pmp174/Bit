@@ -8,6 +8,8 @@
 #include "arm64/iCore.h"
 #include "R5900OpcodeTables.h"
 
+namespace Interp = R5900::Interpreter::OpcodeImpl;
+
 namespace R5900 {
 namespace Dynarec {
 
@@ -26,6 +28,13 @@ void recSYNC()
 void recCACHE()
 {
 	// Cache operations are no-ops in JIT mode
+}
+
+////////////////////////////////////////////////////
+// COP2 — interpreter fallback (VU0 macro mode)
+void recCOP2()
+{
+	recCall(Interp::COP2);
 }
 
 ////////////////////////////////////////////////////

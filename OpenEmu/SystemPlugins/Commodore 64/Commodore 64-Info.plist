@@ -67,6 +67,12 @@
 				<key>OEControlListKeyNameKey</key>
 				<string>OEC64SwapJoysticks</string>
 			</dict>
+			<dict>
+				<key>OEControlListKeyLabelKey</key>
+				<string>Load Disk</string>
+				<key>OEControlListKeyNameKey</key>
+				<string>OEC64LoadDisk</string>
+			</dict>
 		</array>
 	</array>
 	<key>OEControlTypesKey</key>
@@ -115,6 +121,7 @@
 		<string>OEC64ButtonFire</string>
 		<string>OEC64ButtonJump</string>
 		<string>OEC64SwapJoysticks</string>
+		<string>OEC64LoadDisk</string>
 	</array>
 	<key>OENumberOfPlayersKey</key>
 	<integer>2</integer>

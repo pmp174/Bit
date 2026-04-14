@@ -823,6 +823,22 @@ static Class GameCoreClass = Nil;
 {
 }
 
+#pragma mark - Joystick Port Swap
+
+- (BOOL)supportsJoystickPortSwap
+{
+    return NO;
+}
+
+- (BOOL)joystickPortsSwapped
+{
+    return NO;
+}
+
+- (void)swapJoystickPorts
+{
+}
+
 #pragma mark - Peripheral Devices
 
 - (NSArray<NSDictionary<NSString *, id> *> *)peripheralDevices

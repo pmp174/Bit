@@ -618,7 +618,8 @@ final class ImportOperation: Operation, NSCopying {
             
             md5Hash = md5.lowercased()
             
-            if BIOSFile.checkIfBIOSFileAndImport(at: url, withMD5: md5Hash!) {
+            if BIOSFile.checkIfBIOSFileAndImport(at: url, withMD5: md5Hash!) ||
+               BIOSFile.checkIfBIOSZIPAndImport(at: url) {
                 DLog("File seems to be a BIOS at \(url)");
                 exit(with: .none, error: nil)
             }

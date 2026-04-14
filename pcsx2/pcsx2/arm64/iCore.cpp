@@ -108,14 +108,8 @@ void _writebackArmGPR(int armreg)
 		case ARMTYPE_FPRC:
 		{
 			RALOG("Writing back ARM GPR slot %d (x%d) for guest FPCR %d\n", slot, armreg, armGPRregs[slot].reg);
-			armAsm->Str(armWRegister(armreg),
-				a64::MemOperand(RCPUSTATE,
-					(s64)(offsetof(cpuRegisters, GPR) + sizeof(GPRregs) + sizeof(GPR_reg) * 2 +
-						  sizeof(CP0regs) + sizeof(u32) /* sa */ + sizeof(u32) /* IsDelaySlot */ +
-						  sizeof(u32) /* pc */ + sizeof(u32) /* code */)));
-			// Actually, fpuRegs is in the same cpuRegistersPack, but not at a fixed offset from cpuRegs.
-			// We need to use the absolute address approach instead.
-			// Recalculate: fpuRegs is a separate global aligned alongside cpuRegs.
+			// fpuRegs is a separate global (not at a fixed offset from cpuRegs),
+			// so use absolute address approach.
 			armMoveAddressToReg(RSCRATCHADDR, &fpuRegs.fprc[armGPRregs[slot].reg]);
 			armAsm->Str(armWRegister(armreg), a64::MemOperand(RSCRATCHADDR));
 		}
